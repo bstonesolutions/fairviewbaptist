@@ -8,7 +8,7 @@ const { isMessageVideo } = require('./_message-classification');
 const DOMAIN = 'https://fairviewbaptisttemple.com';
 // The Fairview Baptist Temple channel id (UC...) is not published yet. Set it
 // with the YT_CHANNEL_ID env var (or in Studio Settings) once it is known.
-const DEFAULT_CHANNEL = '';
+const DEFAULT_CHANNEL = 'UCpVuAImXOHZcdGDbw6fQLIA';
 // Set during CMS-SETUP: the Fairview Baptist Temple Supabase project URL and
 // anon key (see CMS-SETUP.md). Sermon-tag enrichment stays off until then.
 const SUPABASE_URL = 'https://qlbylvhmkbopszmzmipm.supabase.co';

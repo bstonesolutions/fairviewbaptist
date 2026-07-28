@@ -16,7 +16,7 @@
 
 // The Fairview Baptist Temple channel id (UC...) is not published yet. Set it
 // with the YT_CHANNEL_ID env var (or in Studio Settings) once it is known.
-const DEFAULT_CHANNEL = '';
+const DEFAULT_CHANNEL = 'UCpVuAImXOHZcdGDbw6fQLIA';
 const UA = { 'user-agent': 'Mozilla/5.0 (compatible; FBTSite/1.0)' };
 
 function clean(t) {

@@ -24,7 +24,7 @@
 
 // The Fairview Baptist Temple channel id (UC...) is not published yet. Set it
 // with the YT_CHANNEL_ID env var (or in Studio Settings) once it is known.
-const DEFAULT_CHANNEL = '';
+const DEFAULT_CHANNEL = 'UCpVuAImXOHZcdGDbw6fQLIA';
 // A real desktop browser UA: YouTube serves the full channel-tab markup
 // (ytInitialData video grid) to browsers, but a stripped page to bot-looking
 // agents — which is why a simple "FBTSite/1.0" UA comes back empty.

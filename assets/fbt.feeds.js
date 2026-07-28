@@ -13,7 +13,7 @@ window.FBT_FEEDS = {
   // have it. Find it at youtube.com > your channel > Settings >
   // Advanced settings > Channel ID.
   youtubeHandle: '@FairviewBaptistTemple',
-  youtubeChannelId: '',
+  youtubeChannelId: 'UCpVuAImXOHZcdGDbw6fQLIA',
   // Endpoint that returns videos as JSON (keyless). Reads the uploads
   // feed, or ?playlist=PL... for a specific playlist.
   videosApi: '/api/videos',
