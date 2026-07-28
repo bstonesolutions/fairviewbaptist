@@ -11,8 +11,8 @@ const DOMAIN = 'https://fairviewbaptisttemple.com';
 const DEFAULT_CHANNEL = '';
 // Set during CMS-SETUP: the Fairview Baptist Temple Supabase project URL and
 // anon key (see CMS-SETUP.md). Sermon-tag enrichment stays off until then.
-const SUPABASE_URL = '';
-const SUPABASE_ANON_KEY = '';
+const SUPABASE_URL = 'https://qlbylvhmkbopszmzmipm.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsYnlsdmhta2JvcHN6bXptaXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyODE1MDYsImV4cCI6MjEwMDg1NzUwNn0.muLRBIvNtki4lYOBIf6S80R2rYdBPoQvDzvzmEIn2A4';
 
 function one(value) { return Array.isArray(value) ? value[0] : value; }
 function esc(value) {

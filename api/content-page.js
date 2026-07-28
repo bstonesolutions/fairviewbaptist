@@ -7,8 +7,8 @@ const path = require('path');
 const DOMAIN = 'https://fairviewbaptisttemple.com';
 // Set during CMS-SETUP: the Fairview Baptist Temple Supabase project URL and
 // anon key (see CMS-SETUP.md). Until then this page serves its template shell.
-const SUPABASE_URL = '';
-const ANON = '';
+const SUPABASE_URL = 'https://qlbylvhmkbopszmzmipm.supabase.co';
+const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsYnlsdmhta2JvcHN6bXptaXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyODE1MDYsImV4cCI6MjEwMDg1NzUwNn0.muLRBIvNtki4lYOBIf6S80R2rYdBPoQvDzvzmEIn2A4';
 
 function one(v) { return Array.isArray(v) ? v[0] : v; }
 function esc(s) {

@@ -6,8 +6,8 @@ const { isMessageVideo } = require('./_message-classification');
 const DOMAIN = 'https://fairviewbaptisttemple.com';
 // Set during CMS-SETUP: the Fairview Baptist Temple Supabase project URL and
 // anon key (see CMS-SETUP.md). Until then only the static pages are listed.
-const SUPABASE_URL = '';
-const ANON = '';
+const SUPABASE_URL = 'https://qlbylvhmkbopszmzmipm.supabase.co';
+const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsYnlsdmhta2JvcHN6bXptaXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyODE1MDYsImV4cCI6MjEwMDg1NzUwNn0.muLRBIvNtki4lYOBIf6S80R2rYdBPoQvDzvzmEIn2A4';
 
 const STATIC = [
   ['/', 'weekly', '1.0'], ['/visit', 'monthly', '0.9'], ['/watch', 'weekly', '0.8'],

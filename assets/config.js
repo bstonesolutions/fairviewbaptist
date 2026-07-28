@@ -11,8 +11,8 @@
    ============================================================ */
 window.FBT = {
   // From Supabase: Project Settings > API
-  SUPABASE_URL: '',          // e.g. 'https://abcd1234.supabase.co'
-  SUPABASE_ANON_KEY: '',     // the "anon / public" key (a long JWT)
+  SUPABASE_URL: 'https://qlbylvhmkbopszmzmipm.supabase.co',          // e.g. 'https://abcd1234.supabase.co'
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsYnlsdmhta2JvcHN6bXptaXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyODE1MDYsImV4cCI6MjEwMDg1NzUwNn0.muLRBIvNtki4lYOBIf6S80R2rYdBPoQvDzvzmEIn2A4',     // the "anon / public" key (a long JWT)
 
   // The email address(es) allowed to log in to /studio and make edits.
   // Must match the allow-list in your database rules (see schema.sql).
