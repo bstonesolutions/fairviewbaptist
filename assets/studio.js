@@ -1733,7 +1733,6 @@
     { key: 'photo_gi_menswomens', label: 'Get Involved: Soul-Winning Visitation', page: '/get-involved', ratio: 'wide' },
     { key: 'photo_gi_missions', label: 'Get Involved: Missions', page: '/get-involved', ratio: 'wide' },
     { key: 'photo_gi_music', label: 'Get Involved: Music and Choir', page: '/get-involved', ratio: 'wide' },
-    { key: 'photo_podcast', label: 'Podcast: cover art', page: '/watch#messages', ratio: 'square' }
   ].map(function (item) { item.kind = 'photo'; item.pageLabel = 'View page'; return item; });
   var IMG_SVG = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>';
   var mediaBuilt = false, mediaReady = false, mediaLoading = false, mediaVals = {}, mediaEdit = null;

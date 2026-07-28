@@ -53,7 +53,6 @@ window.FBT_SCHEMA = {
         { key: 'photo_gi_menswomens', label: 'Get Involved: Soul-Winning Visitation photo', type: 'image', def: '' },
         { key: 'photo_gi_missions', label: 'Get Involved: Missions photo', type: 'image', def: '' },
         { key: 'photo_gi_music', label: 'Get Involved: Music & Choir photo', type: 'image', def: '' },
-        { key: 'photo_podcast', label: 'Podcast cover art (Messages)', type: 'image', def: '' },
       ],
     },
     {
@@ -118,10 +117,9 @@ window.FBT_SCHEMA = {
       hint: 'Paste full URLs that start with https://. Leave a field blank to keep the site\'s built-in link.',
       fields: [
         { key: 'give_link', label: 'Online giving link', type: 'link', def: '' },
-        { key: 'podcast_apple', label: 'Apple Podcasts link', type: 'link', def: '' },
-        { key: 'podcast_spotify', label: 'Spotify link', type: 'link', def: '' },
-        { key: 'podcast_rss', label: 'Podcast RSS link', type: 'link', def: '' },
-        { key: 'podcast_general', label: 'Podcast main link (Listen/Subscribe buttons)', type: 'link', def: '' },
+
+
+
         { key: 'youtube_url', label: 'YouTube channel URL', type: 'link', def: 'https://www.youtube.com/@FairviewBaptistTemple' },
         { key: 'facebook_url', label: 'Facebook URL', type: 'link', def: 'https://www.facebook.com/FairviewBaptistTemple' },
         { key: 'instagram_url', label: 'Instagram URL', type: 'link', def: 'https://www.instagram.com/fairviewbaptisttemple' },
