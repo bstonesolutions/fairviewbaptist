@@ -1,0 +1,1288 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Studio | Fairview Baptist Temple</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.png" type="image/png" sizes="512x512">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="assets/site.css?v=11">
+<style>
+  [hidden]{display:none !important;}
+  /* Studio is the dark admin surface. site.css now carries the light public
+     palette, so re-scope the shared tokens to the dark sea family here. */
+  :root{--paper:#0D2733;--paper2:#0A222B;--panel:#14424A;--tx:#FFF8EA;--mut:rgba(255,248,234,.72);--line:rgba(255,248,234,.16);--accent:#7FD1CB;}
+  /* Dark-theme form fields (site.css styles them for the light public pages) */
+  .form input,.form textarea,.form select{color:#FFF8EA;background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.14);}
+  .form input::placeholder,.form textarea::placeholder{color:rgba(255,248,234,.4);}
+  .form input:focus,.form textarea:focus,.form select:focus{border-color:var(--brand);background:rgba(255,255,255,.08);}
+  .form select option{background:#14424A;color:#FFF8EA;}
+  /* Studio secondary buttons: white pill, dark text (so they're never invisible) */
+  .btn-o{background:#fff;color:#0D2733;border-color:#fff;}
+  .btn-o:hover{background:#F2ECDD;color:#0D2733;border-color:#F2ECDD;transform:translateY(-2px);}
+  .studio-center{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;}
+  .spin{width:34px;height:34px;border-radius:50%;border:3px solid rgba(255,255,255,.18);border-top-color:var(--brand);animation:sspin .8s linear infinite;}
+  @keyframes sspin{to{transform:rotate(360deg);}}
+  .studio-card{width:100%;max-width:420px;background:var(--panel);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:40px 34px;text-align:center;}
+  .studio-card .studio-logo{height:34px;margin-bottom:22px;}
+  .studio-card h1{font-family:"Fraunces";font-weight:400;font-size:2rem;letter-spacing:.01em;margin:0 0 8px;}
+  .studio-card .muted{color:var(--mut);font-size:1rem;margin:0 0 24px;}
+  .studio-card .form{max-width:none;text-align:left;}
+  .studio-card .form .btn{justify-self:stretch;width:100%;}
+  .studio-msg{font-size:.95rem;color:var(--mut);margin:4px 0 0;min-height:1.2em;}
+  .studio-msg.ok{color:var(--accent);} .studio-msg.err{color:#C0503A;}
+
+  .studio-app{display:grid;grid-template-columns:236px 1fr;min-height:100vh;}
+  .studio-side{background:var(--paper2);border-right:1px solid rgba(255,255,255,.08);padding:24px 16px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh;overflow-y:auto;}
+  .studio-brand{display:flex;align-items:center;gap:10px;padding:6px 12px 18px;}
+  .studio-brand img{height:30px;}.studio-brand-copy{display:flex;flex-direction:column;line-height:1.05;}.studio-brand-copy>span{font-family:"Fraunces";font-size:1.15rem;}.studio-view-name{display:none;}
+  .studio-nav-scrim,.studio-nav-toggle{display:none;}
+  .studio-main:focus{outline:none;}
+  .snav{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:12px;color:var(--mut);font-weight:500;font-size:.98rem;cursor:pointer;text-decoration:none;background:none;border:none;width:100%;text-align:left;font-family:inherit;transition:background .18s,color .18s;}
+  .snav svg{flex:none;} .snav:hover{background:rgba(255,255,255,.05);color:#fff;}
+  .snav.active{background:rgba(23,126,121,.16);color:var(--accent);}
+  .snav.soon{opacity:.5;cursor:default;} .snav.soon:hover{background:none;color:var(--mut);}
+  .snav .soon-tag{margin-left:auto;font-family:"Source Sans 3";font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,255,255,.1);padding:3px 7px;border-radius:6px;}
+  .studio-side-foot{margin-top:auto;border-top:1px solid rgba(255,255,255,.08);padding-top:12px;}
+  .studio-who{font-size:.82rem;color:var(--mut);padding:8px 13px 0;word-break:break-all;}
+
+  .studio-main{padding:36px 40px 80px;max-width:1000px;}
+  .studio-note{background:rgba(255,155,147,.12);border:1px solid rgba(255,155,147,.35);color:#ffd2cd;border-radius:14px;padding:14px 18px;margin-bottom:24px;font-size:.95rem;}
+  .studio-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:26px;flex-wrap:wrap;}
+  .studio-head h1{font-family:"Fraunces";font-weight:400;font-size:2.1rem;margin:0;}
+  .studio-head .muted{color:var(--mut);margin:6px 0 0;font-size:1rem;}
+  .studio-head-acts{display:flex;gap:10px;}
+  .studio-back{display:inline-block;color:var(--accent);font-weight:500;font-size:.92rem;cursor:pointer;margin-bottom:8px;}
+
+  /* Studio dashboard */
+  .studio-dashboard{display:flex;flex-direction:column;gap:22px;}
+  .dash-hero{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:28px 30px;border:1px solid rgba(15,102,99,.28);border-radius:20px;background:linear-gradient(135deg,rgba(23,126,121,.17),rgba(20,66,74,.42) 48%,rgba(255,255,255,.025));box-shadow:0 18px 50px rgba(0,0,0,.13);}
+  .dash-hero:after{content:"";position:absolute;width:300px;height:300px;right:-115px;top:-188px;border:1px solid rgba(15,102,99,.24);border-radius:50%;box-shadow:0 0 0 42px rgba(23,126,121,.035),0 0 0 88px rgba(23,126,121,.025);pointer-events:none;}
+  .dash-hero-copy{position:relative;z-index:1;max-width:650px;}
+  .dash-eyebrow{display:flex;align-items:center;gap:9px;font-family:"Source Sans 3",sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin:0 0 8px;}
+  .dash-eyebrow:before{content:"";width:28px;height:3px;border-radius:999px;background:var(--brand);box-shadow:8px 0 0 rgba(15,102,99,.45);}
+  .dash-hero h1{font-family:"Fraunces",serif;font-weight:400;font-size:2.25rem;line-height:1.05;margin:0 0 8px;letter-spacing:.01em;}
+  .dash-hero p:not(.dash-eyebrow){color:var(--mut);font-size:1rem;line-height:1.55;margin:0;}
+  .dash-refresh{position:relative;z-index:1;flex:none;display:inline-flex;align-items:center;gap:8px;min-height:46px;}
+  .dash-refresh.loading svg{animation:dash-spin .8s linear infinite;}
+  @keyframes dash-spin{to{transform:rotate(360deg);}}
+  .dash-sync{display:flex;align-items:center;gap:8px;color:var(--mut);font-size:.82rem;margin:-10px 4px 0;min-height:20px;}
+  .dash-sync:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 4px rgba(23,126,121,.1);}
+  .dash-sync.partial:before{background:#C0503A;box-shadow:0 0 0 4px rgba(255,155,147,.1);}
+  .dash-quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+  .dash-quick-btn{display:flex;align-items:center;gap:11px;min-height:54px;padding:11px 14px;border:1px solid rgba(255,255,255,.11);border-radius:13px;background:rgba(255,255,255,.035);color:#fff;font-family:"Source Sans 3",sans-serif;font-size:.9rem;font-weight:600;text-align:left;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease;}
+  .dash-quick-btn svg{flex:none;color:var(--accent);}
+  .dash-quick-btn:hover{transform:translateY(-2px);border-color:rgba(15,102,99,.38);background:rgba(23,126,121,.09);}
+  .dash-quick-btn:focus-visible,.dash-focus-card:focus-visible,.dash-metric:focus-visible,.dash-health-row:focus-visible,.dash-activity-row:focus-visible{outline:3px solid rgba(15,102,99,.48);outline-offset:3px;}
+  .dash-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:13px;}
+  .dash-section-head h2{font-family:"Fraunces",serif;font-weight:400;font-size:1.35rem;letter-spacing:.01em;margin:0;}
+  .dash-section-head p{color:var(--mut);font-size:.84rem;margin:3px 0 0;}
+  .dash-section-link{border:0;background:none;color:var(--accent);font-family:"Source Sans 3",sans-serif;font-size:.84rem;font-weight:600;cursor:pointer;padding:5px 0;white-space:nowrap;}
+  .dash-section-link:hover{color:#fff;}
+  .dash-focus-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+  .dash-focus-card{appearance:none;min-width:0;min-height:154px;display:flex;flex-direction:column;align-items:flex-start;padding:18px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.048),rgba(255,255,255,.018));color:#fff;font-family:"Source Sans 3",sans-serif;text-align:left;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease;}
+  .dash-focus-card:hover{transform:translateY(-3px);border-color:rgba(15,102,99,.38);background:linear-gradient(145deg,rgba(23,126,121,.11),rgba(255,255,255,.02));}
+  .dash-focus-card.warn{border-color:rgba(255,155,147,.25);background:linear-gradient(145deg,rgba(255,155,147,.07),rgba(255,255,255,.018));}
+  .dash-focus-card.good{border-color:rgba(15,102,99,.25);}
+  .dash-focus-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:var(--accent);background:rgba(23,126,121,.12);margin-bottom:17px;}
+  .dash-focus-card.warn .dash-focus-icon{color:#ffb3ad;background:rgba(255,155,147,.1);}
+  .dash-focus-label{font-family:"Source Sans 3",sans-serif;font-size:.66rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-bottom:4px;}
+  .dash-focus-value{font-size:1.08rem;line-height:1.28;font-weight:700;margin:0 0 4px;overflow-wrap:anywhere;}
+  .dash-focus-meta{color:var(--mut);font-size:.79rem;line-height:1.4;margin-top:auto;}
+  .dash-focus-error{cursor:default;}
+  .dash-focus-error:hover{transform:none;}
+  .dash-split{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:16px;align-items:start;}
+  .dash-panel{border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.025);padding:21px;min-width:0;}
+  .dash-panel .dash-section-head{margin-bottom:17px;}
+  .dash-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .dash-metric{appearance:none;padding:15px;border:1px solid rgba(255,255,255,.09);border-radius:13px;background:rgba(4,18,11,.26);color:#fff;font-family:"Source Sans 3",sans-serif;text-align:left;cursor:pointer;min-width:0;transition:background .18s ease,border-color .18s ease;}
+  .dash-metric:hover{background:rgba(23,126,121,.075);border-color:rgba(15,102,99,.28);}
+  .dash-metric span{display:block;color:var(--mut);font-family:"Source Sans 3",sans-serif;font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
+  .dash-metric strong{display:block;font-size:1.25rem;line-height:1.2;overflow-wrap:anywhere;}
+  .dash-metric small{display:block;color:var(--mut);font-size:.76rem;line-height:1.35;margin-top:4px;}
+  .dash-panel-note{display:flex;align-items:flex-start;gap:9px;padding:12px 13px;margin-top:12px;border-radius:12px;background:rgba(23,126,121,.075);color:var(--mut);font-size:.8rem;line-height:1.45;}
+  .dash-panel-note svg{flex:none;color:var(--accent);margin-top:1px;}
+  .dash-panel-note.warn{background:rgba(255,155,147,.07);color:#efc4c0;}
+  .dash-panel-note.warn svg{color:#C0503A;}
+  .dash-health-list,.dash-activity-list{display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.09);border-radius:14px;overflow:hidden;}
+  .dash-health-row,.dash-activity-row{appearance:none;width:100%;display:flex;align-items:center;gap:12px;padding:13px 14px;border:0;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(4,18,11,.18);color:#fff;font-family:"Source Sans 3",sans-serif;text-align:left;cursor:pointer;}
+  .dash-health-row:last-child,.dash-activity-row:last-child{border-bottom:0;}
+  .dash-health-row:hover,.dash-activity-row:hover{background:rgba(23,126,121,.08);}
+  .dash-health-dot{flex:none;width:9px;height:9px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 4px rgba(23,126,121,.09);}
+  .dash-health-dot.warn{background:#C0503A;box-shadow:0 0 0 4px rgba(255,155,147,.09);}
+  .dash-health-copy{flex:1;min-width:0;}
+  .dash-health-copy strong{display:block;font-size:.9rem;line-height:1.35;}
+  .dash-health-copy small{display:block;color:var(--mut);font-size:.76rem;line-height:1.4;margin-top:2px;}
+  .dash-row-count{flex:none;min-width:28px;height:26px;display:inline-flex;align-items:center;justify-content:center;padding:0 8px;border-radius:999px;background:rgba(23,126,121,.13);color:var(--accent);font-size:.75rem;font-weight:700;}
+  .dash-row-count.warn{background:rgba(255,155,147,.1);color:#ffb3ad;}
+  .dash-activity-row{padding:14px 16px;}
+  .dash-activity-icon{flex:none;width:36px;height:36px;border-radius:10px;background:rgba(23,126,121,.1);color:var(--accent);display:flex;align-items:center;justify-content:center;}
+  .dash-activity-main{flex:1;min-width:0;}
+  .dash-activity-main strong{display:block;font-size:.92rem;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .dash-activity-main small{display:block;color:var(--mut);font-size:.77rem;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .dash-activity-time{flex:none;color:var(--mut);font-size:.75rem;text-align:right;}
+  .dash-empty,.dash-error{padding:24px 18px;border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(4,18,11,.18);color:var(--mut);font-size:.88rem;line-height:1.5;text-align:center;}
+  .dash-error{border-color:rgba(255,155,147,.22);background:rgba(255,155,147,.055);color:#efc4c0;}
+  .dash-skeleton{position:relative;overflow:hidden;background:rgba(255,255,255,.05)!important;color:transparent!important;border-color:rgba(255,255,255,.07)!important;cursor:default;}
+  .dash-skeleton:after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent);animation:dash-shimmer 1.25s infinite;}
+  @keyframes dash-shimmer{to{transform:translateX(100%);}}
+  .dash-skeleton:hover{transform:none;}
+
+  @media(max-width:980px){.dash-focus-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.dash-quick{grid-template-columns:repeat(2,minmax(0,1fr));}.dash-split{grid-template-columns:1fr;}}
+  @media(max-width:620px){
+    .studio-dashboard{gap:18px;}.dash-hero{align-items:flex-start;flex-direction:column;padding:23px 20px;gap:18px;}.dash-hero h1{font-size:1.9rem;}.dash-refresh{width:100%;justify-content:center;}.dash-sync{margin-top:-7px;}
+    .dash-quick{grid-template-columns:1fr 1fr;gap:8px;}.dash-quick-btn{min-height:58px;padding:10px 12px;font-size:.84rem;}
+    .dash-focus-grid{grid-template-columns:1fr;gap:10px;}.dash-focus-card{min-height:0;display:grid;grid-template-columns:42px 1fr;column-gap:12px;padding:15px;}.dash-focus-icon{grid-row:1 / span 3;margin:0;align-self:start;}.dash-focus-label,.dash-focus-value,.dash-focus-meta{grid-column:2;}.dash-focus-meta{margin-top:2px;}
+    .dash-panel{padding:17px 14px;}.dash-metrics{grid-template-columns:1fr 1fr;}.dash-metric{padding:13px 11px;}.dash-metric strong{font-size:1.08rem;}.dash-section-head{align-items:flex-start;}.dash-section-head p{max-width:240px;}
+    .dash-activity-time{display:none;}.dash-activity-row{padding:13px 12px;}.dash-activity-main strong{white-space:normal;}
+  }
+  @media(max-width:380px){.dash-quick{grid-template-columns:1fr;}.dash-metrics{grid-template-columns:1fr;}}
+  @media(prefers-reduced-motion:reduce){.dash-refresh.loading svg,.dash-skeleton:after{animation:none!important;}.dash-quick-btn,.dash-focus-card{transition:none!important;}}
+
+  .studio-rows{display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;}
+  .srow{display:flex;align-items:center;gap:14px;padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.08);}
+  .srow:last-child{border-bottom:none;}
+  .srow-thumb{flex:none;width:54px;height:54px;border-radius:11px;background:rgba(255,255,255,.06) center/cover no-repeat;display:flex;align-items:center;justify-content:center;color:var(--accent);}
+  .srow-main{flex:1;min-width:0;} .srow-title{font-weight:600;font-size:1.02rem;}
+  .srow-meta{color:var(--mut);font-size:.9rem;margin-top:2px;}
+  .spill{font-family:"Source Sans 3";font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;white-space:nowrap;}
+  .spill.live{background:rgba(23,126,121,.18);color:var(--accent);}
+  .spill.feat{background:var(--brand);color:#FCF8EE;}
+  .spill.draft{background:rgba(255,255,255,.12);color:var(--mut);}
+  .spill.past{background:rgba(255,255,255,.06);color:var(--mut);}
+  .sicon{flex:none;width:36px;height:36px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:none;color:var(--mut);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .18s,color .18s,border-color .18s;}
+  .sicon:hover{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.3);}
+  .studio-empty{padding:40px 24px;text-align:center;color:var(--mut);}
+  .studio-import{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;background:rgba(23,126,121,.1);border:1px solid rgba(23,126,121,.28);border-radius:14px;padding:16px 20px;margin-bottom:18px;}
+  .studio-import b{font-size:1.02rem;} .studio-import p{margin:4px 0 0;font-size:.92rem;} .studio-import .btn{flex:none;}
+  .studio-search{font-family:"Source Sans 3",sans-serif;font-size:1rem;color:#fff;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.14);border-radius:12px;padding:13px 16px;width:100%;margin-bottom:16px;}
+  .studio-search:focus{outline:none;border-color:var(--brand);}
+  .hub-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  .hub-chip{font-family:"Source Sans 3",sans-serif;font-size:.9rem;font-weight:500;color:var(--mut);background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.14);border-radius:999px;padding:8px 16px;cursor:pointer;transition:background .18s,color .18s,border-color .18s;}
+  .hub-chip:hover{color:#fff;border-color:rgba(255,255,255,.3);}
+  .hub-chip.active{background:var(--brand);color:#FCF8EE;border-color:var(--brand);}
+  .hub-chip .n{opacity:.6;margin-left:4px;font-size:.82rem;}
+  .srow-thumb.wide{width:90px;border-radius:9px;}
+  .spill.tag{background:rgba(23,126,121,.16);color:var(--accent);} .spill.auto{background:rgba(255,255,255,.06);color:var(--mut);}
+  .sm-vid{display:flex;gap:16px;align-items:center;margin-bottom:24px;}
+  .sm-vid-thumb{flex:none;width:140px;height:79px;border-radius:11px;background:rgba(255,255,255,.06) center/cover no-repeat;}
+  .sm-vid-meta{color:var(--mut);font-size:.92rem;}
+  .studio-subhead{font-family:"Source Sans 3";font-weight:600;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:34px 0 8px;}
+  .media-hint{color:var(--mut);font-size:.9rem;line-height:1.55;margin:0 0 16px;max-width:780px;}
+  .media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+  .media-tile{min-width:0;border:1px solid rgba(255,255,255,.11);border-radius:17px;overflow:hidden;background:linear-gradient(155deg,rgba(255,255,255,.045),rgba(255,255,255,.018));box-shadow:0 14px 34px rgba(0,0,0,.12);transition:transform .18s,border-color .18s,box-shadow .18s;}
+  .media-tile:hover{transform:translateY(-2px);border-color:rgba(15,102,99,.34);box-shadow:0 18px 40px rgba(0,0,0,.2);}
+  .media-prev{appearance:none;width:100%;height:174px;padding:0;border:0;border-bottom:1px solid rgba(255,255,255,.09);background:linear-gradient(145deg,#1B5D60,#0D2733);position:relative;display:block;overflow:hidden;color:rgba(255,255,255,.32);cursor:pointer;text-align:inherit;}
+  .media-prev:focus-visible{outline:3px solid var(--accent);outline-offset:-3px;}
+  .media-preview-object{position:absolute;inset:0;width:100%;height:100%;display:block;}
+  .media-preview-collage{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px;background:var(--panel);}
+  .media-preview-collage img{width:100%;height:100%;min-width:0;min-height:0;display:block;object-fit:cover;}
+  .media-preview-overlay{position:absolute;inset:0;z-index:2;pointer-events:none;}
+  .media-preview-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:rgba(255,255,255,.48);font-size:.8rem;}
+  .media-preview-empty svg{color:var(--accent);opacity:.78;}
+  .media-preview-badge{position:absolute;z-index:4;left:10px;top:10px;display:inline-flex;align-items:center;gap:5px;min-height:25px;padding:4px 9px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(8,28,18,.82);backdrop-filter:blur(8px);color:#fff;font-family:"Source Sans 3";font-size:.6rem;letter-spacing:.11em;text-transform:uppercase;}
+  .media-preview-edit{position:absolute;z-index:4;right:10px;bottom:10px;display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:9px;background:#fff;color:#0D2733;font-size:.76rem;font-weight:700;box-shadow:0 8px 22px rgba(0,0,0,.24);}
+  .media-prev.uploading::after{content:"Uploading...";position:absolute;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;background:rgba(10,38,46,.82);color:var(--accent);font-weight:600;font-size:.9rem;}
+  .media-tile-foot{display:flex;align-items:center;justify-content:space-between;padding:14px 15px;gap:12px;}
+  .media-tile-copy{min-width:0;}
+  .media-tile-copy strong{display:block;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .media-tile-meta{display:flex;align-items:center;gap:7px;min-width:0;margin-top:3px;}
+  .media-tile-copy small{display:block;min-width:0;color:var(--mut);font-size:.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .media-page-link{flex:none;color:var(--accent);font-size:.7rem;font-weight:600;text-decoration:underline;text-decoration-color:rgba(15,102,99,.34);text-underline-offset:2px;}
+  .media-page-link:hover{color:#fff;}
+  .media-acts{display:flex;gap:7px;align-items:center;flex:none;}
+  .media-up,.media-edit-btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 12px;border-radius:10px;border:1px solid rgba(15,102,99,.3);background:rgba(23,126,121,.08);color:var(--accent);font:600 .78rem "Source Sans 3",sans-serif;cursor:pointer;white-space:nowrap;}
+  .media-up:hover,.media-edit-btn:hover{background:rgba(23,126,121,.17);border-color:rgba(15,102,99,.55);color:#fff;}
+
+  .media-editor{position:fixed;inset:0;z-index:1800;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(5,18,11,.86);backdrop-filter:blur(10px);}
+  .media-editor[hidden]{display:none;}
+  .media-editor-card{width:min(1180px,100%);max-height:calc(100vh - 48px);display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(15,102,99,.35);border-radius:24px;background:linear-gradient(155deg,#1B5D60,#14424A 68%,#0D2733);box-shadow:0 34px 100px rgba(0,0,0,.58);}
+  .media-editor-head{flex:none;display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:21px 24px 18px;border-bottom:1px solid rgba(255,255,255,.1);}
+  .media-editor-eyebrow{font-family:"Source Sans 3";font-size:.64rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 4px;}
+  .media-editor-head h2{font-family:"Fraunces";font-weight:400;font-size:1.85rem;line-height:1.1;margin:0;}
+  .media-editor-head p:last-child{color:var(--mut);font-size:.84rem;margin:5px 0 0;}
+  .media-editor-close{flex:none;width:43px;height:43px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;font-size:1.5rem;cursor:pointer;}
+  .media-editor-close:hover{background:rgba(255,255,255,.12);}
+  .media-editor-body{min-height:0;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(340px,.75fr);overflow:auto;}
+  .media-stage-panel{min-width:0;padding:22px 24px 26px;border-right:1px solid rgba(255,255,255,.1);background:rgba(4,18,11,.18);}
+  .media-modebar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px;}
+  .media-mode-tabs,.media-segments{display:inline-flex;gap:4px;padding:4px;border:1px solid rgba(255,255,255,.11);border-radius:11px;background:rgba(4,18,11,.35);}
+  .media-mode-tabs button,.media-segments button{min-height:44px;padding:9px 14px;border:0;border-radius:8px;background:transparent;color:var(--mut);font:600 .78rem "Source Sans 3",sans-serif;cursor:pointer;}
+  .media-mode-tabs button.active,.media-segments button.active{background:rgba(23,126,121,.18);color:#fff;box-shadow:inset 0 0 0 1px rgba(15,102,99,.28);}
+  .media-mode-note{color:var(--mut);font-size:.75rem;}
+  .media-stage-wrap{display:flex;align-items:center;justify-content:center;min-height:420px;padding:22px;border-radius:18px;background:repeating-linear-gradient(45deg,rgba(255,255,255,.018) 0 12px,transparent 12px 24px),rgba(4,18,11,.46);border:1px solid rgba(255,255,255,.09);}
+  .media-stage{position:relative;width:100%;max-width:720px;aspect-ratio:16/9;overflow:hidden;border-radius:15px;background:linear-gradient(155deg,#20706B,#0A252C);box-shadow:0 18px 50px rgba(0,0,0,.36);cursor:crosshair;touch-action:pan-y;isolation:isolate;}
+  .media-stage.hero-home{aspect-ratio:16/9;}
+  .media-stage.hero-page{aspect-ratio:16/5;}
+  .media-stage.hero-slim{aspect-ratio:16/4;}
+  .media-stage.mobile.hero-home{width:min(310px,100%);aspect-ratio:9/14;}
+  .media-stage.mobile.hero-page{width:min(360px,100%);aspect-ratio:1;}
+  .media-stage.mobile.hero-slim{width:min(380px,100%);aspect-ratio:4/3;}
+  .media-stage.mobile-photo{width:min(330px,100%);}
+  .media-stage.photo-square{width:min(500px,100%);aspect-ratio:1;}
+  .media-stage.photo-portrait{width:min(390px,100%);aspect-ratio:4/5;}
+  .media-stage.photo-wide{width:min(680px,100%);aspect-ratio:16/10;}
+  .media-stage.photo-four-three{width:min(640px,100%);aspect-ratio:4/3;}
+  .media-stage.photo-landscape{width:min(680px,100%);aspect-ratio:16/9;}
+  .media-stage:focus-visible{outline:3px solid var(--accent);outline-offset:4px;}
+  .media-stage-copy{position:absolute;z-index:3;left:7%;right:7%;bottom:10%;pointer-events:none;text-shadow:0 3px 20px rgba(0,0,0,.35);}
+  .media-stage-copy span{font-family:"Source Sans 3";font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);}
+  .media-stage-copy strong{display:block;max-width:12ch;margin-top:5px;font-family:"Fraunces";font-size:clamp(1.45rem,4vw,2.7rem);line-height:1;color:#fff;font-weight:400;text-transform:uppercase;}
+  .media-focal{position:absolute;z-index:5;width:34px;height:34px;margin:-17px 0 0 -17px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 3px rgba(23,126,121,.78),0 5px 18px rgba(0,0,0,.5);pointer-events:none;}
+  .media-focal:before,.media-focal:after{content:"";position:absolute;background:#fff;opacity:.9;}
+  .media-focal:before{width:14px;height:2px;left:8px;top:14px}.media-focal:after{width:2px;height:14px;left:14px;top:8px}
+  .media-stage-help{display:flex;align-items:flex-start;gap:8px;color:var(--mut);font-size:.78rem;line-height:1.45;margin:12px 3px 0;}
+  .media-stage-help svg{flex:none;color:var(--accent);margin-top:1px;}
+  .media-assets{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px;}
+  .media-assets .media-up,.media-assets button{min-height:42px;}
+  .media-controls{padding:20px 22px 26px;overflow:auto;}
+  .media-control-group{padding:0 0 19px;margin:0 0 19px;border-bottom:1px solid rgba(255,255,255,.1);}
+  .media-control-group:last-child{border-bottom:0;margin-bottom:0;}
+  .media-control-title{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:11px;}
+  .media-control-title strong,.media-control-title label{font-family:"Source Sans 3";font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);}
+  .media-control-title small{color:var(--mut);font-size:.7rem;}
+  .media-control-group select{width:100%;min-height:44px;padding:10px 12px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:#14424A;color:#fff;font:500 .9rem "Source Sans 3",sans-serif;}
+  .media-control-group select:focus,.media-color-input:focus{outline:2px solid rgba(15,102,99,.55);outline-offset:2px;}
+  .media-swatches{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+  .media-swatch{position:relative;aspect-ratio:1;border:2px solid rgba(255,255,255,.13);border-radius:10px;cursor:pointer;background:var(--swatch);box-shadow:inset 0 0 0 2px rgba(10,38,46,.18);}
+  .media-swatch.active{border-color:#fff;box-shadow:0 0 0 3px rgba(23,126,121,.42);}
+  .media-swatch span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+  .media-color-row{display:grid;grid-template-columns:1fr 46px;gap:9px;align-items:center;margin-top:10px;}
+  .media-color-input{width:100%;min-height:42px;padding:9px 11px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(255,255,255,.05);color:#fff;font:500 .86rem "Source Sans 3",sans-serif;text-transform:uppercase;}
+  .media-color-picker{width:46px;height:42px;padding:3px;border:1px solid rgba(255,255,255,.16);border-radius:10px;background:rgba(255,255,255,.05);cursor:pointer;}
+  .media-range{margin-top:12px;}
+  .media-range:first-child{margin-top:0;}
+  .media-range-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;font-size:.82rem;color:var(--mut);}
+  .media-range-head output{min-width:48px;text-align:right;color:#fff;font-weight:600;}
+  .media-range input[type=range]{width:100%;min-height:44px;accent-color:var(--brand);cursor:pointer;}
+  .media-source-note{display:block;color:var(--mut);font-size:.74rem;line-height:1.45;margin-top:8px;}
+  .media-warning{display:flex;gap:8px;align-items:flex-start;padding:10px 11px;margin-top:10px;border-radius:10px;background:rgba(255,184,113,.08);color:#f4cda7;font-size:.74rem;line-height:1.4;}
+  .media-editor-foot{flex:none;display:flex;align-items:center;gap:10px;padding:15px 22px calc(15px + env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.1);background:rgba(10,32,20,.95);}
+  .media-editor-foot .studio-msg{flex:1;margin:0;min-width:0;}
+  .media-editor-foot .btn{min-height:44px;}
+  .media-danger{border-color:rgba(255,155,147,.34)!important;color:#ffb8b2!important;background:rgba(255,155,147,.06)!important;}
+  .media-assets button:disabled{opacity:.42;cursor:not-allowed;}
+  .media-control-group.is-disabled{opacity:.56;}
+  #media-overlay-controls.is-disabled{opacity:.56;}
+  .media-control-group button:disabled,.media-control-group input:disabled,.media-control-group select:disabled,.media-editor-foot button:disabled,.media-editor-close:disabled{cursor:not-allowed;opacity:.48;}
+  .media-color-input[aria-invalid="true"]{border-color:#C0503A;box-shadow:0 0 0 2px rgba(255,155,147,.13);}
+  .media-grid>.studio-empty{grid-column:1/-1;border:1px solid rgba(255,255,255,.09);border-radius:16px;}
+  body.media-editor-open{overflow:hidden;}
+  @media(max-width:840px){
+    .media-grid{grid-template-columns:1fr;}
+    .media-editor{padding:0;align-items:flex-end;}
+    .media-editor-card{width:100%;max-height:96vh;max-height:96dvh;border-radius:22px 22px 0 0;}
+    .media-editor-head{padding:18px 17px 15px;}
+    .media-editor-head h2{font-size:1.55rem;}
+    .media-editor-body{display:block;}
+    .media-stage-panel{padding:16px;border-right:0;border-bottom:1px solid rgba(255,255,255,.1);}
+    .media-stage-wrap{min-height:300px;padding:14px;}
+    .media-controls{padding:18px 16px 22px;}
+    .media-editor-foot{position:sticky;bottom:0;z-index:8;padding-left:16px;padding-right:16px;flex-wrap:wrap;}
+    .media-editor-foot .studio-msg{flex-basis:100%;order:-1;}
+    .media-editor-foot .btn{flex:1;}
+  }
+  @media(max-width:480px){
+    .media-prev{height:152px;}
+    .media-tile-foot{align-items:flex-start;flex-direction:column;}
+    .media-acts{width:100%}.media-acts>*{flex:1;}
+    .media-mode-note{display:none;}
+    .media-stage-wrap{min-height:270px;padding:10px;}
+    .media-stage.mobile.hero-home{width:min(235px,100%);}
+    .media-assets{display:grid;grid-template-columns:1fr 1fr;}
+    .media-assets>*{width:100%;}
+  }
+  .pg-list{display:flex;flex-direction:column;gap:18px;}
+  .pg-section{border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(255,255,255,.025);padding:14px;}
+  .pg-section-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:0 2px 11px;}
+  .pg-section-head strong{font-family:"Source Sans 3";font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);}
+  .pg-section-head small{color:var(--mut);font-size:.8rem;text-align:right;}
+  .pg-section-list{display:flex;flex-direction:column;gap:8px;}
+  .pg-row{display:flex;align-items:center;gap:12px;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 12px;background:var(--panel);}
+  .pg-reorder{display:flex;gap:6px;flex:none;}
+  .pg-arrow{width:42px;height:42px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:none;color:var(--mut);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
+  .pg-arrow:hover:not([disabled]){background:rgba(255,255,255,.08);color:#fff;} .pg-arrow[disabled]{opacity:.3;cursor:default;}
+  .pg-arrow:focus-visible{outline:3px solid rgba(15,102,99,.48);outline-offset:2px;}
+  .pg-fixed{width:86px;flex:none;display:flex;align-items:center;justify-content:center;gap:6px;color:var(--mut);font-size:.76rem;text-transform:uppercase;letter-spacing:.08em;}
+  .pg-fixed svg{color:var(--accent);}
+  .pg-label{flex:1;min-width:0;font-family:"Source Sans 3";font-size:1rem;color:#fff;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.14);border-radius:10px;padding:9px 12px;}
+  .pg-label:focus{outline:none;border-color:var(--brand);}
+  .pg-page{font-family:"Source Sans 3";font-size:.82rem;color:var(--mut);width:118px;flex:none;}
+  .pg-toggle{display:flex;align-items:center;gap:7px;font-size:.88rem;color:var(--mut);white-space:nowrap;cursor:pointer;}
+  .pg-toggle input{width:16px;height:16px;}
+  @media(max-width:620px){.pg-section{padding:11px;}.pg-section-head{align-items:flex-start;flex-direction:column;gap:3px;}.pg-section-head small{text-align:left;}.pg-row{flex-wrap:wrap;}.pg-page{display:none;}.pg-reorder,.pg-fixed{order:2;width:auto;}.pg-toggle{order:3;margin-left:auto;}.pg-label{flex-basis:100%;order:1;}.pg-arrow{width:44px;height:44px;}}
+  .mi-map{height:300px;border-radius:12px;overflow:hidden;border:1.5px solid rgba(255,255,255,.14);}
+  .mi-map .leaflet-tile{filter:brightness(1.7) contrast(1.12) saturate(1.15);}
+  .mi-latlng{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:9px;}
+  .mi-clear{background:none;border:1px solid rgba(255,255,255,.2);color:var(--mut);border-radius:8px;padding:6px 13px;cursor:pointer;font-size:.85rem;}
+  .mi-clear:hover{color:#fff;border-color:rgba(255,255,255,.4);}
+  .mi-letters-edit{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+  .mi-letter-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:8px 12px;}
+  .mi-letter-row svg{flex:none;color:var(--accent);}
+  .mi-letter-label{flex:1;min-width:0;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.14);border-radius:8px;color:#fff;font-family:"Source Sans 3",sans-serif;font-size:.95rem;padding:8px 11px;}
+  .mi-letter-label:focus{outline:none;border-color:var(--brand);}
+  .mi-letter-view{color:var(--accent);font-size:.85rem;font-weight:600;text-decoration:none;white-space:nowrap;}
+  .mi-letter-rm{background:none;border:none;color:var(--mut);font-size:1.35rem;cursor:pointer;line-height:1;padding:0 4px;}
+  .mi-letter-rm:hover{color:#fff;}
+  .mi-addpdf{padding:9px 16px;font-size:.9rem;cursor:pointer;}
+  .mi-gallery-edit{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px;}
+  .mi-gphoto{position:relative;width:78px;height:58px;border-radius:8px;background:var(--panel) center/cover no-repeat;border:1px solid rgba(255,255,255,.12);}
+  .mi-gphoto button{position:absolute;top:-7px;right:-7px;width:22px;height:22px;border-radius:50%;border:none;background:rgba(10,38,46,.95);color:#fff;font-size:1rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+  .studio-form{max-width:760px;}
+  .studio-form select{font-family:"Source Sans 3",sans-serif;font-size:1rem;color:#fff;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.14);border-radius:12px;padding:14px 16px;width:100%;cursor:pointer;}
+  .studio-form select option{background:var(--panel);color:#fff;}
+  .studio-form textarea{min-height:auto;}
+  .studio-fieldset{border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px 20px 6px;}
+  .studio-fieldset h3{font-family:"Source Sans 3";font-weight:600;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 16px;}
+  .studio-fieldset .frow{margin-bottom:18px;}
+  .studio-form .studio-fieldset+.studio-fieldset{margin-top:15px;}
+  .field-help{display:block;color:var(--mut);font-size:.74rem;line-height:1.45;margin:7px 2px 0;}
+  .people-intro{align-items:center;}
+  .people-intro .btn{flex:none;}
+  .people-preview-links{display:flex;gap:8px;flex-wrap:wrap;}
+  .people-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:18px;}
+  .people-card{border:1px solid rgba(255,255,255,.1);border-radius:13px;background:rgba(255,255,255,.025);padding:17px 17px 2px;}
+  .people-card h4{font-size:1.08rem;margin:0 0 15px;color:#fff;}
+  .people-card .frow{margin-bottom:15px;}
+  .people-card .frow.two{gap:12px;}
+  .people-card .studio-hint{margin:-7px 0 16px;}
+  .people-save-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:18px;flex-wrap:wrap;}
+  .people-save-foot .studio-msg{flex:1;min-width:240px;}
+  @media(max-width:760px){.people-grid{grid-template-columns:1fr;}.people-intro{align-items:flex-start;}.people-save-foot .btn{width:100%;}.people-save-foot .studio-msg{order:2;min-width:100%;}}
+  .studio-upload{display:flex;gap:16px;align-items:flex-start;}
+  .studio-cover{flex:none;width:232px;aspect-ratio:16/9;border-radius:12px;background:rgba(255,255,255,.06) center/cover no-repeat;border:1.5px dashed rgba(255,255,255,.2);position:relative;overflow:hidden;}
+  .studio-cover.has{border-style:solid;}
+  /* Centered "safe area" for images used as a wide banner (the event hero, blog
+     cover). Keep the title/faces between the dashed guide lines; top and bottom
+     get cropped. Only banners show this guide; the event cover is shown in full. */
+  .studio-cover.is-banner::after{content:"";position:absolute;left:0;right:0;top:18%;bottom:18%;border-top:1.5px dashed rgba(15,102,99,.85);border-bottom:1.5px dashed rgba(15,102,99,.85);pointer-events:none;}
+  .studio-hint{margin:9px 0 0;font-size:.82rem;color:var(--mut);line-height:1.5;max-width:520px;}
+  .studio-hint b{color:var(--accent);font-weight:600;}
+  @media(max-width:560px){.studio-upload{flex-direction:column;}.studio-cover{width:100%;}}
+  .studio-upload > div{flex:1;display:grid;gap:10px;}
+  .studio-check{display:flex;align-items:center;gap:10px;text-transform:none;letter-spacing:0;font-family:"Source Sans 3";font-size:1rem;color:#fff;cursor:pointer;}
+  .studio-check input{width:18px;height:18px;}
+  .studio-form .btn[disabled]{opacity:.6;cursor:default;}
+  @media(max-width:820px){
+    .studio-app{display:block;min-height:100vh;}
+    .studio-nav-toggle{display:flex;position:fixed;right:max(18px,env(safe-area-inset-right));bottom:calc(18px + env(safe-area-inset-bottom));z-index:98;width:60px;height:60px;border:0;border-radius:50%;background:var(--brand);color:#FCF8EE;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,.48),0 0 0 1px rgba(255,255,255,.12);transition:transform .22s ease,background .22s ease;}
+    .studio-nav-toggle:hover{background:var(--accent);transform:translateY(-2px);}
+    .studio-nav-toggle:focus-visible{outline:3px solid rgba(15,102,99,.58);outline-offset:3px;}
+    .studio-toggle-lines{width:24px;height:20px;display:flex;flex-direction:column;justify-content:space-between;}
+    .studio-toggle-lines i{display:block;width:24px;height:2.5px;border-radius:2px;background:#0D2733;transition:transform .22s ease,opacity .18s ease;transform-origin:center;}
+    .studio-nav-toggle.nav-open .studio-toggle-lines i:nth-child(1){transform:translateY(8.75px) rotate(45deg);}
+    .studio-nav-toggle.nav-open .studio-toggle-lines i:nth-child(2){opacity:0;}
+    .studio-nav-toggle.nav-open .studio-toggle-lines i:nth-child(3){transform:translateY(-8.75px) rotate(-45deg);}
+    .studio-nav-scrim{display:block;position:fixed;inset:0;z-index:95;border:0;background:rgba(3,12,8,.18);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s ease,visibility .22s ease;}
+    .studio-nav-scrim.nav-open{opacity:1;visibility:visible;pointer-events:auto;}
+    .studio-side{position:fixed;top:auto;left:auto;right:max(18px,env(safe-area-inset-right));bottom:calc(90px + env(safe-area-inset-bottom));z-index:97;width:min(88vw,320px);height:auto;max-height:calc(100dvh - 116px - env(safe-area-inset-bottom));padding:12px;display:flex;flex-direction:column;flex-wrap:nowrap;gap:5px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;border:1px solid rgba(15,102,99,.2);border-radius:20px;box-shadow:0 24px 55px rgba(0,0,0,.52);transform-origin:bottom right;transform:translateY(12px) scale(.96);opacity:0;visibility:hidden;pointer-events:none;transition:transform .22s ease,opacity .22s ease,visibility .22s ease;}
+    .studio-side.nav-open{transform:translateY(0) scale(1);opacity:1;visibility:visible;pointer-events:auto;}
+    .studio-brand{position:sticky;top:-12px;z-index:2;margin:-12px -12px 7px;padding:12px 13px 11px;background:var(--paper2);border-bottom:1px solid rgba(255,255,255,.08);border-radius:20px 20px 0 0;}
+    .studio-view-name{display:block;color:var(--accent);font-family:"Source Sans 3",sans-serif;font-size:.7rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:210px;}
+    .studio-side .snav{min-height:44px;padding:10px 12px;}
+    .studio-side-foot{margin-top:7px;padding-top:9px;}
+    .studio-main{padding:22px 16px 72px;max-width:none;}
+    .studio-form .frow.two{grid-template-columns:1fr;}
+  }
+  @media(max-width:560px){
+    .studio-head{align-items:flex-start;margin-bottom:20px;}
+    .studio-head h1{font-size:1.8rem;}
+    .studio-head-acts{width:100%;}
+    .studio-head-acts .btn{flex:1;min-height:44px;padding-left:14px;padding-right:14px;}
+    .studio-fieldset{padding:16px 14px 3px;}
+    .people-card{padding:14px 13px 2px;}
+    .studio-import{padding:14px 15px;}
+  }
+  @media(prefers-reduced-motion:reduce){.studio-side,.studio-nav-scrim,.studio-nav-toggle,.studio-toggle-lines i{transition:none!important;}}
+  /* Inbox (form submissions) */
+  .inbox-tabs{display:flex;gap:8px;}
+  .inbox-tab{padding:8px 16px;font-size:.85rem;}
+  .inbox-tab.active{background:var(--brand);color:#FCF8EE;border-color:var(--brand);}
+  .ib-item{padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:9px;}
+  .ib-item.done{opacity:.5;}
+  .ib-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .ib-kind{font-family:"Source Sans 3",sans-serif;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;background:rgba(23,126,121,.18);color:var(--accent);padding:4px 9px;border-radius:6px;}
+  .ib-top strong{font-size:1.1rem;color:#fff;}
+  .ib-date{margin-left:auto;color:var(--mut);font-size:.85rem;}
+  .ib-contact{color:var(--accent);font-size:.92rem;}
+  .ib-chips{display:flex;flex-wrap:wrap;gap:7px;}
+  .ib-chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:4px 10px;font-size:.85rem;color:var(--mut);}
+  .ib-msg{color:#EFE9DA;font-size:.98rem;line-height:1.5;background:rgba(255,255,255,.04);border-radius:10px;padding:12px 14px;white-space:pre-wrap;}
+  .ib-acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;}
+  .ib-acts .btn{padding:8px 14px;font-size:.82rem;}
+  .snav-count{background:var(--brand);color:#FCF8EE;font-size:.7rem;font-weight:700;min-width:20px;height:20px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;padding:0 6px;margin-left:6px;}
+  /* Giving history */
+  .gift-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .gift-year{font-family:"Source Sans 3",sans-serif;font-size:.95rem;color:#fff;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.16);border-radius:999px;padding:10px 38px 10px 16px;min-height:44px;cursor:pointer;}
+  .gift-year option{background:var(--panel);color:#fff;}
+  .gift-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:24px;}
+  .gift-stat{position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(23,126,121,.13),rgba(255,255,255,.025));border:1px solid rgba(15,102,99,.2);border-radius:15px;padding:18px 19px;box-shadow:inset 0 1px rgba(255,255,255,.025);}
+  .gift-stat:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(var(--accent),rgba(23,126,121,.12));}
+  .gift-stat:first-child{background:linear-gradient(145deg,rgba(23,126,121,.21),rgba(255,255,255,.035));border-color:rgba(15,102,99,.34);}
+  .gift-stat span{display:block;color:var(--mut);font-family:"Source Sans 3",sans-serif;font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;margin-bottom:5px;}
+  .gift-stat strong{display:block;font-family:"Fraunces",serif;font-weight:400;font-size:1.7rem;letter-spacing:.01em;color:#fff;}
+  .gift-subscriptions{margin:0 0 30px;padding:0;border:1px solid rgba(15,102,99,.25);border-radius:18px;background:linear-gradient(145deg,rgba(23,126,121,.09),rgba(255,255,255,.018));overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,.1);}
+  .gift-sub-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin:0;padding:20px 22px 17px;border-bottom:1px solid rgba(15,102,99,.14);}
+  .gift-sub-head h2{font-family:"Fraunces",serif;font-weight:400;font-size:1.45rem;margin:0;color:#fff;}
+  .gift-sub-head p{color:var(--mut);font-size:.9rem;line-height:1.45;margin:5px 0 0;}
+  .gift-sub-count{flex:none;font-family:"Source Sans 3",sans-serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);background:rgba(23,126,121,.14);border:1px solid rgba(23,126,121,.14);border-radius:999px;padding:7px 11px;}
+  .gift-subscriptions .studio-msg{margin:12px 20px 0;}
+  #gift-sub-rows{margin:14px 16px 16px;border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(6,26,17,.28);overflow:hidden;}
+  .gift-sub-row{display:grid;grid-template-columns:minmax(190px,1.25fr) 110px minmax(205px,1fr) auto;gap:18px;align-items:center;padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.08);}
+  .gift-sub-row:last-child{border-bottom:none;}
+  .gift-sub-main,.gift-sub-state{min-width:0;}
+  .gift-sub-main strong{display:block;color:#fff;font-size:1rem;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .gift-sub-main a,.gift-sub-main small,.gift-sub-state small{display:block;color:var(--mut);font-size:.8rem;line-height:1.4;margin-top:3px;overflow-wrap:anywhere;}
+  .gift-sub-main a{color:var(--accent);}
+  .gift-sub-amount strong{display:block;color:#fff;font-size:1.08rem;white-space:nowrap;}
+  .gift-sub-amount small{color:var(--mut);font-size:.78rem;}
+  .gift-sub-status{display:inline-block;font-family:"Source Sans 3",sans-serif;font-size:.64rem;letter-spacing:.11em;text-transform:uppercase;padding:5px 9px;border-radius:999px;background:rgba(255,255,255,.08);color:var(--mut);}
+  .gift-sub-status.active{background:rgba(23,126,121,.18);color:var(--accent);}
+  .gift-sub-status.paused,.gift-sub-status.scheduled{background:rgba(255,211,105,.13);color:#ffe19a;}
+  .gift-sub-status.canceled,.gift-sub-status.completed{background:rgba(255,255,255,.06);color:var(--mut);}
+  .gift-sub-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:nowrap;}
+  .gift-sub-actions .btn{padding:8px 13px;font-size:.8rem;min-height:38px;}
+  .gift-sub-actions .gift-sub-cancel{background:rgba(255,155,147,.1);border-color:rgba(255,155,147,.35);color:#ffd2cd;}
+  .gift-sub-actions .gift-sub-cancel:hover{background:rgba(255,155,147,.18);border-color:rgba(255,155,147,.5);color:#fff;}
+  .gift-history-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 12px;}
+  .gift-history-title{font-family:"Fraunces",serif;font-weight:400;font-size:1.45rem;margin:0;color:#fff;}
+  .gift-visible-count{font-family:"Source Sans 3",sans-serif;font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);background:rgba(23,126,121,.1);border:1px solid rgba(23,126,121,.17);border-radius:999px;padding:6px 10px;}
+  .gift-note{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;background:rgba(23,126,121,.075);border:1px solid rgba(23,126,121,.2);border-radius:14px;padding:13px 15px;color:#DDD5C2;margin:0 0 14px;}
+  .gift-note-icon{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:10px;background:rgba(23,126,121,.13);color:var(--accent);}
+  .gift-note strong{display:block;color:#F2EDDF;font-size:.88rem;margin-bottom:2px;}
+  .gift-note span:last-child{display:block;color:var(--mut);font-size:.8rem;line-height:1.45;}
+  .gift-search-wrap{position:relative;margin:0 0 14px;}
+  .gift-search-wrap svg{position:absolute;left:17px;top:50%;transform:translateY(-50%);color:var(--mut);pointer-events:none;}
+  .gift-search-wrap .studio-search{margin:0;padding-left:48px;min-height:52px;border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.045);}
+  #gift-rows{display:flex;flex-direction:column;gap:9px;border:0;background:none;border-radius:0;overflow:visible;}
+  .gift-row{display:grid;grid-template-columns:minmax(200px,1.35fr) minmax(190px,1.1fr) 135px 105px 142px;gap:18px;align-items:center;padding:17px 18px;border:1px solid rgba(255,255,255,.09);border-radius:14px;background:linear-gradient(135deg,rgba(255,255,255,.035),rgba(255,255,255,.012));box-shadow:0 9px 25px rgba(0,0,0,.08);transition:border-color .18s ease,background .18s ease,transform .18s ease;}
+  .gift-row:hover{border-color:rgba(15,102,99,.24);background:linear-gradient(135deg,rgba(23,126,121,.07),rgba(255,255,255,.018));transform:translateY(-1px);}
+  .gift-person,.gift-detail,.gift-date-block{min-width:0;}
+  .gift-meta-label{display:block;color:#9C9884;font-family:"Source Sans 3",sans-serif;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
+  .gift-person strong{display:block;color:#fff;font-size:.98rem;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .gift-person a{display:block;color:var(--accent);font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px;}
+  .gift-person .gift-no-name{display:block;color:var(--mut);font-size:.76rem;margin-top:3px;}
+  .gift-detail strong{display:block;color:#F2EDDF;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .gift-detail small{display:block;color:var(--mut);font-size:.78rem;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .gift-tags{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:6px;}
+  .gift-tag{display:inline-flex;padding:3px 7px;border-radius:999px;background:rgba(255,255,255,.055);color:#C6BFA9;font-family:"Source Sans 3",sans-serif;font-size:.57rem;letter-spacing:.06em;text-transform:uppercase;}
+  .gift-tag.website,.gift-tag.monthly{background:rgba(23,126,121,.11);color:var(--accent);}
+  .gift-date-block time{display:block;color:#E8E1CF;font-size:.82rem;line-height:1.35;white-space:nowrap;}
+  .gift-date-block small{display:block;color:var(--mut);font-size:.76rem;margin-top:2px;}
+  .gift-money{text-align:right;white-space:nowrap;}
+  .gift-money strong{display:block;color:#fff;font-size:1.12rem;line-height:1.2;}
+  .gift-money small{display:inline-flex;color:#ffbbb4;background:rgba(255,155,147,.09);border-radius:999px;font-size:.67rem;margin-top:6px;padding:3px 7px;}
+  .gift-row-actions{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:7px;}
+  .gift-manage{display:inline-flex;align-items:center;justify-content:center;min-height:39px;padding:8px 12px;font-size:.78rem;background:var(--brand);border-color:var(--brand);color:#FCF8EE;box-shadow:0 7px 18px rgba(23,126,121,.13);}
+  .gift-manage:hover{background:#0F6663;border-color:#0F6663;color:#FCF8EE;}
+  .gift-receipt{display:block;color:var(--accent);font-size:.72rem;font-weight:600;text-align:center;text-decoration:none;}
+  .gift-receipt:hover{text-decoration:underline;}
+  .gift-modal{position:fixed;inset:0;z-index:1600;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(5,19,12,.82);backdrop-filter:blur(8px);}
+  .gift-modal[hidden]{display:none;}
+  .gift-modal-card{width:min(760px,100%);max-height:min(860px,calc(100vh - 48px));overflow:auto;background:linear-gradient(155deg,#1B5D60,#14424A 70%);border:1px solid rgba(15,102,99,.34);border-radius:22px;box-shadow:0 28px 80px rgba(0,0,0,.48);padding:24px;}
+  .gift-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.1);}
+  .gift-modal-head h2{font-family:"Fraunces",serif;font-weight:400;font-size:1.7rem;margin:0;color:#fff;}
+  .gift-modal-head p{color:var(--mut);font-size:.88rem;margin:5px 0 0;overflow-wrap:anywhere;}
+  .gift-modal-close{flex:none;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;font-size:1.4rem;cursor:pointer;}
+  .gift-modal-loading{padding:50px 10px;text-align:center;color:var(--mut);}
+  .gift-detail-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:20px 0;}
+  .gift-detail-cell{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:13px 14px;min-width:0;}
+  .gift-detail-cell span{display:block;color:var(--mut);font-family:"Source Sans 3",sans-serif;font-size:.62rem;letter-spacing:.11em;text-transform:uppercase;margin-bottom:4px;}
+  .gift-detail-cell strong{display:block;color:#fff;font-size:.96rem;overflow-wrap:anywhere;}
+  .gift-detail-actions{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .gift-detail-actions .btn{min-height:48px;border-radius:14px;padding:12px 20px;}
+  #gift-action-msg:not(:empty){min-height:0;margin:12px 0 4px;padding:11px 13px;border:1px solid rgba(23,126,121,.2);border-radius:11px;background:rgba(23,126,121,.08);}
+  .gift-panel{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;margin-top:20px;}
+  .gift-panel h3{font-family:"Fraunces",serif;font-weight:400;font-size:1.25rem;margin:0 0 6px;color:#fff;}
+  .gift-panel-copy{color:var(--mut);font-size:.86rem;line-height:1.45;margin:0 0 14px;}
+  .gift-refund-empty{display:flex;align-items:center;gap:12px;margin:14px 0 0;padding:14px 15px;border:1px solid rgba(255,255,255,.08);border-radius:13px;background:rgba(255,255,255,.025);}
+  .gift-refund-empty-icon{display:flex;align-items:center;justify-content:center;flex:none;width:38px;height:38px;border-radius:11px;background:rgba(23,126,121,.11);color:var(--accent);}
+  .gift-refund-empty strong{display:block;color:#F2EDDF;font-size:.88rem;}
+  .gift-refund-empty small{display:block;color:var(--mut);font-size:.77rem;margin-top:2px;}
+  .gift-refund-row{display:grid;grid-template-columns:1fr auto;gap:10px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+  .gift-refund-row:last-child{border-bottom:none;}
+  .gift-refund-row strong{color:#fff;}
+  .gift-refund-row small{display:block;color:var(--mut);font-size:.78rem;margin-top:3px;}
+  .gift-refund-status{font-family:"Source Sans 3",sans-serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);}
+  #gift-refund-section{padding:20px;border:1px solid rgba(255,155,147,.2);border-radius:16px;background:linear-gradient(145deg,rgba(255,155,147,.055),rgba(255,255,255,.018));}
+  #gift-refund-section h3{display:flex;align-items:center;gap:9px;}
+  #gift-refund-section h3:before{content:"";width:8px;height:8px;border-radius:50%;background:#C0503A;box-shadow:0 0 0 5px rgba(255,155,147,.1);}
+  #gift-refund-help{display:inline-flex;margin:3px 0 15px;padding:6px 10px;border-radius:999px;background:rgba(23,126,121,.09);color:var(--accent);font-size:.78rem;}
+  .gift-refund-form.form{max-width:none;gap:14px;background:rgba(6,26,17,.28);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:17px;margin-top:0;}
+  .gift-refund-form .frow{margin:0;}
+  .gift-refund-form input{background:rgba(255,255,255,.055);min-height:50px;}
+  .gift-refund-money{position:relative;}
+  .gift-refund-money span{position:absolute;left:15px;top:50%;transform:translateY(-50%);color:var(--accent);font-weight:700;pointer-events:none;}
+  .gift-refund-money input{padding-left:31px;}
+  .gift-refund-quick{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+  .gift-refund-quick .btn{min-height:38px;padding:8px 13px;border-radius:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:#EFE9DA;font-size:.76rem;}
+  .gift-refund-quick .btn:hover{background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.24);color:#fff;transform:none;}
+  .gift-refund-quick small{color:var(--mut);font-size:.75rem;text-align:right;}
+  .gift-refund-confirm{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:12px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08);}
+  .gift-refund-confirm .frow{min-width:0;}
+  .gift-refund-submit{background:rgba(255,155,147,.13);border:1px solid rgba(255,155,147,.46)!important;color:#ffd9d5;min-height:50px;min-width:145px;}
+  .gift-refund-submit:disabled{opacity:.42;cursor:not-allowed;}
+  .gift-refund-submit:not(:disabled):hover{background:rgba(255,155,147,.22);color:#fff;}
+  .gift-refund-warning{display:flex;align-items:flex-start;gap:8px;margin:0;color:var(--mut);font-size:.77rem;line-height:1.45;}
+  .gift-refund-warning svg{flex:none;color:#ffb0aa;margin-top:1px;}
+  body.gift-modal-open{overflow:hidden;}
+  @media(max-width:1500px){
+    .gift-sub-row{grid-template-columns:minmax(190px,1.25fr) 100px minmax(190px,1fr);}
+    .gift-sub-actions{grid-column:1 / -1;justify-content:flex-end;}
+    .gift-row{grid-template-columns:minmax(190px,1.2fr) minmax(170px,1fr) 125px 105px;}
+    .gift-row-actions{grid-column:1 / -1;flex-direction:row;justify-content:flex-end;align-items:center;}
+    .gift-row-actions .gift-manage{min-width:132px;}
+    .gift-row-actions .gift-receipt{min-width:90px;}
+  }
+  @media(max-width:900px){
+    .gift-summary{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .gift-sub-row{grid-template-columns:minmax(0,1fr) auto;gap:12px 16px;}
+    .gift-sub-state{grid-column:1 / -1;}
+    .gift-sub-actions{grid-column:1 / -1;justify-content:stretch;}
+    .gift-sub-actions .btn{flex:1;}
+    .gift-row{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) auto;gap:14px 18px;}
+    .gift-date-block{grid-column:1;grid-row:2;}
+    .gift-money{grid-column:3;grid-row:1;text-align:right;}
+    .gift-row-actions{grid-column:2 / 4;grid-row:2;}
+  }
+  @media(max-width:700px){
+    .gift-sub-head{align-items:flex-start;padding:17px 16px 15px;}
+    .gift-sub-head p{font-size:.83rem;}
+    #gift-sub-rows{margin:12px;}
+    .gift-sub-row{grid-template-columns:1fr auto;gap:11px 14px;padding:15px 14px;}
+    .gift-sub-state{grid-column:1 / -1;}
+    .gift-sub-amount{text-align:right;align-self:start;}
+    .gift-sub-actions{display:grid;grid-template-columns:1fr 1fr;}
+    .gift-sub-actions .btn{width:100%;}
+    .gift-history-head{align-items:flex-end;}
+    .gift-note{align-items:flex-start;}
+    .gift-row{grid-template-columns:minmax(0,1fr) auto;gap:13px 16px;padding:16px 15px;}
+    .gift-person{grid-column:1;grid-row:1;}
+    .gift-money{grid-column:2;grid-row:1;align-self:start;}
+    .gift-detail{grid-column:1 / -1;grid-row:2;padding-top:12px;border-top:1px solid rgba(255,255,255,.07);}
+    .gift-date-block{grid-column:1;grid-row:3;align-self:center;}
+    .gift-row-actions{grid-column:1 / -1;grid-row:4;display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:2px;}
+    .gift-row-actions .gift-manage{min-width:0;}
+    .gift-row-actions .gift-receipt{min-width:96px;}
+    .gift-tools{width:100%;}
+    .gift-tools .btn{flex:1;}
+    .gift-year{flex:1;}
+    .gift-stat{padding:15px 16px;}
+    .gift-stat strong{font-size:1.5rem;}
+    .gift-modal{padding:0;align-items:flex-end;}
+    .gift-modal-card{width:100%;max-height:94vh;border-radius:22px 22px 0 0;padding:20px 16px calc(22px + env(safe-area-inset-bottom));}
+    .gift-detail-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .gift-detail-actions .btn{flex:1;}
+    .gift-refund-quick{align-items:flex-start;flex-direction:column;}
+    .gift-refund-quick small{text-align:left;}
+    .gift-refund-confirm{grid-template-columns:1fr;}
+    .gift-refund-submit{width:100%;}
+  }
+  @media(max-width:420px){.gift-summary{grid-template-columns:1fr;}.gift-sub-actions{grid-template-columns:1fr}.gift-visible-count{display:none}.gift-detail-grid{grid-template-columns:1fr}}
+</style>
+</head><body>
+
+<div id="loading" class="studio-center"><div class="spin"></div></div>
+
+<div id="login" class="studio-center" hidden>
+  <div class="studio-card">
+    <span class="logo-plate" style="padding:13px 22px;margin-bottom:22px;"><img class="studio-logo" src="assets/logo-full-color.png?v=5" alt="Fairview Baptist Temple" style="margin:0;display:block;"></span>
+    <h1>Studio</h1>
+    <p class="muted">Sign in to manage your site.</p>
+    <form id="login-form" class="form">
+      <div class="frow"><label>Your email</label><input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" required></div>
+      <div class="frow"><label>Password</label><input type="password" id="login-password" autocomplete="current-password" required></div>
+      <button class="btn btn-b" type="submit">Sign in</button>
+      <p id="login-msg" class="studio-msg" role="status"></p>
+      <p style="margin:14px 0 0;font-size:.9rem;"><a href="#" id="forgot-link" style="color:var(--accent);">Set or reset your password</a></p>
+    </form>
+  </div>
+</div>
+
+<div id="setpw" class="studio-center" hidden>
+  <div class="studio-card">
+    <span class="logo-plate" style="padding:13px 22px;margin-bottom:22px;"><img class="studio-logo" src="assets/logo-full-color.png?v=5" alt="Fairview Baptist Temple" style="margin:0;display:block;"></span>
+    <h1>Set your password</h1>
+    <p class="muted">Choose a password you'll use to sign in from now on.</p>
+    <form id="setpw-form" class="form">
+      <div class="frow"><label>New password</label><input type="password" id="setpw-password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required></div>
+      <button class="btn btn-b" type="submit">Save password</button>
+      <p id="setpw-msg" class="studio-msg" role="status"></p>
+    </form>
+  </div>
+</div>
+
+<div id="app" class="studio-app" hidden>
+  <button class="studio-nav-scrim" id="studio-nav-scrim" type="button" aria-label="Close Studio menu" tabindex="-1"></button>
+  <aside class="studio-side" id="studio-sidebar" aria-label="Studio navigation">
+    <div class="studio-brand"><span class="logo-plate" style="padding:5px 8px;"><img src="assets/logo-mark-color.png?v=5" alt=""></span><span class="studio-brand-copy"><span>Studio</span><small class="studio-view-name" id="studio-view-name">Dashboard</small></span></div>
+    <button class="snav active" data-view="dashboard" data-view-label="Dashboard" aria-current="page"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg> Dashboard <span class="snav-count" id="dashboard-badge" hidden></span></button>
+    <button class="snav" data-view="events" data-view-label="Events"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Events</button>
+    <button class="snav" data-view="inbox" data-view-label="Inbox"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.5h13l3 6.5v6a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 2 18v-6z"/></svg> Inbox <span class="snav-count" id="inbox-badge" hidden></span></button>
+    <button class="snav" data-view="giving" data-view-label="Giving history"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5.5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Giving history</button>
+    <button class="snav" data-view="prayers" data-view-label="Prayer wall"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-1 2.5-3 4-5 4.5 0 5 2 8.5 5 10 3-1.5 5-5 5-10-2-.5-4-2-5-4.5Z"/></svg> Prayer wall <span class="snav-count" id="prayers-badge" hidden></span></button>
+    <button class="snav" data-view="bulletin" data-view-label="Bulletin"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg> Bulletin</button>
+    <button class="snav" data-view="blog" data-view-label="Blog"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg> Blog</button>
+    <button class="snav" data-view="missions" data-view-label="Missions"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg> Missions</button>
+    <button class="snav" data-view="people" data-view-label="People &amp; ministries"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v2"/><path d="M16 3.5a4 4 0 0 1 0 7M19 14a5 5 0 0 1 3 5v2"/></svg> People &amp; ministries</button>
+    <button class="snav" data-view="pages" data-view-label="Pages &amp; menu"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg> Pages and menu</button>
+    <button class="snav" data-view="media" data-view-label="Media &amp; videos"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg> Media and videos</button>
+    <button class="snav" data-view="sermons" data-view-label="Video hubs"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/></svg> Video hubs</button>
+    <button class="snav" data-view="settings" data-view-label="Settings"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.3 1a7 7 0 0 0-1.7-1l-.3-2.5h-4l-.3 2.5a7 7 0 0 0-1.7 1l-2.3-1-2 3.5 2 1.5a7 7 0 0 0 0 2l-2 1.5 2 3.5 2.3-1a7 7 0 0 0 1.7 1l.3 2.5h4l.3-2.5a7 7 0 0 0 1.7-1l2.3 1 2-3.5-2-1.5c.1-.3.1-.7.1-1z"/></svg> Settings</button>
+    <div class="studio-side-foot">
+      <a href="/" target="_blank" rel="noopener" class="snav"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg> View site</a>
+      <button class="snav as-btn" id="signout"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg> Sign out</button>
+      <div class="studio-who" id="who"></div>
+    </div>
+  </aside>
+  <button class="studio-nav-toggle" id="studio-nav-toggle" type="button" aria-label="Open Studio menu" aria-expanded="false" aria-controls="studio-sidebar"><span class="studio-toggle-lines" aria-hidden="true"><i></i><i></i><i></i></span></button>
+
+  <main class="studio-main" id="studio-main" tabindex="-1">
+    <div id="notowner" class="studio-note" hidden></div>
+
+    <div id="view-dashboard" data-view-pane>
+      <section class="studio-dashboard" aria-labelledby="dashboard-title">
+        <header class="dash-hero">
+          <div class="dash-hero-copy"><p class="dash-eyebrow">Studio overview</p><h1 id="dashboard-title">Welcome back</h1><p>See what needs attention, what is coming next, and what has happened across Fairview Baptist Temple.</p></div>
+          <button class="btn btn-o dash-refresh" id="dash-refresh" type="button"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg><span>Refresh dashboard</span></button>
+        </header>
+
+        <div class="dash-quick" aria-label="Quick actions">
+          <button class="dash-quick-btn" type="button" data-dash-action="new-event"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M16 2v4M8 2v4M3 10h18M12 13v5M9.5 15.5h5"/></svg><span>New event</span></button>
+          <button class="dash-quick-btn" type="button" data-dash-action="bulletin"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span>Upload bulletin</span></button>
+          <button class="dash-quick-btn" type="button" data-dash-action="new-post"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>New blog post</span></button>
+          <button class="dash-quick-btn" type="button" data-dash-action="new-missionary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg><span>Add missionary</span></button>
+        </div>
+
+        <p class="dash-sync" id="dash-sync" role="status" aria-live="polite">Loading the latest Studio activity...</p>
+
+        <div>
+          <div class="dash-section-head"><div><h2>Needs your attention</h2><p>The most important items across Studio.</p></div></div>
+          <div class="dash-focus-grid" id="dash-focus-grid" aria-live="polite">
+            <div class="dash-focus-card dash-skeleton">Loading</div><div class="dash-focus-card dash-skeleton">Loading</div><div class="dash-focus-card dash-skeleton">Loading</div><div class="dash-focus-card dash-skeleton">Loading</div>
+          </div>
+        </div>
+
+        <div class="dash-split">
+          <section class="dash-panel" aria-labelledby="dash-giving-title">
+            <div class="dash-section-head"><div><h2 id="dash-giving-title">Giving snapshot</h2><p>This month, synced directly with Square.</p></div><button class="dash-section-link" type="button" data-dash-view="giving">View history</button></div>
+            <div id="dash-giving"><div class="dash-empty dash-skeleton">Loading giving activity</div></div>
+          </section>
+          <section class="dash-panel" aria-labelledby="dash-health-title">
+            <div class="dash-section-head"><div><h2 id="dash-health-title">Content check</h2><p>Details worth reviewing before visitors find them.</p></div></div>
+            <div id="dash-health"><div class="dash-empty dash-skeleton">Checking your content</div></div>
+          </section>
+        </div>
+
+        <section class="dash-panel" aria-labelledby="dash-activity-title">
+          <div class="dash-section-head"><div><h2 id="dash-activity-title">Recent activity</h2><p>New gifts, messages, prayer requests, and content updates.</p></div></div>
+          <div id="dash-activity"><div class="dash-empty dash-skeleton">Loading recent activity</div></div>
+        </section>
+      </section>
+    </div>
+
+    <div id="view-inbox" data-view-pane hidden>
+    <section>
+      <div class="studio-head">
+        <div><h1>Inbox</h1><p class="muted">Visit plans and messages sent from the website.</p></div>
+        <div class="inbox-tabs"><button class="btn btn-o inbox-tab active" data-inbox="all" type="button">All</button><button class="btn btn-o inbox-tab" data-inbox="new" type="button">New</button></div>
+      </div>
+      <div id="inbox-rows" class="studio-rows"></div>
+      <p id="inbox-empty" class="muted" hidden style="text-align:center;padding:40px 0;">No messages yet. When someone plans a visit or sends a note, it lands here.</p>
+    </section>
+    </div>
+
+    <div id="view-prayers" data-view-pane hidden>
+    <section>
+      <div class="studio-head">
+        <div><h1>Prayer wall</h1><p class="muted">Requests people asked to share publicly. Nothing shows on the website until you approve it.</p></div>
+        <div class="inbox-tabs"><button class="btn btn-o pray-tab active" data-pray="pending" type="button">Pending</button><button class="btn btn-o pray-tab" data-pray="approved" type="button">On the wall</button><button class="btn btn-o pray-tab" data-pray="all" type="button">All</button></div>
+      </div>
+      <div id="prayers-rows" class="studio-rows"></div>
+      <p id="prayers-empty" class="muted" hidden style="text-align:center;padding:40px 0;">No prayer requests to review. When someone shares one on the website, it lands here for your approval.</p>
+    </section>
+    </div>
+
+    <div id="view-giving" data-view-pane hidden>
+    <section>
+      <div class="studio-head">
+        <div><h1>Giving history</h1><p class="muted">Completed payments reported by Square, kept private to Studio owners.</p></div>
+        <div class="gift-tools"><select id="gift-year" class="gift-year" aria-label="Giving history year"></select><button class="btn btn-o" id="gift-refresh" type="button">Refresh</button><button class="btn btn-b" id="gift-export" type="button" disabled>Download CSV</button></div>
+      </div>
+      <div class="gift-summary" aria-live="polite">
+        <div class="gift-stat"><span>Net received</span><strong id="gift-total">$0.00</strong></div>
+        <div class="gift-stat"><span>Completed gifts</span><strong id="gift-count">0</strong></div>
+        <div class="gift-stat"><span>Square fees</span><strong id="gift-fees">$0.00</strong></div>
+        <div class="gift-stat"><span>Refunded</span><strong id="gift-refunds">$0.00</strong></div>
+      </div>
+      <div class="gift-subscriptions">
+        <div class="gift-sub-head">
+          <div><h2>Monthly giving</h2><p>View automatic gifts and safely pause, resume, cancel, or undo a scheduled change through Square.</p></div>
+          <span id="gift-sub-count" class="gift-sub-count">0 current</span>
+        </div>
+        <p id="gift-sub-msg" class="studio-msg" role="status" aria-live="polite"></p>
+        <div id="gift-sub-rows" class="studio-rows"></div>
+        <p id="gift-sub-empty" class="muted" hidden style="text-align:center;padding:30px 10px 12px;">No automatic monthly gifts were found.</p>
+      </div>
+      <div class="gift-history-head"><h2 class="gift-history-title">Payment history</h2><span id="gift-visible-count" class="gift-visible-count">0 payments</span></div>
+      <div class="gift-note">
+        <span class="gift-note-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7h-9M14 17H5M17 4l3 3-3 3M8 14l-3 3 3 3"/></svg></span>
+        <span><strong>Synced directly with Square</strong><span>Card and wallet gifts appear after Square completes them. Venmo stays outside automatic reporting. Manage disputes and chargebacks in Square.</span></span>
+      </div>
+      <div class="gift-search-wrap"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input class="studio-search" id="gift-search" type="search" placeholder="Search donor, email, fund, or payment method" aria-label="Search giving history"></div>
+      <div id="gift-rows" class="studio-rows"></div>
+      <p id="gift-empty" class="muted" hidden style="text-align:center;padding:40px 0;">No completed Square gifts were found for this year.</p>
+      <p id="gift-limit" class="muted" hidden style="font-size:.85rem;margin-top:12px;">This year has more than 1,000 Square payments. The newest 1,000 are shown here.</p>
+    </section>
+    </div>
+
+    <div id="gift-modal" class="gift-modal" hidden>
+      <div class="gift-modal-card" role="dialog" aria-modal="true" aria-labelledby="gift-modal-title">
+        <div class="gift-modal-head">
+          <div><h2 id="gift-modal-title">Payment details</h2><p id="gift-modal-subtitle"></p></div>
+          <button id="gift-modal-close" class="gift-modal-close" type="button" aria-label="Close payment details">&times;</button>
+        </div>
+        <div id="gift-modal-loading" class="gift-modal-loading">Loading current details from Square...</div>
+        <div id="gift-modal-content" hidden>
+          <div id="gift-detail-grid" class="gift-detail-grid"></div>
+          <div class="gift-detail-actions">
+            <a id="gift-detail-receipt" class="btn btn-o" href="#" target="_blank" rel="noopener">View Square receipt</a>
+            <button id="gift-resend" class="btn btn-b" type="button">Resend the Fairview receipt</button>
+          </div>
+          <p id="gift-action-msg" class="studio-msg" role="status" aria-live="polite"></p>
+          <div class="gift-panel">
+            <h3>Refund history</h3>
+            <p class="gift-panel-copy">Refunds and their current status come directly from Square.</p>
+            <div id="gift-refund-rows"></div>
+            <div id="gift-refund-empty" class="gift-refund-empty"><span class="gift-refund-empty-icon" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span><span><strong>No refunds issued</strong><small>This payment has its full refund history intact.</small></span></div>
+          </div>
+          <div id="gift-refund-section" class="gift-panel">
+            <h3>Issue a refund</h3>
+            <p id="gift-refund-help" class="gift-panel-copy"></p>
+            <form id="gift-refund-form" class="form gift-refund-form" onsubmit="return false">
+              <div class="frow two">
+                <div><label>Refund amount</label><div class="gift-refund-money"><span aria-hidden="true">$</span><input id="gift-refund-amount" inputmode="decimal" autocomplete="off" placeholder="0.00" required></div></div>
+                <div><label>Refund reason</label><input id="gift-refund-reason" maxlength="192" autocomplete="off" placeholder="Reason for the refund" required></div>
+              </div>
+              <div class="gift-refund-quick"><button id="gift-refund-full" class="btn" type="button">Use full remaining amount</button><small>Partial refunds are allowed. Square prevents refunding more than the available balance.</small></div>
+              <div class="gift-refund-confirm">
+                <div class="frow"><label>Final confirmation</label><input id="gift-refund-confirm" autocomplete="off" placeholder="Type REFUND" required></div>
+                <button id="gift-refund-submit" class="btn gift-refund-submit" type="submit">Issue refund</button>
+              </div>
+              <p class="gift-refund-warning"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.6 2.4 17.2A2 2 0 0 0 4.1 20h15.8a2 2 0 0 0 1.7-2.8L13.7 3.6a2 2 0 0 0-3.4 0Z"/></svg><span id="gift-refund-warning-text">This refunds the payment through Square. Review the amount and reason carefully before continuing.</span></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-bulletin" data-view-pane hidden>
+    <section>
+      <div class="studio-head">
+        <div><h1>Weekly bulletin</h1><p class="muted">Upload this Sunday's bulletin PDF. It appears on the home page right away, with past weeks kept below it.</p></div>
+      </div>
+      <form class="form studio-form" onsubmit="return false" style="max-width:560px;">
+        <div class="frow two"><div><label>Sunday date</label><input id="blt-date" type="date"></div><div><label>Title</label><input id="blt-title" placeholder="Weekly Bulletin"></div></div>
+        <div class="frow"><label>Bulletin PDF</label><input id="blt-file" type="file" accept="application/pdf"><span id="blt-msg" class="muted" style="font-size:.85rem;display:block;margin-top:6px;"></span></div>
+        <button class="btn btn-b" id="blt-add" type="button">Add bulletin</button>
+      </form>
+      <h2 style="margin-top:38px;font-size:1.15rem;">Posted bulletins</h2>
+      <div id="blt-rows" class="studio-rows"></div>
+      <p id="blt-empty" class="muted" hidden style="padding:20px 0;">No bulletins yet. Upload this week's above and it goes live on the home page.</p>
+    </section>
+    </div>
+
+    <div id="view-events" data-view-pane hidden>
+    <section id="ev-list">
+      <div class="studio-head">
+        <div><h1>Events</h1><p class="muted">Create and manage everything on the events hub.</p></div>
+        <button class="btn btn-b" id="ev-new">+ New event</button>
+      </div>
+      <div id="ev-rows" class="studio-rows"></div>
+    </section>
+
+    <section id="ev-edit" hidden>
+      <div class="studio-head">
+        <div><span class="studio-back" id="ev-back">&larr; All events</span><h1 id="ev-edit-title">New event</h1></div>
+        <div class="studio-head-acts"><button class="btn btn-o" id="ev-cancel">Cancel</button><button class="btn btn-b" id="ev-save">Save event</button></div>
+      </div>
+      <form id="ev-form" class="form studio-form" onsubmit="return false">
+        <div class="frow two"><div><label>Title</label><input id="f-title" required></div><div><label>Web address (slug)</label><input id="f-slug" placeholder="auto from title"></div></div>
+        <div class="frow two"><div><label>Category</label><input id="f-category" placeholder="Community, Kids, Worship…"></div><div><label>Status</label><select id="f-status"><option value="published">Published: live on the site</option><option value="draft">Draft: hidden from visitors</option></select></div></div>
+        <div class="frow two"><div><label>Starts</label><input type="datetime-local" id="f-start"></div><div><label>Ends</label><input type="datetime-local" id="f-end"></div></div>
+        <div class="frow two"><div><label>Location name</label><input id="f-location" placeholder="Fairview Baptist Temple"></div><div><label>Recurring (optional)</label><input id="f-recurring" placeholder="First Friday, Nov–Mar"></div></div>
+        <div class="frow"><label>Address</label><input id="f-address" placeholder="2294 Main Street, Clay, WV 25043"></div>
+        <div class="frow"><label>Event picture (cover)</label>
+          <div class="studio-upload">
+            <div class="studio-cover" id="f-cover-prev"></div>
+            <div><input type="file" id="f-cover-file" accept="image/*"><input id="f-cover" placeholder="…or paste an image URL"><span id="f-cover-msg" class="muted" style="font-size:.85rem;"></span></div>
+          </div>
+          <p class="studio-hint">This is the event's picture: your flyer or photo. It shows <b>in full</b> on the event page (nothing cropped) and as the thumbnail on the events list. Any shape works; a flyer is fine here.</p>
+        </div>
+        <div class="frow"><label>Hero background <span class="muted" style="font-weight:400;">(optional)</span></label>
+          <div class="studio-upload">
+            <div class="studio-cover is-banner" id="f-hero-prev"></div>
+            <div><input type="file" id="f-hero-file" accept="image/*"><input id="f-hero" placeholder="…or paste an image URL"><span id="f-hero-msg" class="muted" style="font-size:.85rem;"></span></div>
+          </div>
+          <p class="studio-hint">Optional wide photo shown <b>behind the title</b> at the top of the event page. Keep faces between the dashed guide lines; the top and bottom get cropped. <b>Leave this empty</b> to use the standard teal banner (recommended if your picture is a flyer).</p>
+        </div>
+        <div class="frow"><label>Short summary</label><textarea id="f-summary" rows="2" placeholder="One or two sentences shown on the cards."></textarea></div>
+        <div class="frow"><label>Full description</label><textarea id="f-body" rows="8" placeholder="The full event details. You can use basic HTML like <p>, <strong>, and <a href>."></textarea></div>
+        <div class="studio-fieldset">
+          <h3>Registration</h3>
+          <div class="frow two"><div><label>Sign-up</label><select id="f-reg-mode"><option value="">No registration</option><option value="form">In-page form (people sign up here)</option><option value="link">Link to a form or page</option></select></div><div><label>Button label</label><input id="f-reg-label" placeholder="Let us know you're coming"></div></div>
+          <div class="frow" id="f-reg-url-row" hidden><label>Link URL</label><input id="f-reg-url" placeholder="https://…"></div>
+        </div>
+        <div class="frow"><label>Helpful links, one per line as: Label | URL</label><textarea id="f-links" rows="3" placeholder="Get directions | https://maps.google.com/…"></textarea></div>
+        <div class="frow"><label>Highlight videos: one YouTube link or ID per line</label><textarea id="f-videos" rows="3" placeholder="https://youtu.be/DK--s6NM97g"></textarea></div>
+        <div class="frow"><label class="studio-check"><input type="checkbox" id="f-featured"> Feature this event at the top of the hub</label></div>
+      </form>
+    </section>
+    </div>
+
+    <div id="view-blog" data-view-pane hidden>
+    <section id="bl-list">
+      <div class="studio-head">
+        <div><h1>Blog</h1><p class="muted">Write and manage your posts. Saving publishes to the blog instantly.</p></div>
+        <button class="btn btn-b" id="bl-new">+ New post</button>
+      </div>
+      <div id="bl-import" class="studio-import" hidden>
+        <div><b>Bring in your existing posts</b><p class="muted">Your published posts aren't in the studio yet. Import them once, then edit them right here.</p></div>
+        <button class="btn btn-o" id="bl-import-btn">Import existing posts</button>
+      </div>
+      <div id="bl-rows" class="studio-rows"></div>
+    </section>
+    <section id="bl-edit" hidden>
+      <div class="studio-head">
+        <div><span class="studio-back" id="bl-back">&larr; All posts</span><h1 id="bl-edit-title">New post</h1></div>
+        <div class="studio-head-acts"><button class="btn btn-o" id="bl-cancel">Cancel</button><button class="btn btn-b" id="bl-save">Save post</button></div>
+      </div>
+      <form id="bl-form" class="form studio-form" onsubmit="return false">
+        <div class="frow two"><div><label>Title</label><input id="b-title" required></div><div><label>Web address (slug)</label><input id="b-slug" placeholder="auto from title"></div></div>
+        <div class="frow two"><div><label>Date</label><input type="date" id="b-date"></div><div><label>Author</label><input id="b-author" placeholder="Pastor J. Bret Wiley"></div></div>
+        <div class="frow two"><div><label>Tags, comma separated</label><input id="b-tags" placeholder="Sermon, Faith"></div><div><label>Status</label><select id="b-status"><option value="published">Published: live on the site</option><option value="draft">Draft: hidden from visitors</option></select></div></div>
+        <div class="frow"><label>Cover image</label>
+          <div class="studio-upload">
+            <div class="studio-cover is-banner" id="b-cover-prev"></div>
+            <div><input type="file" id="b-cover-file" accept="image/*"><input id="b-cover" placeholder="…or paste an image URL"><span id="b-cover-msg" class="muted" style="font-size:.85rem;"></span></div>
+          </div>
+          <p class="studio-hint">Shown as a <b>wide banner</b> on the post page and cards. Keep the key part <b>between the dashed guide lines</b>; the top and bottom edges get cropped. A wide (landscape) image works best.</p>
+        </div>
+        <div class="frow"><label>Excerpt: the short summary shown on the cards</label><textarea id="b-excerpt" rows="2"></textarea></div>
+        <div class="frow"><label>Matching sermon video: YouTube link or ID (optional)</label><input id="b-video" placeholder="https://youtu.be/…"></div>
+        <div class="frow"><label>Post body</label><textarea id="b-body" rows="14" placeholder="Write your post. You can use basic HTML like <h2>, <p>, <strong>, <blockquote>, and <a href>."></textarea></div>
+      </form>
+    </section>
+    </div>
+
+    <div id="view-missions" data-view-pane hidden>
+    <section id="mi-list">
+      <div class="studio-head">
+        <div><h1>Missions</h1><p class="muted">Add and edit the missionaries on your missions map.</p></div>
+        <button class="btn btn-b" id="mi-new">+ New missionary</button>
+      </div>
+      <div id="mi-rows" class="studio-rows"></div>
+    </section>
+    <section id="mi-edit" hidden>
+      <div class="studio-head">
+        <div><span class="studio-back" id="mi-back">&larr; All missionaries</span><h1 id="mi-edit-title">New missionary</h1></div>
+        <div class="studio-head-acts"><button class="btn btn-o" id="mi-cancel">Cancel</button><button class="btn btn-b" id="mi-save">Save</button></div>
+      </div>
+      <form class="form studio-form" onsubmit="return false">
+        <div class="studio-fieldset"><h3>Basics &amp; map</h3>
+          <p class="studio-hint" style="margin:-7px 0 18px;">Name, location, ministry, status, and years serving become the quick facts on their card. The pin places them on the world map.</p>
+          <div class="frow two"><div><label>Name</label><input id="mi-name" required placeholder="The Bennett Family"></div><div><label>Region</label><select id="mi-region"></select></div></div>
+          <div class="frow two"><div><label>Location</label><input id="mi-location" placeholder="Nairobi, Kenya"></div><div><label>Visibility</label><select id="mi-status"><option value="published">Published: on the map</option><option value="draft">Draft: hidden</option></select></div></div>
+          <div class="frow"><label>Place their pin: click the map where they serve</label>
+            <div id="mi-map" class="mi-map"></div>
+            <div class="mi-latlng"><span id="mi-coords" class="muted">No location set yet. Click the map to drop a pin.</span><button type="button" class="mi-clear" id="mi-clear">Clear pin</button></div>
+          </div>
+          <div class="frow two"><div><label>Field / ministry</label><input id="mi-field" placeholder="Church planting & discipleship"></div><div><label>Sending org (optional)</label><input id="mi-org"></div></div>
+          <div class="frow two"><div><label>Ministry type (used for filter chips)</label><input id="mi-ministry" placeholder="Church planting, Translation, Medical…"></div><div><label>Field status badge</label><select id="mi-statuslabel"><option value="">None</option><option>On the field</option><option>Home on furlough</option><option>Sending soon</option></select></div></div>
+          <div class="frow two"><div><label>Country (shows a flag)</label><input id="mi-country" placeholder="Kenya"></div><div><label>On the field since (year)</label><input id="mi-year" type="number" placeholder="2019" min="1900" max="2100"></div></div>
+          <div class="frow"><label>Time zone (optional, shows their local time)</label><input id="mi-tz" list="mi-tz-list" placeholder="Start typing a city, such as Nairobi" autocomplete="off" spellcheck="false"><datalist id="mi-tz-list"></datalist><p class="studio-hint" id="mi-tz-preview" aria-live="polite">Choose the nearest city. The correct daylight-saving adjustment happens automatically.</p></div>
+        </div>
+
+        <div class="studio-fieldset"><h3>Story &amp; prayer</h3>
+          <p class="studio-hint" style="margin:-7px 0 18px;">These sections fill the profile after someone opens the card. Optional sections stay hidden until you add them.</p>
+          <div class="frow"><label>Their story</label><textarea id="mi-bio" rows="5"></textarea></div>
+          <div class="frow"><label>Our connection to them (optional)</label><textarea id="mi-connection" rows="3" placeholder="How Fairview Baptist Temple knows, supports, or partners with them."></textarea></div>
+          <div class="frow"><label>Prayer requests</label><textarea id="mi-prayer" rows="3"></textarea></div>
+          <div class="frow"><label>Latest update (optional)</label><textarea id="mi-update" rows="3"></textarea></div>
+          <div class="frow"><label>Date of latest update (optional)</label><input id="mi-update-date" type="date"></div>
+        </div>
+
+        <div class="studio-fieldset"><h3>Media &amp; partnership</h3>
+          <p class="studio-hint" style="margin:-7px 0 18px;">The main photo leads the card. Gallery photos, videos, letters, and the giving link appear inside the full profile.</p>
+          <div class="frow"><label>Main photo</label>
+            <div class="studio-upload"><div class="studio-cover" id="mi-photo-prev"></div>
+            <div><input type="file" id="mi-photo-file" accept="image/*"><input id="mi-photo" placeholder="…or paste an image URL"><span id="mi-photo-msg" class="muted" style="font-size:.85rem;"></span></div></div>
+          </div>
+          <div class="frow"><label>More photos (gallery)</label>
+            <div id="mi-photos" class="mi-gallery-edit"></div>
+            <div class="mi-letter-add"><label class="btn btn-o mi-addpdf">+ Add a photo<input type="file" id="mi-photo-more" accept="image/*" hidden></label><span id="mi-photos-msg" class="muted" style="font-size:.85rem;"></span></div>
+          </div>
+          <div class="frow two"><div><label>Main video (optional, YouTube link or ID)</label><input id="mi-video" placeholder="https://youtu.be/…"></div><div><label>Support / giving link (optional)</label><input id="mi-support" placeholder="https://…"></div></div>
+          <div class="frow"><label>More videos (one YouTube link per line)</label><textarea id="mi-videos" rows="2" placeholder="https://youtu.be/…"></textarea></div>
+          <div class="frow"><label>Internal contact email (optional, Studio only)</label><input id="mi-contact" type="email" placeholder="missionary@example.com"><p class="studio-hint">Visitors never receive this address. Messages come to the church so you can pass them along.</p></div>
+          <div class="frow"><label>Prayer letters &amp; updates (PDFs)</label>
+            <div id="mi-letters" class="mi-letters-edit"></div>
+            <div class="mi-letter-add"><label class="btn btn-o mi-addpdf">+ Add a PDF<input type="file" id="mi-letter-file" accept="application/pdf" hidden></label><span id="mi-letter-msg" class="muted" style="font-size:.85rem;"></span></div>
+          </div>
+        </div>
+        <p id="mi-msg" class="studio-msg"></p>
+      </form>
+    </section>
+    </div>
+
+    <div id="view-people" data-view-pane hidden>
+    <section>
+      <div class="studio-head">
+        <div><h1>People &amp; ministries</h1><p class="muted">Update the Get Involved cards and every profile on Our Staff.</p></div>
+        <div class="studio-head-acts"><button class="btn btn-o" id="people-media" type="button">Manage photos</button><button class="btn btn-b" id="people-save" type="button">Save changes</button></div>
+      </div>
+      <div class="studio-import people-intro">
+        <div><b>These words are connected to the public site</b><p class="muted">Saving here updates Get Involved and Our Staff. Photos stay under Media &amp; videos so nothing is duplicated.</p></div>
+        <div class="people-preview-links"><a class="btn btn-o" href="/get-involved" target="_blank" rel="noopener">View Get Involved</a><a class="btn btn-o" href="/staff" target="_blank" rel="noopener">View Staff</a></div>
+      </div>
+      <form id="people-form" class="form studio-form" onsubmit="return false">
+        <div class="studio-fieldset"><h3>Get Involved</h3>
+          <p class="studio-hint" style="margin:-7px 0 18px;">Only publish schedules, ages, and leaders you know are current. Optional lines stay hidden until you fill them in.</p>
+          <div class="people-grid">
+            <div class="people-card">
+              <h4>Sunday School</h4>
+              <div class="frow two"><div><label>Show this card</label><select data-key="gi_sundayschool_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_sundayschool_title" value="Sunday School" required></div></div>
+              <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_sundayschool_for" value="Classes for all ages"></div>
+              <div class="frow"><label>Description</label><textarea data-key="gi_sundayschool" rows="4" required>Bible classes for every age, from the youngest children to the oldest saints. Each class digs into the Scriptures together before the morning worship service.</textarea></div>
+              <div class="frow"><label>When it meets</label><input data-key="gi_sundayschool_meets" value="Sundays at 10:00am" required></div>
+              <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_sundayschool_leader" placeholder="Led by …"></div>
+              <div class="frow"><label>Button text</label><input data-key="gi_sundayschool_cta" value="Ask about a class →" required></div>
+            </div>
+            <div class="people-card">
+              <h4>Youth Ministry</h4>
+              <div class="frow two"><div><label>Show this card</label><select data-key="gi_youth_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_youth_title" value="Youth Ministry" required></div></div>
+              <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_youth_for" placeholder="Grades or ages"></div>
+              <div class="frow"><label>Description</label><textarea data-key="gi_youth" rows="4" required>An active youth group where young people hear the Bible taught straight, build real friendships, and learn to live for the Lord.</textarea></div>
+              <div class="frow"><label>When it meets</label><input data-key="gi_youth_meets" value="Sunday School at 10:00am" required></div>
+              <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_youth_leader" placeholder="Led by …"></div>
+              <div class="frow"><label>Button text</label><input data-key="gi_youth_cta" value="Contact youth ministry →" required></div>
+            </div>
+            <div class="people-card">
+              <h4>H.O.P.E. Recovery</h4>
+              <div class="frow two"><div><label>Show this card</label><select data-key="gi_hope_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_hope_title" value="H.O.P.E. Recovery" required></div></div>
+              <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_hope_for" value="Anyone fighting addiction"></div>
+              <div class="frow"><label>Description</label><textarea data-key="gi_hope" rows="4" required>H.O.P.E. is our Christ-centered addictions recovery ministry. If you or someone you love is fighting addiction, you will find no judgment here, just the gospel, honest help, and people who care.</textarea></div>
+              <div class="frow"><label>When it meets</label><input data-key="gi_hope_meets" value="Friday evenings" required></div>
+              <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_hope_leader" placeholder="Led by …"></div>
+              <div class="frow"><label>Button text</label><input data-key="gi_hope_cta" value="Reach out about H.O.P.E. →" required></div>
+            </div>
+            <div class="people-card">
+              <h4>Van Ministry</h4>
+              <div class="frow two"><div><label>Show this card</label><select data-key="gi_van_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_van_title" value="Van Ministry" required></div></div>
+              <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_van_for" value="A free ride to any service"></div>
+              <div class="frow"><label>Description</label><textarea data-key="gi_van" rows="4" required>No way to get to church? Our van will come get you for any service, free of charge, and the van team goes out visiting on Saturdays. Call 304-587-4709 and we'll save you a seat.</textarea></div>
+              <div class="frow"><label>When it meets</label><input data-key="gi_van_meets" value="Every service &middot; Van visitation Saturdays" required></div>
+              <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_van_leader" placeholder="Led by …"></div>
+              <div class="frow"><label>Button text</label><input data-key="gi_van_cta" value="Call 304-587-4709 →" required></div>
+            </div>
+            <div class="people-card">
+              <h4>Soul-Winning Visitation</h4>
+              <div class="frow two"><div><label>Show this card</label><select data-key="gi_visitation_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_visitation_title" value="Soul-Winning Visitation" required></div></div>
+              <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_visitation_for" placeholder="Audience or age range"></div>
+              <div class="frow"><label>Description</label><textarea data-key="gi_visitation" rows="4" required>We go out on Saturdays to knock on doors, share the gospel, and invite our neighbors across Clay County to church. Never been before? Come along, you can watch and pray your first time out.</textarea></div>
+              <div class="frow"><label>When it meets</label><input data-key="gi_visitation_meets" value="Saturdays" required></div>
+              <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_visitation_leader" placeholder="Led by …"></div>
+              <div class="frow"><label>Button text</label><input data-key="gi_visitation_cta" value="Come along on a Saturday →" required></div>
+            </div>
+            <div class="people-card">
+              <h4>Missions</h4>
+              <div class="frow two"><div><label>Show this card</label><select data-key="gi_missions_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_missions_title" value="Missions" required></div></div>
+              <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_missions_for" placeholder="Audience or age range"></div>
+              <div class="frow"><label>Description</label><textarea data-key="gi_missions" rows="4" required>Fairview keeps a strong missions program, praying for, giving to, and supporting missionaries carrying the gospel far beyond Clay County. See where they serve and how to pray.</textarea></div>
+              <div class="frow"><label>When it meets</label><input data-key="gi_missions_meets" value="Around the world, year round" required></div>
+              <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_missions_leader" placeholder="Led by …"></div>
+              <div class="frow"><label>Button text</label><input data-key="gi_missions_cta" value="Explore our missions map →" required></div>
+            </div>
+            <div class="people-card">
+              <h4>Music &amp; Choir</h4>
+              <div class="frow two"><div><label>Show this card</label><select data-key="gi_music_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_music_title" value="Music &amp; Choir" required></div></div>
+              <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_music_for" placeholder="Audience or age range"></div>
+              <div class="frow"><label>Description</label><textarea data-key="gi_music" rows="4" required>Old fashioned singing is part of every service at Fairview. [Describe your choir and special music here in Studio, or hide this card and add other ministries.]</textarea></div>
+              <div class="frow"><label>When it meets</label><input data-key="gi_music_meets" value="[Add rehearsal details in Studio]" required></div>
+              <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_music_leader" placeholder="Led by …"></div>
+              <div class="frow"><label>Button text</label><input data-key="gi_music_cta" value="Ask about the music →" required></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="studio-fieldset"><h3>Our Staff</h3>
+          <p class="studio-hint" style="margin:-7px 0 18px;">Use a specific role for each person. Portraits and the optional group photo are managed under Media &amp; videos.</p>
+          <div class="people-grid">
+            <div class="people-card">
+              <h4>Lead profile</h4>
+              <div class="frow"><label>Show this person</label><select data-key="pastor_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
+              <div class="frow two"><div><label>Name</label><input data-key="pastor_name" value="Pastor J. Bret Wiley" required></div><div><label>Role</label><input data-key="pastor_role" value="Pastor" required></div></div>
+              <div class="frow"><label>Bio</label><textarea data-key="pastor_bio" rows="6" required>Pastor J. Bret Wiley leads Fairview Baptist Temple in Clay, West Virginia. Replace this short bio with his story: how long he has served, his family, and his heart for this church and community.</textarea></div>
+            </div>
+            <div class="people-card">
+              <h4>Staff member 1</h4>
+              <div class="frow"><label>Show this person</label><select data-key="staff1_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
+              <div class="frow two"><div><label>Name</label><input data-key="staff1_name" value="[Staff member name]" required></div><div><label>Role</label><input data-key="staff1_role" value="[Role]" required></div></div>
+              <div class="frow"><label>Bio</label><textarea data-key="staff1_bio" rows="6" required>[A short bio for this staff member: their role, how long they have served, and a personal note.]</textarea></div>
+            </div>
+            <div class="people-card">
+              <h4>Staff member 2</h4>
+              <div class="frow"><label>Show this person</label><select data-key="staff2_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
+              <div class="frow two"><div><label>Name</label><input data-key="staff2_name" value="[Staff member name]" required></div><div><label>Role</label><input data-key="staff2_role" value="[Role]" required></div></div>
+              <div class="frow"><label>Bio</label><textarea data-key="staff2_bio" rows="6" required>[A short bio for this staff member: their role, how long they have served, and a personal note.]</textarea></div>
+            </div>
+            <div class="people-card">
+              <h4>Staff member 3</h4>
+              <div class="frow"><label>Show this person</label><select data-key="staff3_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
+              <div class="frow two"><div><label>Name</label><input data-key="staff3_name" value="[Staff member name]" required></div><div><label>Role</label><input data-key="staff3_role" value="[Role]" required></div></div>
+              <div class="frow"><label>Bio</label><textarea data-key="staff3_bio" rows="6" required>[A short bio for this staff member: their role, how long they have served, and a personal note.]</textarea></div>
+            </div>
+          </div>
+        </div>
+        <div class="people-save-foot"><p id="people-msg" class="studio-msg" role="status" aria-live="polite"></p><button class="btn btn-b" id="people-save-bottom" type="button">Save changes</button></div>
+      </form>
+    </section>
+    </div>
+
+    <div id="view-settings" data-view-pane hidden>
+    <section>
+      <div class="studio-head">
+        <div><h1>Settings</h1><p class="muted">Your church info and links. Saved changes go live across the whole site.</p></div>
+        <button class="btn btn-b" id="set-save">Save settings</button>
+      </div>
+      <form class="form studio-form" onsubmit="return false">
+        <div class="studio-fieldset"><h3>Contact</h3>
+          <div class="frow two"><div><label>Street address</label><input data-key="contact_address" placeholder="2294 Main Street"></div><div><label>City, state ZIP</label><input data-key="contact_city" placeholder="Clay, WV 25043"></div></div>
+          <div class="frow two"><div><label>Phone</label><input data-key="contact_phone" placeholder="304-587-4709"></div><div><label>Email</label><input data-key="contact_email" placeholder="[Church email address]"></div></div>
+        </div>
+        <div class="studio-fieldset"><h3>Service times</h3>
+          <div class="frow two"><div><label>Sunday school</label><input data-key="time_sunday_school" placeholder="10:00 AM"></div><div><label>Worship</label><input data-key="time_worship" placeholder="11:00 AM"></div></div>
+          <div class="frow two"><div><label>Sunday evening time</label><input data-key="time_evening" placeholder="6:00pm"></div><div><label>Midweek time</label><input data-key="time_midweek" placeholder="7:00 PM"></div></div>
+        </div>
+        <div class="studio-fieldset"><h3>Social links</h3>
+          <div class="frow two"><div><label>Facebook</label><input data-key="facebook_url" value="https://www.facebook.com/FairviewBaptistTemple" placeholder="https://facebook.com/…"></div><div><label>Instagram</label><input data-key="instagram_url" value="https://www.instagram.com/fairviewbaptisttemple" placeholder="https://instagram.com/…"></div></div>
+          <div class="frow two"><div><label>TikTok</label><input data-key="tiktok_url" placeholder="https://tiktok.com/@…"></div><div><label>YouTube</label><input data-key="youtube_url" value="https://www.youtube.com/@FairviewBaptistTemple" placeholder="https://youtube.com/@…"></div></div>
+        </div>
+        <div class="studio-fieldset"><h3>Livestream</h3>
+          <div class="frow"><label>YouTube channel ID: powers the automatic live player (starts with UC)</label><input data-key="live_channel_id" placeholder="UC…"></div>
+        </div>
+        <div class="studio-fieldset"><h3>Giving</h3>
+          <div class="frow"><label>Venmo username: powers the Venmo button on the Give page (no @)</label><input data-key="venmo_handle" placeholder="FairviewBaptistTemple"></div>
+          <div class="frow two"><div><label>Square Application ID: for in-browser card giving</label><input data-key="square_app_id" placeholder="sq0idp-…"></div><div><label>Square Location ID</label><input data-key="square_location_id" placeholder="L…"></div></div>
+          <div class="frow two"><div><label>Square mode</label><select data-key="square_env"><option value="production">Production: real gifts</option><option value="sandbox">Sandbox: testing</option></select></div><div><label>Old giving link (fallback, optional)</label><input data-key="give_link" placeholder="https://…"></div></div>
+          <div class="frow"><label>Text-to-give: instructions shown on the Give page (optional)</label><input data-key="give_text" placeholder="Text GIVE to 84321"></div>
+          <div class="frow"><label>Give-toward funds, one per line; these fill the "Give toward" dropdown on the Give page (leave blank for the defaults)</label><textarea data-key="give_funds" rows="4" placeholder="Where needed most&#10;Missions&#10;Building fund&#10;Benevolence &amp; care"></textarea></div>
+          <div class="frow"><label>Square subscription plan ID (optional override; leave blank to use the church's automatic monthly plan)</label><input data-key="square_plan_id" placeholder="Plan variation ID"></div>
+        </div>
+        <div class="studio-fieldset"><h3>Forms</h3>
+          <div class="frow"><label>Form endpoint: where the missionary contact form (and sign-ups) send. Free at formspree.io</label><input data-key="form_endpoint" placeholder="https://formspree.io/f/abcdwxyz"></div>
+        </div>
+        <div class="studio-fieldset"><h3>Missions</h3>
+          <div class="frow"><label>Region options, one per line (the choices in each missionary's Region dropdown)</label><textarea data-key="missionary_regions" rows="4" placeholder="Africa&#10;Asia&#10;Europe&#10;Middle East&#10;North America&#10;South America&#10;Oceania"></textarea></div>
+          <div class="frow"><label>Status options, one per line (the choices in each missionary's Status dropdown)</label><textarea data-key="missionary_statuses" rows="4" placeholder="On the field&#10;Home on furlough&#10;Sending soon"></textarea></div>
+        </div>
+        <div class="studio-fieldset"><h3>Podcast</h3>
+          <div class="frow two"><div><label>Spotify</label><input data-key="podcast_spotify" placeholder="https://open.spotify.com/show/…"></div><div><label>Apple Podcasts</label><input data-key="podcast_apple" placeholder="https://podcasts.apple.com/…"></div></div>
+          <div class="frow two"><div><label>Website / general</label><input data-key="podcast_general" placeholder="https://…"></div><div><label>RSS feed</label><input data-key="podcast_rss" placeholder="https://…"></div></div>
+        </div>
+        <p id="set-msg" class="studio-msg"></p>
+      </form>
+    </section>
+    </div>
+
+    <div id="view-sermons" data-view-pane hidden>
+    <section id="sm-list">
+      <div class="studio-head">
+        <div><h1>Video hubs</h1><p class="muted">Choose what shows in your Messages, Music, and Watch hubs, and fix any video's speaker or scripture.</p></div>
+      </div>
+      <div class="hub-chips" id="hub-chips">
+        <button class="hub-chip active" data-hub="">All</button>
+        <button class="hub-chip" data-hub="message">Messages</button>
+        <button class="hub-chip" data-hub="music">Music</button>
+        <button class="hub-chip" data-hub="service">Watch / livestream</button>
+        <button class="hub-chip" data-hub="clip">Hidden</button>
+      </div>
+      <input id="sm-search" class="studio-search" placeholder="Search videos by title…">
+      <div id="sm-rows" class="studio-rows"></div>
+    </section>
+    <section id="sm-edit" hidden>
+      <div class="studio-head">
+        <div><span class="studio-back" id="sm-back">&larr; All videos</span><h1 id="sm-edit-title">Edit video</h1></div>
+        <div class="studio-head-acts"><button class="btn btn-o" id="sm-reset">Reset to auto</button><button class="btn btn-b" id="sm-save">Save</button></div>
+      </div>
+      <div class="sm-vid"><div class="sm-vid-thumb" id="sm-vid-thumb"></div><div class="sm-vid-meta" id="sm-vid-meta"></div></div>
+      <form class="form studio-form" onsubmit="return false">
+        <div class="studio-fieldset"><h3>Library placement</h3>
+          <div class="frow two"><div><label for="s-type">Show this video in</label><select id="s-type"><option value="">Auto-detect</option><option value="message">Messages: sermon</option><option value="music">Music</option><option value="service">Watch: service replay</option><option value="clip">Clip: hidden from hubs</option></select></div><div><label for="s-service">Service type</label><select id="s-service"><option value="">Auto-detect</option><option>Sunday Morning Worship</option><option>Sunday School</option><option>Midweek</option><option>Sunday Evening</option><option>Special Service</option></select></div></div>
+          <div class="frow two"><div><label for="s-preached-on">Message date</label><input id="s-preached-on" type="date"><small class="field-help">Use the date the message was preached, not the upload date.</small></div><div><label for="s-speaker">Speaker</label><input id="s-speaker" placeholder="Pastor J. Bret Wiley"></div></div>
+        </div>
+        <div class="studio-fieldset"><h3>Message details</h3>
+          <div class="frow two"><div><label for="s-reference">Scripture: book and chapter</label><input id="s-reference" placeholder="Acts 16"></div><div><label for="s-series">Series (optional)</label><input id="s-series" placeholder="The Book of Acts"></div></div>
+          <div class="frow"><label for="s-title">Clean title (optional)</label><input id="s-title" placeholder="Overrides the YouTube title"><small class="field-help">Leave blank to keep the title from YouTube.</small></div>
+          <div class="frow"><label for="s-topics">Topics: comma separated</label><input id="s-topics" placeholder="Faith, Mission"></div>
+          <div class="frow"><label for="s-summary">Message summary</label><textarea id="s-summary" rows="4" placeholder="A clear two or three sentence overview for visitors deciding what to watch."></textarea></div>
+        </div>
+        <div class="studio-fieldset"><h3>Notes and transcript</h3>
+          <div class="frow"><label for="s-notes">Message notes (optional)</label><textarea id="s-notes" rows="7" placeholder="Main points, Scripture references, application questions, or an outline."></textarea><small class="field-help">Paragraphs and line breaks will be preserved on the message page.</small></div>
+          <div class="frow"><label for="s-transcript">Transcript (optional)</label><textarea id="s-transcript" rows="12" placeholder="Paste a cleaned transcript here when one is available."></textarea><small class="field-help">Long transcripts stay collapsed until a visitor chooses to read them.</small></div>
+        </div>
+        <p id="sm-msg" class="studio-msg"></p>
+      </form>
+    </section>
+    </div>
+
+    <div id="view-pages" data-view-pane hidden>
+    <section>
+      <div class="studio-head">
+        <div><h1>Page labels and menu</h1><p class="muted">Rename links, show or hide them, and use the arrows to put pages in the order you want. The sections match your desktop and mobile menus.</p></div>
+        <button class="btn btn-b" id="pg-save">Save menu</button>
+      </div>
+      <div id="pg-list" class="pg-list"></div>
+      <p id="pg-msg" class="studio-msg" role="status" aria-live="polite" style="margin-top:16px;"></p>
+    </section>
+    </div>
+
+    <div id="view-media" data-view-pane hidden>
+    <section>
+      <div class="studio-head"><div><h1>Media and videos</h1><p class="muted">Control the image, framing, color, and overlay for every key visual on the site.</p></div></div>
+      <p id="media-msg" class="studio-msg" role="status" aria-live="polite"></p>
+      <h3 class="studio-subhead">Page hero backgrounds</h3>
+      <p class="media-hint">Choose a photo, a short MP4 background video, or a Fairview color background. Open Design to set the focal point, zoom, overlay, transparency, and separate desktop and phone framing.</p>
+      <div class="media-grid" id="media-bg"></div>
+      <h3 class="studio-subhead">Photos</h3>
+      <p class="media-hint">Reframe portraits, ministry photos, and cover art without editing the original file. Your uploaded image stays intact.</p>
+      <div class="media-grid" id="media-photo"></div>
+    </section>
+    </div>
+
+    <div id="media-editor" class="media-editor" hidden>
+      <div class="media-editor-card" role="dialog" aria-modal="true" aria-labelledby="media-editor-title">
+        <div class="media-editor-head">
+          <div>
+            <p class="media-editor-eyebrow">Media designer</p>
+            <h2 id="media-editor-title">Edit media</h2>
+            <p id="media-editor-subtitle">Preview and position this media before saving.</p>
+          </div>
+          <button id="media-editor-close" class="media-editor-close" type="button" aria-label="Close media designer">&times;</button>
+        </div>
+        <div class="media-editor-body">
+          <div class="media-stage-panel">
+            <div class="media-modebar">
+              <div class="media-mode-tabs" role="group" aria-label="Preview size">
+                <button type="button" class="active" data-media-viewport="desktop">Desktop</button>
+                <button type="button" data-media-viewport="mobile">Phone</button>
+              </div>
+              <span class="media-mode-note">Shown in the page's real target shape.</span>
+            </div>
+            <div class="media-stage-wrap">
+              <div id="media-stage" class="media-stage" tabindex="0" role="group" aria-label="Media preview" aria-describedby="media-stage-help media-focal-status"></div>
+            </div>
+            <p class="media-stage-help" id="media-stage-help"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="7"/></svg><span>Click or drag on a computer, or tap on a phone, to place the focal point. The sliders below give precise control.</span></p>
+            <p id="media-focal-status" class="media-source-note" role="status" aria-live="polite">Focal point: 50% across, 50% down.</p>
+            <div class="media-assets">
+              <button id="media-editor-image-pick" class="media-up" type="button">Replace image</button>
+              <input id="media-editor-image-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" data-editor-upload="image" hidden>
+              <button id="media-editor-video-pick" class="media-up" type="button">Replace video</button>
+              <input id="media-editor-video-file" type="file" accept="video/mp4" data-editor-upload="video" hidden>
+              <button id="media-remove-image" class="media-edit-btn media-danger" type="button">Remove image from page</button>
+              <button id="media-remove-video" class="media-edit-btn media-danger" type="button">Remove video from page</button>
+            </div>
+          </div>
+          <div class="media-controls">
+            <div class="media-control-group" id="media-framing-controls">
+              <div class="media-control-title"><label for="media-source">What appears</label><small>Files stay saved</small></div>
+              <select id="media-source">
+                <option value="auto">Automatic: video first, then image</option>
+                <option value="video">Background video</option>
+                <option value="image">Image</option>
+                <option value="background">Color background only</option>
+              </select>
+              <small id="media-source-note" class="media-source-note"></small>
+            </div>
+            <div class="media-control-group">
+              <div class="media-control-title"><strong>Image framing</strong><small id="media-frame-label">Desktop</small></div>
+              <div class="media-segments" role="group" aria-label="Image fit">
+                <button type="button" class="active" data-media-fit="cover">Fill frame</button>
+                <button type="button" data-media-fit="contain">Show full image</button>
+              </div>
+              <div class="media-range">
+                <div class="media-range-head"><label for="media-zoom">Zoom</label><output id="media-zoom-out">100%</output></div>
+                <input id="media-zoom" type="range" min="100" max="200" step="1" value="100">
+              </div>
+              <div class="media-range">
+                <div class="media-range-head"><label for="media-x">Horizontal position</label><output id="media-x-out">50%</output></div>
+                <input id="media-x" type="range" min="0" max="100" step="1" value="50">
+              </div>
+              <div class="media-range">
+                <div class="media-range-head"><label for="media-y">Vertical position</label><output id="media-y-out">50%</output></div>
+                <input id="media-y" type="range" min="0" max="100" step="1" value="50">
+              </div>
+              <div class="media-range">
+                <div class="media-range-head"><label for="media-image-opacity">Media visibility</label><output id="media-image-opacity-out">100%</output></div>
+                <input id="media-image-opacity" type="range" min="0" max="100" step="1" value="100">
+              </div>
+            </div>
+            <div class="media-control-group">
+              <div class="media-control-title"><strong>Background</strong><small>Visible behind media</small></div>
+              <div class="media-swatches" id="media-background-swatches">
+                <button type="button" class="media-swatch" data-media-background="theme" style="--swatch:linear-gradient(145deg,#20706B,#0A252C)"><span>Page default</span></button>
+                <button type="button" class="media-swatch" data-media-background="fbt-gradient" style="--swatch:linear-gradient(145deg,#177E79,#123B42 58%,#0A252C)"><span>Teal gradient</span></button>
+                <button type="button" class="media-swatch" data-media-background="deep" style="--swatch:#123B42"><span>Deep teal</span></button>
+                <button type="button" class="media-swatch" data-media-background="navy" style="--swatch:#223A5E"><span>Navy</span></button>
+                <button type="button" class="media-swatch" data-media-background="fbt" style="--swatch:#177E79"><span>Brand teal</span></button>
+              </div>
+              <div class="media-color-row">
+                <input id="media-background-color" class="media-color-input" value="#123B42" maxlength="7" aria-label="Custom background color">
+                <input id="media-background-picker" class="media-color-picker" type="color" value="#123B42" aria-label="Choose custom background color">
+              </div>
+            </div>
+            <div class="media-control-group">
+              <div class="media-control-title"><label for="media-overlay">Overlay</label><small>Color above the image</small></div>
+              <select id="media-overlay">
+                <option value="brand">Fairview wash</option>
+                <option value="left">Dark on the left</option>
+                <option value="bottom">Dark at the bottom</option>
+                <option value="vignette">Vignette</option>
+                <option value="solid">Even color</option>
+                <option value="none">No overlay</option>
+              </select>
+              <div id="media-overlay-controls">
+                <div class="media-color-row">
+                  <input id="media-overlay-color" class="media-color-input" value="#0A252C" maxlength="7" aria-label="Overlay color">
+                  <input id="media-overlay-picker" class="media-color-picker" type="color" value="#0A252C" aria-label="Choose overlay color">
+                </div>
+                <div class="media-range">
+                  <div class="media-range-head"><label for="media-overlay-opacity">Overlay strength</label><output id="media-overlay-opacity-out">82%</output></div>
+                  <input id="media-overlay-opacity" type="range" min="0" max="100" step="1" value="82">
+                </div>
+              </div>
+              <p id="media-contrast-warning" class="media-warning" hidden>With little or no overlay, white page text may be hard to read on a bright image.</p>
+            </div>
+          </div>
+        </div>
+        <div class="media-editor-foot">
+          <p id="media-editor-msg" class="studio-msg" role="status" aria-live="polite"></p>
+          <button id="media-restore" class="btn btn-o" type="button" disabled>Restore original look</button>
+          <button id="media-editor-cancel" class="btn" type="button">Cancel</button>
+          <button id="media-editor-save" class="btn btn-b" type="button" disabled>Save changes</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
+<script src="assets/config.js"></script>
+<script src="assets/posts.js"></script>
+<script src="assets/fbt.feeds.js"></script>
+<script src="assets/sermon-tags.js?v=2"></script>
+<script src="assets/videos.js?v=4"></script>
+<script src="assets/media-styles.js?v=1"></script>
+<script src="assets/studio.js?v=18"></script>
+</body></html>

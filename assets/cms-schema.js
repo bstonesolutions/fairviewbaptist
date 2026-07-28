@@ -1,0 +1,175 @@
+/* ============================================================
+   Fairview Baptist Temple CMS - single source of truth for editable content.
+   Used by content.js (live pages) and Studio so the
+   two can never drift. Pure data, no dependencies. Sets a global.
+
+   Field types:
+     text     -> short text, set via textContent
+     multiline-> long text (textarea in Studio), set via textContent
+     rich     -> text where *word* becomes a teal accent <em>word</em>
+     link     -> a URL, set on an <a href>
+     image    -> a Storage URL shown in a photo slot (<img>)
+     bg       -> a Storage URL used as a hero background photo
+   The `key` is the row key in the site_content table. `def` is the
+   current baked-in default (also what the live page already shows).
+   ============================================================ */
+window.FBT_SCHEMA = {
+  // Grouped editable fields. Each entry: {key, label, type, def, hint?}
+  groups: [
+    {
+      id: 'backgrounds',
+      title: 'Page backgrounds',
+      hint: 'Optional photo behind each page header. Leave empty to keep the teal gradient. A dark overlay is added automatically so text stays readable.',
+      fields: [
+        { key: 'hero_bg_home', label: 'Home hero background', type: 'bg', def: '' },
+        { key: 'hero_bg_visit', label: 'Visit hero background', type: 'bg', def: '' },
+        { key: 'hero_bg_beliefs', label: 'Beliefs hero background', type: 'bg', def: '' },
+        { key: 'hero_bg_staff', label: 'Our Staff hero background', type: 'bg', def: '' },
+        { key: 'hero_bg_getinvolved', label: 'Get Involved hero background', type: 'bg', def: '' },
+        { key: 'hero_bg_nextsteps', label: 'Next Steps hero background', type: 'bg', def: '' },
+        { key: 'hero_bg_prayer', label: 'Prayer hero background', type: 'bg', def: '' },
+        { key: 'hero_bg_give', label: 'Give hero background', type: 'bg', def: '' },
+        { key: 'hero_bg_live', label: 'The Overlook hero background', type: 'bg', def: '' },
+        { key: 'hero_bg_messages', label: 'The Overlook Messages background', type: 'bg', def: '' },
+        { key: 'hero_bg_music', label: 'The Overlook Music background', type: 'bg', def: '' },
+        { key: 'hero_bg_blog', label: 'Blog hero background', type: 'bg', def: '' },
+        { key: 'hero_bg_events', label: 'Events hero background', type: 'bg', def: '' },
+        { key: 'hero_bg_missions', label: 'Missions hero background', type: 'bg', def: '' },
+        { key: 'hero_bg_contact', label: 'Contact hero background', type: 'bg', def: '' },
+      ],
+    },
+    {
+      id: 'photos',
+      title: 'Photos',
+      hint: 'These replace the built-in photos or add an optional ministry photo. The Get Involved and Visit photo slots stay out of the layout until you add one.',
+      fields: [
+        { key: 'photo_welcome', label: 'Home welcome photo', type: 'image', def: '' },
+        { key: 'photo_visit', label: 'Visit welcome photo', type: 'image', def: '' },
+        { key: 'photo_staff_group', label: 'Staff group photo', type: 'image', def: '' },
+        { key: 'photo_gi_kids', label: 'Get Involved: Sunday School photo', type: 'image', def: '' },
+        { key: 'photo_gi_youth', label: 'Get Involved: Youth Ministry photo', type: 'image', def: '' },
+        { key: 'photo_gi_groups', label: 'Get Involved: H.O.P.E. Recovery photo', type: 'image', def: '' },
+        { key: 'photo_gi_van', label: 'Get Involved: Van Ministry photo', type: 'image', def: '' },
+        { key: 'photo_gi_menswomens', label: 'Get Involved: Soul-Winning Visitation photo', type: 'image', def: '' },
+        { key: 'photo_gi_missions', label: 'Get Involved: Missions photo', type: 'image', def: '' },
+        { key: 'photo_gi_music', label: 'Get Involved: Music & Choir photo', type: 'image', def: '' },
+        { key: 'photo_podcast', label: 'Podcast cover art (Messages)', type: 'image', def: '' },
+      ],
+    },
+    {
+      id: 'staff',
+      title: 'Staff',
+      hint: 'Names, roles, bios and portraits for the Our Staff page.',
+      fields: [
+        { key: 'pastor_name', label: 'Lead pastor name', type: 'text', def: 'Pastor J. Bret Wiley' },
+        { key: 'pastor_role', label: 'Lead pastor role', type: 'text', def: 'Pastor' },
+        { key: 'pastor_bio', label: 'Lead pastor bio', type: 'multiline', def: 'Pastor Wiley shepherds Fairview Baptist Temple, preaching from the King James Bible and serving the families of Clay County. Edit this bio in Studio to tell his story.' },
+        { key: 'pastor_photo', label: 'Lead pastor photo', type: 'image', def: '' },
+
+        { key: 'staff1_name', label: 'Staff 1 name', type: 'text', def: '[Staff member name]' },
+        { key: 'staff1_role', label: 'Staff 1 role', type: 'text', def: '[Role]' },
+        { key: 'staff1_bio', label: 'Staff 1 bio', type: 'multiline', def: '[Add a short bio for this team member in Studio, or leave these placeholder cards until you are ready.]' },
+        { key: 'staff1_photo', label: 'Staff 1 photo', type: 'image', def: '' },
+
+        { key: 'staff2_name', label: 'Staff 2 name', type: 'text', def: '[Staff member name]' },
+        { key: 'staff2_role', label: 'Staff 2 role', type: 'text', def: '[Role]' },
+        { key: 'staff2_bio', label: 'Staff 2 bio', type: 'multiline', def: '[Add a short bio for this team member in Studio.]' },
+        { key: 'staff2_photo', label: 'Staff 2 photo', type: 'image', def: '' },
+
+        { key: 'staff3_name', label: 'Staff 3 name', type: 'text', def: '[Staff member name]' },
+        { key: 'staff3_role', label: 'Staff 3 role', type: 'text', def: '[Role]' },
+        { key: 'staff3_bio', label: 'Staff 3 bio', type: 'multiline', def: '[Add a short bio for this team member in Studio.]' },
+        { key: 'staff3_photo', label: 'Staff 3 photo', type: 'image', def: '' },
+      ],
+    },
+    {
+      id: 'text',
+      title: 'Headlines & copy',
+      hint: 'Wrap one word in *asterisks* to make it the teal accent word, e.g. lift up mine eyes unto the *hills*.',
+      fields: [
+        { key: 'home_hero_heading', label: 'Home hero headline', type: 'rich', def: 'I will lift up mine eyes unto the *hills.*' },
+        { key: 'home_hero_sub', label: 'Home hero subtext', type: 'multiline', def: 'Fairview Baptist Temple is an independent Baptist church on Main Street in Clay, West Virginia. Old fashioned singing, preaching from the King James Bible, and a seat saved for you this Sunday.' },
+        { key: 'home_welcome_heading', label: 'Home welcome heading', type: 'text', def: 'Welcome home to Fairview.' },
+        { key: 'home_welcome_body', label: 'Home welcome paragraph', type: 'multiline', def: 'We are a church family in the hills of Clay County that believes the Bible, loves people, and preaches Christ crucified, buried, and risen again. However you come and whatever you carry, you will find a warm welcome, honest preaching, and a place to belong.' },
+        { key: 'beliefs_faith', label: 'Beliefs: Our Faith', type: 'multiline', def: 'We are an independent, fundamental Baptist church that stands on the King James Bible as the preserved Word of God, cherishing its unchanging truths without compromise.' },
+        { key: 'beliefs_purpose', label: 'Beliefs: Our Purpose', type: 'multiline', def: 'Sharing the message of salvation through Jesus Christ, we nurture faith, build strong families, and reach our community and the world with the gospel.' },
+        { key: 'beliefs_calling', label: 'Beliefs: Our Calling', type: 'multiline', def: "Called to worship and serve in spirit and truth, we are a refuge for the hurting, a help for the struggling, and a beacon of God's Word in Clay County." },
+        { key: 'beliefs_hope', label: 'Beliefs: Our Hope', type: 'multiline', def: 'The Bible teaches that all have sinned and are in need of salvation. Jesus loves you and has made a way for you to be saved. Accept His gift of grace today.' },
+      ],
+    },
+    {
+      id: 'facts',
+      title: 'Facts & service times',
+      hint: 'These update everywhere they appear on the site.',
+      fields: [
+        { key: 'contact_address', label: 'Street address', type: 'text', def: '2294 Main Street' },
+        { key: 'contact_city', label: 'City, state ZIP', type: 'text', def: 'Clay, WV 25043' },
+        { key: 'contact_phone', label: 'Phone', type: 'text', def: '304-587-4709' },
+        { key: 'contact_email', label: 'Email', type: 'text', def: '[Church email address]' },
+        { key: 'time_sunday_school', label: 'Sunday School time', type: 'text', def: '10:00am' },
+        { key: 'time_worship', label: 'Worship time', type: 'text', def: '11:00am' },
+        { key: 'time_evening', label: 'Sunday evening time', type: 'text', def: '6:00pm' },
+        { key: 'time_midweek', label: 'Midweek (Wednesday) time', type: 'text', def: '7:00pm' },
+      ],
+    },
+    {
+      id: 'links',
+      title: 'Links',
+      hint: 'Paste full URLs that start with https://. Leave a field blank to keep the site\'s built-in link.',
+      fields: [
+        { key: 'give_link', label: 'Online giving link', type: 'link', def: '' },
+        { key: 'podcast_apple', label: 'Apple Podcasts link', type: 'link', def: '' },
+        { key: 'podcast_spotify', label: 'Spotify link', type: 'link', def: '' },
+        { key: 'podcast_rss', label: 'Podcast RSS link', type: 'link', def: '' },
+        { key: 'podcast_general', label: 'Podcast main link (Listen/Subscribe buttons)', type: 'link', def: '' },
+        { key: 'youtube_url', label: 'YouTube channel URL', type: 'link', def: 'https://www.youtube.com/@FairviewBaptistTemple' },
+        { key: 'facebook_url', label: 'Facebook URL', type: 'link', def: 'https://www.facebook.com/FairviewBaptistTemple' },
+        { key: 'instagram_url', label: 'Instagram URL', type: 'link', def: 'https://www.instagram.com/fairviewbaptisttemple' },
+        { key: 'tiktok_url', label: 'TikTok URL (optional)', type: 'link', def: '' },
+        { key: 'live_channel_id', label: 'YouTube channel ID for live embed (starts with UC...)', type: 'text', def: '' },
+      ],
+    },
+  ],
+
+  // Sermons live in their own table and are organized in Studio.
+  sermonFields: [
+    { key: 'title', label: 'Title', type: 'text' },
+    { key: 'series', label: 'Series', type: 'text' },
+    { key: 'book', label: 'Bible book', type: 'book' },
+    { key: 'reference', label: 'Scripture reference', type: 'text' },
+    { key: 'topics', label: 'Topics / subjects', type: 'tags' },
+    { key: 'speaker', label: 'Speaker', type: 'text', def: 'Pastor J. Bret Wiley' },
+    { key: 'preached_on', label: 'Date preached', type: 'date' },
+    { key: 'video_url', label: 'Video / listen link', type: 'link' },
+    { key: 'thumb_url', label: 'Thumbnail image', type: 'image' },
+    { key: 'featured', label: 'Show as the featured (latest) message', type: 'bool' },
+  ],
+
+  // The 66 books of the Bible, in order (for the sermon Book dropdown + scripture sorting).
+  books: [
+    'Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth',
+    '1 Samuel','2 Samuel','1 Kings','2 Kings','1 Chronicles','2 Chronicles','Ezra','Nehemiah',
+    'Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah',
+    'Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum',
+    'Habakkuk','Zephaniah','Haggai','Zechariah','Malachi','Matthew','Mark','Luke','John','Acts',
+    'Romans','1 Corinthians','2 Corinthians','Galatians','Ephesians','Philippians','Colossians',
+    '1 Thessalonians','2 Thessalonians','1 Timothy','2 Timothy','Titus','Philemon','Hebrews',
+    'James','1 Peter','2 Peter','1 John','2 John','3 John','Jude','Revelation',
+  ],
+
+  // Suggested subjects (the church can type any others too).
+  topicsSuggested: [
+    'Salvation','Faith','Prayer','Grace','Hope','Love','Family','Marriage','Forgiveness',
+    'Worship','Discipleship','The Gospel','Holiness','Suffering','Heaven','Stewardship',
+    'Evangelism','The Church','Holy Spirit','Repentance',
+  ],
+};
+
+// Flat lookup of every field default, for convenience.
+window.FBT_SCHEMA.defaults = (function () {
+  var d = {};
+  window.FBT_SCHEMA.groups.forEach(function (g) {
+    g.fields.forEach(function (f) { d[f.key] = f.def || ''; });
+  });
+  return d;
+})();

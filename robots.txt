@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /studio.html
+Disallow: /studio
+
+Sitemap: https://fairviewbaptisttemple.com/sitemap.xml

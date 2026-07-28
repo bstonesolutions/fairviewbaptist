@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Manage My Giving | Fairview Baptist Temple, Clay WV</title>
+  <meta name="description" content="Privately view your Square giving receipts and manage a monthly gift to Fairview Baptist Temple in Clay, West Virginia.">
+  <link rel="canonical" href="https://fairviewbaptisttemple.com/manage-giving">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#14424A">
+  <link rel="icon" href="/favicon.png" type="image/png" sizes="512x512">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/manage-giving.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to giving details</a>
+  <header class="portal-head">
+    <a href="/" class="portal-brand" aria-label="Fairview Baptist Temple home">
+      <span class="portal-logo"><img src="/assets/logo-full-color.png?v=1" alt="Fairview Baptist Temple"></span>
+      <span class="portal-wordmark"><strong>My Giving</strong><small>Private donor access</small></span>
+    </a>
+    <a class="portal-back" href="/give" aria-label="Back to giving"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6 6-6-6 6-6"/></svg><span>Back to giving</span></a>
+  </header>
+
+  <main id="main">
+    <div class="portal-waves" aria-hidden="true">
+      <svg viewBox="0 0 1440 220" preserveAspectRatio="none"><path d="M-20 148 L160 66 L310 120 L480 42 L660 128 L850 58 L1040 136 L1240 80 L1460 134"/></svg>
+      <svg viewBox="0 0 1440 220" preserveAspectRatio="none"><path d="M-20 164 L150 98 L300 150 L470 74 L650 154 L840 90 L1030 160 L1230 106 L1460 152"/></svg>
+    </div>
+    <section class="portal-intro">
+      <span class="portal-kick"><i></i> Secure giving access</span>
+      <h1>Your giving, in one <em>private place.</em></h1>
+      <p>View your Square receipts and safely manage an automatic monthly gift to Fairview Baptist Temple.</p>
+      <div class="trust-row" aria-label="Security information">
+        <span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Private email link</span>
+        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>Square stays in control</span>
+        <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v10H4zM4 10h16"/></svg>No card details shown</span>
+      </div>
+    </section>
+
+    <section class="portal-shell" aria-live="polite">
+      <div class="portal-state" id="request-view">
+        <div class="state-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg></div>
+        <span class="portal-kick centered">Start securely</span>
+        <h2>Email me my private link</h2>
+        <p class="state-copy">Enter the same email used when you gave. If it matches a Square giving record, we will email a private link that expires in 30 minutes.</p>
+        <form id="access-form" class="access-form" novalidate>
+          <label for="access-email">Giving email</label>
+          <div class="email-row">
+            <div class="email-field"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg><input id="access-email" type="email" name="email" autocomplete="email" inputmode="email" placeholder="you@example.com" required aria-describedby="access-help access-error"></div>
+            <button class="primary-btn" type="submit"><span>Email my link</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+          </div>
+          <div class="trap" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+          <p id="access-error" class="form-error" role="alert" hidden></p>
+          <p id="access-help" class="form-help">For your privacy, the page will look the same whether or not that email has a record.</p>
+        </form>
+      </div>
+
+      <div class="portal-state" id="sent-view" hidden>
+        <div class="state-icon success"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></div>
+        <span class="portal-kick centered">Check your inbox</span>
+        <h2>Your request is complete</h2>
+        <p class="state-copy">If that email matches a giving record, a private link is on its way. It may take a minute. Check spam or promotions if you do not see it.</p>
+        <div class="state-actions"><a class="primary-btn" href="/give">Back to giving</a><button class="text-btn" id="request-again" type="button">Use a different email</button></div>
+      </div>
+
+      <div class="portal-state loading-state" id="loading-view" hidden>
+        <div class="portal-spinner" aria-hidden="true"></div>
+        <span class="portal-kick centered">Opening securely</span>
+        <h2>Loading your giving</h2>
+        <p class="state-copy">We are checking this private link with Square.</p>
+        <div class="loading-bars" aria-hidden="true"><i></i><i></i><i></i></div>
+      </div>
+
+      <div class="portal-state" id="expired-view" hidden>
+        <div class="state-icon warning"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v5m0 3h.01"/><path d="M10.3 3.7 2.6 17a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.7a2 2 0 0 0-3.4 0Z"/></svg></div>
+        <span class="portal-kick centered">Link unavailable</span>
+        <h2>Let us send a fresh link</h2>
+        <p class="state-copy" id="expired-copy">This private link has expired or is no longer valid. Request a new one to continue.</p>
+        <button class="primary-btn" id="new-link" type="button">Request a new link</button>
+      </div>
+
+      <div class="portal-state" id="unavailable-view" hidden>
+        <div class="state-icon warning"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v5m0 3h.01"/><path d="M10.3 3.7 2.6 17a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.7a2 2 0 0 0-3.4 0Z"/></svg></div>
+        <span class="portal-kick centered">Square is taking a moment</span>
+        <h2>Your private link is still safe</h2>
+        <p class="state-copy" id="unavailable-copy">Giving records could not be loaded right now. Your private link has not been cleared.</p>
+        <div class="state-actions"><button class="primary-btn" id="retry-access" type="button">Try loading again</button><button class="text-btn" id="fresh-link" type="button">Request a fresh link</button></div>
+      </div>
+
+      <div id="portal-view" hidden>
+        <div class="account-head">
+          <div><span class="portal-kick">Private giving overview</span><h2 id="welcome-title">Welcome back</h2><p id="account-email"></p></div>
+          <div class="account-session"><span><i></i>Private session</span><small id="session-time">Link expires soon</small><button id="sign-out" type="button">Close my records</button></div>
+        </div>
+
+        <div class="summary-grid" id="summary-grid">
+          <article><span>Given in the last 12 months</span><strong id="summary-given">$0.00</strong><small>Completed Square gifts, less refunds</small></article>
+          <article><span>Receipts available</span><strong id="summary-receipts">0</strong><small>Square receipt history found</small></article>
+          <article><span>Monthly gifts</span><strong id="summary-monthly">0</strong><small>Current or scheduled records</small></article>
+        </div>
+
+        <section class="giving-section" aria-labelledby="monthly-title">
+          <div class="section-head"><div><span class="portal-kick">Automatic giving</span><h3 id="monthly-title">Monthly gifts</h3><p>Pause, resume, change, or cancel a gift. Square applies every change securely.</p></div><span class="section-count" id="monthly-count">0 found</span></div>
+          <div class="monthly-list" id="monthly-list"></div>
+        </section>
+
+        <section class="giving-section receipts-section" aria-labelledby="receipts-title">
+          <div class="section-head"><div><span class="portal-kick">Giving history</span><h3 id="receipts-title">Square receipts</h3><p>Your completed online gifts, newest first.</p></div><span class="section-count" id="receipt-count">0 found</span></div>
+          <div class="history-notice" id="history-notice" role="note" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8v5m0 3h.01"/><circle cx="12" cy="12" r="9"/></svg><div><strong>Earlier receipts may also be available</strong><p>Square returned its newest records for this private session. Contact Fairview Baptist Temple if you need an older receipt that is not shown.</p></div></div>
+          <div class="receipt-list" id="receipt-list"></div>
+        </section>
+
+        <aside class="help-card"><div class="help-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15a4 4 0 0 1-4 4H8l-4 3V7a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4z"/></svg></div><div><strong>Need help with a giving record?</strong><p>Contact Fairview Baptist Temple and we will help you sort it out personally.</p></div><a href="/contact">Contact us</a></aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="portal-foot"><span>Fairview Baptist Temple, Clay, West Virginia</span><span>2294 Main Street, Clay, WV 25043 &middot; PO Box 700, Clay, WV 25043</span><a href="/privacy">Privacy</a></footer>
+
+  <dialog id="manage-dialog" class="manage-dialog" aria-labelledby="dialog-title">
+    <form method="dialog" class="dialog-card" id="manage-form">
+      <button class="dialog-close" id="dialog-x" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+      <div class="dialog-icon" id="dialog-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
+      <span class="portal-kick centered" id="dialog-kick">Monthly giving</span>
+      <h2 id="dialog-title">Manage monthly gift</h2>
+      <p id="dialog-copy" class="dialog-copy"></p>
+      <div id="dialog-fields"></div>
+      <p id="dialog-error" class="form-error dialog-error" role="alert" hidden></p>
+      <div class="dialog-actions"><button class="secondary-btn" value="close" type="button" id="dialog-cancel">Keep it as is</button><button class="primary-btn" type="submit" id="dialog-confirm">Confirm</button></div>
+      <p class="dialog-note"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>This change goes directly to Square. Your card details stay private.</p>
+    </form>
+  </dialog>
+
+  <div class="toast" id="portal-toast" role="status" aria-live="polite" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg><span></span></div>
+  <script src="/assets/manage-giving.js"></script>
+</body>
+</html>
