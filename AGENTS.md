@@ -62,8 +62,9 @@ static site), so do not run `npm run build`. Verify changes on the live site aft
   and Supabase `submissions`.
 
 ## Navigation
-Grouped dropdowns: **Visit ▾** (Plan a Visit / Service Times / What We Believe) ·
-**The Overlook** (direct link to `/watch`, styled as a pill via `.nav-stream`) ·
-**Connect ▾** (Next Steps / Events / Blog / Missions / Get Involved / Prayer) ·
-**About ▾** (Our Staff / Contact) · **Give** (button). Mobile is a full-screen `.msheet`
-overlay menu (toggled by the floating button; `assets/site.js`).
+Flat links, no dropdowns: **Visit** (`/visit`) · **The Overlook** (`/watch`) ·
+**Ministries** (`/get-involved`) · **Beliefs** (`/beliefs`) · **Contact** (`/contact`) ·
+**Give** (button). Blog and Prayer are retired from navigation, the footer, and the
+sitemap; their pages remain reachable at `/blog` and `/prayer`. Mobile is a full-screen
+`.msheet` overlay (same list plus Events, Missions, and Our Staff), toggled by the
+header hamburger (`assets/site.js`).
