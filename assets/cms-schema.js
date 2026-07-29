@@ -99,11 +99,11 @@ window.FBT_SCHEMA = {
     {
       id: 'text',
       title: 'Headlines & copy',
-      hint: 'Wrap one word in *asterisks* to make it the teal accent word, e.g. lift up mine eyes unto the *hills*.',
+      hint: 'Wrap words in *asterisks* to make them the teal accent line, e.g. Fairview *Baptist Temple*.',
       fields: [
-        { key: 'home_hero_heading', label: 'Home hero headline', type: 'rich', def: 'I will lift up mine eyes unto the *hills.*' },
-        { key: 'home_hero_sub', label: 'Home hero subtext', type: 'multiline', def: 'Fairview Baptist Temple is an independent Baptist church on Main Street in Clay, West Virginia. Old fashioned singing, preaching from the King James Bible, and a seat saved for you this Sunday.' },
-        { key: 'home_welcome_heading', label: 'Home welcome heading', type: 'text', def: 'Welcome home to Fairview.' },
+        { key: 'home_hero_heading', label: 'Home hero headline', type: 'rich', def: 'Fairview *Baptist Temple*' },
+        { key: 'home_hero_sub', label: 'Home hero subtext', type: 'multiline', def: 'An independent Baptist church on Main Street in Clay, West Virginia. Old fashioned singing, preaching from the King James Bible, and a seat saved for you this Sunday.' },
+        { key: 'home_welcome_heading', label: 'Home welcome heading', type: 'text', def: 'A church family in the hills' },
         { key: 'home_welcome_body', label: 'Home welcome paragraph', type: 'multiline', def: 'We are a church family in the hills of Clay County that believes the Bible, loves people, and preaches Christ crucified, buried, and risen again. However you come and whatever you carry, you will find a warm welcome, honest preaching, and a place to belong.' },
         { key: 'beliefs_faith', label: 'Beliefs: Our Faith', type: 'multiline', def: 'We are an independent, fundamental Baptist church that stands on the King James Bible as the preserved Word of God, cherishing its unchanging truths without compromise.' },
         { key: 'beliefs_purpose', label: 'Beliefs: Our Purpose', type: 'multiline', def: 'Sharing the message of salvation through Jesus Christ, we nurture faith, build strong families, and reach our community and the world with the gospel.' },

@@ -31,7 +31,7 @@
 .message-error-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:28px}
 
 .message-heading{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,360px);gap:54px;align-items:end;margin-bottom:30px}
-.message-heading-main h1{max-width:18ch;margin-top:15px;font-family:"Fraunces",serif;font-size:clamp(2.4rem,6vw,4.4rem);font-weight:600;line-height:1.06;text-wrap:balance}
+.message-heading-main h1{max-width:18ch;margin-top:15px;font-family:"Montserrat",sans-serif;font-size:clamp(2.4rem,6vw,4.4rem);font-weight:600;line-height:1.06;text-wrap:balance}
 .message-intro{max-width:68ch;margin:20px 0 0;color:var(--mut);font-size:clamp(1rem,1.65vw,1.14rem);line-height:1.65}
 .message-meta-strip{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:9px;padding-bottom:4px}
 .message-meta-pill{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:7px 12px;border:1px solid rgba(15,102,99,.24);border-radius:999px;background:rgba(23,126,121,.08);color:var(--brand);font-family:"Source Sans 3",sans-serif;font-size:.73rem;font-weight:600;letter-spacing:.09em;line-height:1.2;text-transform:uppercase}

@@ -17,7 +17,7 @@ async function sendGivingReceipt(o) {
       '<div style="max-width:520px;margin:0 auto;font-family:\'Source Sans 3\',Arial,Helvetica,sans-serif;color:#1F3238;">' +
         '<div style="text-align:center;padding:8px 0 20px;"><img src="https://fairviewbaptisttemple.com/assets/logo-full-color.png" alt="Fairview Baptist Temple" style="height:44px;width:auto;"></div>' +
         '<div style="background:#FAF6ED;border:1px solid #E4DCC9;border-radius:14px;padding:28px 26px;">' +
-          '<h1 style="margin:0 0 6px;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:20px;color:#14424A;">Thank you for your gift</h1>' +
+          '<h1 style="margin:0 0 6px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:20px;color:#14424A;">Thank you for your gift</h1>' +
           '<p style="margin:0 0 18px;color:#4C5B4F;font-size:15px;line-height:1.5;">' + hi + ' we received your gift to Fairview Baptist Temple. Your generosity helps carry the gospel here in Clay, West Virginia and around the world. Please keep this email as your receipt.</p>' +
           '<table style="width:100%;border-collapse:collapse;border-top:1px solid #E4DCC9;">' +
             row('Amount', amount) +

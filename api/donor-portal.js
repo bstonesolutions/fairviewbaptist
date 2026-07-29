@@ -460,7 +460,7 @@ async function sendAccessEmail(email, name, access, expiresAt) {
     '<div style="text-align:center;padding:8px 0 20px;"><img src="https://fairviewbaptisttemple.com/assets/logo-full-color.png" alt="Fairview Baptist Temple" style="height:44px;width:auto;"></div>' +
     '<div style="background:#FAF6ED;border:1px solid #E4DCC9;border-radius:14px;padding:30px 27px;">' +
     '<p style="margin:0 0 12px;color:#4C5B4F;font-size:15px;line-height:1.6;">' + greeting + '</p>' +
-    '<h1 style="margin:0 0 10px;font-family:Fraunces,Georgia,serif;font-weight:600;font-size:23px;color:#14424A;">Your private giving link</h1>' +
+    '<h1 style="margin:0 0 10px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:23px;color:#14424A;">Your private giving link</h1>' +
     '<p style="margin:0 0 24px;color:#4C5B4F;font-size:15px;line-height:1.6;">Use this private link to view your Square receipts and manage a monthly gift to Fairview Baptist Temple. It expires in 30 minutes.</p>' +
     '<p style="margin:0;text-align:center;"><a href="' + esc(url) + '" style="display:inline-block;background:#177E79;color:#FCF8EE;text-decoration:none;font-weight:700;padding:14px 24px;border-radius:10px;">Open my giving</a></p>' +
     '<p style="margin:22px 0 0;color:#7C8578;font-size:12px;line-height:1.5;">If you did not request this link, you can safely ignore this email. Do not forward it to anyone.</p>' +

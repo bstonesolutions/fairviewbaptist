@@ -23,9 +23,7 @@ static site), so do not run `npm run build`. Verify changes on the live site aft
   `--paper:#FAF6ED` cream page background, `--brand:#177E79` primary (hover `--brand2:#1E938C`),
   `--accent:#0F6663` accent on light, `--aqua:#7FD1CB` accent on dark, `--tx:#1F3238` ink,
   `--mut`, `--line`. Dark contexts (sticky header, heroes, verse band, media players, missions
-  map, footer) are limited to media surfaces (video players, missions map, photo placeholders) using the deep teal family (`--dsea:#0D2733`, `--dsea2:#14424A`, `--dsea3:#1B5D60`); heroes, the verse band, and the footer are light, and heroes flip to light-on-dark only when Studio sets a hero photo (`.has-cms-photo`). The logo navy `#223A5E` is reserved for the call-to-action band. Fonts: **Fraunces** for display headings (serif, normal case,
-  no uppercase) and **Source Sans 3** for body and labels. Buttons are 10px-radius rectangles
-  (`.btn.btn-b` teal), not pills. Reuse existing classes; don't introduce a new look.
+  map, footer) are limited to media surfaces (video players, missions map, photo placeholders) using the deep teal family (`--dsea:#0D2733`, `--dsea2:#14424A`, `--dsea3:#1B5D60`); heroes, the verse band, and the footer are light, and heroes flip to light-on-dark only when Studio sets a hero photo (`.has-cms-photo`). Headings use the logo navy `--navy:#223A5E`; the times strip and H.O.P.E. band use `--teal:#29A5A0`. Fonts: **Montserrat 800/900 uppercase** for display headings, **Mrs Saint Delafield** for the script kicker accents (`.kick`), and **Source Sans 3** for body and labels. Buttons are square (`border-radius:0`) uppercase Montserrat rectangles (`.btn.btn-b` teal, `.btn-o` navy outline), not pills. Reuse existing classes; don't introduce a new look.
 - **Secrets**: every env var lives in Vercel, never in the repo (`SQUARE_ACCESS_TOKEN`,
   `RESEND_API_KEY`, `RESEND_FROM`, `NOTIFY_TO`, `YT_API_KEY`, `ANTHROPIC_*`, etc.). Never hardcode.
 - **Mobile cannot be previewed in a headless browser**: test real changes on an actual phone
@@ -62,9 +60,11 @@ static site), so do not run `npm run build`. Verify changes on the live site aft
   and Supabase `submissions`.
 
 ## Navigation
-Flat links, no dropdowns: **Visit** (`/visit`) · **The Overlook** (`/watch`) ·
-**Ministries** (`/get-involved`) · **Beliefs** (`/beliefs`) · **Contact** (`/contact`) ·
-**Give** (button). Blog and Prayer are retired from navigation, the footer, and the
-sitemap; their pages remain reachable at `/blog` and `/prayer`. Mobile is a full-screen
-`.msheet` overlay (same list plus Events, Missions, and Our Staff), toggled by the
+Grouped dropdowns (CSS-only hover/focus, `li.has-menu > button.nav-top + .nav-dd`):
+**Visit** ▾ (Plan a Visit `/visit`, Service Times `/visit#service-times`, What We
+Believe `/beliefs`) · **The Overlook** (`/watch`) · **Connect** ▾ (Next Steps, Events,
+Missions, Get Involved) · **About** ▾ (Our Staff, Contact) · **Give** (button). Blog and
+Prayer are retired from navigation, the footer, and the sitemap; their pages remain
+reachable at `/blog` and `/prayer`. Mobile is a full-screen `.msheet` overlay with
+script-font group headers (`.msh-h`) and indented links (`.msh-sub`), toggled by the
 header hamburger (`assets/site.js`).
