@@ -73,7 +73,7 @@
     square_location_id: '',
     square_env: 'production',
     square_plan_id: '',
-    give_link: '',
+    give_link: 'https://secure.anedot.com/fairview-baptist-temple/give',
   };
 
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -234,6 +234,17 @@
     if (field) { field.hidden = true; field.classList.remove('is-loading'); }
     if (button) button.hidden = true;
     if (retry) { retry.disabled = false; retry.textContent = 'Try card again'; }
+    // Without Square configured there is nothing to retry or check out with;
+    // the hosted giving page link is the one real action.
+    var noSquare = !squareCfg || !nn(squareCfg.square_app_id) || !nn(squareCfg.square_location_id);
+    var checkout = $('give-card-checkout'), title = $('give-card-setup-title');
+    if (noSquare) {
+      if (checkout) checkout.hidden = true;
+      if (retry) retry.hidden = true;
+      if (title) title.textContent = 'Give online in a few taps.';
+      var secure = document.querySelector('.give-secure');
+      if (secure) secure.hidden = true;
+    }
   }
   function disposeCard(card) {
     if (!card || !card.destroy) return Promise.resolve();
@@ -279,7 +290,7 @@
     if (useHostedCheckout() || frequency === 'monthly') { squareCfg = cfg || squareCfg || GIVE_DEFAULTS; return; }
     if (squareStarting) { if (cfg) pendingSquareCfg = cfg; return; }
     squareCfg = cfg || squareCfg || GIVE_DEFAULTS;
-    if (!nn(squareCfg.square_app_id) || !nn(squareCfg.square_location_id)) { showCardSetup('The card connection is missing. Please use the backup giving option or contact us.'); return; }
+    if (!nn(squareCfg.square_app_id) || !nn(squareCfg.square_location_id)) { showCardSetup('Card giving on this page is coming soon. Use the Give online button below and your gift goes through our secure giving page.'); return; }
     squareStarting = true; setCardLoading();
     var sandbox = String(squareCfg.square_env || '').toLowerCase() === 'sandbox';
     var src = sandbox ? 'https://sandbox.web.squarecdn.com/v1/square.js' : 'https://web.squarecdn.com/v1/square.js';
@@ -294,7 +305,7 @@
     ensureSquareScript(src).then(function () { return initSquare(squareCfg); }).then(function () {
       finishStart();
     }).catch(function () {
-      showCardSetup('The secure card form could not connect. Check your signal and try again, or use the backup giving option.');
+      showCardSetup('The secure card form could not connect. Check your signal and try again, or use the Give online button below.');
       finishStart();
     });
   }

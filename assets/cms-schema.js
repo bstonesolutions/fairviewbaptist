@@ -131,7 +131,7 @@ window.FBT_SCHEMA = {
       title: 'Links',
       hint: 'Paste full URLs that start with https://. Leave a field blank to keep the site\'s built-in link.',
       fields: [
-        { key: 'give_link', label: 'Online giving link', type: 'link', def: '' },
+        { key: 'give_link', label: 'Online giving link (Anedot)', type: 'link', def: 'https://secure.anedot.com/fairview-baptist-temple/give' },
 
 
 
