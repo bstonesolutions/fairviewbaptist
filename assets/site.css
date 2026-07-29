@@ -10,13 +10,13 @@
    call-to-action band. A Studio hero photo flips that hero to
    light-on-dark via .has-cms-photo.
    ============================================================ */
-:root{--paper:#FAF6ED;--paper2:#F2ECDD;--sage:#E6F1EE;--panel:#FFFFFF;--tx:#16212B;--mut:rgba(22,33,43,.72);--line:rgba(22,33,43,.13);--brand:#1A9088;--brand2:#177E79;--teal:#29A5A0;--navy:#223A5E;--accent:#177E79;--accent2:#1A9088;--aqua:#7FD1CB;--dsea:#0D2733;--dsea2:#14424A;--dsea3:#1B5D60;--dtx:#FFF8EA;--dmut:rgba(255,248,234,.78);--dline:rgba(255,248,234,.16);--maxw:1200px;}
+:root{--paper:#FAF6ED;--paper2:#F2ECDD;--sage:#E6F1EE;--panel:#FFFFFF;--tx:#16212B;--mut:rgba(22,33,43,.72);--line:rgba(22,33,43,.13);--brand:#1A9088;--brand2:#177E79;--teal:#29A5A0;--navy:#223A5E;--accent:#177E79;--accent2:#1A9088;--aqua:#7FD1CB;--dsea:#0D2733;--dsea2:#14424A;--dsea3:#1B5D60;--dtx:#FFF8EA;--dmut:rgba(255,248,234,.78);--dline:rgba(255,248,234,.16);--maxw:1200px;--font-display:"Montserrat",sans-serif;--font-display-wt:900;--font-script:"Mrs Saint Delafield",cursive;}
 *{box-sizing:border-box;}html{scroll-behavior:smooth;}
 body{margin:0;background:var(--paper);color:var(--tx);font-family:"Source Sans 3",system-ui,sans-serif;font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
 a{color:inherit;text-decoration:none;}img{max-width:100%;display:block;}[hidden]{display:none!important;}
-h1,h2,h3{margin:0;font-family:"Montserrat",sans-serif;font-weight:900;line-height:1.08;letter-spacing:.02em;text-transform:uppercase;color:var(--navy);}
+h1,h2,h3{margin:0;font-family:var(--font-display);font-weight:var(--font-display-wt);line-height:1.08;letter-spacing:.02em;text-transform:uppercase;color:var(--navy);}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
-.kick{display:inline-flex;align-items:center;font-family:"Mrs Saint Delafield",cursive;font-size:1.9rem;line-height:1.1;letter-spacing:0;color:var(--teal);text-transform:none;}
+.kick{display:inline-flex;align-items:center;font-family:var(--font-script);font-size:1.9rem;line-height:1.1;letter-spacing:0;color:var(--teal);text-transform:none;}
 em{font-style:normal;color:var(--brand);}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:"Montserrat",sans-serif;font-weight:800;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;padding:16px 30px;border-radius:0;cursor:pointer;border:2px solid transparent;transition:transform .25s,background .25s,box-shadow .25s,border-color .25s,color .25s;}
 .btn-b{background:var(--brand);color:#fff;box-shadow:0 10px 26px rgba(26,144,136,.24);}.btn-b:hover{background:var(--brand2);transform:translateY(-2px);}
@@ -67,7 +67,7 @@ header.solid{box-shadow:0 8px 30px rgba(31,50,56,.09);}
 .nav-dd a:hover{background:rgba(23,126,121,.14);color:var(--tx);}
 .nav-dd a.active{color:var(--accent);background:rgba(23,126,121,.1);}
 /* grouped mobile menu (msheet): section headers + indented links */
-.msheet .msh-h{font-family:"Mrs Saint Delafield",cursive;font-size:1.5rem;color:var(--teal);padding:18px 0 0;border:none;}
+.msheet .msh-h{font-family:var(--font-script);font-size:1.5rem;color:var(--teal);padding:18px 0 0;border:none;}
 .msheet .msh-h:first-child{padding-top:2px;}
 .msheet a.msh-sub{padding-left:16px;}
 .msheet a.active{color:var(--accent);}
@@ -266,7 +266,7 @@ header.solid{box-shadow:0 8px 30px rgba(31,50,56,.09);}
 .vb .ref{font-family:"Source Sans 3";font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--mut);margin-top:24px;font-size:.95rem;}
 
 .cta-band{background:radial-gradient(90% 100% at 85% 0%,rgba(127,209,203,.18),transparent 55%),linear-gradient(135deg,#24466B,#16304D);color:#F5FAF7;text-align:center;}
-.cta-band h2{font-family:"Montserrat",sans-serif;font-weight:900;font-size:clamp(2.2rem,5.2vw,4rem);color:#F5FAF7;}
+.cta-band h2{font-family:var(--font-display);font-weight:var(--font-display-wt);font-size:clamp(2.2rem,5.2vw,4rem);color:#F5FAF7;}
 .cta-band em{color:var(--aqua);}
 .cta-band p{font-family:"Source Sans 3";font-weight:600;font-size:1.18rem;letter-spacing:.06em;text-transform:uppercase;margin:14px 0 30px;color:rgba(245,250,247,.85);}
 .cta-band .btn-d{background:#0D2733;color:#F5FAF7;}.cta-band .btn-d:hover{background:#14424A;transform:translateY(-2px);}
@@ -1242,6 +1242,7 @@ html.kiosk .miss-modal-photo{height:300px;}
 .strip .st b{color:#0E3A44;font-weight:900;}
 .strip small{display:block;margin-top:7px;font-family:"Montserrat",sans-serif;font-weight:600;font-size:.76rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.75);}
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);}
+.tile .tile-bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
 .tile{position:relative;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;text-decoration:none;overflow:hidden;background-size:cover;background-position:center;}
 .tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,32,40,.36),rgba(14,32,40,.6));transition:opacity .3s;}
 .tile:hover::after{opacity:.72;}

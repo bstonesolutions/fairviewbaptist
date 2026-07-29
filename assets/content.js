@@ -111,7 +111,52 @@
     return img;
   }
 
+  // ---------- site style: owner-picked fonts and colors ----------
+  var HEAD_FONTS = {
+    oswald: { css: 'family=Oswald:wght@500;600;700', fam: '"Oswald",sans-serif', wt: '700' },
+    archivo: { css: 'family=Archivo+Black', fam: '"Archivo Black",sans-serif', wt: '400' },
+    bebas: { css: 'family=Bebas+Neue', fam: '"Bebas Neue",sans-serif', wt: '400' }
+  };
+  var SCRIPT_FONTS = {
+    greatvibes: { css: 'family=Great+Vibes', fam: '"Great Vibes",cursive' },
+    dancing: { css: 'family=Dancing+Script:wght@600;700', fam: '"Dancing Script",cursive' },
+    allura: { css: 'family=Allura', fam: '"Allura",cursive' }
+  };
+  function loadFontCss(query) {
+    if (!query) return;
+    var id = 'fbt-font-' + query.replace(/\W+/g, '');
+    if (document.getElementById(id)) return;
+    var link = document.createElement('link');
+    link.id = id; link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?' + query + '&display=swap';
+    document.head.appendChild(link);
+  }
+  function hexOk(v) { return /^#[0-9a-fA-F]{6}$/.test(String(v || '').trim()); }
+  function shade(hex, factor) {
+    var n = parseInt(String(hex).slice(1), 16);
+    var r = Math.round(((n >> 16) & 255) * factor), g = Math.round(((n >> 8) & 255) * factor), b = Math.round((n & 255) * factor);
+    return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+  }
+  function applySiteStyle(map) {
+    if (!map) return;
+    var root = document.documentElement.style;
+    var hf = HEAD_FONTS[String(map.style_heading_font || '').trim().toLowerCase()];
+    if (hf) { loadFontCss(hf.css); root.setProperty('--font-display', hf.fam); root.setProperty('--font-display-wt', hf.wt); }
+    var sf = SCRIPT_FONTS[String(map.style_script_font || '').trim().toLowerCase()];
+    if (sf) { loadFontCss(sf.css); root.setProperty('--font-script', sf.fam); }
+    var accent = String(map.style_accent_color || '').trim();
+    if (hexOk(accent)) {
+      root.setProperty('--brand', accent); root.setProperty('--teal', accent);
+      root.setProperty('--accent', accent); root.setProperty('--accent2', accent);
+      root.setProperty('--brand2', shade(accent, 0.85));
+    }
+    var heading = String(map.style_heading_color || '').trim();
+    if (hexOk(heading)) root.setProperty('--navy', heading);
+  }
+  window.FBTSiteStyle = applySiteStyle;
+
   function applyContent(map) {
+    applySiteStyle(map);
     // optional cards and profiles. With no saved setting they keep their
     // built-in visibility; Studio writes "show" or "hide" explicitly.
     document.querySelectorAll('[data-cms-visible]').forEach(function (el) {

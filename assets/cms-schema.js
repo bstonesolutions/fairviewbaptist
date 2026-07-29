@@ -97,6 +97,17 @@ window.FBT_SCHEMA = {
       ],
     },
     {
+      id: 'design',
+      title: 'Design: fonts & colors',
+      hint: 'Optional site-wide look changes. Blank = the standard Fairview design.',
+      fields: [
+        { key: 'style_heading_font', label: 'Heading font (montserrat, oswald, archivo, bebas)', type: 'text', def: '' },
+        { key: 'style_script_font', label: 'Script accent font (delafield, greatvibes, dancing, allura)', type: 'text', def: '' },
+        { key: 'style_accent_color', label: 'Accent color (hex)', type: 'text', def: '' },
+        { key: 'style_heading_color', label: 'Heading color (hex)', type: 'text', def: '' },
+      ],
+    },
+    {
       id: 'text',
       title: 'Headlines & copy',
       hint: 'Wrap words in *asterisks* to make them the teal accent line, e.g. Fairview *Baptist Temple*.',

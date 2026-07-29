@@ -676,6 +676,8 @@
     var action = event.target.closest('[data-dash-action]');
     if (!action) return;
     var name = action.getAttribute('data-dash-action');
+    if (name === 'site-text') { showView('settings'); var sm = $('studio-main'); if (sm) sm.scrollTo ? sm.scrollTo(0, 0) : null; window.scrollTo(0, 0); }
+    if (name === 'design') { showView('settings'); var fd = document.getElementById('fs-design'); if (fd) fd.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     if (name === 'new-event') { showView('events'); openEdit(null); }
     if (name === 'bulletin') { showView('bulletin'); if ($('blt-date')) $('blt-date').focus(); }
     if (name === 'new-post') { showView('blog'); openPostEdit(null); }
@@ -1511,6 +1513,10 @@
       var digits = s.replace(/\D/g, '');
       if (digits.length === 10) return digits.slice(0, 3) + '-' + digits.slice(3, 6) + '-' + digits.slice(6);
     }
+    if (/^style_\w+_color$/.test(key) && s) {
+      var hx = (s.charAt(0) === '#' ? s : '#' + s).toUpperCase();
+      if (/^#[0-9A-F]{6}$/.test(hx)) return hx;
+    }
     if (/^time_/.test(key)) {
       s = s.replace(/^wednesdays?\s*/i, '').trim();
       var m = s.match(/^(\d{1,2})(?::(\d{2}))?\s*(a|p|am|pm)$/i);
@@ -1775,10 +1781,15 @@
   function mediaBackdrop(style, meta) {
     var chosen = mediaStyleApi.backgroundValue(style, meta.kind);
     if (chosen) return chosen;
+    // No color picked ("theme") = whatever the live page shows behind the
+    // media. Mirror those exact defaults so the preview matches the site.
     if (meta.kind === 'background') {
+      if (meta.key === 'hero_bg_tile_new') return 'radial-gradient(70% 70% at 30% 30%,#3f7d84,#16333c 82%)';
+      if (meta.key === 'hero_bg_tile_overlook') return 'radial-gradient(70% 70% at 70% 40%,#2f6a71,#122b33 82%)';
+      if (meta.key === 'hero_bg_tile_ministries') return 'radial-gradient(70% 70% at 50% 70%,#39757c,#14303a 82%)';
       return meta.ratio === 'hero-home'
-        ? 'radial-gradient(90% 70% at 78% 6%,rgba(23,126,121,.46),transparent 55%),radial-gradient(80% 80% at 6% 100%,rgba(23,126,121,.2),transparent 55%),linear-gradient(165deg,#20706B 0%,#123B42 50%,#0A252C 100%)'
-        : 'radial-gradient(85% 80% at 80% 0%,rgba(23,126,121,.42),transparent 55%),radial-gradient(70% 90% at 4% 100%,rgba(23,126,121,.16),transparent 55%),linear-gradient(165deg,#20706B 0%,#123B42 55%,#0A252C 100%)';
+        ? 'radial-gradient(70% 55% at 78% 12%,rgba(41,165,160,.15),transparent 60%),radial-gradient(50% 60% at 8% 90%,rgba(34,58,94,.07),transparent 60%),#FAF6ED'
+        : 'radial-gradient(70% 90% at 88% 0%,rgba(23,126,121,.1),transparent 55%),#FAF6ED';
     }
     return 'linear-gradient(150deg,#1E938C,#14424A)';
   }
@@ -1855,7 +1866,8 @@
       : present.overlay;
     host.appendChild(overlay);
     var isHeroBg = meta.kind === 'background' && meta.key.indexOf('hero_bg_tile_') !== 0;
-    if (isHeroBg && (source === 'image' || source === 'video' || present.source === 'background' || style.source === 'background')) {
+    var heroScrim = isHeroBg && (source === 'image' || source === 'video' || present.source === 'background' || style.source === 'background');
+    if (heroScrim) {
       // Mirror the live hero: pages add a fixed readability scrim over any photo.
       var scrim = document.createElement('span');
       scrim.className = 'media-hero-scrim';
@@ -1865,6 +1877,7 @@
     if (editorMode && meta.kind === 'background') {
       var copy = document.createElement('span');
       copy.className = 'media-stage-copy';
+      if (isHeroBg && !heroScrim) copy.className += ' stage-on-light';
       if (meta.key === 'hero_bg_home') {
         copy.innerHTML = '<span class="stage-kick">Welcome home to</span><strong>Fairview <em>Baptist Temple</em></strong>';
       } else if (isHeroBg) {
