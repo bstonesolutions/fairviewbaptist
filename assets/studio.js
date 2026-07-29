@@ -366,6 +366,10 @@
     submissions: [], prayers: [], events: [], content: [], missionaries: [], posts: [],
     gifts: [], subscriptions: [], givingLimited: false, subscriptionLimited: false, results: {}
   };
+  // Sections retired for Fairview: flip to false to bring one back (with its
+  // studio.html nav button and panels).
+  var DASH_RETIRED = { giving: true, prayers: true, bulletin: true, blog: true
+  };
   var DASH_ICONS = {
     inbox: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.5h13l3 6.5v6a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 2 18v-6z"/></svg>',
     prayer: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10Z"/></svg>',
@@ -505,25 +509,30 @@
     var pendingPrayers = dashData.prayers.filter(function (item) { return !item.approved; }).length;
     if (result.submissions) html += dashFocusCard('inbox', DASH_ICONS.inbox, 'Inbox', newInbox ? (newInbox + (newInbox === 1 ? ' new message' : ' new messages')) : 'Inbox is clear', newInbox ? 'Open and mark each one handled.' : 'You are caught up.', newInbox ? 'warn' : 'good');
     else html += dashFocusError(DASH_ICONS.inbox, 'Inbox');
-    if (result.prayers) html += dashFocusCard('prayers', DASH_ICONS.prayer, 'Prayer wall', pendingPrayers ? (pendingPrayers + (pendingPrayers === 1 ? ' awaiting review' : ' awaiting review')) : 'Nothing pending', pendingPrayers ? 'Approve, edit, or keep private.' : 'Every public request has been reviewed.', pendingPrayers ? 'warn' : 'good');
-    else html += dashFocusError(DASH_ICONS.prayer, 'Prayer wall');
+    if (!DASH_RETIRED.prayers) {
+      if (result.prayers) html += dashFocusCard('prayers', DASH_ICONS.prayer, 'Prayer wall', pendingPrayers ? (pendingPrayers + ' awaiting review') : 'Nothing pending', pendingPrayers ? 'Approve, edit, or keep private.' : 'Every public request has been reviewed.', pendingPrayers ? 'warn' : 'good');
+      else html += dashFocusError(DASH_ICONS.prayer, 'Prayer wall');
+    }
     if (result.events) {
       var next = dashNextEvent();
       html += next
         ? dashFocusCard('events', DASH_ICONS.event, 'Next event', next.title || 'Untitled event', next.recurring && !next.start_at ? next.recurring : dashEventDate(next.start_at), 'good')
         : dashFocusCard('events', DASH_ICONS.event, 'Next event', 'No dated event', 'Add the next event when the details are ready.', 'warn');
     } else html += dashFocusError(DASH_ICONS.event, 'Next event');
-    var bulletin = result.content ? dashBulletinInfo() : null;
-    if (bulletin) {
-      html += bulletin.current
-        ? dashFocusCard('bulletin', DASH_ICONS.bulletin, 'Sunday bulletin', 'Ready for Sunday', dashDateOnlyLabel(bulletin.target) + ' is posted.', 'good')
-        : dashFocusCard('bulletin', DASH_ICONS.bulletin, 'Sunday bulletin', 'Upload needed', 'No bulletin is posted for ' + dashDateOnlyLabel(bulletin.target) + '.', 'warn');
-    } else html += dashFocusError(DASH_ICONS.bulletin, 'Sunday bulletin');
+    var bulletin = (!DASH_RETIRED.bulletin && result.content) ? dashBulletinInfo() : null;
+    if (!DASH_RETIRED.bulletin) {
+      if (bulletin) {
+        html += bulletin.current
+          ? dashFocusCard('bulletin', DASH_ICONS.bulletin, 'Sunday bulletin', 'Ready for Sunday', dashDateOnlyLabel(bulletin.target) + ' is posted.', 'good')
+          : dashFocusCard('bulletin', DASH_ICONS.bulletin, 'Sunday bulletin', 'Upload needed', 'No bulletin is posted for ' + dashDateOnlyLabel(bulletin.target) + '.', 'warn');
+      } else html += dashFocusError(DASH_ICONS.bulletin, 'Sunday bulletin');
+    }
     $('dash-focus-grid').innerHTML = html;
-    var attention = (result.submissions ? newInbox : 0) + (result.prayers ? pendingPrayers : 0) + (bulletin && !bulletin.current ? 1 : 0);
+    var attention = (result.submissions ? newInbox : 0) + (!DASH_RETIRED.prayers && result.prayers ? pendingPrayers : 0) + (bulletin && !bulletin.current ? 1 : 0);
     var badge = $('dashboard-badge'); if (badge) { badge.hidden = !attention; badge.textContent = attention > 99 ? '99+' : String(attention); }
   }
   function dashRenderGiving() {
+    if (DASH_RETIRED.giving) return;
     var giftOk = dashData.results.giving, subOk = dashData.results.subscriptions;
     if (!giftOk && !subOk) { $('dash-giving').innerHTML = '<div class="dash-error">Square could not load right now. The rest of Studio is still available, and Refresh dashboard will try again.</div>'; return; }
     var monthKey = dashMonthKey(new Date());
@@ -567,9 +576,9 @@
     } else html += dashHealthRow('events', 'Events could not be checked', 'Refresh the dashboard to try again.', '?', true);
     if (result.events || result.posts) {
       var eventDrafts = result.events ? dashData.events.filter(function (item) { return item.status === 'draft'; }).length : 0;
-      var postDrafts = result.posts ? dashData.posts.filter(function (item) { return item.status === 'draft'; }).length : 0;
+      var postDrafts = (!DASH_RETIRED.blog && result.posts) ? dashData.posts.filter(function (item) { return item.status === 'draft'; }).length : 0;
       var drafts = eventDrafts + postDrafts;
-      html += dashHealthRow(postDrafts ? 'blog' : 'events', drafts ? 'Draft content saved in Studio' : 'No unfinished drafts', drafts ? 'Drafts remain private until you publish them.' : 'Events and blog posts are fully published.', drafts || '✓', false);
+      html += dashHealthRow(postDrafts ? 'blog' : 'events', drafts ? 'Draft content saved in Studio' : 'No unfinished drafts', drafts ? 'Drafts remain private until you publish them.' : 'Everything saved in Studio is published.', drafts || '✓', false);
     }
     $('dash-health').innerHTML = '<div class="dash-health-list">' + html + '</div>';
   }
@@ -579,18 +588,18 @@
   }
   function dashRenderActivity() {
     var items = [], result = dashData.results;
-    if (result.giving) dashData.gifts.slice(0, 2).forEach(function (gift) {
+    if (!DASH_RETIRED.giving && result.giving) dashData.gifts.slice(0, 2).forEach(function (gift) {
       items.push({ view: 'giving', icon: DASH_ICONS.gift, date: gift.createdAt, title: (gift.name || 'A giver') + ' gave ' + giftMoney(gift.amountCents), detail: [gift.fund, gift.method].filter(Boolean).join(' · ') || 'Square payment' });
     });
     if (result.submissions) dashData.submissions.slice(0, 3).forEach(function (item) {
       var detail = item.email || item.phone || dashPreview(item.message, 70) || 'Website submission';
       items.push({ view: 'inbox', icon: DASH_ICONS.inbox, date: item.created_at, title: ibKind(item.kind) + ' from ' + (item.name || 'Someone'), detail: detail });
     });
-    if (result.prayers && dashData.prayers[0]) {
+    if (!DASH_RETIRED.prayers && result.prayers && dashData.prayers[0]) {
       var prayer = dashData.prayers[0];
       items.push({ view: 'prayers', icon: DASH_ICONS.prayer, date: prayer.created_at, title: 'Prayer request from ' + (prayer.name || 'Anonymous'), detail: dashPreview(prayer.request, 80) });
     }
-    if (result.posts && dashData.posts[0]) {
+    if (!DASH_RETIRED.blog && result.posts && dashData.posts[0]) {
       var post = dashData.posts.slice().sort(function (a, b) { return new Date(b.updated_at || b.date || 0) - new Date(a.updated_at || a.date || 0); })[0];
       items.push({ view: 'blog', icon: DASH_ICONS.post, date: post.updated_at || post.date, title: 'Blog post updated: ' + (post.title || 'Untitled post'), detail: post.status === 'draft' ? 'Saved as a private draft' : 'Published on the blog' });
     }
@@ -629,8 +638,8 @@
       dashSettled(dashQuery(sb.from('site_content').select('key,value,updated_at').in('key', ['bulletins']))),
       dashSettled(dashQuery(sb.from('missionaries').select('*').order('sort', { ascending: true }))),
       dashSettled(dashQuery(sb.from('posts').select('*').order('date', { ascending: false }).limit(100))),
-      dashSettled(dashApi('/api/giving-history?year=' + encodeURIComponent(year), tokenPromise)),
-      dashSettled(dashApi('/api/giving-subscriptions', tokenPromise))
+      DASH_RETIRED.giving ? dashSettled(Promise.resolve({ gifts: [] })) : dashSettled(dashApi('/api/giving-history?year=' + encodeURIComponent(year), tokenPromise)),
+      DASH_RETIRED.giving ? dashSettled(Promise.resolve({ subscriptions: [] })) : dashSettled(dashApi('/api/giving-subscriptions', tokenPromise))
     ]).then(function (results) {
       var keys = ['submissions', 'prayers', 'events', 'content', 'missionaries', 'posts', 'giving', 'subscriptions'];
       dashData.results = {};
