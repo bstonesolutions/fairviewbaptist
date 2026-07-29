@@ -511,16 +511,43 @@
     else if (squareCfg && !squareStarting) startSquare(squareCfg);
   });
 
+  // When neither Square nor Venmo is configured but a hosted giving page is,
+  // the hub collapses to one clear action instead of a payment form.
+  function applyHostedOnlyMode(cfg) {
+    var hosted = nn(cfg.give_link) && !nn(cfg.square_app_id) && !nn(cfg.venmo_handle);
+    var panel = $('give-hosted-only');
+    if (!hosted) { if (panel) panel.hidden = true; return; }
+    Array.prototype.forEach.call(document.querySelectorAll('.give-hub .give-step'), function (el) { el.hidden = true; });
+    var manage = document.querySelector('.give-manage');
+    if (manage) manage.hidden = true;
+    var sub = document.querySelector('.give-hub-sub');
+    if (sub) sub.textContent = 'Give a one time gift or set up recurring giving through our secure giving page. It takes about a minute.';
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.className = 'give-step';
+      panel.id = 'give-hosted-only';
+      panel.style.textAlign = 'center';
+      panel.innerHTML = '<a class="btn btn-b give-submit" target="_blank" rel="noopener">Give online</a>' +
+        '<p class="give-secure" style="justify-content:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Securely processed by Anedot. Your card details never touch our servers.</p>';
+      var body = document.querySelector('.give-hub-body');
+      if (body) body.insertBefore(panel, body.firstChild);
+    }
+    panel.hidden = false;
+    var btn = panel.querySelector('a.btn');
+    if (btn) btn.href = String(cfg.give_link).trim();
+  }
+
   // Start from the baked public identifiers immediately. Supabase remains the
   // editable source of truth, but its availability no longer gates payments.
   boot(mergedConfig([]));
+  applyHostedOnlyMode(mergedConfig([]));
   var B = window.FBT;
   if (B && B.SUPABASE_URL && window.supabase) {
     try {
       var sb = B.getPublicClient ? B.getPublicClient() : window.supabase.createClient(B.SUPABASE_URL, B.SUPABASE_ANON_KEY);
       if (!sb) return;
       sb.from('site_content').select('key,value').in('key', ['venmo_handle', 'square_app_id', 'square_location_id', 'square_env', 'square_plan_id', 'give_funds', 'give_text', 'give_link']).then(function (r) {
-        if (r && !r.error && r.data) boot(mergedConfig(r.data));
+        if (r && !r.error && r.data) { var live = mergedConfig(r.data); boot(live); applyHostedOnlyMode(live); }
       }, function () {});
     } catch (e) {}
   }
