@@ -16,7 +16,7 @@ window.FBT = {
 
   // The email address(es) allowed to log in to /studio and make edits.
   // Must match the allow-list in your database rules (see schema.sql).
-  // Add Pastor Wiley's email here (and in schema.sql) when ready.
+  // Add Pastor Spurlock's email here (and in schema.sql) when ready.
   OWNER_EMAILS: ['brandonstone8567@gmail.com'],
 
   // Storage bucket name (matches schema.sql). No need to change.

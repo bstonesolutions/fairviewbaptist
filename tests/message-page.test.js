@@ -30,7 +30,7 @@ test('bundled sermons keep server metadata when YouTube is unavailable', async f
   // snapshotted, so stage a bundled sermon for this test only.
   catalog.items.push({
     id: 'bundled12345',
-    title: 'Help from the Hills | Psalm 121 | 6.28.26 | Pastor J. Bret Wiley',
+    title: 'Help from the Hills | Psalm 121 | 6.28.26 | Pastor Michael Spurlock',
     duration: 2400,
     published: '2026-06-28T18:00:00Z',
   });
@@ -62,7 +62,7 @@ test('message metadata is published only for the configured Fairview channel', a
         json: async function () {
           return { items: [{ snippet: {
             channelId: 'UCfbtchannel000000000000',
-            title: 'A Trusted Message | Romans 5 | Pastor J. Bret Wiley',
+            title: 'A Trusted Message | Romans 5 | Pastor Michael Spurlock',
             description: 'A sermon from Romans 5.',
             publishedAt: '2026-07-19T14:00:00Z',
             thumbnails: { high: { url: 'https://i.ytimg.com/vi/abc123DEF45/hqdefault.jpg' } },
@@ -122,7 +122,7 @@ test('message metadata rejects shorts and honors Studio message copy', async fun
       if (String(url).indexOf('googleapis.com/youtube') >= 0) {
         return { ok: true, json: async function () { return { items: [{
           snippet: {
-            channelId: 'UCfbtchannel000000000000', title: 'Original YouTube Title | Romans 8 | Pastor J. Bret Wiley',
+            channelId: 'UCfbtchannel000000000000', title: 'Original YouTube Title | Romans 8 | Pastor Michael Spurlock',
             description: 'The original description.', publishedAt: '2026-07-18T14:00:00Z', thumbnails: {}
           },
           contentDetails: { duration: 'PT42M' }
@@ -131,7 +131,7 @@ test('message metadata rejects shorts and honors Studio message copy', async fun
       return { ok: true, json: async function () { return [{
         video_id: 'sermon12ABC', type: 'message', title: 'Hope That Holds',
         summary: 'A polished Studio summary about lasting hope in Christ.',
-        speaker: 'Pastor J. Bret Wiley', reference: 'Romans 8', service: 'Sunday Morning Worship'
+        speaker: 'Pastor Michael Spurlock', reference: 'Romans 8', service: 'Sunday Morning Worship'
       }]; } };
     };
     const edited = response();
@@ -139,7 +139,7 @@ test('message metadata rejects shorts and honors Studio message copy', async fun
     assert.equal(edited.statusCode, 200);
     assert.match(edited.body, /Hope That Holds \| Fairview Baptist Temple, Clay WV/);
     assert.match(edited.body, /A polished Studio summary about lasting hope in Christ/);
-    assert.match(edited.body, /Pastor J\. Bret Wiley/);
+    assert.match(edited.body, /Pastor J\. Michael Spurlock/);
   } finally {
     global.fetch = oldFetch;
     if (oldKey === undefined) delete process.env.YT_API_KEY; else process.env.YT_API_KEY = oldKey;

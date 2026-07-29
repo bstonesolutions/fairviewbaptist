@@ -79,7 +79,7 @@
       var last = plain.split(' ').pop();
       if (last && text.toLowerCase().indexOf(last.toLowerCase()) >= 0 && /pastor|pas\.|rev|bro|brother/i.test(text)) return SPEAKERS[i];
     }
-    if (/\bwiley\b/i.test(text) || /\bpastor\s+bret\b/i.test(text) || /\bbret\s+wiley\b/i.test(text)) return 'Pastor J. Bret Wiley';
+    if (/\bspurlock\b/i.test(text) || /\bpastor\s+michael\b/i.test(text) || /\bmichael\s+spurlock\b/i.test(text)) return 'Pastor Michael Spurlock';
     var m = text.match(/\b(?:pastor|pas\.?|rev\.?|bro\.?|brother|dr\.?)\s+[A-Z][a-zA-Z.'"]+(?:\s+[A-Z][a-zA-Z.'"]+){0,2}/);
     return m ? m[0].replace(/\s+/g, ' ').trim() : '';
   }

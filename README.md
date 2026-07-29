@@ -77,7 +77,7 @@ Verified from public church directories (do not invent beyond these):
 
 - Address **2294 Main Street, Clay, WV 25043**; mailing address **PO Box 700, Clay, WV 25043**;
   phone **304-587-4709** (used on Home, Visit, Contact; map embeds + "Get directions").
-- **Pastor J. Bret Wiley**. No other staff names are confirmed; the extra staff slots are
+- **Pastor Michael Spurlock**. No other staff names are confirmed; the extra staff slots are
   placeholders.
 - Service times: **Sunday School 10:00am, Morning Worship 11:00am, Evening Service 6:00pm,
   Wednesday 7:00pm** (midweek prayer meeting and Bible study).
@@ -100,7 +100,7 @@ Verified from public church directories (do not invent beyond these):
   the Resend keys for receipts): giving stays in test/placeholder mode until set.
 - **Podcast links**: Fairview has no podcast yet. The podcast features are wired but their fields
   are empty, and pages fall back gracefully.
-- **Staff members 2-4**: only Pastor J. Bret Wiley is confirmed; the other staff cards are
+- **Staff members 2-4**: only Pastor Michael Spurlock is confirmed; the other staff cards are
   `[bracket]` placeholders.
 - **Photos**: every photo slot is a labeled placeholder (Home welcome, staff portraits, artwork).
   Drop real images in through Studio or replace the placeholder blocks.

@@ -26,7 +26,7 @@ as $$
   select coalesce(
     ((select auth.jwt()) ->> 'email') = any (array[
       'brandonstone8567@gmail.com'
-      -- Add Pastor J. Bret Wiley's email here when known, e.g.:
+      -- Add Pastor Michael Spurlock's email here when known, e.g.:
       -- ,'pastor@example.com'
     ]),
     false
@@ -68,7 +68,7 @@ create table if not exists public.sermons (
   reference   text,
   book        text,
   topics      text[],
-  speaker     text default 'Pastor J. Bret Wiley',
+  speaker     text default 'Pastor Michael Spurlock',
   preached_on date,
   video_url   text,
   thumb_url   text,
@@ -296,8 +296,8 @@ create policy "submissions insert (public)"
 -- Only owners can read / update / delete them (the Studio inbox). Uses an
 -- inline email check (not is_fbt_owner()) so this block runs standalone on
 -- any project, whatever schema version it was first set up with. Keep these
--- inline lists in sync with is_fbt_owner() above; add Pastor J. Bret
--- Wiley's email to both when it is known.
+-- inline lists in sync with is_fbt_owner() above; add Pastor Michael
+-- Spurlock's email to both when it is known.
 drop policy if exists "submissions owner read" on public.submissions;
 create policy "submissions owner read"
   on public.submissions for select
@@ -374,7 +374,7 @@ as $function$
   select coalesce(
     ((select auth.jwt()) ->> 'email') = any (array[
       'brandonstone8567@gmail.com'
-      -- Add Pastor J. Bret Wiley's email here when known, e.g.:
+      -- Add Pastor Michael Spurlock's email here when known, e.g.:
       -- ,'pastor@example.com'
     ]),
     false

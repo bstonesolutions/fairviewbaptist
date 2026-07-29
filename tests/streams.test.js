@@ -8,7 +8,7 @@ const liveSelection = require('../assets/live');
 
 test('dated sermon uploads are not guessed to be livestreams', function () {
   assert.equal(
-    streams.looksLikeService('A Message of Hope | 6.26.26 | Pastor J. Bret Wiley'),
+    streams.looksLikeService('A Message of Hope | 6.26.26 | Pastor Michael Spurlock'),
     false
   );
   assert.equal(streams.looksLikeService('Worship @ Fairview 7.26.26'), true);
@@ -16,7 +16,7 @@ test('dated sermon uploads are not guessed to be livestreams', function () {
 
 test('only videos with YouTube liveStreamingDetails enter the stream feed', function () {
   const uploads = [
-    { id: 'normalVideo', title: 'A Message of Hope | 6.26.26 | Pastor J. Bret Wiley', published: '2026-07-27T02:06:17Z' },
+    { id: 'normalVideo', title: 'A Message of Hope | 6.26.26 | Pastor Michael Spurlock', published: '2026-07-27T02:06:17Z' },
     { id: 'pastStream1', title: 'Worship @ Fairview 7.26.26', published: '2026-07-26T16:01:45Z' },
     { id: 'liveStream1', title: 'Sunday Worship', published: '2026-07-27T14:30:00Z' },
     { id: 'nextStream1', title: 'Wednesday Midweek', published: '2026-07-29T23:00:00Z' },
@@ -59,7 +59,7 @@ test('only videos with YouTube liveStreamingDetails enter the stream feed', func
 
 test('an unverified upload cannot re-enter through title or ordering', function () {
   const uploads = [
-    { id: 'normalVideo', title: 'Sunday Message 7.26.26 | Pastor J. Bret Wiley', published: '2026-07-27T02:06:17Z' },
+    { id: 'normalVideo', title: 'Sunday Message 7.26.26 | Pastor Michael Spurlock', published: '2026-07-27T02:06:17Z' },
     { id: 'pastStream1', title: 'Worship @ Fairview 7.26.26', published: '2026-07-26T16:01:45Z' },
   ];
   const result = streams.normalizeVerifiedStreams(uploads, [{

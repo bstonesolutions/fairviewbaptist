@@ -54,7 +54,7 @@ function hasScripture(value) { return BIBLE_RE.test(text(value)); }
 function hasSpeaker(value) {
   const valueText = text(value);
   return /\b(?:pastor|pas\.?|rev\.?|bro\.?|brother|dr\.?)\s+[a-z]/i.test(valueText) ||
-    /\bbret\s+wiley\b/i.test(valueText);
+    /\bmichael\s+spurlock\b/i.test(valueText);
 }
 
 function classifyVideo(video, override) {

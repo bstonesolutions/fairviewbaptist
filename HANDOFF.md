@@ -46,7 +46,7 @@ This is the approved homepage design (light, warm, print-like theme with serif d
 - Phone: 304-587-4709
 - Service times: Sunday School 10:00am, Morning Worship 11:00am, Evening Service 6:00pm, Wednesday 7:00pm
 - Socials: facebook.com/FairviewBaptistTemple, instagram.com/fairviewbaptisttemple, youtube.com/@FairviewBaptistTemple
-- Default preacher: Pastor J. Bret Wiley
+- Default preacher: Pastor Michael Spurlock
 - Scripture in the beliefs band: Psalm 121:1 (KJV), "I will lift up mine eyes unto the hills, from whence cometh my help."
 
 ## Placeholders to fill (marked with [brackets] in the HTML)
@@ -54,7 +54,7 @@ This is the approved homepage design (light, warm, print-like theme with serif d
 - YouTube channel ID (starts with `UC...`) for the live embed
 - "Give online" link
 - Real sermon list (titles, series, references); any sample cards are clearly marked
-- Staff members beyond Pastor J. Bret Wiley
+- Staff members beyond Pastor Michael Spurlock
 - Photos. There is one photo slot in Welcome; add more throughout as desired.
 - Podcast links: Fairview has no podcast yet, so podcast fields stay empty and pages fall back gracefully.
 

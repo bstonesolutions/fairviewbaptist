@@ -60,9 +60,9 @@ window.FBT_SCHEMA = {
       title: 'Staff',
       hint: 'Names, roles, bios and portraits for the Our Staff page.',
       fields: [
-        { key: 'pastor_name', label: 'Lead pastor name', type: 'text', def: 'Pastor J. Bret Wiley' },
+        { key: 'pastor_name', label: 'Lead pastor name', type: 'text', def: 'Pastor Michael Spurlock' },
         { key: 'pastor_role', label: 'Lead pastor role', type: 'text', def: 'Pastor' },
-        { key: 'pastor_bio', label: 'Lead pastor bio', type: 'multiline', def: 'Pastor Wiley shepherds Fairview Baptist Temple, preaching from the King James Bible and serving the families of Clay County. Edit this bio in Studio to tell his story.' },
+        { key: 'pastor_bio', label: 'Lead pastor bio', type: 'multiline', def: 'Pastor Michael Spurlock began serving as pastor of Fairview Baptist Temple in the summer of 2024. With over eight years of full time ministry, his calling has been marked by a passion for souls, Bible centered preaching, and a heart to reach Clay County with the gospel of Jesus Christ. Before coming to Fairview he served at Mt. Pleasant Baptist Church in Elkview, WV and Hanes Baptist Church in Winston-Salem, NC. He holds a Bachelor\'s degree in Theology and a Master\'s in Biblical Exposition from Andersonville Theological Seminary.' },
         { key: 'pastor_photo', label: 'Lead pastor photo', type: 'image', def: '' },
 
         { key: 'staff1_name', label: 'Staff 1 name', type: 'text', def: '[Staff member name]' },
@@ -136,7 +136,7 @@ window.FBT_SCHEMA = {
     { key: 'book', label: 'Bible book', type: 'book' },
     { key: 'reference', label: 'Scripture reference', type: 'text' },
     { key: 'topics', label: 'Topics / subjects', type: 'tags' },
-    { key: 'speaker', label: 'Speaker', type: 'text', def: 'Pastor J. Bret Wiley' },
+    { key: 'speaker', label: 'Speaker', type: 'text', def: 'Pastor Michael Spurlock' },
     { key: 'preached_on', label: 'Date preached', type: 'date' },
     { key: 'video_url', label: 'Video / listen link', type: 'link' },
     { key: 'thumb_url', label: 'Thumbnail image', type: 'image' },

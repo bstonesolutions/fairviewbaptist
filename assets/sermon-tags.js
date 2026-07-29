@@ -6,7 +6,7 @@
    shape (any order, separated by " | "):
 
        Sermon Title | Scripture | Date | Speaker
-       e.g.  Help from the Hills | Psalm 121 | 6.28.26 | Pastor J. Bret Wiley
+       e.g.  Help from the Hills | Psalm 121 | 6.28.26 | Pastor Michael Spurlock
 
    The library reads speaker, scripture (Bible book + chapter), and a
    clean title straight from titles like that. For OLDER videos whose
@@ -26,7 +26,7 @@ window.FBT_SERMON_TAGS = {
   // ---- Example (copy this shape; delete or replace it) ----
   // 'sH_YOCF-DPQ': {
   //   title:     'Help from the Hills',
-  //   speaker:   'Pastor J. Bret Wiley',
+  //   speaker:   'Pastor Michael Spurlock',
   //   reference: 'Psalm 121',        // book + chapter; powers the Scripture filter
   //   series:    '',                 // optional grouping
   //   topics:    ['Faith', 'Hope'],

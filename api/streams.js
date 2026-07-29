@@ -44,7 +44,7 @@ function looksLikeService(title) {
   // A named preacher without an explicit service word marks a single message.
   // This must run before any dated-service checks because sermon uploads also
   // include dates in their titles.
-  if (/\bpastor\b|\bwiley\b|bret wiley/i.test(t) &&
+  if (/\bpastor\b|\bspurlock\b|michael spurlock/i.test(t) &&
       !/\b(worship|midweek|sunday school|sunday service|wednesday service|church service)\b/i.test(t)) return false;
   if (/fairview/i.test(t) && /\d{1,2}[.\/-]\d{1,2}/.test(t)) return true;   // "Fairview 7.5"
   if (/\b(worship|midweek|sunday|wednesday|service)\b/i.test(t) && /\d{1,2}[.\/-]\d{1,2}/.test(t)) return true; // "Worship 7.5"

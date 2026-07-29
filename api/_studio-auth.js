@@ -9,7 +9,7 @@ const DEFAULT_SUPABASE_URL = 'https://qlbylvhmkbopszmzmipm.supabase.co';
 const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsYnlsdmhta2JvcHN6bXptaXBtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyODE1MDYsImV4cCI6MjEwMDg1NzUwNn0.muLRBIvNtki4lYOBIf6S80R2rYdBPoQvDzvzmEIn2A4';
 const DEFAULT_OWNERS = [
   'brandonstone8567@gmail.com',
-  // Add Pastor J. Bret Wiley's email here when known, e.g.:
+  // Add Pastor Michael Spurlock's email here when known, e.g.:
   // 'pastor@example.com',
 ];
 

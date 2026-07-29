@@ -15,7 +15,7 @@ as $function$
   select coalesce(
     ((select auth.jwt()) ->> 'email') = any (array[
       'brandonstone8567@gmail.com'
-      -- Add Pastor J. Bret Wiley's email here when known, e.g.:
+      -- Add Pastor Michael Spurlock's email here when known, e.g.:
       -- ,'pastor@example.com'
     ]),
     false

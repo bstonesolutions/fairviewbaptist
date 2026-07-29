@@ -27,7 +27,7 @@ with the details.
       `supabase/public-form-hardening.sql` and `supabase/storage-and-policy-polish.sql`.
 - [ ] Paste the project URL and anon key into `assets/config.js`.
 - [ ] Owner emails: brandonstone8567@gmail.com is already allow-listed; add Pastor
-      Wiley's email in `assets/config.js` AND in the allow-list in `supabase/schema.sql`
+      Spurlock's email in `assets/config.js` AND in the allow-list in `supabase/schema.sql`
       before running it (or update the SQL function afterward).
 - [ ] Sign in at `/studio` and start editing. Photos, staff bios, and per-ministry
       pictures all upload from there.
@@ -60,7 +60,7 @@ with the details.
 ## 7. Polish
 
 - [ ] Real photos in Studio (welcome, staff, ministries, hero backgrounds).
-- [ ] Pastor Wiley's real bio on the Staff page (edit in Studio).
+- [ ] Pastor Spurlock's real bio on the Staff page (edit in Studio).
 - [ ] Google Analytics: paste a G- id into `assets/analytics.js` if wanted.
 - [ ] Google Search Console: verify the domain, submit `/sitemap.xml`.
 - [ ] Add sermons in Studio (or let the YouTube integration pull them).

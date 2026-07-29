@@ -1721,7 +1721,7 @@
   var MEDIA_PHOTO = [
     { key: 'photo_welcome', label: 'Home: welcome photo', page: '/', ratio: 'four-three' },
     { key: 'photo_visit', label: 'Visit: welcome photo', page: '/visit', ratio: 'landscape' },
-    { key: 'pastor_photo', label: 'Staff: Pastor J. Bret Wiley', page: '/staff', ratio: 'portrait' },
+    { key: 'pastor_photo', label: 'Staff: Pastor Michael Spurlock', page: '/staff', ratio: 'portrait' },
     { key: 'staff1_photo', label: 'Staff: Staff member 1', page: '/staff', ratio: 'square' },
     { key: 'staff2_photo', label: 'Staff: Staff member 2', page: '/staff', ratio: 'square' },
     { key: 'staff3_photo', label: 'Staff: Staff member 3', page: '/staff', ratio: 'square' },

@@ -45,7 +45,7 @@ window.FBT_FEEDS = {
   // --- Speakers the title parser should recognize ------------------
   // Helps auto-detect the preacher (and that a video is a sermon).
   knownSpeakers: [
-    'Pastor J. Bret Wiley',
-    'Bret Wiley',
+    'Pastor Michael Spurlock',
+    'Michael Spurlock',
   ],
 };
