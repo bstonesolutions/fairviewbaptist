@@ -234,6 +234,13 @@
   .media-stage-copy.stage-on-light .stage-kick{color:#29A5A0;}
   .media-stage-copy.stage-on-light strong{color:#223A5E;}
   .media-stage-copy.stage-on-light strong em{color:#29A5A0;}
+  .media-text-fields{display:flex;flex-direction:column;gap:11px;}
+  .media-text-field label{display:block;font-size:.7rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:5px;}
+  .media-text-field input,.media-text-field textarea{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:8px;color:#fff;padding:9px 11px;font:inherit;font-size:.92rem;line-height:1.4;resize:vertical;}
+  .media-text-field input:focus-visible,.media-text-field textarea:focus-visible{outline:2px solid rgba(127,209,203,.7);outline-offset:1px;}
+  .media-stage-copy .stage-sub{display:block;margin-top:8px;font-family:"Source Sans 3",sans-serif;font-size:clamp(.68rem,1.4vw,.85rem);font-weight:500;line-height:1.45;color:rgba(255,248,234,.82);max-width:52ch;margin-left:auto;margin-right:auto;}
+  .media-stage-copy.stage-on-light .stage-sub{color:rgba(22,33,43,.72);}
+  .media-stage-copy .stage-tile-sub{display:block;margin-top:6px;font-family:"Montserrat",sans-serif;font-weight:600;font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:#7FD1CB;}
   .media-hero-scrim{position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(10,37,44,.46),rgba(10,37,44,.72));pointer-events:none;}
   .media-stage.tile-card{aspect-ratio:4/3;max-width:460px;}
   .media-stage.mobile.tile-card{width:min(340px,100%);aspect-ratio:4/3;}
@@ -1248,6 +1255,10 @@
             </div>
           </div>
           <div class="media-controls">
+            <div class="media-control-group" id="media-text-group" hidden>
+              <div class="media-control-title"><strong>Text on this page</strong><small>Saved with the design</small></div>
+              <div id="media-text-fields" class="media-text-fields"></div>
+            </div>
             <div class="media-control-group" id="media-framing-controls">
               <div class="media-control-title"><label for="media-source">What appears</label><small>Files stay saved</small></div>
               <select id="media-source">
@@ -1338,5 +1349,5 @@
 <script src="assets/sermon-tags.js?v=2"></script>
 <script src="assets/videos.js?v=4"></script>
 <script src="assets/media-styles.js?v=1"></script>
-<script src="assets/studio.js?v=20"></script>
+<script src="assets/studio.js?v=21"></script>
 </body></html>

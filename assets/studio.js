@@ -1715,11 +1715,9 @@
     { key: 'hero_bg_staff', label: 'Our Staff', page: '/staff', pageLabel: 'Staff page' },
     { key: 'hero_bg_getinvolved', label: 'Get Involved', page: '/get-involved', pageLabel: 'Get Involved page' },
     { key: 'hero_bg_nextsteps', label: 'Next Steps', page: '/next-steps', pageLabel: 'Next Steps page' },
-    { key: 'hero_bg_prayer', label: 'Prayer', page: '/prayer', pageLabel: 'Prayer page' },
     { key: 'hero_bg_live', label: 'The Overlook: Live', page: '/watch#live', pageLabel: 'Live panel' },
     { key: 'hero_bg_messages', label: 'The Overlook: Messages', page: '/watch#messages', pageLabel: 'Messages panel' },
     { key: 'hero_bg_music', label: 'The Overlook: Music', page: '/watch#music', pageLabel: 'Music panel' },
-    { key: 'hero_bg_blog', label: 'Blog', page: '/blog', pageLabel: 'Blog page' },
     { key: 'hero_bg_events', label: 'Events', page: '/events', pageLabel: 'Events page' },
     { key: 'hero_bg_missions', label: 'Missions', page: '/missions', pageLabel: 'Missions page' },
     { key: 'hero_bg_give', label: 'Give', page: '/give', pageLabel: 'Giving page' },
@@ -1755,6 +1753,82 @@
     { key: 'photo_gi_missions', label: 'Get Involved: Missions', page: '/get-involved', ratio: 'wide' },
     { key: 'photo_gi_music', label: 'Get Involved: Music and Choir', page: '/get-involved', ratio: 'wide' },
   ].map(function (item) { item.kind = 'photo'; item.pageLabel = 'View page'; return item; });
+  // Text that lives on top of each background slot. Edited inside the media
+  // designer, previewed live on the stage, and saved with the design. Defs
+  // mirror the baked page copy (and FBT_SCHEMA).
+  var MEDIA_TEXT = {
+    hero_bg_home: [
+      { key: 'home_hero_kick', label: 'Script line', def: 'Welcome home to' },
+      { key: 'home_hero_heading', label: 'Headline (*words* turn teal)', def: 'Fairview *Baptist Temple*', rich: true },
+      { key: 'home_hero_sub', label: 'Subtext', def: 'An independent Baptist church on Main Street in Clay, West Virginia. Old fashioned singing, preaching from the King James Bible, and a seat saved for you this Sunday.', multi: true }
+    ],
+    hero_bg_visit: [
+      { key: 'visit_hero_kick', label: 'Script line', def: 'New to Fairview?' },
+      { key: 'visit_hero_heading', label: 'Headline (*words* turn teal)', def: 'Walking in somewhere new is *easier* than you think', rich: true },
+      { key: 'visit_hero_sub', label: 'Subtext', def: 'This page answers the questions folks usually have when they are looking for a church home. Come as you are. There is no pressure, and no spotlight on the new face in the room.', multi: true }
+    ],
+    hero_bg_beliefs: [
+      { key: 'beliefs_hero_kick', label: 'Script line', def: 'What we believe' },
+      { key: 'beliefs_hero_heading', label: 'Headline (*words* turn teal)', def: 'We take God at His *Word*', rich: true },
+      { key: 'beliefs_hero_sub', label: 'Subtext', def: 'Fairview Baptist Temple is an independent, fundamental Baptist church in Clay, West Virginia. We stand on the King James Bible, we preach the gospel of Jesus Christ, and we hold to the old paths without apology.', multi: true }
+    ],
+    hero_bg_staff: [
+      { key: 'staff_hero_kick', label: 'Script line', def: 'Our staff' },
+      { key: 'staff_hero_heading', label: 'Headline (*words* turn teal)', def: 'Come meet the church *family*', rich: true },
+      { key: 'staff_hero_sub', label: 'Subtext', def: 'There is no front desk between you and us. When you pull in off Main Street, real folks are glad to see you. Meet our pastor here, then come shake hands with the whole church family on Sunday.', multi: true }
+    ],
+    hero_bg_getinvolved: [
+      { key: 'getinvolved_hero_kick', label: 'Script line', def: 'Get Involved' },
+      { key: 'getinvolved_hero_heading', label: 'Headline (*words* turn teal)', def: "There's a place *for you* here", rich: true },
+      { key: 'getinvolved_hero_sub', label: 'Subtext', def: 'Church is meant to be lived together. Whatever season you are in and whatever you carry, there is a place for you at Fairview and people ready to walk with you.', multi: true }
+    ],
+    hero_bg_nextsteps: [
+      { key: 'nextsteps_hero_kick', label: 'Script line', def: 'Your Next Step' },
+      { key: 'nextsteps_hero_heading', label: 'Headline (*words* turn teal)', def: 'You do not have to take it *alone*', rich: true },
+      { key: 'nextsteps_hero_sub', label: 'Subtext', def: 'Whether you are wondering about salvation, ready to be baptized, looking for a church family, or simply need someone to talk with, there is a place to begin. Tell us where you are, and a real person from Fairview will walk with you.', multi: true }
+    ],
+    hero_bg_events: [
+      { key: 'events_hero_heading', label: 'Headline (*words* turn teal)', def: "What's happening at *Fairview*", rich: true },
+      { key: 'events_hero_sub', label: 'Subtext', def: 'Revival meetings, homecoming Sundays, church fellowships, Vacation Bible School, and special services. There is always a seat for you here.', multi: true }
+    ],
+    hero_bg_missions: [
+      { key: 'missions_hero_heading', label: 'Headline (*words* turn teal)', def: 'Beyond these *hills*', rich: true },
+      { key: 'missions_hero_sub', label: 'Subtext', def: 'Praying for and supporting missionaries from the hills of Clay County unto the uttermost part of the earth. Acts 1:8, KJV.', multi: true }
+    ],
+    hero_bg_give: [
+      { key: 'give_hero_kick', label: 'Script line', def: 'Give' },
+      { key: 'give_hero_heading', label: 'Headline (*words* turn teal)', def: 'Tithes and offerings are *worship*', rich: true },
+      { key: 'give_hero_sub', label: 'Subtext', def: 'At Fairview Baptist Temple we bring our tithes and offerings to the Lord with grateful hearts, as part of our worship. Thank you for having a part in carrying the gospel through Clay County and far beyond these hills.', multi: true }
+    ],
+    hero_bg_contact: [
+      { key: 'contact_hero_kick', label: 'Script line', def: 'Contact' },
+      { key: 'contact_hero_heading', label: 'Headline (*words* turn teal)', def: 'We would *love* to hear from you', rich: true },
+      { key: 'contact_hero_sub', label: 'Subtext', def: 'The best way to reach us is a phone call. Have a question, need a ride to church, or want help planning your first visit? Call 304-587-4709 and a real person will help you out.', multi: true }
+    ],
+    hero_bg_tile_new: [
+      { key: 'tile_new_title', label: 'Tile title', def: "I'm New" },
+      { key: 'tile_new_sub', label: 'Tile subtitle', def: 'Plan your first visit' }
+    ],
+    hero_bg_tile_overlook: [
+      { key: 'tile_overlook_title', label: 'Tile title', def: 'The Overlook' },
+      { key: 'tile_overlook_sub', label: 'Tile subtitle', def: 'Watch live and past messages' }
+    ],
+    hero_bg_tile_ministries: [
+      { key: 'tile_ministries_title', label: 'Tile title', def: 'Ministries' },
+      { key: 'tile_ministries_sub', label: 'Tile subtitle', def: 'H.O.P.E. · Van · Youth · Missions' }
+    ]
+  };
+  function mediaTextFields(meta) { return (meta && MEDIA_TEXT[meta.key]) || []; }
+  function mediaTextValue(field, draft) {
+    if (draft && mediaEdit && Object.prototype.hasOwnProperty.call(mediaEdit.pendingValues, field.key)) {
+      return mediaEdit.pendingValues[field.key];
+    }
+    var saved = nn(mediaVals[field.key]);
+    return saved || field.def;
+  }
+  function richem(text) {
+    return esc(text).replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  }
   var IMG_SVG = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>';
   var mediaBuilt = false, mediaReady = false, mediaLoading = false, mediaVals = {}, mediaEdit = null;
   var mediaEditorTrigger = null, mediaPointerDown = false, mediaPointerStart = null, mediaSessionSeq = 0;
@@ -1878,14 +1952,8 @@
       var copy = document.createElement('span');
       copy.className = 'media-stage-copy';
       if (isHeroBg && !heroScrim) copy.className += ' stage-on-light';
-      if (meta.key === 'hero_bg_home') {
-        copy.innerHTML = '<span class="stage-kick">Welcome home to</span><strong>Fairview <em>Baptist Temple</em></strong>';
-      } else if (isHeroBg) {
-        copy.innerHTML = '<span class="stage-kick">Fairview Baptist Temple</span><strong>' + esc(meta.label) + '</strong>';
-      } else {
-        copy.className += ' stage-tile';
-        copy.innerHTML = '<strong>' + esc(meta.stage || meta.label) + '</strong>';
-      }
+      if (meta.key.indexOf('hero_bg_tile_') === 0) copy.className += ' stage-tile';
+      copy.innerHTML = stageCopyHtml(meta);
       host.appendChild(copy);
     }
     if (editorMode) {
@@ -1898,6 +1966,47 @@
       host.appendChild(focal);
     }
     return source;
+  }
+  function stageCopyHtml(meta) {
+    var fields = mediaTextFields(meta);
+    if (!fields.length) {
+      return '<span class="stage-kick">Fairview Baptist Temple</span><strong>' + esc(meta.label) + '</strong>';
+    }
+    var byRole = {};
+    fields.forEach(function (f) {
+      if (/_kick$/.test(f.key)) byRole.kick = f;
+      else if (/_heading$|_title$/.test(f.key)) byRole.heading = f;
+      else if (/_sub$/.test(f.key)) byRole.sub = f;
+    });
+    var html = '';
+    if (meta.key.indexOf('hero_bg_tile_') === 0) {
+      if (byRole.heading) html += '<strong>' + esc(mediaTextValue(byRole.heading, true)) + '</strong>';
+      if (byRole.sub) html += '<span class="stage-tile-sub">' + esc(mediaTextValue(byRole.sub, true)) + '</span>';
+      return html;
+    }
+    if (byRole.kick) html += '<span class="stage-kick">' + esc(mediaTextValue(byRole.kick, true)) + '</span>';
+    if (byRole.heading) html += '<strong>' + richem(mediaTextValue(byRole.heading, true)) + '</strong>';
+    if (byRole.sub && meta.ratio === 'hero-home') html += '<span class="stage-sub">' + esc(mediaTextValue(byRole.sub, true)) + '</span>';
+    return html;
+  }
+  function refreshStageText() {
+    if (!mediaEdit) return;
+    var copy = $('media-stage').querySelector('.media-stage-copy');
+    if (copy) copy.innerHTML = stageCopyHtml(mediaEdit.meta);
+  }
+  function buildMediaTextFields(meta) {
+    var group = $('media-text-group'), wrap = $('media-text-fields');
+    if (!group || !wrap) return;
+    var fields = mediaTextFields(meta);
+    group.hidden = !fields.length;
+    wrap.innerHTML = fields.map(function (f) {
+      var v = esc(mediaTextValue(f, true));
+      return '<div class="media-text-field"><label for="mtext-' + esc(f.key) + '">' + esc(f.label) + '</label>' +
+        (f.multi
+          ? '<textarea id="mtext-' + esc(f.key) + '" data-mtext="' + esc(f.key) + '" rows="3">' + v + '</textarea>'
+          : '<input id="mtext-' + esc(f.key) + '" data-mtext="' + esc(f.key) + '" value="' + v + '">') +
+        '</div>';
+    }).join('');
   }
   function mediaFileControl(key, label, accept, video) {
     var id = 'media-file-' + key;
@@ -2105,6 +2214,7 @@
     document.body.classList.add('media-editor-open');
     setMediaBackgroundInert(true);
     setMediaEditorMessage(stored ? 'Saved custom design loaded' : 'Using the original page look', '');
+    buildMediaTextFields(meta);
     syncMediaEditor(false);
     window.setTimeout(function () { $('media-editor-close').focus(); }, 20);
   }
@@ -2294,6 +2404,13 @@
       $('media-editor-image-pick').addEventListener('click', function () { $('media-editor-image-file').click(); });
       $('media-editor-video-pick').addEventListener('click', function () { $('media-editor-video-file').click(); });
       $('media-editor-save').addEventListener('click', saveMediaDesign);
+      $('media-text-fields').addEventListener('input', function (event) {
+        var field = event.target.closest('[data-mtext]');
+        if (!field || !mediaEdit) return;
+        mediaEdit.pendingValues[field.getAttribute('data-mtext')] = field.value;
+        mediaMarkDirty();
+        refreshStageText();
+      });
       $('media-restore').addEventListener('click', restoreMediaLook);
       $('media-remove-image').addEventListener('click', function () { if (mediaEdit) removeMedia(mediaEdit.meta.key, 'image'); });
       $('media-remove-video').addEventListener('click', function () { if (mediaEdit) removeMedia(mediaVideoKey(mediaEdit.meta), 'video'); });

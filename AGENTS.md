@@ -37,6 +37,12 @@ static site), so do not run `npm run build`. Verify changes on the live site aft
   (`assets/fbt.feeds.js`); uploads go to the `fbt-media` storage bucket. Tables:
   `site_content` (key/value page content + settings), `events`, `posts`, `sermons`,
   `missionaries`, `submissions`, `prayers`. The public pages read these live.
+  The media designer (Photos & media) is the per-page editor: each page-background
+  slot also edits that page's hero text via `MEDIA_TEXT` in `studio.js` (keys like
+  `visit_hero_kick/_heading/_sub`, live-previewed on the stage, saved with the
+  design); its stage mirrors the live page exactly (same backdrop defaults and
+  readability scrim). Site-wide fonts/colors are `style_*` settings applied by
+  `applySiteStyle()` in `content.js` through CSS variables.
 - Do not break `config.js` or the Supabase layer.
 
 ## Key features / files
