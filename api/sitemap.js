@@ -70,10 +70,6 @@ function urlTag(loc, freq, prio, lastmod) {
 
 async function handler(req, res) {
   const rows = [STATIC.map(function (u) { return urlTag(DOMAIN + u[0], u[1], u[2]); }).join('\n')];
-  const posts = await sbRows('posts');
-  posts.filter(function (p) { return p && p.slug && p.status !== 'draft'; }).forEach(function (p) {
-    rows.push(urlTag(DOMAIN + '/post?slug=' + encodeURIComponent(p.slug), 'monthly', '0.5', p.updated_at));
-  });
   const events = await sbRows('events');
   events.filter(function (e) { return e && e.slug && e.status !== 'draft'; }).forEach(function (e) {
     rows.push(urlTag(DOMAIN + '/event?e=' + encodeURIComponent(e.slug), 'weekly', '0.5', e.updated_at));

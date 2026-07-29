@@ -1,5 +1,11 @@
 # Fairview Baptist Temple: editing the site (one-time setup)
 
+> **Status (July 2026): steps 1, 2, and 5 are DONE.** The live project is
+> `qlbylvhmkbopszmzmipm.supabase.co`, its URL + anon key are pasted into
+> `assets/config.js`, and all three SQL files (`schema.sql`,
+> `public-form-hardening.sql`, `storage-and-policy-polish.sql`) have been run.
+> This doc stays as reference for a rebuild and for steps 3, 4, and 6.
+
 The site is editable from the private **Studio** at **`/studio`**. Sign in with an approved email and
 password. Backgrounds, photos, text, links, events, and sermons update **instantly**, with no code or
 redeploy.
@@ -37,8 +43,10 @@ The allowed editor is already set to **brandonstone8567@gmail.com** (in `schema.
 1. Go to **Authentication > Providers** and make sure **Email** is enabled (it is by default).
 2. Go to **Authentication > URL Configuration**:
    - **Site URL**: your live website address (e.g. `https://fairviewbaptisttemple.com`).
-   - **Redirect URLs**: add your Studio URLs so password setup and reset links work. Add both:
+   - **Redirect URLs**: add your Studio URLs so password setup and reset links work. Add all three:
      - `https://fairviewbaptisttemple.com/studio` (your real domain, once deployed)
+     - the current `*.vercel.app/studio` deploy URL (password-reset links return to
+       whichever origin they were requested from)
      - `http://localhost:4332/studio` (for testing locally with `node serve.mjs`)
 
 ## Step 5: Connect the site

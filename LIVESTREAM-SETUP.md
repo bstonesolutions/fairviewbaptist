@@ -1,5 +1,9 @@
 # Fairview Baptist Temple: livestream hub setup
 
+> **Status (July 2026): DONE.** The channel ID `UCpVuAImXOHZcdGDbw6fQLIA`
+> is wired into `assets/fbt.feeds.js`. Only the optional `YT_API_KEY` extras
+> below remain.
+
 The Watch page, **The Overlook** (`watch.html`), can show the church's YouTube stream
 **automatically** the moment you go live. The church's channel is
 **youtube.com/@FairviewBaptistTemple**. Its channel ID (the code that starts with `UC...`) is not

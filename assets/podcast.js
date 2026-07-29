@@ -8,7 +8,7 @@
   var now = root.querySelector('[data-podcast-now]');
   var list = root.querySelector('[data-podcast-episodes]');
   var feeds = window.FBT_FEEDS || {};
-  var fallbackFeed = feeds.podcastRss || 'https://anchor.fm/s/10eee7fc8/podcast/rss';
+  var fallbackFeed = feeds.podcastRss || '';
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');

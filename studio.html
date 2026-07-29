@@ -1,11 +1,11 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Studio | Fairview Baptist Temple</title>
 <meta name="robots" content="noindex">
-<link rel="icon" href="/favicon.png" type="image/png" sizes="512x512">
+<link rel="icon" href="/favicon.png?v=2" type="image/png" sizes="64x64">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="assets/site.css?v=21">
+<link rel="stylesheet" href="assets/site.css?v=3">
 <style>
   [hidden]{display:none !important;}
   /* Studio is the dark admin surface. site.css now carries the light public
@@ -1007,8 +1007,8 @@
               <h4>Music &amp; Choir</h4>
               <div class="frow two"><div><label>Show this card</label><select data-key="gi_music_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_music_title" value="Music &amp; Choir" required></div></div>
               <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_music_for" placeholder="Audience or age range"></div>
-              <div class="frow"><label>Description</label><textarea data-key="gi_music" rows="4" required>Old fashioned singing is part of every service at Fairview. [Describe your choir and special music here in Studio, or hide this card and add other ministries.]</textarea></div>
-              <div class="frow"><label>When it meets</label><input data-key="gi_music_meets" value="[Add rehearsal details in Studio]" required></div>
+              <div class="frow"><label>Description</label><textarea data-key="gi_music" rows="4" required>Old fashioned congregational singing and special music from our church family are part of every service at Fairview. If you love to sing, there is a place for you.</textarea></div>
+              <div class="frow"><label>When it meets</label><input data-key="gi_music_meets" value="Every service" required></div>
               <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_music_leader" placeholder="Led by …"></div>
               <div class="frow"><label>Button text</label><input data-key="gi_music_cta" value="Ask about the music →" required></div>
             </div>
@@ -1060,9 +1060,6 @@
               <div class="frow two"><div><label>Name</label><input data-key="staff6_name" value="Kris Moore" required></div><div><label>Role</label><input data-key="staff6_role" value="Secretary" required></div></div>
               <div class="frow"><label>Bio (optional)</label><textarea data-key="staff6_bio" rows="4"></textarea></div>
             </div>
-              <div class="frow two"><div><label>Name</label><input data-key="staff3_name" value="[Staff member name]" required></div><div><label>Role</label><input data-key="staff3_role" value="[Role]" required></div></div>
-              <div class="frow"><label>Bio</label><textarea data-key="staff3_bio" rows="6" required>[A short bio for this staff member: their role, how long they have served, and a personal note.]</textarea></div>
-            </div>
           </div>
         </div>
         <div class="people-save-foot"><p id="people-msg" class="studio-msg" role="status" aria-live="polite"></p><button class="btn btn-b" id="people-save-bottom" type="button">Save changes</button></div>
@@ -1077,13 +1074,23 @@
         <button class="btn btn-b" id="set-save">Save settings</button>
       </div>
       <form class="form studio-form" onsubmit="return false">
+        <div class="studio-fieldset"><h3>Headlines &amp; copy</h3>
+          <div class="frow"><label>Home hero headline: wrap words in *asterisks* for the teal accent line</label><input data-key="home_hero_heading" value="Fairview *Baptist Temple*"></div>
+          <div class="frow"><label>Home hero subtext</label><textarea data-key="home_hero_sub" rows="3">An independent Baptist church on Main Street in Clay, West Virginia. Old fashioned singing, preaching from the King James Bible, and a seat saved for you this Sunday.</textarea></div>
+          <div class="frow two"><div><label>Home welcome heading</label><input data-key="home_welcome_heading" value="A church family in the hills"></div></div>
+          <div class="frow"><label>Home welcome paragraph</label><textarea data-key="home_welcome_body" rows="4">We are a church family in the hills of Clay County that believes the Bible, loves people, and preaches Christ crucified, buried, and risen again. However you come and whatever you carry, you will find a warm welcome, honest preaching, and a place to belong.</textarea></div>
+          <div class="frow"><label>Beliefs: Our Faith</label><textarea data-key="beliefs_faith" rows="3">We are an independent, fundamental Baptist church that stands on the King James Bible as the preserved Word of God, cherishing its unchanging truths without compromise.</textarea></div>
+          <div class="frow"><label>Beliefs: Our Purpose</label><textarea data-key="beliefs_purpose" rows="3">Sharing the message of salvation through Jesus Christ, we nurture faith, build strong families, and reach our community and the world with the gospel.</textarea></div>
+          <div class="frow"><label>Beliefs: Our Calling</label><textarea data-key="beliefs_calling" rows="3">Called to worship and serve in spirit and truth, we are a refuge for the hurting, a help for the struggling, and a beacon of God's Word in Clay County.</textarea></div>
+          <div class="frow"><label>Beliefs: Our Hope</label><textarea data-key="beliefs_hope" rows="3">The Bible teaches that all have sinned and are in need of salvation. Jesus loves you and has made a way for you to be saved. Accept His gift of grace today.</textarea></div>
+        </div>
         <div class="studio-fieldset"><h3>Contact</h3>
           <div class="frow two"><div><label>Street address</label><input data-key="contact_address" placeholder="2294 Main Street"></div><div><label>City, state ZIP</label><input data-key="contact_city" placeholder="Clay, WV 25043"></div></div>
           <div class="frow two"><div><label>Phone</label><input data-key="contact_phone" placeholder="304-587-4709"></div><div><label>Email</label><input data-key="contact_email" placeholder="[Church email address]"></div></div>
         </div>
         <div class="studio-fieldset"><h3>Service times</h3>
-          <div class="frow two"><div><label>Sunday school</label><input data-key="time_sunday_school" placeholder="10:00 AM"></div><div><label>Worship</label><input data-key="time_worship" placeholder="11:00 AM"></div></div>
-          <div class="frow two"><div><label>Sunday evening time</label><input data-key="time_evening" placeholder="6:00pm"></div><div><label>Midweek time</label><input data-key="time_midweek" placeholder="7:00 PM"></div></div>
+          <div class="frow two"><div><label>Sunday school</label><input data-key="time_sunday_school" placeholder="10:00am"></div><div><label>Worship</label><input data-key="time_worship" placeholder="11:00am"></div></div>
+          <div class="frow two"><div><label>Sunday evening time</label><input data-key="time_evening" placeholder="6:00pm"></div><div><label>Midweek time</label><input data-key="time_midweek" placeholder="7:00pm"></div></div>
         </div>
         <div class="studio-fieldset"><h3>Social links</h3>
           <div class="frow two"><div><label>Facebook</label><input data-key="facebook_url" value="https://www.facebook.com/FairviewBaptistTemple" placeholder="https://facebook.com/…"></div><div><label>Instagram</label><input data-key="instagram_url" value="https://www.instagram.com/fairviewbaptisttemple" placeholder="https://instagram.com/…"></div></div>
@@ -1106,10 +1113,6 @@
         <div class="studio-fieldset"><h3>Missions</h3>
           <div class="frow"><label>Region options, one per line (the choices in each missionary's Region dropdown)</label><textarea data-key="missionary_regions" rows="4" placeholder="Africa&#10;Asia&#10;Europe&#10;Middle East&#10;North America&#10;South America&#10;Oceania"></textarea></div>
           <div class="frow"><label>Status options, one per line (the choices in each missionary's Status dropdown)</label><textarea data-key="missionary_statuses" rows="4" placeholder="On the field&#10;Home on furlough&#10;Sending soon"></textarea></div>
-        </div>
-        <div class="studio-fieldset"><h3>Podcast</h3>
-          <div class="frow two"><div><label>Spotify</label></div><div><label>Apple Podcasts</label></div></div>
-          <div class="frow two"><div><label>Website / general</label></div><div><label>RSS feed</label></div></div>
         </div>
         <p id="set-msg" class="studio-msg"></p>
       </form>

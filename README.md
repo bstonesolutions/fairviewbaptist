@@ -43,8 +43,9 @@ update content. Changes go live instantly, with no redeploy.
 - **Live stream**: the Watch page can show the YouTube stream automatically the moment the church
   goes live. Setup is in **[LIVESTREAM-SETUP.md](LIVESTREAM-SETUP.md)** (a simple channel-ID
   option, or a fuller auto live/offline hub with a scheduled check).
-- **Giving history**: Studio owners can review completed Square gifts by year, search the history,
-  open Square receipts, and download a CSV. Square remains the private source of truth.
+- **Giving**: live through the church's Anedot hosted page (the "Give online" button). The
+  Square in-browser card path, Studio Giving history, and Apple Pay stay dormant until a
+  Square account is connected.
 
 This runs on a small Supabase project. **One-time setup is in [CMS-SETUP.md](CMS-SETUP.md)** (about 10
 minutes). Until it's connected, the site shows its built-in content and nothing breaks. The relevant
@@ -55,10 +56,10 @@ files: `supabase/schema.sql` (run once), `assets/config.js` (paste 2 keys), `ass
 ## How it's structured
 
 - **`assets/site.css`**: the entire design system, shared by every page. Light, warm, print-like
-  theme on cream paper (`--paper: #FAF6ED`) with the church's brand teal (`--brand: #177E79`), deep teal
-  (`--accent: #0F6663`), and aqua (`--aqua: #7FD1CB`) accents. Type is **Fraunces** (display serif)
-  + **Source Sans 3** (body and labels). Dark surfaces (sticky header, heroes, verse band, media
-  players, missions map, footer) use the deep teal family; the logo navy `#223A5E` appears in the call-to-action band. Change a color or spacing once here
+  theme on cream paper (`--paper: #FAF6ED`) with the church's brand teal (`--brand: #1A9088`, `--teal: #29A5A0`), logo navy
+  (`--navy: #223A5E`), and aqua (`--aqua: #7FD1CB`) accents. Type is **Montserrat 800/900
+  uppercase** (display), **Mrs Saint Delafield** (script kickers), and **Source Sans 3** (body).
+  Dark surfaces are limited to media panels (players, missions map, photo tiles); the logo navy `#223A5E` appears in the call-to-action band. Change a color or spacing once here
   and it updates site-wide.
 - **`assets/site.js`**: shared behavior: sticky-header shadow, mobile menu, scroll reveals, hero
   ticker. Safe to load on every page.
@@ -77,8 +78,9 @@ Verified from public church directories (do not invent beyond these):
 
 - Address **2294 Main Street, Clay, WV 25043**; mailing address **PO Box 700, Clay, WV 25043**;
   phone **304-587-4709** (used on Home, Visit, Contact; map embeds + "Get directions").
-- **Pastor Michael Spurlock**. No other staff names are confirmed; the extra staff slots are
-  placeholders.
+- **Pastor Michael Spurlock**, plus the real officers on the Staff page: Jamie Taylor and
+  Robbie King (Trustees), Frank Kleman and Curtis Moore (Deacons), Joyce Legg (Treasurer),
+  Kris Moore (Secretary), with portraits in `assets/staff/`.
 - Service times: **Sunday School 10:00am, Morning Worship 11:00am, Evening Service 6:00pm,
   Wednesday 7:00pm** (midweek prayer meeting and Bible study).
 - Independent, fundamental Baptist. **King James Bible (KJV)**. Traditional singing and preaching.
@@ -92,18 +94,14 @@ Verified from public church directories (do not invent beyond these):
 
 - **`[Church email address]`**: the church's public email is not on file yet. It appears in copy,
   CMS defaults, and Studio settings; replace it everywhere once known.
-- **YouTube channel ID** (starts with `UC...`): needed for the live embed on The Overlook. Paste it
-  into Studio → Settings → Livestream (see [LIVESTREAM-SETUP.md](LIVESTREAM-SETUP.md)).
-- **Supabase keys** in `assets/config.js`: empty until the one-time
-  [CMS-SETUP.md](CMS-SETUP.md) is done.
-- **Square / giving env vars** in Vercel (`SQUARE_ACCESS_TOKEN`, app id, location id, plan id, and
-  the Resend keys for receipts): giving stays in test/placeholder mode until set.
+- **Resend env vars** in Vercel (`RESEND_API_KEY`, `RESEND_FROM`, `NOTIFY_TO`): until set,
+  form submissions save to Supabase but nobody is emailed.
+- **Square env vars** (optional): giving is live via Anedot; the in-browser card path stays
+  dormant until `SQUARE_ACCESS_TOKEN` + `SQUARE_LOCATION_ID` exist.
 - **Podcast links**: Fairview has no podcast yet. The podcast features are wired but their fields
   are empty, and pages fall back gracefully.
-- **Staff members 2-4**: only Pastor Michael Spurlock is confirmed; the other staff cards are
-  `[bracket]` placeholders.
-- **Photos**: every photo slot is a labeled placeholder (Home welcome, staff portraits, artwork).
-  Drop real images in through Studio or replace the placeholder blocks.
+- **Photos**: staff portraits are real; the remaining slots (Home welcome, tiles, H.O.P.E.,
+  hero backgrounds) are labeled placeholders. Drop real images in through Studio.
 
 ## Style rules used throughout
 

@@ -40,12 +40,12 @@ static site), so do not run `npm run build`. Verify changes on the live site aft
 - Do not break `config.js` or the Supabase layer.
 
 ## Key features / files
-- **Giving** (`/give`): `assets/give.js` + `api/square-pay.js`. Square Web Payments SDK
-  (card + Apple Pay + Google Pay) plus Venmo. Branded receipts are emailed to givers via
-  Resend from `square-pay.js` (church BCC'd). Square settings (app id, location id, plan id,
-  Venmo handle, funds) come from Supabase `site_content` via Studio → Settings → Giving.
-  Studio's owner-only **Giving history** reads completed payments directly from Square via
-  `api/giving-history.js`; it does not store card details or rely on a duplicate database ledger.
+- **Giving** (`/give`): live through the church's **Anedot hosted page** (`give_link` in
+  Studio → Settings → Giving; default in `assets/give.js` GIVE_DEFAULTS). With no Square IDs
+  configured, `applyHostedOnlyMode()` collapses the page to the hosted "Give online" flow.
+  The Square Web Payments path (`api/square-pay.js`, card + Apple Pay + Google Pay, Venmo,
+  Studio Giving history via `api/giving-history.js`) is dormant until a Square account and
+  env vars exist; do not remove it.
 - **Apple Pay**: `api/apple-pay-domain.js` serves Square's domain-association file **verbatim**
   (`application/octet-stream`, no compression) at
   `/.well-known/apple-developer-merchantid-domain-association` via a rewrite in `vercel.json`.

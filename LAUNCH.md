@@ -1,66 +1,79 @@
 # Launch checklist — fairviewbaptisttemple.com
 
-Work through these in order. Steps 1 and 2 put the site on the internet; everything
-after can happen gradually while the site is already live. Each step names the doc
-with the details.
+Updated July 2026. The build phase is finished: the repo
+(`bstonesolutions/fairviewbaptist`) auto-deploys to Vercel, the Supabase CMS is
+live and wired in (`assets/config.js`), the YouTube channel ID is on file, the
+real pastor/staff/photos are in, and giving runs through the church's Anedot
+hosted page. What is left is mostly accounts, content, and the domain cutover.
 
-## 1. Give the site its own home
+## 1. Point the domain (the go-live moment)
 
-- [ ] Create an empty GitHub repo (suggested: `bstonesolutions/fairview-baptist-temple`,
-      no README) and push this code to it as `main`. Keep it out of `the-brook`:
-      that repo auto-deploys Honey Brook's live site from `main`.
-- [ ] In Vercel: **Add New Project**, import the new repo. No build command, no
-      output directory changes (it is a static site with serverless functions,
-      exactly like the HBBC project).
-
-## 2. Point the domain
-
-- [ ] In the new Vercel project: Settings > Domains > add `fairviewbaptisttemple.com`
+- [ ] In the Vercel project: Settings > Domains > add `fairviewbaptisttemple.com`
       and `www.fairviewbaptisttemple.com`.
-- [ ] Update DNS where the domain is registered (the pastor or whoever manages the
-      current site has this login): A record `76.76.21.21`, or change the
-      nameservers to Vercel's. The old site host can be cancelled once DNS moves.
+- [ ] Update DNS where the domain is registered (whoever manages the current
+      site has this login): A record `76.76.21.21`, or switch the nameservers
+      to Vercel's. Cancel the old site host once DNS has moved.
+- [ ] In Supabase: Authentication > URL Configuration > set the Site URL to
+      `https://fairviewbaptisttemple.com` and keep BOTH the production
+      `/studio` URL and the current `*.vercel.app/studio` URL in Redirect URLs
+      (password-reset emails link back to whichever origin they were requested
+      from).
 
-## 3. Turn on the CMS (about 10 minutes, see CMS-SETUP.md)
+## 2. The church email address
 
-- [ ] Create a free Supabase project, run `supabase/schema.sql`, then
-      `supabase/public-form-hardening.sql` and `supabase/storage-and-policy-polish.sql`.
-- [ ] Paste the project URL and anon key into `assets/config.js`.
-- [ ] Owner emails: brandonstone8567@gmail.com is already allow-listed; add Pastor
-      Spurlock's email in `assets/config.js` AND in the allow-list in `supabase/schema.sql`
-      before running it (or update the SQL function afterward).
-- [ ] Sign in at `/studio` and start editing. Photos, staff bios, and per-ministry
-      pictures all upload from there.
+Everything below unblocks at once when the church picks its public email.
 
-## 4. Livestream (see LIVESTREAM-SETUP.md)
+- [ ] Replace every `[Church email address]` placeholder: Studio > Settings >
+      Contact fills the site copy; also grep the repo for the rest
+      (`contact.html`, `visit.html`, `next-steps.html`, `privacy.html`,
+      `assets/events.js`, `assets/cms-schema.js`) and fill the empty
+      `href="mailto:"` links next to them.
+- [ ] Resend account: verify the `fairviewbaptisttemple.com` sending domain,
+      then set Vercel env vars `RESEND_API_KEY`, `RESEND_FROM`
+      (e.g. `Fairview Baptist Temple <no-reply@fairviewbaptisttemple.com>`),
+      and `NOTIFY_TO` (where contact/visit form submissions land). Forms save
+      to Supabase either way, but nobody gets an email until this is set.
 
-- [ ] Get the channel ID (starts with `UC...`) for youtube.com/@FairviewBaptistTemple:
-      YouTube Studio > Settings > Channel > Advanced settings.
-- [ ] Paste it in Studio > Settings, or in `assets/fbt.feeds.js` (`youtubeChannelId`).
-- [ ] Optional richer setup: `YT_API_KEY` env var in Vercel for the service archive.
+## 3. Studio access for the church
 
-## 5. Giving
+- [ ] Add Pastor Spurlock's (or the church secretary's) email in THREE places:
+      `OWNER_EMAILS` in `assets/config.js`, the `STUDIO_OWNER_EMAILS` Vercel
+      env var (or `DEFAULT_OWNERS` in `api/_studio-auth.js`), and the
+      `is_fbt_owner()` allow-list in `supabase/public-form-hardening.sql`
+      (re-run just that function in the Supabase SQL editor).
+- [ ] Have them sign in at `/studio` once and set a password.
 
-- [ ] Create Fairview's Square account (or use the church's existing one).
-- [ ] Vercel env vars: `SQUARE_ACCESS_TOKEN`, `SQUARE_LOCATION_ID`; then put the
-      Application ID + Location ID in Studio > Settings > Giving (or
-      `assets/give.js` GIVE_DEFAULTS). Until then the Give page shows its
-      friendly setup state; it can never charge against the wrong account.
-- [ ] Optional: Venmo handle in Studio; Apple Pay needs Square's domain file for
-      this domain (see the comment in `api/apple-pay-domain.js`).
+## 4. Content only the church can provide
 
-## 6. Email + forms
+- [ ] Real photos in Studio: homepage welcome photo, the three homepage tiles,
+      H.O.P.E. photo (fills the homepage band AND the Get Involved card),
+      staff group photo, hero backgrounds.
+- [ ] Missionaries: add each one in Studio > Missions (the Missions page shows
+      an empty state until then).
+- [ ] Full statement of faith for the Beliefs page, if the church wants it
+      article-by-article (the summary version is live and reads fine).
+- [ ] Confirm the Facebook/Instagram URLs actually exist as written (footer
+      icons + Studio > Settings > Social links); fix or blank any that don't.
+- [ ] Music & Choir card on Get Involved: the copy is a safe generic default;
+      have the church personalize it in Studio > Ministries.
 
-- [ ] Pick the church's public email address and replace every
-      `[Church email address]` placeholder (Studio > Settings does the site copy;
-      grep the repo for the rest).
-- [ ] Resend account + Vercel env vars `RESEND_API_KEY`, `RESEND_FROM`, `NOTIFY_TO`
-      so contact/visit/prayer forms and giving receipts email the church.
+## 5. Optional integrations (site works fine without them)
 
-## 7. Polish
+- [ ] **Square** (in-browser card giving; Anedot already covers online gifts):
+      Square account, then Vercel env `SQUARE_ACCESS_TOKEN`,
+      `SQUARE_LOCATION_ID`, `SQUARE_ENV=production`; paste the Application ID
+      + Location ID in Studio > Settings > Giving. Apple Pay additionally
+      needs the domain file replaced in `api/apple-pay-domain.js` (see its
+      comment) after registering the domain in Square.
+- [ ] **Venmo**: handle in Studio > Settings > Giving.
+- [ ] **YouTube API**: `YT_API_KEY` env var in Vercel for the richer service
+      archive. Optional playlist IDs in `assets/fbt.feeds.js` tighten the
+      Messages/Music split (the channel ID is already baked in).
+- [ ] **Google Analytics**: paste a G- id into `assets/analytics.js`; enable
+      Web Analytics on the Vercel project for the free option.
 
-- [ ] Real photos in Studio (welcome, staff, ministries, hero backgrounds).
-- [ ] Pastor Spurlock's real bio on the Staff page (edit in Studio).
-- [ ] Google Analytics: paste a G- id into `assets/analytics.js` if wanted.
+## 6. After DNS moves
+
 - [ ] Google Search Console: verify the domain, submit `/sitemap.xml`.
-- [ ] Add sermons in Studio (or let the YouTube integration pull them).
+- [ ] Smoke-test on the live domain: contact form, plan-a-visit form, the
+      Give online button, Studio login, and the livestream player on a Sunday.

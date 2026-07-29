@@ -30,7 +30,7 @@ function allowSameSite(req, res, methods) {
 function isAllowedOrigin(origin) {
   if (origin === 'https://fairviewbaptisttemple.com' || origin === 'https://www.fairviewbaptisttemple.com') return true;
   // Vercel preview deployments. Adjust if the Vercel project uses a different slug.
-  if (/^https:\/\/fairview-?baptist-?temple(?:-[a-z0-9-]+)?\.vercel\.app$/i.test(origin)) return true;
+  if (/^https:\/\/(?:fairview-?baptist-?temple|fairviewbaptist)(?:-[a-z0-9-]+)?\.vercel\.app$/i.test(origin)) return true;
   return /^http:\/\/(?:localhost|127\.0\.0\.1)(?::\d+)?$/i.test(origin);
 }
 
