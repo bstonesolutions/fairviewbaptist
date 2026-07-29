@@ -30,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/site.css?v=3">
+  <link rel="stylesheet" href="/assets/site.css?v=4">
   <link rel="stylesheet" href="/assets/message.css?v=3">
   <script src="/assets/analytics.js"></script>
 </head>
@@ -40,14 +40,14 @@
   <a href="/" class="brand" aria-label="Fairview Baptist Temple, home"><img class="logo" src="/assets/logo-full-color.png?v=1" alt="Fairview Baptist Temple, Clay, West Virginia"><img class="mark" src="/assets/logo-mark-color.png?v=1" alt="Fairview Baptist Temple"></a>
   <ul>
     <li class="has-menu"><button type="button" class="nav-top" aria-haspopup="true" aria-expanded="false">Visit <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="nav-dd"><a href="/visit">Plan a Visit</a><a href="/visit#service-times">Service Times</a><a href="/beliefs">What We Believe</a></div></li>
-    <li><a href="/watch" class="active" aria-current="page">The Overlook</a></li>
+    <li><a href="/watch" class="nav-feature active" aria-current="page">The Overlook</a></li>
     <li class="has-menu"><button type="button" class="nav-top" aria-haspopup="true" aria-expanded="false">Connect <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="nav-dd"><a href="/next-steps">Next Steps</a><a href="/events">Events</a><a href="/missions">Missions</a><a href="/get-involved">Get Involved</a></div></li>
     <li class="has-menu"><button type="button" class="nav-top" aria-haspopup="true" aria-expanded="false">About <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="nav-dd"><a href="/staff">Our Staff</a><a href="/contact">Contact</a></div></li>
   </ul>
   <div class="cta"><a href="/give" class="btn btn-b">Give</a><button class="mbtn" id="mb" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button></div>
 </nav></div></header>
 <div class="ovl" id="ov"></div>
-<nav class="msheet" id="msh" aria-label="Mobile navigation"><a href="/">Home</a><span class="msh-h">Visit</span><a class="msh-sub" href="/visit">Plan a Visit</a><a class="msh-sub" href="/visit#service-times">Service Times</a><a class="msh-sub" href="/beliefs">What We Believe</a><a class="active" href="/watch">The Overlook</a><span class="msh-h">Connect</span><a class="msh-sub" href="/next-steps">Next Steps</a><a class="msh-sub" href="/events">Events</a><a class="msh-sub" href="/missions">Missions</a><a class="msh-sub" href="/get-involved">Get Involved</a><span class="msh-h">About</span><a class="msh-sub" href="/staff">Our Staff</a><a class="msh-sub" href="/contact">Contact</a><a href="/give" style="color:var(--accent);">Give</a></nav>
+<nav class="msheet" id="msh" aria-label="Mobile navigation"><a href="/">Home</a><span class="msh-h">Visit</span><a class="msh-sub" href="/visit">Plan a Visit</a><a class="msh-sub" href="/visit#service-times">Service Times</a><a class="msh-sub" href="/beliefs">What We Believe</a><a class="msh-feature active" href="/watch">The Overlook</a><span class="msh-h">Connect</span><a class="msh-sub" href="/next-steps">Next Steps</a><a class="msh-sub" href="/events">Events</a><a class="msh-sub" href="/missions">Missions</a><a class="msh-sub" href="/get-involved">Get Involved</a><span class="msh-h">About</span><a class="msh-sub" href="/staff">Our Staff</a><a class="msh-sub" href="/contact">Contact</a><a href="/give" style="color:var(--accent);">Give</a></nav>
 
 <main class="message-page" id="message-content">
   <div class="message-orbit message-orbit-one" aria-hidden="true"></div>

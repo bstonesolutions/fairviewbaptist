@@ -5,7 +5,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="assets/site.css?v=3">
+<link rel="stylesheet" href="assets/site.css?v=4">
 <style>
   [hidden]{display:none !important;}
   /* Studio is the dark admin surface. site.css now carries the light public
@@ -224,9 +224,15 @@
   .media-stage.photo-four-three{width:min(640px,100%);aspect-ratio:4/3;}
   .media-stage.photo-landscape{width:min(680px,100%);aspect-ratio:16/9;}
   .media-stage:focus-visible{outline:3px solid var(--accent);outline-offset:4px;}
-  .media-stage-copy{position:absolute;z-index:3;left:7%;right:7%;bottom:10%;pointer-events:none;text-shadow:0 3px 20px rgba(0,0,0,.35);}
-  .media-stage-copy span{font-family:"Source Sans 3";font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);}
-  .media-stage-copy strong{display:block;max-width:12ch;margin-top:5px;font-family:"Montserrat",sans-serif;font-size:clamp(1.45rem,4vw,2.7rem);line-height:1;color:#fff;font-weight:400;text-transform:uppercase;}
+  .media-stage-copy{position:absolute;z-index:3;left:7%;right:7%;bottom:10%;pointer-events:none;text-shadow:0 2px 22px rgba(10,37,44,.5);text-align:center;}
+  .media-stage-copy .stage-kick{display:block;font-family:"Mrs Saint Delafield",cursive;font-size:clamp(1.2rem,3vw,1.8rem);color:#7FD1CB;}
+  .media-stage-copy strong{display:block;margin-top:4px;font-family:"Montserrat",sans-serif;font-size:clamp(1.35rem,3.6vw,2.5rem);line-height:1.04;letter-spacing:.02em;color:#FFF8EA;font-weight:900;text-transform:uppercase;}
+  .media-stage-copy strong em{display:block;font-style:normal;color:#7FD1CB;}
+  .media-stage-copy.stage-tile{bottom:auto;top:50%;transform:translateY(-50%);}
+  .media-stage-copy.stage-tile strong{font-size:clamp(1.2rem,3vw,1.7rem);}
+  .media-hero-scrim{position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(10,37,44,.46),rgba(10,37,44,.72));pointer-events:none;}
+  .media-stage.tile-card{aspect-ratio:4/3;max-width:460px;}
+  .media-stage.mobile.tile-card{width:min(340px,100%);aspect-ratio:4/3;}
   .media-focal{position:absolute;z-index:5;width:34px;height:34px;margin:-17px 0 0 -17px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 3px rgba(23,126,121,.78),0 5px 18px rgba(0,0,0,.5);pointer-events:none;}
   .media-focal:before,.media-focal:after{content:"";position:absolute;background:#fff;opacity:.9;}
   .media-focal:before{width:14px;height:2px;left:8px;top:14px}.media-focal:after{width:2px;height:14px;left:14px;top:8px}
@@ -1084,6 +1090,12 @@
           <div class="frow"><label>Beliefs: Our Calling</label><textarea data-key="beliefs_calling" rows="3">Called to worship and serve in spirit and truth, we are a refuge for the hurting, a help for the struggling, and a beacon of God's Word in Clay County.</textarea></div>
           <div class="frow"><label>Beliefs: Our Hope</label><textarea data-key="beliefs_hope" rows="3">The Bible teaches that all have sinned and are in need of salvation. Jesus loves you and has made a way for you to be saved. Accept His gift of grace today.</textarea></div>
         </div>
+        <div class="studio-fieldset"><h3>Homepage tiles</h3>
+          <p class="muted" style="margin:0 0 12px;">The three photo tiles under the hero. Their photos are in Photos &amp; media &gt; Backgrounds.</p>
+          <div class="frow two"><div><label>Tile 1 title</label><input data-key="tile_new_title" value="I'm New"></div><div><label>Tile 1 subtitle</label><input data-key="tile_new_sub" value="Plan your first visit"></div></div>
+          <div class="frow two"><div><label>Tile 2 title</label><input data-key="tile_overlook_title" value="The Overlook"></div><div><label>Tile 2 subtitle</label><input data-key="tile_overlook_sub" value="Watch live and past messages"></div></div>
+          <div class="frow two"><div><label>Tile 3 title</label><input data-key="tile_ministries_title" value="Ministries"></div><div><label>Tile 3 subtitle</label><input data-key="tile_ministries_sub" value="H.O.P.E. · Van · Youth · Missions"></div></div>
+        </div>
         <div class="studio-fieldset"><h3>Contact</h3>
           <div class="frow two"><div><label>Street address</label><input data-key="contact_address" placeholder="2294 Main Street"></div><div><label>City, state ZIP</label><input data-key="contact_city" placeholder="Clay, WV 25043"></div></div>
           <div class="frow two"><div><label>Phone</label><input data-key="contact_phone" placeholder="304-587-4709"></div><div><label>Email</label><input data-key="contact_email" placeholder="[Church email address]"></div></div>
@@ -1308,5 +1320,5 @@
 <script src="assets/sermon-tags.js?v=2"></script>
 <script src="assets/videos.js?v=4"></script>
 <script src="assets/media-styles.js?v=1"></script>
-<script src="assets/studio.js?v=18"></script>
+<script src="assets/studio.js?v=19"></script>
 </body></html>

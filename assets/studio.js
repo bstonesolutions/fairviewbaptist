@@ -1717,14 +1717,17 @@
     { key: 'hero_bg_events', label: 'Events', page: '/events', pageLabel: 'Events page' },
     { key: 'hero_bg_missions', label: 'Missions', page: '/missions', pageLabel: 'Missions page' },
     { key: 'hero_bg_give', label: 'Give', page: '/give', pageLabel: 'Giving page' },
-    { key: 'hero_bg_contact', label: 'Contact', page: '/contact', pageLabel: 'Contact page' }
+    { key: 'hero_bg_contact', label: 'Contact', page: '/contact', pageLabel: 'Contact page' },
+    { key: 'hero_bg_tile_new', label: 'Home tile: I\'m New', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: "I'M NEW" },
+    { key: 'hero_bg_tile_overlook', label: 'Home tile: The Overlook', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: 'THE OVERLOOK' },
+    { key: 'hero_bg_tile_ministries', label: 'Home tile: Ministries', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: 'MINISTRIES' }
   ].map(function (item) {
     item.kind = 'background';
-    item.ratio = item.key === 'hero_bg_home'
+    item.ratio = item.ratio || (item.key === 'hero_bg_home'
       ? 'hero-home'
       : ['hero_bg_live', 'hero_bg_messages', 'hero_bg_music'].indexOf(item.key) >= 0
         ? 'hero-slim'
-        : 'hero-page';
+        : 'hero-page');
     return item;
   });
   var MEDIA_PHOTO = [
@@ -1851,10 +1854,25 @@
           : 'transparent')
       : present.overlay;
     host.appendChild(overlay);
+    var isHeroBg = meta.kind === 'background' && meta.key.indexOf('hero_bg_tile_') !== 0;
+    if (isHeroBg && (source === 'image' || source === 'video' || present.source === 'background' || style.source === 'background')) {
+      // Mirror the live hero: pages add a fixed readability scrim over any photo.
+      var scrim = document.createElement('span');
+      scrim.className = 'media-hero-scrim';
+      scrim.setAttribute('aria-hidden', 'true');
+      host.appendChild(scrim);
+    }
     if (editorMode && meta.kind === 'background') {
       var copy = document.createElement('span');
       copy.className = 'media-stage-copy';
-      copy.innerHTML = '<span>Fairview Baptist Temple</span><strong>' + esc(meta.label) + '</strong>';
+      if (meta.key === 'hero_bg_home') {
+        copy.innerHTML = '<span class="stage-kick">Welcome home to</span><strong>Fairview <em>Baptist Temple</em></strong>';
+      } else if (isHeroBg) {
+        copy.innerHTML = '<span class="stage-kick">Fairview Baptist Temple</span><strong>' + esc(meta.label) + '</strong>';
+      } else {
+        copy.className += ' stage-tile';
+        copy.innerHTML = '<strong>' + esc(meta.stage || meta.label) + '</strong>';
+      }
       host.appendChild(copy);
     }
     if (editorMode) {

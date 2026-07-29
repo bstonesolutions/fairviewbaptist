@@ -71,6 +71,11 @@ header.solid{box-shadow:0 8px 30px rgba(31,50,56,.09);}
 .msheet .msh-h:first-child{padding-top:2px;}
 .msheet a.msh-sub{padding-left:16px;}
 .msheet a.active{color:var(--accent);}
+.msheet a.msh-feature{display:flex;align-items:center;gap:12px;font-size:1.32rem;color:var(--brand);}
+.msheet a.msh-feature::before{content:"";width:0;height:0;border-left:11px solid var(--teal);border-top:7px solid transparent;border-bottom:7px solid transparent;}
+.nav ul a.nav-feature{color:var(--brand2);display:inline-flex;align-items:center;gap:7px;}
+.nav ul a.nav-feature::before{content:"";width:0;height:0;border-left:7px solid var(--teal);border-top:4.5px solid transparent;border-bottom:4.5px solid transparent;}
+.nav ul a.nav-feature::after{background:var(--teal);}
 
 .hero{position:relative;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:104px 0 96px;}
 .hero .bg{position:absolute;inset:0;z-index:0;background:radial-gradient(70% 55% at 78% 12%,rgba(41,165,160,.15),transparent 60%),radial-gradient(50% 60% at 8% 90%,rgba(34,58,94,.07),transparent 60%),var(--paper);}
@@ -1218,6 +1223,10 @@ html.kiosk .miss-modal-photo{height:300px;}
 .hero.has-cms-photo .btn-o,.phero.has-cms-photo .btn-o{border-color:rgba(255,248,234,.5);color:var(--dtx);}
 .hero.has-cms-photo .btn-o:hover,.phero.has-cms-photo .btn-o:hover{border-color:var(--dtx);background:rgba(255,248,234,.1);}
 .hero.has-cms-photo .wband path,.phero.has-cms-photo .wband path{stroke:rgba(127,209,203,.6);}
+/* A photo can be any brightness; this scrim guarantees the light hero text
+   always reads, on top of whatever overlay the owner picked in Studio. */
+.hero.has-cms-photo .bg::after,.phero.has-cms-photo .bg::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,37,44,.46),rgba(10,37,44,.72));pointer-events:none;}
+.hero.has-cms-photo h1,.hero.has-cms-photo .kick,.hero.has-cms-photo .sub,.phero.has-cms-photo h1,.phero.has-cms-photo .kick,.phero.has-cms-photo p{text-shadow:0 2px 26px rgba(10,37,44,.5);}
 .hero.has-cms-photo .hero-card{box-shadow:0 24px 60px rgba(0,0,0,.35);}
 
 /* Fairview mobile nav: the hamburger lives in the header and turns into a close X above the full-screen menu. */
@@ -1234,8 +1243,8 @@ html.kiosk .miss-modal-photo{height:300px;}
 .strip small{display:block;margin-top:7px;font-family:"Montserrat",sans-serif;font-weight:600;font-size:.76rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.75);}
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);}
 .tile{position:relative;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;text-decoration:none;overflow:hidden;background-size:cover;background-position:center;}
-.tile::after{content:"";position:absolute;inset:0;background:rgba(14,32,40,.4);transition:background .3s;}
-.tile:hover::after{background:rgba(14,32,40,.26);}
+.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,32,40,.36),rgba(14,32,40,.6));transition:opacity .3s;}
+.tile:hover::after{opacity:.72;}
 .tile .t{position:relative;z-index:2;color:#fff;font-family:"Montserrat",sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(1.35rem,2.4vw,1.9rem);text-align:center;letter-spacing:.04em;}
 .tile .t small{display:block;font-weight:600;font-size:.6rem;letter-spacing:.3em;color:var(--aqua);margin-top:9px;}
 .tile.ta{background-image:radial-gradient(70% 70% at 30% 30%,#3f7d84,#16333c 82%);}
