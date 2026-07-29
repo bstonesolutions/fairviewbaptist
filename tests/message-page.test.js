@@ -139,7 +139,7 @@ test('message metadata rejects shorts and honors Studio message copy', async fun
     assert.equal(edited.statusCode, 200);
     assert.match(edited.body, /Hope That Holds \| Fairview Baptist Temple, Clay WV/);
     assert.match(edited.body, /A polished Studio summary about lasting hope in Christ/);
-    assert.match(edited.body, /Pastor J\. Michael Spurlock/);
+    assert.match(edited.body, /Pastor Michael Spurlock/);
   } finally {
     global.fetch = oldFetch;
     if (oldKey === undefined) delete process.env.YT_API_KEY; else process.env.YT_API_KEY = oldKey;
