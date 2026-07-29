@@ -81,7 +81,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
 <script src="assets/config.js"></script>
-<script src="assets/content.js?v=7"></script>
+<script src="assets/content.js?v=9"></script>
 <script src="assets/events.js?v=7"></script>
 <script src="assets/fbt.feeds.js"></script>
 <script src="assets/videos.js?v=3"></script>

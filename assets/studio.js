@@ -1762,7 +1762,8 @@
     { key: 'hero_bg_contact', label: 'Contact', page: '/contact', pageLabel: 'Contact page' },
     { key: 'hero_bg_tile_new', label: 'Home tile: I\'m New', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: "I'M NEW" },
     { key: 'hero_bg_tile_overlook', label: 'Home tile: The Overlook', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: 'THE OVERLOOK' },
-    { key: 'hero_bg_tile_ministries', label: 'Home tile: Ministries', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: 'MINISTRIES' }
+    { key: 'hero_bg_tile_ministries', label: 'Home tile: Ministries', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: 'MINISTRIES' },
+    { key: 'hero_bg_hope', label: 'Home: H.O.P.E. band photo', page: '/', pageLabel: 'Home page', ratio: 'tile-card', noCopy: true }
   ].map(function (item) {
     item.kind = 'background';
     item.ratio = item.ratio || (item.key === 'hero_bg_home'
@@ -1842,6 +1843,11 @@
       { key: 'contact_hero_kick', label: 'Script line', def: 'Contact' },
       { key: 'contact_hero_heading', label: 'Headline (*words* turn teal)', def: 'We would *love* to hear from you', rich: true },
       { key: 'contact_hero_sub', label: 'Subtext', def: 'The best way to reach us is a phone call. Have a question, need a ride to church, or want help planning your first visit? Call 304-587-4709 and a real person will help you out.', multi: true }
+    ],
+    hero_bg_hope: [
+      { key: 'hope_band_heading', label: 'Band headline (*words* turn aqua)', def: 'Fighting addiction? There is H.O.P.E.', rich: true },
+      { key: 'hope_band_sub', label: 'Band paragraph', def: 'A Christ centered recovery program that meets Friday evenings at the church. No judgment, just the gospel and people who care. Our van will even come get you. Call 304-587-4709.', multi: true },
+      { key: 'hope_band_cta', label: 'Button label', def: 'Learn about H.O.P.E.' }
     ],
     hero_bg_tile_new: [
       { key: 'tile_new_title', label: 'Tile title', def: "I'm New" },
@@ -1934,6 +1940,7 @@
       if (meta.key === 'hero_bg_tile_new') return 'radial-gradient(70% 70% at 30% 30%,#3f7d84,#16333c 82%)';
       if (meta.key === 'hero_bg_tile_overlook') return 'radial-gradient(70% 70% at 70% 40%,#2f6a71,#122b33 82%)';
       if (meta.key === 'hero_bg_tile_ministries') return 'radial-gradient(70% 70% at 50% 70%,#39757c,#14303a 82%)';
+      if (meta.key === 'hero_bg_hope') return 'radial-gradient(70% 70% at 40% 40%,#3f7d84,#132a31 85%)';
       return meta.ratio === 'hero-home'
         ? 'radial-gradient(70% 55% at 78% 12%,rgba(41,165,160,.15),transparent 60%),radial-gradient(50% 60% at 8% 90%,rgba(34,58,94,.07),transparent 60%),#FAF6ED'
         : 'radial-gradient(70% 90% at 88% 0%,rgba(23,126,121,.1),transparent 55%),#FAF6ED';
@@ -2012,7 +2019,7 @@
           : 'transparent')
       : present.overlay;
     host.appendChild(overlay);
-    var isHeroBg = meta.kind === 'background' && meta.key.indexOf('hero_bg_tile_') !== 0;
+    var isHeroBg = meta.kind === 'background' && meta.key.indexOf('hero_bg_tile_') !== 0 && !meta.noCopy;
     var heroScrim = isHeroBg && (source === 'image' || source === 'video' || present.source === 'background' || style.source === 'background');
     if (heroScrim) {
       // Mirror the live hero: pages add a fixed readability scrim over any photo.
@@ -2021,7 +2028,7 @@
       scrim.setAttribute('aria-hidden', 'true');
       host.appendChild(scrim);
     }
-    if (editorMode && meta.kind === 'background') {
+    if (editorMode && meta.kind === 'background' && !meta.noCopy) {
       var copy = document.createElement('span');
       copy.className = 'media-stage-copy';
       if (isHeroBg && !heroScrim) copy.className += ' stage-on-light';

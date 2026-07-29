@@ -153,24 +153,23 @@
     var heading = String(map.style_heading_color || '').trim();
     if (hexOk(heading)) root.setProperty('--navy', heading);
   }
-  // Per-page hero text colors picked in the Studio media designer.
-  // Inline styles so they win over both the light default and photo mode.
-  var HERO_PREFIXES = ['home', 'visit', 'beliefs', 'staff', 'getinvolved', 'nextsteps', 'events', 'missions', 'give', 'contact'];
+  // Text colors picked in the Studio media designer. Any bound text element
+  // honors a companion <key>_color row; rich headings also honor
+  // <key minus _heading>_accent_color for their <em> words. Inline styles so
+  // they win over both the light default and photo mode.
   function applyHeroColors(map) {
-    HERO_PREFIXES.forEach(function (prefix) {
-      var heading = document.querySelector('[data-cms-rich="' + prefix + '_hero_heading"]');
-      var kick = document.querySelector('[data-cms-text="' + prefix + '_hero_kick"]');
-      var sub = document.querySelector('[data-cms-text="' + prefix + '_hero_sub"]');
-      function hex(key) {
-        var v = String(map[prefix + key] || '').trim();
-        return /^#[0-9a-fA-F]{6}$/.test(v) ? v : '';
+    function hex(key) {
+      var v = String(map[key] || '').trim();
+      return /^#[0-9a-fA-F]{6}$/.test(v) ? v : '';
+    }
+    document.querySelectorAll('[data-cms-rich],[data-cms-text]').forEach(function (el) {
+      var key = el.getAttribute('data-cms-rich') || el.getAttribute('data-cms-text');
+      var c = hex(key + '_color');
+      if (c) el.style.color = c;
+      if (el.hasAttribute('data-cms-rich')) {
+        var accent = hex(key.replace(/_heading$/, '_accent') + '_color');
+        if (accent) el.querySelectorAll('em').forEach(function (em) { em.style.color = accent; });
       }
-      var hc = hex('_hero_heading_color'), ac = hex('_hero_accent_color');
-      var kc = hex('_hero_kick_color'), sc = hex('_hero_sub_color');
-      if (heading && hc) heading.style.color = hc;
-      if (heading && ac) heading.querySelectorAll('em').forEach(function (em) { em.style.color = ac; });
-      if (kick && kc) kick.style.color = kc;
-      if (sub && sc) sub.style.color = sc;
     });
   }
 
@@ -307,6 +306,13 @@
     var vid = key.indexOf('hero_bg_') === 0 ? map[key.replace('hero_bg_', 'hero_vid_')] : null;
     var img = map[key];
     var style = savedMediaStyle(map, key, 'background');
+    // A slot can name an older slot to inherit from until its own media is set
+    // (the home H.O.P.E. band took over from the shared Get Involved photo).
+    var alt = el.getAttribute('data-cms-bg-alt');
+    if (alt && !nonEmpty(img) && !nonEmpty(vid) && !style) {
+      el.removeAttribute('data-cms-bg-alt');
+      return applyBackground(el, alt, map);
+    }
     el.innerHTML = '';
     clearMediaAppearance(el);
     el.style.removeProperty('background-image');

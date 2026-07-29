@@ -46,7 +46,7 @@ Everything below unblocks at once when the church picks its public email.
 ## 4. Content only the church can provide
 
 - [ ] Real photos in Studio: homepage welcome photo, the three homepage tiles,
-      H.O.P.E. photo (fills the homepage band AND the Get Involved card),
+      H.O.P.E. photos (the homepage band and the Get Involved card each have a slot),
       staff group photo, hero backgrounds.
 - [ ] Missionaries: add each one in Studio > Missions (the Missions page shows
       an empty state until then).
