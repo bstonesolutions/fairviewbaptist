@@ -114,7 +114,7 @@
       show('app');
       if (!studioStarted) {
         studioStarted = true;
-        showView('dashboard');
+        showView(initialStudioView());
       }
     } else { studioStarted = false; show('login'); }
   }
@@ -122,6 +122,9 @@
   sb.auth.onAuthStateChange(function (_e, s) {
     if (_e === 'PASSWORD_RECOVERY') { recovering = true; show('setpw'); return; }
     if (recovering) return; // stay on set-password until the new one is saved
+    // Token refreshes can momentarily report no session; treating that as a
+    // sign-out restarted Studio on the dashboard and lost the editor's place.
+    if (!s && _e !== 'SIGNED_OUT' && studioStarted) return;
     route(s);
   });
 
@@ -328,6 +331,12 @@
   }
 
   // ---------- view switching (Events / Blog / …) ----------
+  var RETIRED_VIEWS = ['giving', 'prayers', 'bulletin', 'blog'];
+  function initialStudioView() {
+    var h = (window.location.hash || '').replace(/^#/, '');
+    if (h && document.getElementById('view-' + h) && RETIRED_VIEWS.indexOf(h) < 0) return h;
+    return 'dashboard';
+  }
   function showView(view) {
     Array.prototype.forEach.call(document.querySelectorAll('[data-view-pane]'), function (p) { p.hidden = (p.id !== 'view-' + view); });
     var activeButton = null;
@@ -355,6 +364,8 @@
     if (view === 'prayers') loadPrayers();
     if (view === 'bulletin') loadBulletins();
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    // Keep the place on refresh: /studio#media reopens on Photos & media.
+    try { window.history.replaceState(null, '', '#' + view); } catch (err) { /* ignore */ }
   }
   Array.prototype.forEach.call(document.querySelectorAll('.studio-side .snav[data-view]'), function (b) {
     b.addEventListener('click', function () { showView(b.getAttribute('data-view')); });
@@ -1826,6 +1837,8 @@
     var saved = nn(mediaVals[field.key]);
     return saved || field.def;
   }
+  // The church palette, offered on every text color control so pages match.
+  var MEDIA_PALETTE = ['#FFF8EA', '#7FD1CB', '#29A5A0', '#1A9088', '#223A5E', '#16212B', '#FFFFFF'];
   function mediaColorRoles(meta) {
     var fields = mediaTextFields(meta);
     if (!fields.length || meta.key.indexOf('hero_bg_tile_') === 0) return [];
@@ -2036,6 +2049,38 @@
     var copy = $('media-stage').querySelector('.media-stage-copy');
     if (copy) copy.innerHTML = stageCopyHtml(mediaEdit.meta);
   }
+  var MATCH_FIELDS = ['background', 'backgroundColor', 'overlay', 'overlayColor', 'overlayOpacity', 'imageOpacity'];
+  function buildMediaMatch(meta) {
+    var select = $('media-match'), preview = $('media-match-preview'), group = $('media-match-group');
+    if (!select || !group) return;
+    group.hidden = false;
+    preview.hidden = true; preview.innerHTML = '';
+    select.innerHTML = '<option value="">Choose a design to copy...</option>' + mediaAll()
+      .filter(function (m) { return m.key !== meta.key; })
+      .map(function (m) {
+        var custom = !!mediaStoredStyle(m);
+        return '<option value="' + esc(m.key) + '">' + esc(m.label) + (custom ? ' · custom design' : ' · page default') + '</option>';
+      }).join('');
+  }
+  function applyMediaMatch(sourceKey) {
+    var preview = $('media-match-preview');
+    if (!mediaEdit) return;
+    if (!sourceKey) { preview.hidden = true; preview.innerHTML = ''; return; }
+    var srcMeta = mediaByKey(sourceKey);
+    if (!srcMeta) return;
+    var stored = mediaStoredStyle(srcMeta);
+    var srcStyle = stored || mediaStyleApi.defaults(srcMeta.kind);
+    // Show what is being matched...
+    preview.hidden = false;
+    mediaRender(preview, srcMeta, srcStyle, 'desktop', false, !stored);
+    // ...and copy its treatment (overlay, wash, background) onto this design.
+    MATCH_FIELDS.forEach(function (field) {
+      if (srcStyle[field] !== undefined) mediaEdit.style[field] = srcStyle[field];
+    });
+    mediaMarkDirty();
+    syncMediaEditor(false);
+    setMediaEditorMessage('Matched the overlay, wash, and background from "' + srcMeta.label + '". Save to keep it.', '');
+  }
   function buildMediaTextFields(meta) {
     var group = $('media-text-group'), wrap = $('media-text-fields');
     if (!group || !wrap) return;
@@ -2053,9 +2098,13 @@
     if (roles.length) {
       html += '<div class="media-text-colors">' + roles.map(function (r) {
         var saved = mediaColorValue(r.key);
+        var dots = MEDIA_PALETTE.map(function (hex) {
+          return '<button type="button" class="media-color-dot" data-mcolor-dot="' + esc(r.key) + '" data-hex="' + hex + '" style="--dot:' + hex + '" aria-label="Use ' + hex + '"></button>';
+        }).join('');
         return '<div class="media-text-color"><label for="mcolor-' + esc(r.key) + '">' + esc(r.label) + '</label>' +
           '<span class="media-text-color-row"><input type="color" id="mcolor-' + esc(r.key) + '" data-mcolor="' + esc(r.key) + '" value="' + (saved || mediaColorAuto(r.role)) + '">' +
-          '<button type="button" class="media-color-auto" data-mcolor-clear="' + esc(r.key) + '" data-mcolor-role="' + esc(r.role) + '"' + (saved ? '' : ' disabled') + '>Auto</button></span></div>';
+          '<button type="button" class="media-color-auto" data-mcolor-clear="' + esc(r.key) + '" data-mcolor-role="' + esc(r.role) + '"' + (saved ? '' : ' disabled') + '>Auto</button></span>' +
+          '<span class="media-color-dots">' + dots + '</span></div>';
       }).join('') + '</div><p class="media-color-note">Auto follows the page: light text over a photo, navy on the plain background.</p>';
     }
     wrap.innerHTML = html;
@@ -2267,6 +2316,7 @@
     setMediaBackgroundInert(true);
     setMediaEditorMessage(stored ? 'Saved custom design loaded' : 'Using the original page look', '');
     buildMediaTextFields(meta);
+    buildMediaMatch(meta);
     syncMediaEditor(false);
     window.setTimeout(function () { $('media-editor-close').focus(); }, 20);
   }
@@ -2332,9 +2382,7 @@
       refreshMediaPreviews();
       syncMediaEditor(false);
       setMediaEditorMessage('Saved. The media and design are live on the site.', 'ok');
-      window.setTimeout(function () {
-        if (sameMediaSession(edit) && !edit.dirty && !edit.busy) closeMediaEditor(true);
-      }, 650);
+
     }, function () {
       if (!sameMediaSession(edit)) return;
       edit.busy = false;
@@ -2456,6 +2504,7 @@
       $('media-editor-image-pick').addEventListener('click', function () { $('media-editor-image-file').click(); });
       $('media-editor-video-pick').addEventListener('click', function () { $('media-editor-video-file').click(); });
       $('media-editor-save').addEventListener('click', saveMediaDesign);
+      $('media-match').addEventListener('change', function () { applyMediaMatch(this.value); });
       $('media-text-fields').addEventListener('input', function (event) {
         if (!mediaEdit) return;
         var field = event.target.closest('[data-mtext]');
@@ -2476,6 +2525,18 @@
         }
       });
       $('media-text-fields').addEventListener('click', function (event) {
+        var dot = event.target.closest('[data-mcolor-dot]');
+        if (dot && mediaEdit) {
+          var dotKey = dot.getAttribute('data-mcolor-dot');
+          mediaEdit.pendingValues[dotKey] = dot.getAttribute('data-hex');
+          var dotPicker = $('media-text-fields').querySelector('[data-mcolor="' + dotKey + '"]');
+          if (dotPicker) dotPicker.value = dot.getAttribute('data-hex');
+          var dotClear = $('media-text-fields').querySelector('[data-mcolor-clear="' + dotKey + '"]');
+          if (dotClear) dotClear.disabled = false;
+          mediaMarkDirty();
+          refreshStageText();
+          return;
+        }
         var clear = event.target.closest('[data-mcolor-clear]');
         if (!clear || !mediaEdit) return;
         var key = clear.getAttribute('data-mcolor-clear');

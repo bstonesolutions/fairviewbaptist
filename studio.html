@@ -249,6 +249,10 @@
   .media-color-auto:hover:not(:disabled){border-color:#7FD1CB;color:#7FD1CB;}
   .media-color-auto:disabled{opacity:.4;cursor:default;}
   .media-color-note{margin:8px 0 0;font-size:.74rem;color:rgba(255,255,255,.5);line-height:1.4;}
+  .media-color-dots{display:flex;gap:6px;margin-top:7px;flex-wrap:wrap;}
+  .media-color-dot{width:20px;height:20px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:var(--dot);cursor:pointer;padding:0;transition:transform .15s,border-color .15s;}
+  .media-color-dot:hover{transform:scale(1.18);border-color:#7FD1CB;}
+  .media-match-preview{position:relative;margin-top:10px;width:100%;aspect-ratio:16/7;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.18);}
   .media-hero-scrim{position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(10,37,44,.46),rgba(10,37,44,.72));pointer-events:none;}
   .media-stage.tile-card{aspect-ratio:4/3;max-width:460px;}
   .media-stage.mobile.tile-card{width:min(340px,100%);aspect-ratio:4/3;}
@@ -1336,6 +1340,12 @@
               </div>
               <p id="media-contrast-warning" class="media-warning" hidden>With little or no overlay, white page text may be hard to read on a bright image.</p>
             </div>
+            <div class="media-control-group" id="media-match-group" hidden>
+              <div class="media-control-title"><label for="media-match">Match another design</label><small>Copy a look you like</small></div>
+              <select id="media-match"><option value="">Choose a design to copy...</option></select>
+              <div id="media-match-preview" class="media-match-preview" hidden></div>
+              <p class="media-color-note">Copies that design's overlay, wash, and background colors onto this one. Your photo and its framing stay. Use it to make side-by-side cards or whole pages match.</p>
+            </div>
           </div>
         </div>
         <div class="media-editor-foot">
@@ -1357,5 +1367,5 @@
 <script src="assets/sermon-tags.js?v=2"></script>
 <script src="assets/videos.js?v=4"></script>
 <script src="assets/media-styles.js?v=1"></script>
-<script src="assets/studio.js?v=22"></script>
+<script src="assets/studio.js?v=23"></script>
 </body></html>

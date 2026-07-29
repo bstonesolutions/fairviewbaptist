@@ -104,7 +104,8 @@ test('Studio stages asset changes and publishes them with the design', function 
   assert.doesNotMatch(upload, /from\('site_content'\)\.upsert/);
   assert.match(save, /Object\.keys\(edit\.pendingValues\)/);
   assert.match(save, /upsert\(rows,/);
-  assert.match(save, /sameMediaSession\(edit\) && !edit\.dirty && !edit\.busy/);
+  assert.match(save, /if \(!sameMediaSession\(edit\)\) return;/);
+  assert.doesNotMatch(save, /closeMediaEditor/);
   assert.match(studio, /Cancel keeps it/);
   assert.match(studio, /mediaEdit\.busy \|\| mediaEdit\.style\.source === 'background'/);
 });
