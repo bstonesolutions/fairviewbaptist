@@ -5,7 +5,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="assets/site.css?v=6">
+<link rel="stylesheet" href="assets/site.css?v=7">
 <style>
   [hidden]{display:none !important;}
   /* Studio is the dark admin surface. site.css now carries the light public
@@ -257,6 +257,37 @@
   .media-stage-copy.no-shadow{text-shadow:none!important;}
   .media-stage-copy.no-shadow .stage-kick,.media-stage-copy.no-shadow strong,.media-stage-copy.no-shadow .stage-sub{text-shadow:none;}
   .media-shadow-field select{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:8px;color:#fff;padding:9px 11px;font:inherit;font-size:.92rem;}
+  .media-overlay-swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .media-oswatch{display:flex;flex-direction:column;gap:5px;align-items:center;background:none;border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:8px 6px 7px;cursor:pointer;color:rgba(255,255,255,.72);font-size:.68rem;font-weight:600;letter-spacing:.05em;transition:border-color .15s;}
+  .media-oswatch:hover{border-color:rgba(127,209,203,.6);}
+  .media-oswatch.active{border-color:#7FD1CB;color:#fff;box-shadow:0 0 0 1px #7FD1CB inset;}
+  .os-prev{width:100%;aspect-ratio:16/9;border-radius:6px;background:linear-gradient(120deg,#9FC7C3,#5C8B90);position:relative;overflow:hidden;}
+  .os-prev::after{content:"";position:absolute;inset:0;}
+  .os-brand::after{background:linear-gradient(145deg,rgba(10,37,44,.35),rgba(10,37,44,.85));}
+  .os-left::after{background:linear-gradient(90deg,rgba(10,37,44,.85) 0%,rgba(10,37,44,.4) 46%,rgba(10,37,44,.06) 100%);}
+  .os-bottom::after{background:linear-gradient(0deg,rgba(10,37,44,.85) 0%,rgba(10,37,44,.4) 38%,rgba(10,37,44,0) 86%);}
+  .os-vignette::after{background:radial-gradient(ellipse at center,rgba(10,37,44,0) 30%,rgba(10,37,44,.45) 72%,rgba(10,37,44,.85) 100%);}
+  .os-solid::after{background:rgba(10,37,44,.62);}
+  .os-none::after{background:linear-gradient(135deg,transparent 46%,rgba(255,90,74,.85) 48%,rgba(255,90,74,.85) 52%,transparent 54%);}
+  .media-match-scope{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+  .media-match-scope label{display:flex;align-items:center;gap:8px;font-size:.82rem;color:rgba(255,255,255,.78);cursor:pointer;}
+  .media-match-scope input{accent-color:#29A5A0;}
+  .media-match-grid{display:flex;flex-direction:column;gap:4px;max-height:340px;overflow-y:auto;padding-right:4px;}
+  .media-match-head{font-size:.66rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.5);margin:10px 0 4px;}
+  .media-match-head:first-child{margin-top:0;}
+  .media-match-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .media-match-item{display:flex;flex-direction:column;gap:4px;background:none;border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:5px;cursor:pointer;color:rgba(255,255,255,.72);font-size:.64rem;line-height:1.25;text-align:left;transition:border-color .15s;}
+  .media-match-item:hover{border-color:rgba(127,209,203,.6);}
+  .media-match-item.active{border-color:#7FD1CB;box-shadow:0 0 0 1px #7FD1CB inset;color:#fff;}
+  .media-match-thumb{position:relative;width:100%;aspect-ratio:16/9;border-radius:5px;overflow:hidden;background:#123B42;}
+  .media-match-thumb .media-preview-object{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .media-match-thumb .media-preview-overlay,.media-match-thumb .media-hero-scrim{position:absolute;inset:0;}
+  .media-match-thumb .media-preview-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:rgba(255,255,255,.4);}
+  .media-match-thumb .media-preview-empty svg{display:none;}
+  #media-match-undo{margin-top:10px;}
+  .media-groups{display:flex;flex-direction:column;gap:12px;}
+  .media-groups .media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+  .media-group-head{font-family:"Montserrat",sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);margin:8px 0 0;}
   .media-hero-scrim{position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(10,37,44,.46),rgba(10,37,44,.72));pointer-events:none;}
   .media-stage.tile-card{aspect-ratio:4/3;max-width:460px;}
   .media-stage.mobile.tile-card{width:min(340px,100%);aspect-ratio:4/3;}
@@ -1319,6 +1350,7 @@
                 <button type="button" class="media-swatch" data-media-background="deep" style="--swatch:#123B42"><span>Deep teal</span></button>
                 <button type="button" class="media-swatch" data-media-background="navy" style="--swatch:#223A5E"><span>Navy</span></button>
                 <button type="button" class="media-swatch" data-media-background="fbt" style="--swatch:#177E79"><span>Brand teal</span></button>
+                <button type="button" class="media-swatch" data-media-background="light" style="--swatch:#DCEEF6"><span>Light blue</span></button>
               </div>
               <div class="media-color-row">
                 <input id="media-background-color" class="media-color-input" value="#123B42" maxlength="7" aria-label="Custom background color">
@@ -1326,15 +1358,15 @@
               </div>
             </div>
             <div class="media-control-group">
-              <div class="media-control-title"><label for="media-overlay">Overlay</label><small>Color above the image</small></div>
-              <select id="media-overlay">
-                <option value="brand">Fairview wash</option>
-                <option value="left">Dark on the left</option>
-                <option value="bottom">Dark at the bottom</option>
-                <option value="vignette">Vignette</option>
-                <option value="solid">Even color</option>
-                <option value="none">No overlay</option>
-              </select>
+              <div class="media-control-title"><strong>Overlay</strong><small>Color above the image</small></div>
+              <div class="media-overlay-swatches" role="group" aria-label="Overlay style">
+                <button type="button" class="media-oswatch" data-media-overlay="brand"><span class="os-prev os-brand"></span><span>Wash</span></button>
+                <button type="button" class="media-oswatch" data-media-overlay="left"><span class="os-prev os-left"></span><span>Left</span></button>
+                <button type="button" class="media-oswatch" data-media-overlay="bottom"><span class="os-prev os-bottom"></span><span>Bottom</span></button>
+                <button type="button" class="media-oswatch" data-media-overlay="vignette"><span class="os-prev os-vignette"></span><span>Vignette</span></button>
+                <button type="button" class="media-oswatch" data-media-overlay="solid"><span class="os-prev os-solid"></span><span>Even</span></button>
+                <button type="button" class="media-oswatch" data-media-overlay="none"><span class="os-prev os-none"></span><span>None</span></button>
+              </div>
               <div id="media-overlay-controls">
                 <div class="media-color-row">
                   <input id="media-overlay-color" class="media-color-input" value="#0A252C" maxlength="7" aria-label="Overlay color">
@@ -1348,10 +1380,14 @@
               <p id="media-contrast-warning" class="media-warning" hidden>With little or no overlay, white page text may be hard to read on a bright image.</p>
             </div>
             <div class="media-control-group" id="media-match-group" hidden>
-              <div class="media-control-title"><label for="media-match">Match another design</label><small>Copy a look you like</small></div>
-              <select id="media-match"><option value="">Choose a design to copy...</option></select>
-              <div id="media-match-preview" class="media-match-preview" hidden></div>
-              <p class="media-color-note">Copies that design's overlay, wash, and background colors onto this one. Your photo and its framing stay. Use it to make side-by-side cards or whole pages match.</p>
+              <div class="media-control-title"><strong>Match another design</strong><small>Copy a look you like</small></div>
+              <div class="media-match-scope" role="group" aria-label="What to copy">
+                <label><input type="checkbox" id="media-match-look" checked> Overlay, wash &amp; background</label>
+                <label id="media-match-text-wrap"><input type="checkbox" id="media-match-text" checked> Text colors &amp; shadow</label>
+              </div>
+              <div id="media-match-grid" class="media-match-grid"></div>
+              <button id="media-match-undo" class="media-edit-btn" type="button" hidden>Undo match</button>
+              <p class="media-color-note">Tap a design to copy its look onto this one. Your photo and its framing stay. Use it to make side-by-side cards or whole pages match.</p>
             </div>
           </div>
         </div>
@@ -1374,5 +1410,5 @@
 <script src="assets/sermon-tags.js?v=2"></script>
 <script src="assets/videos.js?v=4"></script>
 <script src="assets/media-styles.js?v=1"></script>
-<script src="assets/studio.js?v=26"></script>
+<script src="assets/studio.js?v=27"></script>
 </body></html>

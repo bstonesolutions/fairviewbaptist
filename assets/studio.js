@@ -2113,42 +2113,85 @@
   }
   var MATCH_FIELDS = ['background', 'backgroundColor', 'overlay', 'overlayColor', 'overlayOpacity', 'imageOpacity'];
   function buildMediaMatch(meta) {
-    var select = $('media-match'), preview = $('media-match-preview'), group = $('media-match-group');
-    if (!select || !group) return;
+    var grid = $('media-match-grid'), group = $('media-match-group');
+    if (!grid || !group) return;
     group.hidden = false;
-    preview.hidden = true; preview.innerHTML = '';
-    select.innerHTML = '<option value="">Choose a design to copy...</option>' + mediaAll()
-      .filter(function (m) { return m.key !== meta.key; })
-      .map(function (m) {
+    $('media-match-undo').hidden = true;
+    var textWrap = $('media-match-text-wrap');
+    if (textWrap) textWrap.hidden = !mediaColorRoles(meta).length;
+    var others = mediaAll().filter(function (m) { return m.key !== meta.key; });
+    var samePage = others.filter(function (m) { return m.page === meta.page; });
+    var pages = others.filter(function (m) { return m.page !== meta.page && m.kind === 'background'; });
+    var photos = others.filter(function (m) { return m.page !== meta.page && m.kind === 'photo'; });
+    function section(title, list) {
+      if (!list.length) return '';
+      return '<div class="media-match-head">' + title + '</div><div class="media-match-row">' + list.map(function (m) {
         var custom = !!mediaStoredStyle(m);
-        return '<option value="' + esc(m.key) + '">' + esc(m.label) + (custom ? ' · custom design' : ' · page default') + '</option>';
-      }).join('');
+        return '<button type="button" class="media-match-item" data-match="' + esc(m.key) + '">' +
+          '<span class="media-match-thumb" id="mmatch-' + esc(m.key) + '"></span>' +
+          '<span>' + esc(m.label) + (custom ? '' : ' <small>(default)</small>') + '</span></button>';
+      }).join('') + '</div>';
+    }
+    grid.innerHTML = section('On the same page', samePage) + section('Other pages', pages) + section('Photos', photos);
+    others.forEach(function (m) {
+      var el = document.getElementById('mmatch-' + m.key);
+      if (!el) return;
+      var stored = mediaStoredStyle(m);
+      mediaRender(el, m, stored || mediaStyleApi.defaults(m.kind), 'desktop', false, !stored);
+    });
   }
   function applyMediaMatch(sourceKey) {
-    var preview = $('media-match-preview');
-    if (!mediaEdit) return;
-    if (!sourceKey) { preview.hidden = true; preview.innerHTML = ''; return; }
+    if (!mediaEdit || !sourceKey) return;
     var srcMeta = mediaByKey(sourceKey);
     if (!srcMeta) return;
+    var copyLook = !$('media-match-look') || $('media-match-look').checked;
+    var copyText = $('media-match-text') && $('media-match-text').checked && !$('media-match-text-wrap').hidden;
+    if (!copyLook && !copyText) { setMediaEditorMessage('Tick what to copy first: the look, the text colors, or both.', ''); return; }
+    // First match this session: remember how things were, for Undo.
+    if (!mediaEdit.matchUndo) {
+      mediaEdit.matchUndo = {
+        style: JSON.parse(JSON.stringify(mediaEdit.style)),
+        pending: JSON.parse(JSON.stringify(mediaEdit.pendingValues)),
+        dirty: mediaEdit.dirty
+      };
+    }
     var stored = mediaStoredStyle(srcMeta);
     var srcStyle = stored || mediaStyleApi.defaults(srcMeta.kind);
-    // Show what is being matched...
-    preview.hidden = false;
-    mediaRender(preview, srcMeta, srcStyle, 'desktop', false, !stored);
-    // ...and copy its treatment (overlay, wash, background) onto this design.
-    MATCH_FIELDS.forEach(function (field) {
-      if (srcStyle[field] !== undefined) mediaEdit.style[field] = srcStyle[field];
+    if (copyLook) {
+      MATCH_FIELDS.forEach(function (field) {
+        if (srcStyle[field] !== undefined) mediaEdit.style[field] = srcStyle[field];
+      });
+    }
+    if (copyText) {
+      var srcRoles = {}, destRoles = {};
+      mediaColorRoles(srcMeta).forEach(function (r) { srcRoles[r.role] = r.key; });
+      mediaColorRoles(mediaEdit.meta).forEach(function (r) { destRoles[r.role] = r.key; });
+      Object.keys(destRoles).forEach(function (role) {
+        mediaEdit.pendingValues[destRoles[role]] = srcRoles[role] ? nn(mediaVals[srcRoles[role]]) : '';
+      });
+      mediaEdit.pendingValues[mediaEdit.meta.key + '_shadow'] = nn(mediaVals[srcMeta.key + '_shadow']);
+    }
+    Array.prototype.forEach.call(document.querySelectorAll('.media-match-item'), function (item) {
+      item.classList.toggle('active', item.getAttribute('data-match') === sourceKey);
     });
+    $('media-match-undo').hidden = false;
     mediaMarkDirty();
+    buildMediaTextFields(mediaEdit.meta);
     syncMediaEditor(false);
-    setMediaEditorMessage('Matched the overlay, wash, and background from "' + srcMeta.label + '". Save to keep it.', '');
+    setMediaEditorMessage('Matched "' + srcMeta.label + '". Save to keep it, or Undo match to go back.', '');
   }
-  function mediaShadowNone(meta) {
-    var key = meta.key + '_shadow';
-    var v;
-    if (mediaEdit && Object.prototype.hasOwnProperty.call(mediaEdit.pendingValues, key)) v = mediaEdit.pendingValues[key];
-    else v = mediaVals[key];
-    return String(v || '').trim() === 'none';
+  function undoMediaMatch() {
+    if (!mediaEdit || !mediaEdit.matchUndo) return;
+    var undo = mediaEdit.matchUndo;
+    mediaEdit.matchUndo = null;
+    mediaEdit.style = undo.style;
+    mediaEdit.pendingValues = undo.pending;
+    mediaEdit.dirty = undo.dirty;
+    Array.prototype.forEach.call(document.querySelectorAll('.media-match-item'), function (item) { item.classList.remove('active'); });
+    $('media-match-undo').hidden = true;
+    buildMediaTextFields(mediaEdit.meta);
+    syncMediaEditor(false);
+    setMediaEditorMessage(mediaEdit.dirty ? 'Match undone. Earlier unsaved changes are still here.' : 'Match undone.', '');
   }
   function buildMediaTextFields(meta) {
     var group = $('media-text-group'), wrap = $('media-text-fields');
@@ -2326,8 +2369,11 @@
     $('media-background-color').value = style.backgroundColor; $('media-background-picker').value = style.backgroundColor;
     $('media-background-color').disabled = busy; $('media-background-picker').disabled = busy;
     $('media-background-color').setAttribute('aria-invalid', 'false');
-    $('media-overlay').value = style.overlay;
-    $('media-overlay').disabled = busy;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-media-overlay]'), function (button) {
+      var active = button.getAttribute('data-media-overlay') === style.overlay;
+      button.classList.toggle('active', active); button.setAttribute('aria-pressed', active ? 'true' : 'false');
+      button.disabled = busy;
+    });
     $('media-overlay-color').value = style.overlayColor; $('media-overlay-picker').value = style.overlayColor;
     $('media-overlay-opacity').value = style.overlayOpacity; $('media-overlay-opacity-out').textContent = style.overlayOpacity + '%';
     $('media-overlay-color').disabled = busy || noOverlay; $('media-overlay-picker').disabled = busy || noOverlay;
@@ -2585,7 +2631,11 @@
       $('media-editor-image-pick').addEventListener('click', function () { $('media-editor-image-file').click(); });
       $('media-editor-video-pick').addEventListener('click', function () { $('media-editor-video-file').click(); });
       $('media-editor-save').addEventListener('click', saveMediaDesign);
-      $('media-match').addEventListener('change', function () { applyMediaMatch(this.value); });
+      $('media-match-grid').addEventListener('click', function (event) {
+        var item = event.target.closest('[data-match]');
+        if (item) applyMediaMatch(item.getAttribute('data-match'));
+      });
+      $('media-match-undo').addEventListener('click', undoMediaMatch);
       $('media-text-fields').addEventListener('input', function (event) {
         if (!mediaEdit) return;
         var field = event.target.closest('[data-mtext]');
@@ -2639,7 +2689,9 @@
       $('media-remove-image').addEventListener('click', function () { if (mediaEdit) removeMedia(mediaEdit.meta.key, 'image'); });
       $('media-remove-video').addEventListener('click', function () { if (mediaEdit) removeMedia(mediaVideoKey(mediaEdit.meta), 'video'); });
       $('media-source').addEventListener('change', function () { if (!mediaEdit) return; mediaEdit.style.source = this.value; mediaMarkDirty(); syncMediaEditor(); });
-      $('media-overlay').addEventListener('change', function () { if (!mediaEdit) return; mediaEdit.style.overlay = this.value; mediaMarkDirty(); syncMediaEditor(false); });
+      Array.prototype.forEach.call(document.querySelectorAll('[data-media-overlay]'), function (button) {
+        button.addEventListener('click', function () { if (!mediaEdit) return; mediaEdit.style.overlay = button.getAttribute('data-media-overlay'); mediaMarkDirty(); syncMediaEditor(false); });
+      });
       Array.prototype.forEach.call(document.querySelectorAll('[data-media-fit]'), function (button) {
         button.addEventListener('click', function () { if (!mediaEdit) return; mediaEdit.style.fit = button.getAttribute('data-media-fit'); mediaMarkDirty(); syncMediaEditor(false); });
       });
@@ -2748,7 +2800,12 @@
       }
       mediaVals = {};
       (result.data || []).forEach(function (row) { mediaVals[row.key] = row.value; });
-      $('media-bg').innerHTML = MEDIA_BG.map(mediaTile).join('');
+      var pageSlots = MEDIA_BG.filter(function (m) { return m.page !== '/' || m.key === 'hero_bg_home'; });
+      var homeSlots = MEDIA_BG.filter(function (m) { return m.page === '/' && m.key !== 'hero_bg_home'; });
+      $('media-bg').className = 'media-groups';
+      $('media-bg').innerHTML =
+        '<div class="media-group-head">Page heroes</div><div class="media-grid">' + pageSlots.map(mediaTile).join('') + '</div>' +
+        '<div class="media-group-head">Homepage sections &amp; cards</div><div class="media-grid">' + homeSlots.map(mediaTile).join('') + '</div>';
       $('media-photo').innerHTML = MEDIA_PHOTO.map(mediaTile).join('');
       mediaReady = true;
       refreshMediaPreviews();
