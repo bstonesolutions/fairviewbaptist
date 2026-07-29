@@ -1826,6 +1826,39 @@
     var saved = nn(mediaVals[field.key]);
     return saved || field.def;
   }
+  function mediaColorRoles(meta) {
+    var fields = mediaTextFields(meta);
+    if (!fields.length || meta.key.indexOf('hero_bg_tile_') === 0) return [];
+    var roles = [];
+    fields.forEach(function (f) {
+      if (/_kick$/.test(f.key)) roles.push({ key: f.key + '_color', label: 'Script line color', role: 'kick' });
+      else if (/_heading$/.test(f.key)) {
+        roles.push({ key: f.key + '_color', label: 'Headline color', role: 'heading' });
+        roles.push({ key: f.key.replace(/_heading$/, '_accent') + '_color', label: 'Accent word color', role: 'accent' });
+      }
+      else if (/_sub$/.test(f.key)) roles.push({ key: f.key + '_color', label: 'Subtext color', role: 'sub' });
+    });
+    return roles;
+  }
+  function mediaColorValue(key) {
+    var v;
+    if (mediaEdit && Object.prototype.hasOwnProperty.call(mediaEdit.pendingValues, key)) v = mediaEdit.pendingValues[key];
+    else v = mediaVals[key];
+    v = nn(v);
+    return /^#[0-9a-fA-F]{6}$/.test(v) ? v : '';
+  }
+  function mediaHeroOnPhoto() {
+    if (!mediaEdit) return true;
+    var st = mediaEdit.style || {};
+    return st.source === 'image' || st.source === 'video' || st.source === 'background' ||
+      (st.source === 'auto' && (mediaHasImage(mediaEdit.meta, true) || !!mediaVideo(mediaEdit.meta, true)));
+  }
+  function mediaColorAuto(role) {
+    var dark = mediaHeroOnPhoto();
+    if (role === 'heading') return dark ? '#FFF8EA' : '#223A5E';
+    if (role === 'sub') return dark ? '#EDE4D3' : '#5C6670';
+    return dark ? '#7FD1CB' : '#29A5A0';
+  }
   function richem(text) {
     return esc(text).replace(/\*([^*]+)\*/g, '<em>$1</em>');
   }
@@ -1984,9 +2017,18 @@
       if (byRole.sub) html += '<span class="stage-tile-sub">' + esc(mediaTextValue(byRole.sub, true)) + '</span>';
       return html;
     }
-    if (byRole.kick) html += '<span class="stage-kick">' + esc(mediaTextValue(byRole.kick, true)) + '</span>';
-    if (byRole.heading) html += '<strong>' + richem(mediaTextValue(byRole.heading, true)) + '</strong>';
-    if (byRole.sub && meta.ratio === 'hero-home') html += '<span class="stage-sub">' + esc(mediaTextValue(byRole.sub, true)) + '</span>';
+    function tint(key) {
+      var c = mediaColorValue(key);
+      return c ? ' style="color:' + c + '"' : '';
+    }
+    if (byRole.kick) html += '<span class="stage-kick"' + tint(byRole.kick.key + '_color') + '>' + esc(mediaTextValue(byRole.kick, true)) + '</span>';
+    if (byRole.heading) {
+      var headingHtml = richem(mediaTextValue(byRole.heading, true));
+      var accent = mediaColorValue(byRole.heading.key.replace(/_heading$/, '_accent') + '_color');
+      if (accent) headingHtml = headingHtml.replace(/<em>/g, '<em style="color:' + accent + '">');
+      html += '<strong' + tint(byRole.heading.key + '_color') + '>' + headingHtml + '</strong>';
+    }
+    if (byRole.sub && meta.ratio === 'hero-home') html += '<span class="stage-sub"' + tint(byRole.sub.key + '_color') + '>' + esc(mediaTextValue(byRole.sub, true)) + '</span>';
     return html;
   }
   function refreshStageText() {
@@ -1999,7 +2041,7 @@
     if (!group || !wrap) return;
     var fields = mediaTextFields(meta);
     group.hidden = !fields.length;
-    wrap.innerHTML = fields.map(function (f) {
+    var html = fields.map(function (f) {
       var v = esc(mediaTextValue(f, true));
       return '<div class="media-text-field"><label for="mtext-' + esc(f.key) + '">' + esc(f.label) + '</label>' +
         (f.multi
@@ -2007,6 +2049,16 @@
           : '<input id="mtext-' + esc(f.key) + '" data-mtext="' + esc(f.key) + '" value="' + v + '">') +
         '</div>';
     }).join('');
+    var roles = mediaColorRoles(meta);
+    if (roles.length) {
+      html += '<div class="media-text-colors">' + roles.map(function (r) {
+        var saved = mediaColorValue(r.key);
+        return '<div class="media-text-color"><label for="mcolor-' + esc(r.key) + '">' + esc(r.label) + '</label>' +
+          '<span class="media-text-color-row"><input type="color" id="mcolor-' + esc(r.key) + '" data-mcolor="' + esc(r.key) + '" value="' + (saved || mediaColorAuto(r.role)) + '">' +
+          '<button type="button" class="media-color-auto" data-mcolor-clear="' + esc(r.key) + '" data-mcolor-role="' + esc(r.role) + '"' + (saved ? '' : ' disabled') + '>Auto</button></span></div>';
+      }).join('') + '</div><p class="media-color-note">Auto follows the page: light text over a photo, navy on the plain background.</p>';
+    }
+    wrap.innerHTML = html;
   }
   function mediaFileControl(key, label, accept, video) {
     var id = 'media-file-' + key;
@@ -2405,9 +2457,32 @@
       $('media-editor-video-pick').addEventListener('click', function () { $('media-editor-video-file').click(); });
       $('media-editor-save').addEventListener('click', saveMediaDesign);
       $('media-text-fields').addEventListener('input', function (event) {
+        if (!mediaEdit) return;
         var field = event.target.closest('[data-mtext]');
-        if (!field || !mediaEdit) return;
-        mediaEdit.pendingValues[field.getAttribute('data-mtext')] = field.value;
+        if (field) {
+          mediaEdit.pendingValues[field.getAttribute('data-mtext')] = field.value;
+          mediaMarkDirty();
+          refreshStageText();
+          return;
+        }
+        var color = event.target.closest('[data-mcolor]');
+        if (color) {
+          var key = color.getAttribute('data-mcolor');
+          mediaEdit.pendingValues[key] = color.value;
+          var clear = $('media-text-fields').querySelector('[data-mcolor-clear="' + key + '"]');
+          if (clear) clear.disabled = false;
+          mediaMarkDirty();
+          refreshStageText();
+        }
+      });
+      $('media-text-fields').addEventListener('click', function (event) {
+        var clear = event.target.closest('[data-mcolor-clear]');
+        if (!clear || !mediaEdit) return;
+        var key = clear.getAttribute('data-mcolor-clear');
+        mediaEdit.pendingValues[key] = '';
+        var picker = $('media-text-fields').querySelector('[data-mcolor="' + key + '"]');
+        if (picker) picker.value = mediaColorAuto(clear.getAttribute('data-mcolor-role'));
+        clear.disabled = true;
         mediaMarkDirty();
         refreshStageText();
       });

@@ -153,6 +153,27 @@
     var heading = String(map.style_heading_color || '').trim();
     if (hexOk(heading)) root.setProperty('--navy', heading);
   }
+  // Per-page hero text colors picked in the Studio media designer.
+  // Inline styles so they win over both the light default and photo mode.
+  var HERO_PREFIXES = ['home', 'visit', 'beliefs', 'staff', 'getinvolved', 'nextsteps', 'events', 'missions', 'give', 'contact'];
+  function applyHeroColors(map) {
+    HERO_PREFIXES.forEach(function (prefix) {
+      var heading = document.querySelector('[data-cms-rich="' + prefix + '_hero_heading"]');
+      var kick = document.querySelector('[data-cms-text="' + prefix + '_hero_kick"]');
+      var sub = document.querySelector('[data-cms-text="' + prefix + '_hero_sub"]');
+      function hex(key) {
+        var v = String(map[prefix + key] || '').trim();
+        return /^#[0-9a-fA-F]{6}$/.test(v) ? v : '';
+      }
+      var hc = hex('_hero_heading_color'), ac = hex('_hero_accent_color');
+      var kc = hex('_hero_kick_color'), sc = hex('_hero_sub_color');
+      if (heading && hc) heading.style.color = hc;
+      if (heading && ac) heading.querySelectorAll('em').forEach(function (em) { em.style.color = ac; });
+      if (kick && kc) kick.style.color = kc;
+      if (sub && sc) sub.style.color = sc;
+    });
+  }
+
   window.FBTSiteStyle = applySiteStyle;
 
   function applyContent(map) {
@@ -252,6 +273,7 @@
       var items = selector ? wrap.querySelectorAll(selector) : [];
       if (items.length) wrap.hidden = Array.prototype.every.call(items, function (item) { return item.hidden; });
     });
+    applyHeroColors(map);
     applyPersonSchema();
   }
 
