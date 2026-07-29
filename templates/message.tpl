@@ -167,7 +167,7 @@
       <a href="https://www.youtube.com/@FairviewBaptistTemple" target="_blank" rel="noopener" data-cms-href="youtube_url" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 8s-.2-1.5-.8-2.1c-.8-.8-1.6-.8-2-.9C16.4 4.7 12 4.7 12 4.7s-4.4 0-7.2.3c-.4 0-1.2 0-2 .9C2.2 6.5 2 8 2 8s-.2 1.7-.2 3.5v1c0 1.8.2 3.5.2 3.5s.2 1.5.8 2.1c.8.8 1.8.8 2.3.9 1.7.2 6.9.3 6.9.3s4.4 0 7.2-.3c.4 0 1.2 0 2-.9.6-.6.8-2.1.8-2.1s.2-1.7.2-3.5v-1c0-1.8-.2-3.5-.2-3.5zM10 15V9l5.2 3z"/></svg></a>
     </div></div>
     <div><h4>Visit</h4><a href="/visit">Plan a visit</a><a href="/visit#service-times">Service times</a><a href="/beliefs">What we believe</a><a href="/give">Give online</a></div>
-    <div><h4>Connect</h4><a href="/next-steps">Next steps</a><a href="/watch#live">Watch live</a><a href="/watch#messages">Messages</a><a href="/watch#music">Music</a><a href="/blog">Blog</a><a href="/events">Events</a><a href="/staff">Our staff</a><a href="/contact">Contact</a></div>
+    <div><h4>Connect</h4><a href="/next-steps">Next steps</a><a href="/watch#live">Watch live</a><a href="/watch#messages">Messages</a><a href="/watch#music">Music</a><a href="/events">Events</a><a href="/missions">Missions</a><a href="/staff">Our staff</a><a href="/contact">Contact</a></div>
   </div>
   <div class="fb"><span>&copy; 2026 Fairview Baptist Temple</span><span>2294 Main Street, Clay, WV 25043 &middot; <a href="/privacy">Privacy</a></span></div>
 </div></footer>

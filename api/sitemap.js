@@ -13,8 +13,8 @@ const STATIC = [
   ['/', 'weekly', '1.0'], ['/visit', 'monthly', '0.9'], ['/watch', 'weekly', '0.8'],
   ['/events', 'weekly', '0.8'], ['/get-involved', 'monthly', '0.7'], ['/missions', 'monthly', '0.7'],
   ['/next-steps', 'monthly', '0.8'],
-  ['/beliefs', 'yearly', '0.7'], ['/staff', 'monthly', '0.6'], ['/prayer', 'monthly', '0.6'],
-  ['/blog', 'weekly', '0.6'], ['/give', 'yearly', '0.6'], ['/contact', 'yearly', '0.6'],
+  ['/beliefs', 'yearly', '0.7'], ['/staff', 'monthly', '0.6'],
+  ['/give', 'yearly', '0.6'], ['/contact', 'yearly', '0.6'],
   ['/privacy', 'yearly', '0.4'],
 ];
 

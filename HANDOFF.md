@@ -29,7 +29,7 @@ This is the approved homepage design (light, warm, print-like theme with serif d
 - Logo usage: `logo-full-white.png` (light version) on dark backgrounds, `logo-full-color.png` on light backgrounds (emails, print). The `-mark-` versions are the standalone circle-F mark for compact spots and the favicon.
 
 ## Homepage structure (top to bottom)
-1. **Header**: sticky, light cream, logo left, grouped nav (Visit / The Overlook / Connect / About) as plain links, "Give" button, hamburger on mobile.
+1. **Header**: sticky, light cream, logo left, flat nav (Visit / The Overlook / Ministries / Beliefs / Contact), "Give" button, hamburger on mobile.
 2. **Hero**: light cream with faint teal ridgeline bands, Fraunces ink headline with a teal accent word, intro line, two CTAs, and a white "Join us this week" service-times card on the right (no scrolling ticker).
 3. **Welcome**: short intro paragraph and a photo slot.
 4. **Gather**: service cards with Fraunces times: Sunday School 10:00, Morning Worship 11:00, Evening Service 6:00, Wednesday 7:00.
