@@ -1788,6 +1788,373 @@
         : 'hero-page');
     return item;
   });
+  // Generated per-section cards: every section of every page, editable like
+  // the homepage (background photo, overlay, text, colors).
+  var MEDIA_BG_GEN = [
+  {
+    "key": "hero_bg_visit_s1",
+    "label": "Visit: What to expect",
+    "page": "/visit",
+    "pageLabel": "Visit page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_visit_s2",
+    "label": "Visit: Here's exactly how it goes",
+    "page": "/visit",
+    "pageLabel": "Visit page",
+    "backdrop": "#F2ECDD",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_visit_s3",
+    "label": "Visit: Let us know you're coming",
+    "page": "/visit",
+    "pageLabel": "Visit page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_visit_s4",
+    "label": "Visit: When we gather",
+    "page": "/visit",
+    "pageLabel": "Visit page",
+    "backdrop": "#F2ECDD",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_visit_s5",
+    "label": "Visit: Common questions",
+    "page": "/visit",
+    "pageLabel": "Visit page",
+    "backdrop": "#E6F1EE",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_visit_s6",
+    "label": "Visit: Find us",
+    "page": "/visit",
+    "pageLabel": "Visit page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_visit_s7",
+    "label": "Visit: Get the latest from Fairview",
+    "page": "/visit",
+    "pageLabel": "Visit page",
+    "backdrop": "#F2ECDD",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_visit_s8",
+    "label": "Visit: We saved you a seat",
+    "page": "/visit",
+    "pageLabel": "Visit page",
+    "backdrop": "radial-gradient(90% 100% at 85% 0%,rgba(127,209,203,.18),transparent 55%),linear-gradient(135deg,#24466B,#16304D)",
+    "dark": true
+  },
+  {
+    "key": "hero_bg_beliefs_s1",
+    "label": "Beliefs: \"I will lift up mine eyes unto the...",
+    "page": "/beliefs",
+    "pageLabel": "Beliefs page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_beliefs_s2",
+    "label": "Beliefs: What we hold to",
+    "page": "/beliefs",
+    "pageLabel": "Beliefs page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_beliefs_s3",
+    "label": "Beliefs: What we stand on",
+    "page": "/beliefs",
+    "pageLabel": "Beliefs page",
+    "backdrop": "#F2ECDD",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_beliefs_s4",
+    "label": "Beliefs: Jesus has made a way",
+    "page": "/beliefs",
+    "pageLabel": "Beliefs page",
+    "backdrop": "#E6F1EE",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_beliefs_s5",
+    "label": "Beliefs: Come and see.",
+    "page": "/beliefs",
+    "pageLabel": "Beliefs page",
+    "backdrop": "radial-gradient(90% 100% at 85% 0%,rgba(127,209,203,.18),transparent 55%),linear-gradient(135deg,#24466B,#16304D)",
+    "dark": true
+  },
+  {
+    "key": "hero_bg_staff_s1",
+    "label": "Staff: The people who serve",
+    "page": "/staff",
+    "pageLabel": "Staff page",
+    "backdrop": "#F2ECDD",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_staff_s2",
+    "label": "Staff: Have a question? We are here.",
+    "page": "/staff",
+    "pageLabel": "Staff page",
+    "backdrop": "#E6F1EE",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_staff_s3",
+    "label": "Staff: Come meet us in person.",
+    "page": "/staff",
+    "pageLabel": "Staff page",
+    "backdrop": "radial-gradient(90% 100% at 85% 0%,rgba(127,209,203,.18),transparent 55%),linear-gradient(135deg,#24466B,#16304D)",
+    "dark": true
+  },
+  {
+    "key": "hero_bg_getinvolved_s1",
+    "label": "Get Involved: Your next step",
+    "page": "/get-involved",
+    "pageLabel": "Get Involved page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_getinvolved_s2",
+    "label": "Get Involved: Where you can belong",
+    "page": "/get-involved",
+    "pageLabel": "Get Involved page",
+    "backdrop": "#F2ECDD",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_getinvolved_s3",
+    "label": "Get Involved: Take the first step.",
+    "page": "/get-involved",
+    "pageLabel": "Get Involved page",
+    "backdrop": "radial-gradient(90% 100% at 85% 0%,rgba(127,209,203,.18),transparent 55%),linear-gradient(135deg,#24466B,#16304D)",
+    "dark": true
+  },
+  {
+    "key": "hero_bg_nextsteps_s1",
+    "label": "Next Steps: What feels like your next step?",
+    "page": "/next-steps",
+    "pageLabel": "Next Steps page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_nextsteps_s2",
+    "label": "Next Steps: Let us walk with you",
+    "page": "/next-steps",
+    "pageLabel": "Next Steps page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_nextsteps_s3",
+    "label": "Next Steps: Still getting to know Fairview?",
+    "page": "/next-steps",
+    "pageLabel": "Next Steps page",
+    "backdrop": "radial-gradient(90% 100% at 85% 0%,rgba(127,209,203,.18),transparent 55%),linear-gradient(135deg,#24466B,#16304D)",
+    "dark": true
+  },
+  {
+    "key": "hero_bg_events_s1",
+    "label": "Events: Upcoming events",
+    "page": "/events",
+    "pageLabel": "Events page",
+    "backdrop": "#F2ECDD",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_events_s2",
+    "label": "Events: The short list",
+    "page": "/events",
+    "pageLabel": "Events page",
+    "backdrop": "#E6F1EE",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_events_s3",
+    "label": "Events: Our weekly rhythm",
+    "page": "/events",
+    "pageLabel": "Events page",
+    "backdrop": "#F2ECDD",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_events_s4",
+    "label": "Events: Recent highlights",
+    "page": "/events",
+    "pageLabel": "Events page",
+    "backdrop": "#E6F1EE",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_events_s5",
+    "label": "Events: Have an idea or a question?",
+    "page": "/events",
+    "pageLabel": "Events page",
+    "backdrop": "radial-gradient(90% 100% at 85% 0%,rgba(127,209,203,.18),transparent 55%),linear-gradient(135deg,#24466B,#16304D)",
+    "dark": true
+  },
+  {
+    "key": "hero_bg_missions_s1",
+    "label": "Missions: Where we serve",
+    "page": "/missions",
+    "pageLabel": "Missions page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_missions_s2",
+    "label": "Missions: Feeling the call?",
+    "page": "/missions",
+    "pageLabel": "Missions page",
+    "backdrop": "radial-gradient(90% 100% at 85% 0%,rgba(127,209,203,.18),transparent 55%),linear-gradient(135deg,#24466B,#16304D)",
+    "dark": true
+  },
+  {
+    "key": "hero_bg_give_s1",
+    "label": "Give: Make a gift",
+    "page": "/give",
+    "pageLabel": "Give page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_give_s2",
+    "label": "Give: Prefer to give another way?",
+    "page": "/give",
+    "pageLabel": "Give page",
+    "backdrop": "#F2ECDD",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_give_s3",
+    "label": "Give: Every gift fuels real ministry",
+    "page": "/give",
+    "pageLabel": "Give page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_give_s4",
+    "label": "Give: \"God loveth a cheerful giver.\"",
+    "page": "/give",
+    "pageLabel": "Give page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_give_s5",
+    "label": "Give: Questions about giving",
+    "page": "/give",
+    "pageLabel": "Give page",
+    "backdrop": "#F2ECDD",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_give_s6",
+    "label": "Give: Thank you for giving.",
+    "page": "/give",
+    "pageLabel": "Give page",
+    "backdrop": "radial-gradient(90% 100% at 85% 0%,rgba(127,209,203,.18),transparent 55%),linear-gradient(135deg,#24466B,#16304D)",
+    "dark": true
+  },
+  {
+    "key": "hero_bg_contact_s1",
+    "label": "Contact: Come say hello",
+    "page": "/contact",
+    "pageLabel": "Contact page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_contact_s2",
+    "label": "Contact: Right here in Clay",
+    "page": "/contact",
+    "pageLabel": "Contact page",
+    "backdrop": "#F2ECDD",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_contact_s3",
+    "label": "Contact: We can't wait to meet you.",
+    "page": "/contact",
+    "pageLabel": "Contact page",
+    "backdrop": "radial-gradient(90% 100% at 85% 0%,rgba(127,209,203,.18),transparent 55%),linear-gradient(135deg,#24466B,#16304D)",
+    "dark": true
+  },
+  {
+    "key": "hero_bg_watch_s1",
+    "label": "The Overlook: Service archive",
+    "page": "/watch",
+    "pageLabel": "The Overlook page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_watch_s2",
+    "label": "The Overlook: Set a reminder",
+    "page": "/watch",
+    "pageLabel": "The Overlook page",
+    "backdrop": "#F2ECDD",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_watch_s3",
+    "label": "The Overlook: Latest message",
+    "page": "/watch",
+    "pageLabel": "The Overlook page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_watch_s4",
+    "label": "The Overlook: Browse past messages",
+    "page": "/watch",
+    "pageLabel": "The Overlook page",
+    "backdrop": "#F2ECDD",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_watch_s5",
+    "label": "The Overlook: Latest",
+    "page": "/watch",
+    "pageLabel": "The Overlook page",
+    "backdrop": "#FAF6ED",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_watch_s6",
+    "label": "The Overlook: Singing and specials",
+    "page": "/watch",
+    "pageLabel": "The Overlook page",
+    "backdrop": "#F2ECDD",
+    "dark": false
+  },
+  {
+    "key": "hero_bg_watch_s7",
+    "label": "The Overlook: Better yet, join us in person",
+    "page": "/watch",
+    "pageLabel": "The Overlook page",
+    "backdrop": "radial-gradient(90% 100% at 85% 0%,rgba(127,209,203,.18),transparent 55%),linear-gradient(135deg,#24466B,#16304D)",
+    "dark": true
+  }
+];
+  MEDIA_BG = MEDIA_BG.concat(MEDIA_BG_GEN.map(function (item) {
+    item.kind = 'background'; item.ratio = 'hero-page'; return item;
+  }));
   var MEDIA_PHOTO = [
     { key: 'photo_welcome', label: 'Home: welcome photo', page: '/', ratio: 'four-three' },
     { key: 'photo_visit', label: 'Visit: welcome photo', page: '/visit', ratio: 'landscape' },
@@ -1806,7 +2173,11 @@
     { key: 'photo_gi_menswomens', label: 'Get Involved: Soul-Winning Visitation', page: '/get-involved', ratio: 'wide' },
     { key: 'photo_gi_missions', label: 'Get Involved: Missions', page: '/get-involved', ratio: 'wide' },
     { key: 'photo_gi_music', label: 'Get Involved: Music and Choir', page: '/get-involved', ratio: 'wide' },
-  ].map(function (item) { item.kind = 'photo'; item.pageLabel = 'View page'; return item; });
+  ].map(function (item) {
+    item.kind = 'photo';
+    item.pageLabel = ({ '/': 'Home page', '/visit': 'Visit page', '/staff': 'Staff page', '/get-involved': 'Get Involved page' })[item.page] || 'Photos';
+    return item;
+  });
   // Text that lives on top of each background slot. Edited inside the media
   // designer, previewed live on the stage, and saved with the design. Defs
   // mirror the baked page copy (and FBT_SCHEMA).
@@ -1897,6 +2268,769 @@
       { key: 'tile_ministries_sub', label: 'Tile subtitle', def: 'H.O.P.E. · Van · Youth · Missions' }
     ]
   };
+  var MEDIA_TEXT_GEN = {
+  "hero_bg_visit_s1": [
+    {
+      "key": "visit_s1_kick",
+      "label": "Script line",
+      "def": "Your first visit"
+    },
+    {
+      "key": "visit_s1_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "What to *expect*",
+      "rich": true
+    },
+    {
+      "key": "visit_s1_sub",
+      "label": "Paragraph",
+      "def": "A simple, honest Sunday. Here is the feel of a service with us.",
+      "multi": true
+    }
+  ],
+  "hero_bg_visit_s2": [
+    {
+      "key": "visit_s2_kick",
+      "label": "Script line",
+      "def": "Your first Sunday"
+    },
+    {
+      "key": "visit_s2_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Here's exactly *how it goes*",
+      "rich": true
+    },
+    {
+      "key": "visit_s2_sub",
+      "label": "Paragraph",
+      "def": "No guessing, no surprises. From Main Street to the last amen, here is what a Sunday looks like.",
+      "multi": true
+    }
+  ],
+  "hero_bg_visit_s3": [
+    {
+      "key": "visit_s3_kick",
+      "label": "Script line",
+      "def": "Plan your visit"
+    },
+    {
+      "key": "visit_s3_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Let us know you're *coming*",
+      "rich": true
+    },
+    {
+      "key": "visit_s3_sub",
+      "label": "Paragraph",
+      "def": "Tell us a little about your visit and we will be watching for you, save you a seat, and have a friendly face ready to say hello. No pressure, and no sales pitch.",
+      "multi": true
+    }
+  ],
+  "hero_bg_visit_s4": [
+    {
+      "key": "visit_s4_kick",
+      "label": "Script line",
+      "def": "Service times"
+    },
+    {
+      "key": "visit_s4_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "When we *gather*",
+      "rich": true
+    },
+    {
+      "key": "visit_s4_sub",
+      "label": "Paragraph",
+      "def": "Join us any week. Here is the schedule.",
+      "multi": true
+    }
+  ],
+  "hero_bg_visit_s5": [
+    {
+      "key": "visit_s5_kick",
+      "label": "Script line",
+      "def": "Good to know"
+    },
+    {
+      "key": "visit_s5_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Common *questions*",
+      "rich": true
+    },
+    {
+      "key": "visit_s5_sub",
+      "label": "Paragraph",
+      "def": "The things first-time visitors usually want to ask.",
+      "multi": true
+    }
+  ],
+  "hero_bg_visit_s6": [
+    {
+      "key": "visit_s6_kick",
+      "label": "Script line",
+      "def": "Plan your visit"
+    },
+    {
+      "key": "visit_s6_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Find *us*",
+      "rich": true
+    },
+    {
+      "key": "visit_s6_sub",
+      "label": "Paragraph",
+      "def": "We are right on Main Street in Clay, and we would love to see you Sunday.",
+      "multi": true
+    }
+  ],
+  "hero_bg_visit_s7": [
+    {
+      "key": "visit_s7_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Get the *latest from Fairview*",
+      "rich": true
+    },
+    {
+      "key": "visit_s7_sub",
+      "label": "Paragraph",
+      "def": "Service updates, upcoming events, and the occasional note of encouragement. No spam, and you can unsubscribe anytime.",
+      "multi": true
+    }
+  ],
+  "hero_bg_visit_s8": [
+    {
+      "key": "visit_s8_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "We saved you a *seat*",
+      "rich": true
+    },
+    {
+      "key": "visit_s8_sub",
+      "label": "Paragraph",
+      "def": "This Sunday \u00b7 Worship at 11:00am \u00b7 Clay, WV",
+      "multi": true
+    }
+  ],
+  "hero_bg_beliefs_s1": [
+    {
+      "key": "beliefs_s1_kick",
+      "label": "Script line",
+      "def": "Unto the hills"
+    },
+    {
+      "key": "beliefs_s1_heading",
+      "label": "Verse or quote",
+      "def": "\"I will lift up mine eyes unto the hills, from whence cometh my help.\"",
+      "rich": true
+    },
+    {
+      "key": "beliefs_s1_ref",
+      "label": "Reference line",
+      "def": "Psalm 121:1 \u00b7 KJV"
+    }
+  ],
+  "hero_bg_beliefs_s2": [
+    {
+      "key": "beliefs_s2_kick",
+      "label": "Script line",
+      "def": "Our heart"
+    },
+    {
+      "key": "beliefs_s2_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "What we hold *to*",
+      "rich": true
+    },
+    {
+      "key": "beliefs_s2_sub",
+      "label": "Paragraph",
+      "def": "Four plain truths that shape who we are and how we serve.",
+      "multi": true
+    }
+  ],
+  "hero_bg_beliefs_s3": [
+    {
+      "key": "beliefs_s3_kick",
+      "label": "Script line",
+      "def": "Our statement"
+    },
+    {
+      "key": "beliefs_s3_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "What we *stand on*",
+      "rich": true
+    }
+  ],
+  "hero_bg_beliefs_s4": [
+    {
+      "key": "beliefs_s4_kick",
+      "label": "Script line",
+      "def": "Good news"
+    },
+    {
+      "key": "beliefs_s4_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Jesus has made a *way*",
+      "rich": true
+    }
+  ],
+  "hero_bg_beliefs_s5": [
+    {
+      "key": "beliefs_s5_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Come and *see*.",
+      "rich": true
+    },
+    {
+      "key": "beliefs_s5_sub",
+      "label": "Paragraph",
+      "def": "Sundays 10:00am, 11:00am & 6:00pm \u00b7 Wednesday 7:00pm",
+      "multi": true
+    }
+  ],
+  "hero_bg_staff_s1": [
+    {
+      "key": "staff_s1_kick",
+      "label": "Script line",
+      "def": "The team"
+    },
+    {
+      "key": "staff_s1_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "The people *who serve*",
+      "rich": true
+    },
+    {
+      "key": "staff_s1_sub",
+      "label": "Paragraph",
+      "def": "Fairview is served by folks who love this church and love the people who walk through its doors. Come put faces to the names on Sunday.",
+      "multi": true
+    }
+  ],
+  "hero_bg_staff_s2": [
+    {
+      "key": "staff_s2_kick",
+      "label": "Script line",
+      "def": "Reach out"
+    },
+    {
+      "key": "staff_s2_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Have a question? *We are here.*",
+      "rich": true
+    },
+    {
+      "key": "staff_s2_sub",
+      "label": "Paragraph",
+      "def": "Whether you are new to church, coming back after years away, or just need somebody to pray with you, we would love to hear from you. Call or send a note and we will get back to you.",
+      "multi": true
+    }
+  ],
+  "hero_bg_staff_s3": [
+    {
+      "key": "staff_s3_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Come meet us *in person*.",
+      "rich": true
+    },
+    {
+      "key": "staff_s3_sub",
+      "label": "Paragraph",
+      "def": "Sunday School 10:00am \u00b7 Worship 11:00am & 6:00pm \u00b7 Wednesday 7:00pm",
+      "multi": true
+    }
+  ],
+  "hero_bg_getinvolved_s1": [
+    {
+      "key": "getinvolved_s1_kick",
+      "label": "Script line",
+      "def": "Start here"
+    },
+    {
+      "key": "getinvolved_s1_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Your *next step*",
+      "rich": true
+    },
+    {
+      "key": "getinvolved_s1_sub",
+      "label": "Paragraph",
+      "def": "Not sure where to begin? Take the first small step, and we'll help you find the rest.",
+      "multi": true
+    }
+  ],
+  "hero_bg_getinvolved_s2": [
+    {
+      "key": "getinvolved_s2_kick",
+      "label": "Script line",
+      "def": "Ministries"
+    },
+    {
+      "key": "getinvolved_s2_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Where you can *belong*",
+      "rich": true
+    },
+    {
+      "key": "getinvolved_s2_sub",
+      "label": "Paragraph",
+      "def": "Sunday School meets at 10:00am and worship begins at 11:00am. From the van route to the mission field, here is where Fairview serves. Reach out and we'll help you find the right place to start.",
+      "multi": true
+    }
+  ],
+  "hero_bg_getinvolved_s3": [
+    {
+      "key": "getinvolved_s3_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Take the *first step.*",
+      "rich": true
+    },
+    {
+      "key": "getinvolved_s3_sub",
+      "label": "Paragraph",
+      "def": "We'd love to help you find your place at Fairview.",
+      "multi": true
+    }
+  ],
+  "hero_bg_nextsteps_s1": [
+    {
+      "key": "nextsteps_s1_kick",
+      "label": "Script line",
+      "def": "Start Where You Are"
+    },
+    {
+      "key": "nextsteps_s1_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "What feels like your *next step?*",
+      "rich": true
+    },
+    {
+      "key": "nextsteps_s1_sub",
+      "label": "Paragraph",
+      "def": "You do not need to have the right words or know the whole plan. Choose the place that best fits today, and we will help with what comes next.",
+      "multi": true
+    }
+  ],
+  "hero_bg_nextsteps_s2": [
+    {
+      "key": "nextsteps_s2_kick",
+      "label": "Script line",
+      "def": "We Are Here to Help"
+    },
+    {
+      "key": "nextsteps_s2_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Let us walk *with you*",
+      "rich": true
+    },
+    {
+      "key": "nextsteps_s2_sub",
+      "label": "Paragraph",
+      "def": "This is not a commitment or an application. It is simply a way to start a real conversation with someone who cares.",
+      "multi": true
+    }
+  ],
+  "hero_bg_nextsteps_s3": [
+    {
+      "key": "nextsteps_s3_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Still getting to know *Fairview?*",
+      "rich": true
+    },
+    {
+      "key": "nextsteps_s3_sub",
+      "label": "Paragraph",
+      "def": "Come see what a Sunday is like",
+      "multi": true
+    }
+  ],
+  "hero_bg_events_s1": [
+    {
+      "key": "events_s1_kick",
+      "label": "Script line",
+      "def": "Mark your calendar"
+    },
+    {
+      "key": "events_s1_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Upcoming *events*",
+      "rich": true
+    },
+    {
+      "key": "events_s1_sub",
+      "label": "Paragraph",
+      "def": "Special days come around all year at Fairview: revivals, homecomings, fellowships, and more. Tap any event for details and to register.",
+      "multi": true
+    }
+  ],
+  "hero_bg_events_s2": [
+    {
+      "key": "events_s2_kick",
+      "label": "Script line",
+      "def": "At a glance"
+    },
+    {
+      "key": "events_s2_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "The *short list*",
+      "rich": true
+    }
+  ],
+  "hero_bg_events_s3": [
+    {
+      "key": "events_s3_kick",
+      "label": "Script line",
+      "def": "Every week"
+    },
+    {
+      "key": "events_s3_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Our weekly *rhythm*",
+      "rich": true
+    },
+    {
+      "key": "events_s3_sub",
+      "label": "Paragraph",
+      "def": "The services you can count on, week in and week out.",
+      "multi": true
+    }
+  ],
+  "hero_bg_events_s4": [
+    {
+      "key": "events_s4_kick",
+      "label": "Script line",
+      "def": "Looking back"
+    },
+    {
+      "key": "events_s4_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Recent *highlights*",
+      "rich": true
+    },
+    {
+      "key": "events_s4_sub",
+      "label": "Paragraph",
+      "def": "A look back at what God has been doing at Fairview.",
+      "multi": true
+    }
+  ],
+  "hero_bg_events_s5": [
+    {
+      "key": "events_s5_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Have an idea or a question?",
+      "rich": true
+    },
+    {
+      "key": "events_s5_sub",
+      "label": "Paragraph",
+      "def": "We'd love to hear from you",
+      "multi": true
+    }
+  ],
+  "hero_bg_missions_s1": [
+    {
+      "key": "missions_s1_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Where we *serve*",
+      "rich": true
+    },
+    {
+      "key": "missions_s1_sub",
+      "label": "Paragraph",
+      "def": "Missions is not a side project at Fairview, it is part of who we are. Our church gives to send and support missionaries carrying the gospel around the world, and Fairview appears in the AFBM missions directory. As our missionaries are added in Studio, their pins and stories will show up on the map and in the list below.",
+      "multi": true
+    }
+  ],
+  "hero_bg_missions_s2": [
+    {
+      "key": "missions_s2_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Feeling the *call?*",
+      "rich": true
+    },
+    {
+      "key": "missions_s2_sub",
+      "label": "Paragraph",
+      "def": "Whether you want to pray, give, or go, we would love to talk with you about missions.",
+      "multi": true
+    }
+  ],
+  "hero_bg_give_s1": [
+    {
+      "key": "give_s1_kick",
+      "label": "Script line",
+      "def": "Secure online giving"
+    },
+    {
+      "key": "give_s1_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Make a gift",
+      "rich": true
+    },
+    {
+      "key": "give_s1_sub",
+      "label": "Paragraph",
+      "def": "Choose an amount, a fund, and the way you would like to give.",
+      "multi": true
+    }
+  ],
+  "hero_bg_give_s2": [
+    {
+      "key": "give_s2_kick",
+      "label": "Script line",
+      "def": "Other ways to give"
+    },
+    {
+      "key": "give_s2_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Prefer to give *another way?*",
+      "rich": true
+    }
+  ],
+  "hero_bg_give_s3": [
+    {
+      "key": "give_s3_kick",
+      "label": "Script line",
+      "def": "Where it goes"
+    },
+    {
+      "key": "give_s3_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Every gift fuels *real ministry*",
+      "rich": true
+    },
+    {
+      "key": "give_s3_sub",
+      "label": "Paragraph",
+      "def": "Here's how your giving goes to work, in Clay and far beyond.",
+      "multi": true
+    }
+  ],
+  "hero_bg_give_s4": [
+    {
+      "key": "give_s4_kick",
+      "label": "Script line",
+      "def": "A cheerful heart"
+    },
+    {
+      "key": "give_s4_heading",
+      "label": "Verse or quote",
+      "def": "\"God loveth a cheerful giver.\"",
+      "rich": true
+    },
+    {
+      "key": "give_s4_ref",
+      "label": "Reference line",
+      "def": "2 Corinthians 9:7 \u00b7 KJV"
+    }
+  ],
+  "hero_bg_give_s5": [
+    {
+      "key": "give_s5_kick",
+      "label": "Script line",
+      "def": "Good to know"
+    },
+    {
+      "key": "give_s5_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Questions about *giving*",
+      "rich": true
+    }
+  ],
+  "hero_bg_give_s6": [
+    {
+      "key": "give_s6_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Thank you for *giving*.",
+      "rich": true
+    },
+    {
+      "key": "give_s6_sub",
+      "label": "Paragraph",
+      "def": "Every gift matters here, and every gift goes to work.",
+      "multi": true
+    }
+  ],
+  "hero_bg_contact_s1": [
+    {
+      "key": "contact_s1_kick",
+      "label": "Script line",
+      "def": "Reach Out"
+    },
+    {
+      "key": "contact_s1_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Come say *hello*",
+      "rich": true
+    },
+    {
+      "key": "contact_s1_sub",
+      "label": "Paragraph",
+      "def": "Stop by any service, give us a call, or drop us a note below. We would be glad to hear from you.",
+      "multi": true
+    }
+  ],
+  "hero_bg_contact_s2": [
+    {
+      "key": "contact_s2_kick",
+      "label": "Script line",
+      "def": "Find Us"
+    },
+    {
+      "key": "contact_s2_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Right here in *Clay*",
+      "rich": true
+    },
+    {
+      "key": "contact_s2_sub",
+      "label": "Paragraph",
+      "def": "We are at 2294 Main Street in downtown Clay, an easy drive from anywhere in the county. If you need a ride, our van ministry will come get you free of charge.",
+      "multi": true
+    }
+  ],
+  "hero_bg_contact_s3": [
+    {
+      "key": "contact_s3_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "We can't wait to *meet* you.",
+      "rich": true
+    },
+    {
+      "key": "contact_s3_sub",
+      "label": "Paragraph",
+      "def": "This Sunday \u00b7 Worship at 11:00am \u00b7 Clay, WV",
+      "multi": true
+    }
+  ],
+  "hero_bg_watch_s1": [
+    {
+      "key": "watch_s1_kick",
+      "label": "Script line",
+      "def": "Watch again"
+    },
+    {
+      "key": "watch_s1_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Service *archive*",
+      "rich": true
+    },
+    {
+      "key": "watch_s1_sub",
+      "label": "Paragraph",
+      "def": "Every recorded service in one place. Search by title or date, or filter by year and service type.",
+      "multi": true
+    }
+  ],
+  "hero_bg_watch_s2": [
+    {
+      "key": "watch_s2_kick",
+      "label": "Script line",
+      "def": "When we stream"
+    },
+    {
+      "key": "watch_s2_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Set a *reminder*",
+      "rich": true
+    },
+    {
+      "key": "watch_s2_sub",
+      "label": "Paragraph",
+      "def": "The same times we gather in person in Clay. We hope you'll join us.",
+      "multi": true
+    }
+  ],
+  "hero_bg_watch_s3": [
+    {
+      "key": "watch_s3_kick",
+      "label": "Script line",
+      "def": "Latest message"
+    }
+  ],
+  "hero_bg_watch_s4": [
+    {
+      "key": "watch_s4_kick",
+      "label": "Script line",
+      "def": "Watch and search"
+    },
+    {
+      "key": "watch_s4_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Browse *past messages*",
+      "rich": true
+    },
+    {
+      "key": "watch_s4_sub",
+      "label": "Paragraph",
+      "def": "Every video message in one place. Search and filter by speaker, Scripture, or topic.",
+      "multi": true
+    }
+  ],
+  "hero_bg_watch_s5": [
+    {
+      "key": "watch_s5_kick",
+      "label": "Script line",
+      "def": "Latest"
+    }
+  ],
+  "hero_bg_watch_s6": [
+    {
+      "key": "watch_s6_kick",
+      "label": "Script line",
+      "def": "Music library"
+    },
+    {
+      "key": "watch_s6_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Singing and *specials*",
+      "rich": true
+    },
+    {
+      "key": "watch_s6_sub",
+      "label": "Paragraph",
+      "def": "Congregational singing and specials from our services. Everything is also on our YouTube channel.",
+      "multi": true
+    }
+  ],
+  "hero_bg_watch_s7": [
+    {
+      "key": "watch_s7_heading",
+      "label": "Heading (*words* turn teal)",
+      "def": "Better yet, join us *in person*",
+      "rich": true
+    },
+    {
+      "key": "watch_s7_sub",
+      "label": "Paragraph",
+      "def": "This Sunday \u00b7 Worship at 11:00am & 6:00pm \u00b7 Clay, WV",
+      "multi": true
+    }
+  ],
+  "hero_bg_live": [
+    {
+      "key": "watch_hero_kick",
+      "label": "Script line",
+      "def": "The Overlook"
+    },
+    {
+      "key": "watch_hero_heading",
+      "label": "Headline (*words* turn teal)",
+      "def": "Worship with us, *anytime*",
+      "rich": true
+    },
+    {
+      "key": "watch_hero_sub",
+      "label": "Subtext",
+      "def": "Join us live, rewatch past preaching, or sing along with the music. Pick what you came for below.",
+      "multi": true
+    }
+  ]
+};
+  Object.keys(MEDIA_TEXT_GEN).forEach(function (k) {
+    MEDIA_TEXT[k] = (MEDIA_TEXT[k] || []).concat(MEDIA_TEXT_GEN[k]);
+  });
   function mediaTextFields(meta) { return (meta && MEDIA_TEXT[meta.key]) || []; }
   function mediaTextValue(field, draft) {
     if (draft && mediaEdit && Object.prototype.hasOwnProperty.call(mediaEdit.pendingValues, field.key)) {
@@ -1969,6 +3103,7 @@
   function mediaBackdrop(style, meta) {
     var chosen = mediaStyleApi.backgroundValue(style, meta.kind);
     if (chosen) return chosen;
+    if (meta.backdrop) return meta.backdrop;
     // No color picked ("theme") = whatever the live page shows behind the
     // media. Mirror those exact defaults so the preview matches the site.
     if (meta.kind === 'background') {
@@ -2068,7 +3203,7 @@
     if (editorMode && meta.kind === 'background' && !meta.noCopy) {
       var copy = document.createElement('span');
       copy.className = 'media-stage-copy';
-      if (isHeroBg && !heroScrim) copy.className += ' stage-on-light';
+      if (isHeroBg && !heroScrim && !meta.dark) copy.className += ' stage-on-light';
       if (meta.key.indexOf('hero_bg_tile_') === 0) copy.className += ' stage-tile';
       if (mediaShadowNone(meta)) copy.className += ' no-shadow';
       copy.innerHTML = stageCopyHtml(meta);
@@ -2846,13 +3981,23 @@
       }
       mediaVals = {};
       (result.data || []).forEach(function (row) { mediaVals[row.key] = row.value; });
-      var pageSlots = MEDIA_BG.filter(function (m) { return m.page !== '/' || m.key === 'hero_bg_home'; });
-      var homeSlots = MEDIA_BG.filter(function (m) { return m.page === '/' && m.key !== 'hero_bg_home'; });
+      var groups = [], groupIndex = {};
+      mediaAll().forEach(function (m) {
+        var name = m.pageLabel || 'Other';
+        if (!(name in groupIndex)) { groupIndex[name] = groups.length; groups.push({ name: name, items: [] }); }
+        groups[groupIndex[name]].items.push(m);
+      });
+      // Home first, then site order, photos folded into their page's group.
+      groups.sort(function (a, b) {
+        return (a.name === 'Home page' ? -1 : b.name === 'Home page' ? 1 : 0);
+      });
       $('media-bg').className = 'media-groups';
-      $('media-bg').innerHTML =
-        '<div class="media-group-head">Page heroes</div><div class="media-grid">' + pageSlots.map(mediaTile).join('') + '</div>' +
-        '<div class="media-group-head">Homepage sections &amp; cards</div><div class="media-grid">' + homeSlots.map(mediaTile).join('') + '</div>';
-      $('media-photo').innerHTML = MEDIA_PHOTO.map(mediaTile).join('');
+      $('media-bg').innerHTML = groups.map(function (g) {
+        return '<div class="media-group-head">' + esc(g.name) + '</div><div class="media-grid">' + g.items.map(mediaTile).join('') + '</div>';
+      }).join('');
+      $('media-photo').innerHTML = '';
+      var photoHead = document.querySelector('[data-media-photo-head]');
+      if (photoHead) photoHead.hidden = true;
       mediaReady = true;
       refreshMediaPreviews();
       $('media-msg').textContent = '';
