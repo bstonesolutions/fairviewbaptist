@@ -99,9 +99,13 @@
   var studioStarted = false;
   function show(v) {
     loadingV.hidden = true;
+    var sp = $('setpw');
+    // Never leave every screen hidden (a blank page); fall back to login.
+    if (v === 'setpw' && !sp) v = 'login';
+    if (v !== 'login' && v !== 'app' && v !== 'setpw') v = 'login';
     $('login').hidden = (v !== 'login');
     $('app').hidden = (v !== 'app');
-    var sp = $('setpw'); if (sp) sp.hidden = (v !== 'setpw');
+    if (sp) sp.hidden = (v !== 'setpw');
   }
   function route(session) {
     var email = session && session.user && session.user.email;
@@ -119,6 +123,14 @@
     } else { studioStarted = false; show('login'); }
   }
   sb.auth.getSession().then(function (r) { if (recovering) { show('setpw'); return; } route(r.data.session); });
+  document.addEventListener('visibilitychange', function () {
+    // Coming back to the tab: refresh the session quietly and make sure the
+    // app is on screen; never bounce the view or the open editor.
+    if (document.hidden || !studioStarted) return;
+    sb.auth.getSession().then(function (r) {
+      if (r && r.data && r.data.session) show('app');
+    });
+  });
   sb.auth.onAuthStateChange(function (_e, s) {
     if (_e === 'PASSWORD_RECOVERY') { recovering = true; show('setpw'); return; }
     if (recovering) return; // stay on set-password until the new one is saved
@@ -2277,6 +2289,28 @@
     msg.className = 'studio-msg' + (type ? ' ' + type : '');
     msg.textContent = text || '';
   }
+  var MEDIA_DRAFT_KEY = 'fbt-studio-media-draft';
+  function saveMediaDraft() {
+    if (!mediaEdit || !mediaEdit.dirty) return;
+    try {
+      window.sessionStorage.setItem(MEDIA_DRAFT_KEY, JSON.stringify({
+        key: mediaEdit.meta.key,
+        style: mediaEdit.style,
+        pending: mediaEdit.pendingValues
+      }));
+    } catch (err) { /* storage full or blocked; drafts are best-effort */ }
+  }
+  function clearMediaDraft() {
+    try { window.sessionStorage.removeItem(MEDIA_DRAFT_KEY); } catch (err) { /* ignore */ }
+  }
+  function takeMediaDraft(key) {
+    try {
+      var raw = window.sessionStorage.getItem(MEDIA_DRAFT_KEY);
+      if (!raw) return null;
+      var draft = JSON.parse(raw);
+      return draft && draft.key === key ? draft : null;
+    } catch (err) { return null; }
+  }
   function mediaMarkDirty() {
     if (!mediaEdit) return;
     mediaEdit.dirty = true;
@@ -2285,6 +2319,7 @@
     // rebuild the whole editor the way the framing controls do.
     var save = $('media-editor-save');
     if (save && !mediaEdit.busy) { save.disabled = false; save.textContent = 'Save changes'; }
+    saveMediaDraft();
     setMediaEditorMessage('Unsaved design changes', '');
   }
   function mediaSourceNote(meta, style) {
@@ -2440,7 +2475,16 @@
     document.body.classList.add('media-editor-open');
     try { window.history.replaceState(null, '', '#media/' + meta.key); } catch (err) { /* ignore */ }
     setMediaBackgroundInert(true);
-    setMediaEditorMessage(stored ? 'Saved custom design loaded' : 'Using the original page look', '');
+    var draft = takeMediaDraft(key);
+    if (draft) {
+      mediaEdit.style = mediaStyleApi.normalize(draft.style, meta.kind);
+      mediaEdit.pendingValues = draft.pending || {};
+      mediaEdit.dirty = true;
+      mediaEdit.restoreOriginal = false;
+      setMediaEditorMessage('Restored your unsaved changes from before the page reloaded. Save to keep them, or Cancel to let them go.', '');
+    } else {
+      setMediaEditorMessage(stored ? 'Saved custom design loaded' : 'Using the original page look', '');
+    }
     buildMediaTextFields(meta);
     buildMediaMatch(meta);
     syncMediaEditor(false);
@@ -2450,6 +2494,7 @@
     if (!mediaEdit) return;
     if (mediaEdit.busy) return;
     if (!force && mediaEdit.dirty && !window.confirm('Close without saving these design changes?')) return;
+    clearMediaDraft();
     $('media-editor').hidden = true;
     document.body.classList.remove('media-editor-open');
     try { window.history.replaceState(null, '', '#media'); } catch (err) { /* ignore */ }
@@ -2503,6 +2548,7 @@
         return;
       }
       rows.forEach(function (row) { mediaVals[row.key] = row.value; });
+      clearMediaDraft();
       edit.pendingValues = {};
       edit.dirty = false;
       edit.stored = !!value;
