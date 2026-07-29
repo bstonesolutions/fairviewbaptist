@@ -332,11 +332,37 @@
 
   // ---------- view switching (Events / Blog / …) ----------
   var RETIRED_VIEWS = ['giving', 'prayers', 'bulletin', 'blog'];
+  var pendingMediaSlot = '';
+  var restoreScrollFor = '';
   function initialStudioView() {
     var h = (window.location.hash || '').replace(/^#/, '');
-    if (h && document.getElementById('view-' + h) && RETIRED_VIEWS.indexOf(h) < 0) return h;
+    var parts = h.split('/');
+    var view = parts[0];
+    if (view === 'media' && parts[1]) pendingMediaSlot = parts[1];
+    if (view && document.getElementById('view-' + view) && RETIRED_VIEWS.indexOf(view) < 0) {
+      // Refreshing should put the owner back at the same spot on the page too.
+      try {
+        var saved = JSON.parse(window.sessionStorage.getItem('fbt-studio-place') || 'null');
+        if (saved && saved.view === view && saved.y > 0) {
+          restoreScrollFor = view;
+          var y = saved.y;
+          window.setTimeout(function () { if (restoreScrollFor === view) window.scrollTo(0, y); }, 250);
+          window.setTimeout(function () { if (restoreScrollFor === view) { window.scrollTo(0, y); restoreScrollFor = ''; } }, 900);
+        }
+      } catch (err) { /* ignore */ }
+      return view;
+    }
     return 'dashboard';
   }
+  window.addEventListener('beforeunload', function () {
+    try {
+      var active = document.querySelector('.studio-side .snav.active[data-view]');
+      window.sessionStorage.setItem('fbt-studio-place', JSON.stringify({
+        view: active ? active.getAttribute('data-view') : 'dashboard',
+        y: window.scrollY || 0
+      }));
+    } catch (err) { /* ignore */ }
+  });
   function showView(view) {
     Array.prototype.forEach.call(document.querySelectorAll('[data-view-pane]'), function (p) { p.hidden = (p.id !== 'view-' + view); });
     var activeButton = null;
@@ -366,6 +392,7 @@
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     // Keep the place on refresh: /studio#media reopens on Photos & media.
     try { window.history.replaceState(null, '', '#' + view); } catch (err) { /* ignore */ }
+    if (view !== restoreScrollFor) restoreScrollFor = '';
   }
   Array.prototype.forEach.call(document.querySelectorAll('.studio-side .snav[data-view]'), function (b) {
     b.addEventListener('click', function () { showView(b.getAttribute('data-view')); });
@@ -2313,6 +2340,7 @@
       : 'Position this photo without changing the original file.';
     $('media-editor').hidden = false;
     document.body.classList.add('media-editor-open');
+    try { window.history.replaceState(null, '', '#media/' + meta.key); } catch (err) { /* ignore */ }
     setMediaBackgroundInert(true);
     setMediaEditorMessage(stored ? 'Saved custom design loaded' : 'Using the original page look', '');
     buildMediaTextFields(meta);
@@ -2326,6 +2354,7 @@
     if (!force && mediaEdit.dirty && !window.confirm('Close without saving these design changes?')) return;
     $('media-editor').hidden = true;
     document.body.classList.remove('media-editor-open');
+    try { window.history.replaceState(null, '', '#media'); } catch (err) { /* ignore */ }
     setMediaBackgroundInert(false);
     mediaEdit = null;
     mediaPointerDown = false;
@@ -2665,6 +2694,11 @@
       mediaReady = true;
       refreshMediaPreviews();
       $('media-msg').textContent = '';
+      if (pendingMediaSlot) {
+        var reopen = pendingMediaSlot;
+        pendingMediaSlot = '';
+        if (mediaByKey(reopen)) openMediaEditor(reopen);
+      }
     });
   }
 
