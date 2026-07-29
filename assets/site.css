@@ -77,6 +77,17 @@ header.solid{box-shadow:0 8px 30px rgba(31,50,56,.09);}
 .nav ul a.nav-feature::before{content:"";width:0;height:0;border-left:7px solid var(--teal);border-top:4.5px solid transparent;border-bottom:4.5px solid transparent;}
 .nav ul a.nav-feature::after{background:var(--teal);}
 
+/* Any .sec can host a Studio photo behind its content (data-cms-photo-host). */
+.sec[data-cms-photo-host]{position:relative;}
+.sec[data-cms-photo-host] > .bg{position:absolute;inset:0;z-index:0;overflow:hidden;}
+.sec[data-cms-photo-host] > .wrap{position:relative;z-index:1;}
+.sec.has-cms-photo > .bg::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,37,44,.5),rgba(10,37,44,.72));pointer-events:none;}
+.sec.has-cms-photo .kick{color:var(--aqua);}
+.sec.has-cms-photo h2{color:var(--dtx);}
+.sec.has-cms-photo h2 em{color:var(--aqua);}
+.watch-sub{color:var(--mut);font-size:1.14rem;margin-bottom:28px;}
+#stream.has-cms-photo .watch-sub,.home-missions.has-cms-photo .hm-sub,#contact.has-cms-photo .shead p{color:var(--dmut);}
+#stream.has-cms-photo .btn-o{border-color:rgba(255,248,234,.55);color:var(--dtx);}
 .hero{position:relative;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:104px 0 96px;}
 .hero .bg{position:absolute;inset:0;z-index:0;background:radial-gradient(70% 55% at 78% 12%,rgba(41,165,160,.15),transparent 60%),radial-gradient(50% 60% at 8% 90%,rgba(34,58,94,.07),transparent 60%),var(--paper);}
 .wband{position:absolute;left:-10%;width:120%;height:240px;z-index:1;}
@@ -1226,7 +1237,8 @@ html.kiosk .miss-modal-photo{height:300px;}
 /* A photo can be any brightness; this scrim guarantees the light hero text
    always reads, on top of whatever overlay the owner picked in Studio. */
 .hero.has-cms-photo .bg::after,.phero.has-cms-photo .bg::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,37,44,.46),rgba(10,37,44,.72));pointer-events:none;}
-.hero.has-cms-photo h1,.hero.has-cms-photo .kick,.hero.has-cms-photo .sub,.phero.has-cms-photo h1,.phero.has-cms-photo .kick,.phero.has-cms-photo p{text-shadow:0 2px 26px rgba(10,37,44,.5);}
+.hero.has-cms-photo h1,.hero.has-cms-photo .kick,.hero.has-cms-photo .sub,.phero.has-cms-photo h1,.phero.has-cms-photo .kick,.phero.has-cms-photo p{text-shadow:0 1px 16px rgba(10,37,44,.32);}
+.hero.cms-no-text-shadow h1,.hero.cms-no-text-shadow .kick,.hero.cms-no-text-shadow .sub,.phero.cms-no-text-shadow h1,.phero.cms-no-text-shadow .kick,.phero.cms-no-text-shadow p,.sec.cms-no-text-shadow h2,.sec.cms-no-text-shadow .kick,.sec.cms-no-text-shadow p{text-shadow:none;}
 .hero.has-cms-photo .hero-card{box-shadow:0 24px 60px rgba(0,0,0,.35);}
 
 /* Fairview mobile nav: the hamburger lives in the header and turns into a close X above the full-screen menu. */

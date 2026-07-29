@@ -1763,7 +1763,10 @@
     { key: 'hero_bg_tile_new', label: 'Home tile: I\'m New', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: "I'M NEW" },
     { key: 'hero_bg_tile_overlook', label: 'Home tile: The Overlook', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: 'THE OVERLOOK' },
     { key: 'hero_bg_tile_ministries', label: 'Home tile: Ministries', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: 'MINISTRIES' },
-    { key: 'hero_bg_hope', label: 'Home: H.O.P.E. band photo', page: '/', pageLabel: 'Home page', ratio: 'tile-card', noCopy: true }
+    { key: 'hero_bg_hope', label: 'Home: H.O.P.E. band photo', page: '/', pageLabel: 'Home page', ratio: 'tile-card', noCopy: true },
+    { key: 'hero_bg_stream_home', label: 'Home: The Overlook section', page: '/', pageLabel: 'Home page', ratio: 'hero-page' },
+    { key: 'hero_bg_missions_home', label: 'Home: missions section', page: '/', pageLabel: 'Home page', ratio: 'hero-page' },
+    { key: 'hero_bg_contact_home', label: 'Home: come visit section', page: '/', pageLabel: 'Home page', ratio: 'hero-page' }
   ].map(function (item) {
     item.kind = 'background';
     item.ratio = item.ratio || (item.key === 'hero_bg_home'
@@ -1849,6 +1852,26 @@
       { key: 'hope_band_sub', label: 'Band paragraph', def: 'A Christ centered recovery program that meets Friday evenings at the church. No judgment, just the gospel and people who care. Our van will even come get you. Call 304-587-4709.', multi: true },
       { key: 'hope_band_cta', label: 'Button label', def: 'Learn about H.O.P.E.' }
     ],
+    photo_welcome: [
+      { key: 'home_welcome_kick', label: 'Script line', def: 'Welcome home to Fairview' },
+      { key: 'home_welcome_heading', label: 'Heading', def: 'A church family in the hills' },
+      { key: 'home_welcome_body', label: 'Paragraph', def: 'We are a church family in the hills of Clay County that believes the Bible, loves people, and preaches Christ crucified, buried, and risen again. However you come and whatever you carry, you will find a warm welcome, honest preaching, and a place to belong.', multi: true }
+    ],
+    hero_bg_stream_home: [
+      { key: 'home_stream_kick', label: 'Script line', def: 'The Overlook' },
+      { key: 'home_stream_heading', label: 'Heading (*words* turn teal)', def: 'Catch the latest message', rich: true },
+      { key: 'home_stream_sub', label: 'Paragraph', def: 'Join us live on Sundays, or stream any past service and the singing from our church family, anytime and free.', multi: true }
+    ],
+    hero_bg_missions_home: [
+      { key: 'home_missions_kick', label: 'Script line', def: 'Beyond the hills' },
+      { key: 'home_missions_heading', label: 'Heading (*words* turn teal)', def: 'Our reach around the *world*', rich: true },
+      { key: 'home_missions_sub', label: 'Paragraph', def: 'Fairview keeps a strong missions program, sending and supporting missionaries carrying the gospel far beyond Clay County. Explore where they serve and pray with them.', multi: true },
+      { key: 'home_missions_cta', label: 'Button label', def: 'Explore the map' }
+    ],
+    hero_bg_contact_home: [
+      { key: 'home_contact_kick', label: 'Script line', def: "We'd love to meet you" },
+      { key: 'home_contact_heading', label: 'Heading (*words* turn teal)', def: 'Come visit us *this Sunday.*', rich: true }
+    ],
     hero_bg_tile_new: [
       { key: 'tile_new_title', label: 'Tile title', def: "I'm New" },
       { key: 'tile_new_sub', label: 'Tile subtitle', def: 'Plan your first visit' }
@@ -1882,7 +1905,7 @@
         roles.push({ key: f.key + '_color', label: 'Headline color', role: 'heading' });
         roles.push({ key: f.key.replace(/_heading$/, '_accent') + '_color', label: 'Accent word color', role: 'accent' });
       }
-      else if (/_sub$/.test(f.key)) roles.push({ key: f.key + '_color', label: 'Subtext color', role: 'sub' });
+      else if (/_sub$|_body$/.test(f.key)) roles.push({ key: f.key + '_color', label: 'Subtext color', role: 'sub' });
     });
     return roles;
   }
@@ -1941,6 +1964,8 @@
       if (meta.key === 'hero_bg_tile_overlook') return 'radial-gradient(70% 70% at 70% 40%,#2f6a71,#122b33 82%)';
       if (meta.key === 'hero_bg_tile_ministries') return 'radial-gradient(70% 70% at 50% 70%,#39757c,#14303a 82%)';
       if (meta.key === 'hero_bg_hope') return 'radial-gradient(70% 70% at 40% 40%,#3f7d84,#132a31 85%)';
+      if (meta.key === 'hero_bg_stream_home' || meta.key === 'hero_bg_missions_home') return '#E6F1EE';
+      if (meta.key === 'hero_bg_contact_home') return '#F2ECDD';
       return meta.ratio === 'hero-home'
         ? 'radial-gradient(70% 55% at 78% 12%,rgba(41,165,160,.15),transparent 60%),radial-gradient(50% 60% at 8% 90%,rgba(34,58,94,.07),transparent 60%),#FAF6ED'
         : 'radial-gradient(70% 90% at 88% 0%,rgba(23,126,121,.1),transparent 55%),#FAF6ED';
@@ -2033,6 +2058,7 @@
       copy.className = 'media-stage-copy';
       if (isHeroBg && !heroScrim) copy.className += ' stage-on-light';
       if (meta.key.indexOf('hero_bg_tile_') === 0) copy.className += ' stage-tile';
+      if (mediaShadowNone(meta)) copy.className += ' no-shadow';
       copy.innerHTML = stageCopyHtml(meta);
       host.appendChild(copy);
     }
@@ -2081,7 +2107,9 @@
   function refreshStageText() {
     if (!mediaEdit) return;
     var copy = $('media-stage').querySelector('.media-stage-copy');
-    if (copy) copy.innerHTML = stageCopyHtml(mediaEdit.meta);
+    if (!copy) return;
+    copy.classList.toggle('no-shadow', mediaShadowNone(mediaEdit.meta));
+    copy.innerHTML = stageCopyHtml(mediaEdit.meta);
   }
   var MATCH_FIELDS = ['background', 'backgroundColor', 'overlay', 'overlayColor', 'overlayOpacity', 'imageOpacity'];
   function buildMediaMatch(meta) {
@@ -2115,6 +2143,13 @@
     syncMediaEditor(false);
     setMediaEditorMessage('Matched the overlay, wash, and background from "' + srcMeta.label + '". Save to keep it.', '');
   }
+  function mediaShadowNone(meta) {
+    var key = meta.key + '_shadow';
+    var v;
+    if (mediaEdit && Object.prototype.hasOwnProperty.call(mediaEdit.pendingValues, key)) v = mediaEdit.pendingValues[key];
+    else v = mediaVals[key];
+    return String(v || '').trim() === 'none';
+  }
   function buildMediaTextFields(meta) {
     var group = $('media-text-group'), wrap = $('media-text-fields');
     if (!group || !wrap) return;
@@ -2139,7 +2174,13 @@
           '<span class="media-text-color-row"><input type="color" id="mcolor-' + esc(r.key) + '" data-mcolor="' + esc(r.key) + '" value="' + (saved || mediaColorAuto(r.role)) + '">' +
           '<button type="button" class="media-color-auto" data-mcolor-clear="' + esc(r.key) + '" data-mcolor-role="' + esc(r.role) + '"' + (saved ? '' : ' disabled') + '>Auto</button></span>' +
           '<span class="media-color-dots">' + dots + '</span></div>';
-      }).join('') + '</div><p class="media-color-note">Auto follows the page: light text over a photo, navy on the plain background.</p>';
+      }).join('') + '</div>' +
+        '<div class="media-text-field media-shadow-field"><label for="mshadow-' + esc(meta.key) + '">Text shadow over the photo</label>' +
+        '<select id="mshadow-' + esc(meta.key) + '" data-mshadow="' + esc(meta.key + '_shadow') + '">' +
+        '<option value=""' + (mediaShadowNone(meta) ? '' : ' selected') + '>Soft: helps reading on busy photos</option>' +
+        '<option value="none"' + (mediaShadowNone(meta) ? ' selected' : '') + '>None: clean flat text</option>' +
+        '</select></div>' +
+        '<p class="media-color-note">Auto follows the page: light text over a photo, navy on the plain background.</p>';
     }
     wrap.innerHTML = html;
   }
@@ -2197,6 +2238,10 @@
     if (!mediaEdit) return;
     mediaEdit.dirty = true;
     mediaEdit.restoreOriginal = false;
+    // Every edit path must light up Save itself; text and color tweaks do not
+    // rebuild the whole editor the way the framing controls do.
+    var save = $('media-editor-save');
+    if (save && !mediaEdit.busy) { save.disabled = false; save.textContent = 'Save changes'; }
     setMediaEditorMessage('Unsaved design changes', '');
   }
   function mediaSourceNote(meta, style) {
@@ -2546,6 +2591,13 @@
         var field = event.target.closest('[data-mtext]');
         if (field) {
           mediaEdit.pendingValues[field.getAttribute('data-mtext')] = field.value;
+          mediaMarkDirty();
+          refreshStageText();
+          return;
+        }
+        var shadow = event.target.closest('[data-mshadow]');
+        if (shadow) {
+          mediaEdit.pendingValues[shadow.getAttribute('data-mshadow')] = shadow.value;
           mediaMarkDirty();
           refreshStageText();
           return;

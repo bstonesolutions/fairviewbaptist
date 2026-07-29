@@ -26,7 +26,7 @@
 <link rel="icon" href="/favicon.png?v=2" type="image/png" sizes="64x64">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=5">
+<link rel="stylesheet" href="assets/site.css?v=6">
 <script src="assets/analytics.js"></script>
 </head><body>
 <header id="hd"><div class="wrap"><nav class="nav">
@@ -75,7 +75,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
 <script src="assets/config.js"></script>
-<script src="assets/content.js?v=9"></script>
+<script src="assets/content.js?v=10"></script>
 <script src="assets/posts.js"></script>
 <script src="assets/fbt.feeds.js"></script>
 <script src="assets/videos.js?v=3"></script>

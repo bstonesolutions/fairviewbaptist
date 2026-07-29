@@ -5,7 +5,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="assets/site.css?v=5">
+<link rel="stylesheet" href="assets/site.css?v=6">
 <style>
   [hidden]{display:none !important;}
   /* Studio is the dark admin surface. site.css now carries the light public
@@ -253,6 +253,10 @@
   .media-color-dot{width:20px;height:20px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:var(--dot);cursor:pointer;padding:0;transition:transform .15s,border-color .15s;}
   .media-color-dot:hover{transform:scale(1.18);border-color:#7FD1CB;}
   .media-match-preview{position:relative;margin-top:10px;width:100%;aspect-ratio:16/7;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.18);}
+  .media-stage-copy{text-shadow:0 1px 16px rgba(10,37,44,.32);}
+  .media-stage-copy.no-shadow{text-shadow:none!important;}
+  .media-stage-copy.no-shadow .stage-kick,.media-stage-copy.no-shadow strong,.media-stage-copy.no-shadow .stage-sub{text-shadow:none;}
+  .media-shadow-field select{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:8px;color:#fff;padding:9px 11px;font:inherit;font-size:.92rem;}
   .media-hero-scrim{position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(10,37,44,.46),rgba(10,37,44,.72));pointer-events:none;}
   .media-stage.tile-card{aspect-ratio:4/3;max-width:460px;}
   .media-stage.mobile.tile-card{width:min(340px,100%);aspect-ratio:4/3;}
@@ -1370,5 +1374,5 @@
 <script src="assets/sermon-tags.js?v=2"></script>
 <script src="assets/videos.js?v=4"></script>
 <script src="assets/media-styles.js?v=1"></script>
-<script src="assets/studio.js?v=25"></script>
+<script src="assets/studio.js?v=26"></script>
 </body></html>

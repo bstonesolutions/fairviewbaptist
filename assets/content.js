@@ -357,8 +357,9 @@
 
     // Heroes are light by default; a Studio photo/video (or a chosen media
     // background) arrives with a dark overlay, so flip the hero to light text.
-    var heroHost = el.closest ? el.closest('.hero,.phero') : null;
+    var heroHost = el.closest ? el.closest('.hero,.phero,[data-cms-photo-host]') : null;
     if (heroHost) heroHost.classList.toggle('has-cms-photo', !!(useVideo || useImage || (style && source === 'background')));
+    if (heroHost) heroHost.classList.toggle('cms-no-text-shadow', String(map[key + '_shadow'] || '').trim() === 'none');
   }
 
   var contentMap = null;

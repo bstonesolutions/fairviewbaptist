@@ -28,7 +28,7 @@
 <link rel="icon" href="/favicon.png?v=2" type="image/png" sizes="64x64">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=5">
+<link rel="stylesheet" href="assets/site.css?v=6">
 <script src="assets/analytics.js"></script>
 </head><body>
 <header id="hd"><div class="wrap"><nav class="nav">
@@ -65,7 +65,7 @@
 
 <section class="sec d1" id="welcome"><div class="wrap">
 <div class="welcome-center rv">
-<span class="kick">Welcome home to Fairview</span>
+<span class="kick" data-cms-text="home_welcome_kick">Welcome home to Fairview</span>
 <h2 data-cms-text="home_welcome_heading">A church family in the hills</h2>
 <p data-cms-text="home_welcome_body">We are a church family in the hills of Clay County that believes the Bible, loves people, and preaches Christ crucified, buried, and risen again. However you come and whatever you carry, you will find a warm welcome, honest preaching, and a place to belong.</p>
 <a href="/beliefs" class="btn btn-b">What we believe</a>
@@ -75,10 +75,10 @@
 
 
 
-<section class="sec d3" id="stream"><div class="wrap">
+<section class="sec d3" id="stream" data-cms-photo-host><div class="bg" data-cms-bg="hero_bg_stream_home"></div><div class="wrap">
 <div class="watch">
 <div class="rv" data-live-stage><div class="player" data-live-player><div class="glow"></div><div class="pl"><svg width="30" height="30" viewBox="0 0 24 24" fill="#FCF8EE"><path d="M8 5v14l11-7z"/></svg></div></div><div style="margin-top:14px;text-align:center;"><span class="livestatus is-off" data-live-status hidden></span></div></div>
-<div class="rv"><span class="kick">The Overlook</span><h2 style="font-size:clamp(1.9rem,3.8vw,2.9rem);margin:14px 0 18px;">Catch the latest message</h2><p style="color:var(--mut);font-size:1.14rem;margin-bottom:28px;">Join us live on Sundays, or stream any past service and the singing from our church family, anytime and free.</p><div class="acts" style="display:flex;gap:14px;flex-wrap:wrap;"><a href="/watch" class="btn btn-b">Open The Overlook</a><a href="https://www.youtube.com/@FairviewBaptistTemple" target="_blank" rel="noopener" class="btn btn-o">Watch on YouTube</a></div></div>
+<div class="rv"><span class="kick" data-cms-text="home_stream_kick">The Overlook</span><h2 style="font-size:clamp(1.9rem,3.8vw,2.9rem);margin:14px 0 18px;" data-cms-rich="home_stream_heading">Catch the latest message</h2><p class="watch-sub" data-cms-text="home_stream_sub">Join us live on Sundays, or stream any past service and the singing from our church family, anytime and free.</p><div class="acts" style="display:flex;gap:14px;flex-wrap:wrap;"><a href="/watch" class="btn btn-b">Open The Overlook</a><a href="https://www.youtube.com/@FairviewBaptistTemple" target="_blank" rel="noopener" class="btn btn-o">Watch on YouTube</a></div></div>
 </div>
 </div></section>
 
@@ -91,16 +91,16 @@
 </div>
 </section>
 
-<section class="sec d3 home-missions" id="missions-home"><div class="wrap" style="text-align:center;">
+<section class="sec d3 home-missions" id="missions-home" data-cms-photo-host><div class="bg" data-cms-bg="hero_bg_missions_home"></div><div class="wrap" style="text-align:center;">
 <div class="rv"><span class="kick" data-cms-text="home_missions_kick">Beyond the hills</span><h2 data-cms-rich="home_missions_heading">Our reach around the <em>world</em></h2><p class="hm-sub" data-cms-text="home_missions_sub">Fairview keeps a strong missions program, sending and supporting missionaries carrying the gospel far beyond Clay County. Explore where they serve and pray with them.</p></div>
 <div class="hm-avatars rv" data-home-miss-avatars aria-hidden="true"></div>
 <div class="hm-stats rv" data-home-miss-stats hidden></div>
-<div class="rv" style="margin-top:34px;"><a href="/missions" class="btn btn-b">Explore the map</a></div>
+<div class="rv" style="margin-top:34px;"><a href="/missions" class="btn btn-b" data-cms-text="home_missions_cta">Explore the map</a></div>
 </div></section>
 
 
-<section class="sec d2" id="contact"><div class="wrap">
-<div class="shead rv"><span class="kick">We'd love to meet you</span><h2>Come visit us <em>this Sunday.</em></h2></div>
+<section class="sec d2" id="contact" data-cms-photo-host><div class="bg" data-cms-bg="hero_bg_contact_home"></div><div class="wrap">
+<div class="shead rv"><span class="kick" data-cms-text="home_contact_kick">We'd love to meet you</span><h2 data-cms-rich="home_contact_heading">Come visit us <em>this Sunday.</em></h2></div>
 <div class="visit">
 <div class="vcard rv">
 <div class="irow"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0Z"/><circle cx="12" cy="10" r="3"/></svg></div><div><div class="l">Find us</div><div class="v"><span data-cms-text="contact_address" style="display:block;color:var(--tx);font-weight:600;">2294 Main Street</span><span data-cms-text="contact_city">Clay, WV 25043</span><span>Mailing: PO Box 700, Clay, WV 25043</span></div></div></div>
@@ -123,7 +123,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
 <script src="assets/config.js"></script>
 <script src="assets/media-styles.js?v=1"></script>
-<script src="assets/content.js?v=9"></script>
+<script src="assets/content.js?v=10"></script>
 <script src="assets/home-missions.js"></script>
 <script src="assets/fbt.feeds.js"></script>
 <script src="assets/live.js?v=1"></script>
