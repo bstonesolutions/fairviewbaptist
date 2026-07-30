@@ -3397,28 +3397,49 @@
   function mediaTile(meta) {
     var isBg = meta.kind === 'background';
     var vidUp = isBg ? mediaFileControl(mediaVideoKey(meta), 'Video', 'video/mp4', true) : '';
-    return '<article class="media-tile" data-media-card="' + esc(meta.key) + '">' +
+    return '<article class="media-tile" data-media-card="' + esc(meta.key) + '" data-media-label="' + esc((meta.label + ' ' + (meta.pageLabel || '')).toLowerCase()) + '">' +
       '<button class="media-prev" id="mprev-' + esc(meta.key) + '" type="button" data-media-edit="' + esc(meta.key) + '" aria-label="Design ' + esc(meta.label) + '"></button>' +
       '<div class="media-tile-foot"><div class="media-tile-copy"><strong>' + esc(meta.label) + '</strong><div class="media-tile-meta"><small id="mstatus-' + esc(meta.key) + '">Loading media...</small><a class="media-page-link" href="' + esc(meta.page) + '" target="_blank" rel="noopener">View page</a></div></div>' +
       '<div class="media-acts"><button class="media-edit-btn" type="button" data-media-edit="' + esc(meta.key) + '">Design</button>' +
       mediaFileControl(meta.key, 'Image', 'image/jpeg,image/png,image/webp,image/avif', false) + vidUp + '</div></div></article>';
   }
+  var mediaPrevRendered = {};
+  var mediaPrevObserver = null;
+  function renderMediaPreview(meta) {
+    var el = document.getElementById('mprev-' + meta.key); if (!el) return;
+    var stored = mediaStoredStyle(meta);
+    var style = stored || mediaStyleApi.defaults(meta.kind);
+    var source = mediaRender(el, meta, style, 'desktop', false, !stored);
+    var badge = document.createElement('span');
+    badge.className = 'media-preview-badge';
+    badge.textContent = source === 'video' ? 'Video' : source === 'image' ? 'Image' : 'Background';
+    el.appendChild(badge);
+    var edit = document.createElement('span');
+    edit.className = 'media-preview-edit';
+    edit.innerHTML = EDIT_SVG + ' Edit design';
+    el.appendChild(edit);
+    var status = $('mstatus-' + meta.key);
+    if (status) status.textContent = stored ? 'Custom design saved' : 'Using the page default';
+    mediaPrevRendered[meta.key] = true;
+  }
   function refreshMediaPreviews() {
+    if (!mediaPrevObserver && 'IntersectionObserver' in window) {
+      mediaPrevObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          mediaPrevObserver.unobserve(entry.target);
+          var meta = mediaByKey(entry.target.getAttribute('data-media-prev'));
+          if (meta) renderMediaPreview(meta);
+        });
+      }, { rootMargin: '400px' });
+    }
     mediaAll().forEach(function (meta) {
       var el = document.getElementById('mprev-' + meta.key); if (!el) return;
-      var stored = mediaStoredStyle(meta);
-      var style = stored || mediaStyleApi.defaults(meta.kind);
-      var source = mediaRender(el, meta, style, 'desktop', false, !stored);
-      var badge = document.createElement('span');
-      badge.className = 'media-preview-badge';
-      badge.textContent = source === 'video' ? 'Video' : source === 'image' ? 'Image' : 'Background';
-      el.appendChild(badge);
-      var edit = document.createElement('span');
-      edit.className = 'media-preview-edit';
-      edit.innerHTML = EDIT_SVG + ' Edit design';
-      el.appendChild(edit);
-      var status = $('mstatus-' + meta.key);
-      if (status) status.textContent = stored ? 'Custom design saved' : 'Using the page default';
+      el.setAttribute('data-media-prev', meta.key);
+      // Already-drawn cards refresh in place (after a save); new ones wait
+      // until they scroll near the viewport, so the big grid opens fast.
+      if (mediaPrevRendered[meta.key] || !mediaPrevObserver) renderMediaPreview(meta);
+      else mediaPrevObserver.observe(el);
     });
   }
   function mediaStageClass() {
@@ -3831,6 +3852,22 @@
         if (item) applyMediaMatch(item.getAttribute('data-match'));
       });
       $('media-match-undo').addEventListener('click', undoMediaMatch);
+      if ($('media-search')) $('media-search').addEventListener('input', function () {
+        var q = this.value.trim().toLowerCase();
+        // Strip punctuation on both sides so "hope" finds "H.O.P.E."
+        var qs = q.replace(/[^a-z0-9]/g, '');
+        Array.prototype.forEach.call(document.querySelectorAll('#media-bg .media-tile, #media-photo .media-tile'), function (card) {
+          var label = card.getAttribute('data-media-label') || '';
+          var match = !q || label.indexOf(q) >= 0 || (qs && label.replace(/[^a-z0-9]/g, '').indexOf(qs) >= 0);
+          card.hidden = !match;
+        });
+        Array.prototype.forEach.call(document.querySelectorAll('#media-bg .media-grid'), function (grid) {
+          var any = !!grid.querySelector('.media-tile:not([hidden])');
+          grid.hidden = !any;
+          var head = grid.previousElementSibling;
+          if (head && head.classList.contains('media-group-head')) head.hidden = !any;
+        });
+      });
       $('media-text-fields').addEventListener('input', function (event) {
         if (!mediaEdit) return;
         var field = event.target.closest('[data-mtext]');
