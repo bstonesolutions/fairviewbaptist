@@ -3279,12 +3279,19 @@
           '<span>' + esc(m.label) + (custom ? '' : ' <small>(default)</small>') + '</span></button>';
       }).join('') + '</div>';
     }
-    grid.innerHTML = section('On the same page', samePage) + section('Other pages', pages) + section('Photos', photos);
-    others.forEach(function (m) {
-      var el = document.getElementById('mmatch-' + m.key);
-      if (!el) return;
-      var stored = mediaStoredStyle(m);
-      mediaRender(el, m, stored || mediaStyleApi.defaults(m.kind), 'desktop', false, !stored);
+    grid.innerHTML = '<details id="media-match-details"><summary>Browse designs to copy</summary><div class="media-match-list">' +
+      section('On the same page', samePage) + section('Other pages', pages) + section('Photos', photos) +
+      '</div></details>';
+    var details = document.getElementById('media-match-details');
+    details.addEventListener('toggle', function () {
+      if (!details.open || details.getAttribute('data-rendered')) return;
+      details.setAttribute('data-rendered', '1');
+      others.forEach(function (m) {
+        var el = document.getElementById('mmatch-' + m.key);
+        if (!el) return;
+        var stored = mediaStoredStyle(m);
+        mediaRender(el, m, stored || mediaStyleApi.defaults(m.kind), 'desktop', false, !stored);
+      });
     });
   }
   function applyMediaMatch(sourceKey) {
@@ -3339,6 +3346,13 @@
     buildMediaTextFields(mediaEdit.meta);
     syncMediaEditor(false);
     setMediaEditorMessage(mediaEdit.dirty ? 'Match undone. Earlier unsaved changes are still here.' : 'Match undone.', '');
+  }
+  function mediaShadowNone(meta) {
+    var key = meta.key + '_shadow';
+    var v;
+    if (mediaEdit && Object.prototype.hasOwnProperty.call(mediaEdit.pendingValues, key)) v = mediaEdit.pendingValues[key];
+    else v = mediaVals[key];
+    return String(v || '').trim() === 'none';
   }
   function buildMediaTextFields(meta) {
     var group = $('media-text-group'), wrap = $('media-text-fields');

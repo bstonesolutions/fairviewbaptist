@@ -110,6 +110,18 @@ test('Studio stages asset changes and publishes them with the design', function 
   assert.match(studio, /mediaEdit\.busy \|\| mediaEdit\.style\.source === 'background'/);
 });
 
+test('the designer text panel has every helper it calls', function () {
+  const studio = fs.readFileSync(path.join(__dirname, '../assets/studio.js'), 'utf8');
+  // A rewrite once swallowed mediaShadowNone and silently emptied the text
+  // panel; assert every helper the panel calls is actually defined.
+  ['mediaShadowNone', 'mediaColorRoles', 'mediaColorValue', 'mediaColorAuto',
+   'mediaTextFields', 'mediaTextValue', 'stageCopyHtml', 'refreshStageText',
+   'buildMediaTextFields', 'buildMediaMatch', 'applyMediaMatch', 'undoMediaMatch'].forEach(function (fn) {
+    assert.match(studio, new RegExp('function ' + fn + '\\('), fn + ' must be defined');
+    assert.match(studio, new RegExp('(?<!function )' + fn + '\\b'), fn + ' must be used');
+  });
+});
+
 test('public media supports a color-only optional photo without changing legacy photos', function () {
   const content = fs.readFileSync(path.join(__dirname, '../assets/content.js'), 'utf8');
   const css = fs.readFileSync(path.join(__dirname, '../assets/site.css'), 'utf8');
