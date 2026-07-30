@@ -41,7 +41,7 @@ window.FBT_SCHEMA = {
     {
       id: 'photos',
       title: 'Photos',
-      hint: 'These replace the built-in photos or add an optional ministry photo. The Get Involved and Visit photo slots stay out of the layout until you add one.',
+      hint: 'Optional photos. Empty slots stay out of the page entirely (no placeholder box): the home welcome photo, staff group photo, and the Get Involved and Visit photos all appear only once you add one.',
       fields: [
         { key: 'photo_welcome', label: 'Home welcome photo', type: 'image', def: '' },
         { key: 'photo_visit', label: 'Visit welcome photo', type: 'image', def: '' },

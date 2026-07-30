@@ -1778,7 +1778,8 @@
     { key: 'hero_bg_hope', label: 'Home: H.O.P.E. band photo', page: '/', pageLabel: 'Home page', ratio: 'tile-card', noCopy: true },
     { key: 'hero_bg_stream_home', label: 'Home: The Overlook section', page: '/', pageLabel: 'Home page', ratio: 'hero-page' },
     { key: 'hero_bg_missions_home', label: 'Home: missions section', page: '/', pageLabel: 'Home page', ratio: 'hero-page' },
-    { key: 'hero_bg_contact_home', label: 'Home: come visit section', page: '/', pageLabel: 'Home page', ratio: 'hero-page' }
+    { key: 'hero_bg_contact_home', label: 'Home: come visit section', page: '/', pageLabel: 'Home page', ratio: 'hero-page' },
+    { key: 'hero_bg_welcome_home', label: 'Home: welcome section', page: '/', pageLabel: 'Home page', ratio: 'hero-page', backdrop: '#FAF6ED' }
   ].map(function (item) {
     item.kind = 'background';
     item.ratio = item.ratio || (item.key === 'hero_bg_home'
@@ -2156,7 +2157,7 @@
     item.kind = 'background'; item.ratio = 'hero-page'; return item;
   }));
   var MEDIA_PHOTO = [
-    { key: 'photo_welcome', label: 'Home: welcome photo', page: '/', ratio: 'four-three' },
+    { key: 'photo_welcome', label: 'Home: welcome photo (page shows no box until one is added)', page: '/', ratio: 'four-three' },
     { key: 'photo_visit', label: 'Visit: welcome photo', page: '/visit', ratio: 'landscape' },
     { key: 'pastor_photo', label: 'Staff: Pastor Michael Spurlock', page: '/staff', ratio: 'portrait' },
     { key: 'staff1_photo', label: 'Staff: Jamie Taylor', page: '/staff', ratio: 'square' },
@@ -2235,7 +2236,7 @@
       { key: 'hope_band_sub', label: 'Band paragraph', def: 'A Christ centered recovery program that meets Friday evenings at the church. No judgment, just the gospel and people who care. Our van will even come get you. Call 304-587-4709.', multi: true },
       { key: 'hope_band_cta', label: 'Button label', def: 'Learn about H.O.P.E.' }
     ],
-    photo_welcome: [
+    hero_bg_welcome_home: [
       { key: 'home_welcome_kick', label: 'Script line', def: 'Welcome home to Fairview' },
       { key: 'home_welcome_heading', label: 'Heading', def: 'A church family in the hills' },
       { key: 'home_welcome_body', label: 'Paragraph', def: 'We are a church family in the hills of Clay County that believes the Bible, loves people, and preaches Christ crucified, buried, and risen again. However you come and whatever you carry, you will find a warm welcome, honest preaching, and a place to belong.', multi: true }
