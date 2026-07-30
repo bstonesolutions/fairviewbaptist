@@ -1779,7 +1779,7 @@
     { key: 'hero_bg_stream_home', label: 'Home: The Overlook section', page: '/', pageLabel: 'Home page', ratio: 'hero-page' },
     { key: 'hero_bg_missions_home', label: 'Home: missions section', page: '/', pageLabel: 'Home page', ratio: 'hero-page' },
     { key: 'hero_bg_contact_home', label: 'Home: come visit section', page: '/', pageLabel: 'Home page', ratio: 'hero-page' },
-    { key: 'hero_bg_welcome_home', label: 'Home: welcome section', page: '/', pageLabel: 'Home page', ratio: 'hero-page', backdrop: '#FAF6ED' }
+    { key: 'hero_bg_welcome_home', label: 'Home: welcome', page: '/', pageLabel: 'Home page', ratio: 'hero-page', backdrop: '#FAF6ED' }
   ].map(function (item) {
     item.kind = 'background';
     item.ratio = item.ratio || (item.key === 'hero_bg_home'
@@ -2157,7 +2157,6 @@
     item.kind = 'background'; item.ratio = 'hero-page'; return item;
   }));
   var MEDIA_PHOTO = [
-    { key: 'photo_welcome', label: 'Home: welcome photo (page shows no box until one is added)', page: '/', ratio: 'four-three' },
     { key: 'photo_visit', label: 'Visit: welcome photo', page: '/visit', ratio: 'landscape' },
     { key: 'pastor_photo', label: 'Staff: Pastor Michael Spurlock', page: '/staff', ratio: 'portrait' },
     { key: 'staff1_photo', label: 'Staff: Jamie Taylor', page: '/staff', ratio: 'square' },
@@ -3355,6 +3354,13 @@
     else v = mediaVals[key];
     return String(v || '').trim() === 'none';
   }
+  function mediaSettingValue(rowKey, fallback) {
+    var v;
+    if (mediaEdit && Object.prototype.hasOwnProperty.call(mediaEdit.pendingValues, rowKey)) v = mediaEdit.pendingValues[rowKey];
+    else v = mediaVals[rowKey];
+    v = nn(v);
+    return v || fallback;
+  }
   function buildMediaTextFields(meta) {
     var group = $('media-text-group'), wrap = $('media-text-fields');
     if (!group || !wrap) return;
@@ -3380,6 +3386,14 @@
           '<button type="button" class="media-color-auto" data-mcolor-clear="' + esc(r.key) + '" data-mcolor-role="' + esc(r.role) + '"' + (saved ? '' : ' disabled') + '>Auto</button></span>' +
           '<span class="media-color-dots">' + dots + '</span></div>';
       }).join('') + '</div>' +
+        (meta.key === 'hero_bg_welcome_home'
+          ? '<div class="media-text-field media-shadow-field"><label for="mlayout-welcome">Where the photo goes</label>' +
+            '<select id="mlayout-welcome" data-msetting="welcome_photo_layout">' +
+            ['panel|In a panel under the text (standard)', 'background|Behind the whole section', 'none|No photo on this section'].map(function (opt) {
+              var parts = opt.split('|');
+              return '<option value="' + parts[0] + '"' + (mediaSettingValue('welcome_photo_layout', 'panel') === parts[0] ? ' selected' : '') + '>' + parts[1] + '</option>';
+            }).join('') + '</select></div>'
+          : '') +
         '<div class="media-text-field media-shadow-field"><label for="mshadow-' + esc(meta.key) + '">Text shadow over the photo</label>' +
         '<select id="mshadow-' + esc(meta.key) + '" data-mshadow="' + esc(meta.key + '_shadow') + '">' +
         '<option value=""' + (mediaShadowNone(meta) ? '' : ' selected') + '>Soft: helps reading on busy photos</option>' +
@@ -3876,6 +3890,12 @@
           mediaEdit.pendingValues[field.getAttribute('data-mtext')] = field.value;
           mediaMarkDirty();
           refreshStageText();
+          return;
+        }
+        var setting = event.target.closest('[data-msetting]');
+        if (setting) {
+          mediaEdit.pendingValues[setting.getAttribute('data-msetting')] = setting.value;
+          mediaMarkDirty();
           return;
         }
         var shadow = event.target.closest('[data-mshadow]');

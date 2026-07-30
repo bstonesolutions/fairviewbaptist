@@ -173,6 +173,45 @@
     });
   }
 
+  // The home welcome section is ONE card in Studio: its photo can sit in the
+  // panel under the text (default), behind the whole section, or nowhere.
+  // welcome_photo_layout: 'panel' (default) | 'background' | 'none'.
+  function applyWelcomeLayout(map) {
+    var section = document.getElementById('welcome');
+    if (!section) return;
+    var layout = String(map.welcome_photo_layout || 'panel').trim().toLowerCase();
+    var bgHost = section.querySelector(':scope > .bg');
+    var panel = section.querySelector('.welcome-photo');
+    var media = panel && panel.querySelector('.media');
+    // the slot's photo; older uploads to the retired inline slot still count
+    var src = nonEmpty(map.hero_bg_welcome_home) ? String(map.hero_bg_welcome_home)
+      : nonEmpty(map.photo_welcome) ? String(map.photo_welcome) : '';
+    if (layout !== 'background') {
+      // strip anything applyBackground painted and put the section back to light
+      if (bgHost) { bgHost.innerHTML = ''; clearMediaAppearance(bgHost); bgHost.style.removeProperty('background'); }
+      section.classList.remove('has-cms-photo', 'cms-no-text-shadow');
+    }
+    if (layout === 'background' || layout === 'none' || !src) {
+      if (panel) panel.hidden = true;
+      return;
+    }
+    // panel layout with a photo
+    if (media && src) {
+      var img = media.querySelector('img');
+      if (!img || img.getAttribute('src') !== src) {
+        img = document.createElement('img');
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        img.src = src;
+        img.alt = media.getAttribute('data-cms-alt') || '';
+        media.innerHTML = '';
+        media.appendChild(img);
+      }
+      panel.hidden = false;
+      media.hidden = false;
+    }
+  }
+
   window.FBTSiteStyle = applySiteStyle;
 
   function applyContent(map) {
@@ -273,6 +312,7 @@
       if (items.length) wrap.hidden = Array.prototype.every.call(items, function (item) { return item.hidden; });
     });
     applyHeroColors(map);
+    applyWelcomeLayout(map);
     applyPersonSchema();
   }
 
