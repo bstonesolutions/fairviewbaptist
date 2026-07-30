@@ -1765,12 +1765,12 @@
     { key: 'hero_bg_staff', label: 'Our Staff', page: '/staff', pageLabel: 'Staff page' },
     { key: 'hero_bg_getinvolved', label: 'Get Involved', page: '/get-involved', pageLabel: 'Get Involved page' },
     { key: 'hero_bg_nextsteps', label: 'Next Steps', page: '/next-steps', pageLabel: 'Next Steps page' },
-    { key: 'hero_bg_live', label: 'The Overlook: Live', page: '/watch#live', pageLabel: 'Live panel' },
-    { key: 'hero_bg_messages', label: 'The Overlook: Messages', page: '/watch#messages', pageLabel: 'Messages panel' },
-    { key: 'hero_bg_music', label: 'The Overlook: Music', page: '/watch#music', pageLabel: 'Music panel' },
+    { key: 'hero_bg_live', label: 'The Overlook: Live', page: '/watch#live', pageLabel: 'The Overlook page' },
+    { key: 'hero_bg_messages', label: 'The Overlook: Messages', page: '/watch#messages', pageLabel: 'The Overlook page' },
+    { key: 'hero_bg_music', label: 'The Overlook: Music', page: '/watch#music', pageLabel: 'The Overlook page' },
     { key: 'hero_bg_events', label: 'Events', page: '/events', pageLabel: 'Events page' },
     { key: 'hero_bg_missions', label: 'Missions', page: '/missions', pageLabel: 'Missions page' },
-    { key: 'hero_bg_give', label: 'Give', page: '/give', pageLabel: 'Giving page' },
+    { key: 'hero_bg_give', label: 'Give', page: '/give', pageLabel: 'Give page' },
     { key: 'hero_bg_contact', label: 'Contact', page: '/contact', pageLabel: 'Contact page' },
     { key: 'hero_bg_tile_new', label: 'Home tile: I\'m New', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: "I'M NEW" },
     { key: 'hero_bg_tile_overlook', label: 'Home tile: The Overlook', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: 'THE OVERLOOK' },
@@ -3137,6 +3137,11 @@
     host.innerHTML = '';
     host.setAttribute('data-media-source', source);
     host.style.background = mediaBackdrop(style, meta);
+    // The welcome card's photo lives in a panel (or nowhere) unless the owner
+    // chose the background placement; preview whatever the live page will do.
+    var welcomeLayout = meta.key === 'hero_bg_welcome_home' ? mediaSettingValue('welcome_photo_layout', 'panel') : '';
+    var suppressMedia = welcomeLayout && welcomeLayout !== 'background';
+    if (suppressMedia) host.style.background = '#FAF6ED';
     var media = null;
     if (source === 'video') {
       media = document.createElement('video');
@@ -3167,7 +3172,7 @@
         media.decoding = 'async';
       }
     }
-    if (media) {
+    if (media && !suppressMedia) {
       media.classList.add('media-preview-object');
       media.style.objectFit = present.fit;
       media.style.objectPosition = present.x + '% ' + present.y + '%';
@@ -3181,6 +3186,9 @@
       empty.innerHTML = IMG_SVG + '<span>' + (style.source === 'background' ? 'Color background' : 'Add an image or use a color background') + '</span>';
       host.appendChild(empty);
     }
+    if (suppressMedia) {
+      Array.prototype.slice.call(host.querySelectorAll('.media-preview-object')).forEach(function (n) { n.remove(); });
+    }
     var overlay = document.createElement('span');
     overlay.className = 'media-preview-overlay';
     overlay.style.background = (originalPreview || (editorMode && mediaEdit && mediaEdit.restoreOriginal)) && meta.kind === 'background'
@@ -3190,9 +3198,10 @@
           ? 'linear-gradient(165deg,rgba(10,38,46,.74),rgba(10,38,46,.90))'
           : 'transparent')
       : present.overlay;
+    if (suppressMedia) overlay.style.background = 'transparent';
     host.appendChild(overlay);
     var isHeroBg = meta.kind === 'background' && meta.key.indexOf('hero_bg_tile_') !== 0 && !meta.noCopy;
-    var heroScrim = isHeroBg && (source === 'image' || source === 'video' || present.source === 'background' || style.source === 'background');
+    var heroScrim = !suppressMedia && isHeroBg && (source === 'image' || source === 'video' || present.source === 'background' || style.source === 'background');
     if (heroScrim) {
       // Mirror the live hero: pages add a fixed readability scrim over any photo.
       var scrim = document.createElement('span');
@@ -3207,6 +3216,10 @@
       if (meta.key.indexOf('hero_bg_tile_') === 0) copy.className += ' stage-tile';
       if (mediaShadowNone(meta)) copy.className += ' no-shadow';
       copy.innerHTML = stageCopyHtml(meta);
+      if (welcomeLayout === 'panel') {
+        var panelSrc = mediaImage(meta, editorMode);
+        if (panelSrc) copy.innerHTML += '<span class="stage-welcome-panel"><img src="' + esc(panelSrc) + '" alt=""></span>';
+      }
       host.appendChild(copy);
     }
     if (editorMode) {
@@ -3896,6 +3909,7 @@
         if (setting) {
           mediaEdit.pendingValues[setting.getAttribute('data-msetting')] = setting.value;
           mediaMarkDirty();
+          syncMediaEditor();
           return;
         }
         var shadow = event.target.closest('[data-mshadow]');
