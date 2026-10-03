@@ -26,7 +26,6 @@ const ALLOWED_KINDS = new Set([
   'next_step_membership',
   'next_step_group',
   'next_step_serve',
-  'next_step_pastor',
 ]);
 
 const TITLES = {

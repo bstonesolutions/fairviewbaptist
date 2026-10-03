@@ -685,7 +685,7 @@ html.kiosk .miss-modal-photo{height:300px;}
 .faq .ans p{margin:0 0 12px;}.faq .ans p:last-child{margin-bottom:0;}
 
 /* Team — staff grid */
-.team{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;}
+.team{display:grid;align-items:start;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px;}
 .member{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:transform .3s,box-shadow .3s,border-color .3s;}
 .member:hover{transform:translateY(-6px);box-shadow:0 26px 60px rgba(31,50,56,.1);border-color:rgba(23,126,121,.5);}
 .member .photo{aspect-ratio:1/1;background:linear-gradient(150deg,#1E938C,#14424A);position:relative;display:flex;align-items:center;justify-content:center;color:rgba(31,50,56,.6);overflow:hidden;}
@@ -1291,3 +1291,20 @@ html.kiosk .miss-modal-photo{height:300px;}
 .ftr .flinks a{font-family:"Montserrat",sans-serif;font-weight:700;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(22,33,43,.65);}
 .ftr .flinks a:hover{color:var(--brand);}
 .ftr .fcp{font-size:.8rem;color:rgba(22,33,43,.45);}
+
+/* Genuine church photographs, kept in modest panels at their natural scale. */
+.family-photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+.family-photos .photo{position:relative;aspect-ratio:3/2;overflow:hidden;min-width:0;}
+.family-photos .photo img{display:block;width:100%;height:100%;object-fit:cover;}
+@media(max-width:700px){.family-photos{grid-template-columns:1fr;max-width:540px;margin-inline:auto;gap:16px;}}
+
+/* Event invitation follows the Appalachian Jubilee flyers. */
+.jubilee-callout{position:relative;isolation:isolate;overflow:hidden;background:#123F3C;border-top:3px solid #EACD64;border-bottom:1px solid #EACD64;color:#FFF8EA;padding:42px 0;}
+.jubilee-callout>.bg{position:absolute;inset:0;z-index:-1;}
+.jubilee-callout>.wrap{display:flex;align-items:center;justify-content:space-between;gap:32px;}
+.jubilee-callout h2{font-family:'Mrs Saint Delafield',cursive;font-weight:400;text-transform:none;font-size:clamp(2.8rem,5.8vw,4.6rem);line-height:1.12;letter-spacing:0;color:#F2D56D;margin:7px 0;}
+.jubilee-callout p{color:#FFF8EA;margin:0;}
+.jubilee-callout .jubilee-callout-date{font-size:.85rem;font-weight:600;letter-spacing:.06em;}
+.btn-jubilee{flex-shrink:0;background:#F2D56D;color:#143D39;border:2px solid #F2D56D;}
+.btn-jubilee:hover{background:#FFE490;color:#143D39;border-color:#FFE490;}
+@media(max-width:760px){.jubilee-callout>.wrap{flex-direction:column;align-items:flex-start;gap:24px;}.jubilee-callout .btn{width:100%;text-align:center;}}

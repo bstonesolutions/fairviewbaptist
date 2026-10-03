@@ -1,0 +1,94 @@
+[
+  {
+    "key": "hero_bg_welcome_home",
+    "value": "/assets/photos/welcome.jpg"
+  },
+  {
+    "key": "photo_welcome",
+    "value": "/assets/photos/welcome.jpg"
+  },
+  {
+    "key": "photo_visit",
+    "value": "/assets/photos/children-worship.jpg"
+  },
+  {
+    "key": "photo_gi_kids",
+    "value": "/assets/photos/children-singing.jpg"
+  },
+  {
+    "key": "photo_gi_music",
+    "value": "/assets/photos/childrens-choir.jpg"
+  },
+  {
+    "key": "photo_gi_missions",
+    "value": "/assets/photos/missions-message.jpg"
+  },
+  {
+    "key": "photo_home_preaching",
+    "value": "/assets/photos/preaching.jpg"
+  },
+  {
+    "key": "photo_home_bible",
+    "value": "/assets/photos/bible-in-worship.jpg"
+  },
+  {
+    "key": "photo_home_worship",
+    "value": "/assets/photos/worship.jpg"
+  },
+  {
+    "key": "photo_missions_team",
+    "value": "/assets/photos/missions-gathering.jpg"
+  },
+  {
+    "key": "photo_nextsteps_baptism",
+    "value": "/assets/photos/baptism.jpg"
+  },
+  {
+    "key": "photo_jubilee_worship",
+    "value": "/assets/photos/congregation-worship.jpg"
+  },
+  {
+    "key": "photo_jubilee_fellowship",
+    "value": "/assets/photos/church-fellowship.jpg"
+  },
+  {
+    "key": "photo_jubilee_flyer",
+    "value": "/assets/photos/appalachian-jubilee-2026.png"
+  },
+  {
+    "key": "photo_jubilee_music_flyer",
+    "value": "/assets/photos/appalachian-jubilee-music-2026.png"
+  },
+  {
+    "key": "tiktok_url",
+    "value": "https://www.tiktok.com/@fairviewbaptisttemple"
+  },
+  {
+    "key": "media_style_photo_welcome",
+    "value": "{\"v\": 1, \"source\": \"image\", \"fit\": \"cover\", \"background\": \"theme\", \"backgroundColor\": \"#123B42\", \"imageOpacity\": 100, \"overlay\": \"none\", \"overlayColor\": \"#0A252C\", \"overlayOpacity\": 0, \"desktop\": {\"x\": 50, \"y\": 50, \"zoom\": 100}, \"mobile\": {\"x\": 50, \"y\": 50, \"zoom\": 100}}"
+  },
+  {
+    "key": "media_style_photo_visit",
+    "value": "{\"v\": 1, \"source\": \"image\", \"fit\": \"cover\", \"background\": \"theme\", \"backgroundColor\": \"#123B42\", \"imageOpacity\": 100, \"overlay\": \"none\", \"overlayColor\": \"#0A252C\", \"overlayOpacity\": 0, \"desktop\": {\"x\": 50, \"y\": 50, \"zoom\": 100}, \"mobile\": {\"x\": 50, \"y\": 50, \"zoom\": 100}}"
+  },
+  {
+    "key": "media_style_photo_gi_kids",
+    "value": "{\"v\": 1, \"source\": \"image\", \"fit\": \"cover\", \"background\": \"theme\", \"backgroundColor\": \"#123B42\", \"imageOpacity\": 100, \"overlay\": \"none\", \"overlayColor\": \"#0A252C\", \"overlayOpacity\": 0, \"desktop\": {\"x\": 50, \"y\": 50, \"zoom\": 100}, \"mobile\": {\"x\": 50, \"y\": 50, \"zoom\": 100}}"
+  },
+  {
+    "key": "media_style_photo_gi_music",
+    "value": "{\"v\": 1, \"source\": \"image\", \"fit\": \"cover\", \"background\": \"theme\", \"backgroundColor\": \"#123B42\", \"imageOpacity\": 100, \"overlay\": \"none\", \"overlayColor\": \"#0A252C\", \"overlayOpacity\": 0, \"desktop\": {\"x\": 50, \"y\": 50, \"zoom\": 100}, \"mobile\": {\"x\": 50, \"y\": 50, \"zoom\": 100}}"
+  },
+  {
+    "key": "media_style_photo_gi_missions",
+    "value": "{\"v\": 1, \"source\": \"image\", \"fit\": \"cover\", \"background\": \"theme\", \"backgroundColor\": \"#123B42\", \"imageOpacity\": 100, \"overlay\": \"none\", \"overlayColor\": \"#0A252C\", \"overlayOpacity\": 0, \"desktop\": {\"x\": 50, \"y\": 50, \"zoom\": 100}, \"mobile\": {\"x\": 50, \"y\": 50, \"zoom\": 100}}"
+  },
+  {
+    "key": "staff3_visible",
+    "value": "hide"
+  },
+  {
+    "key": "hero_bg_jubilee",
+    "value": "/assets/photos/wv-appalachian-mountains.jpg"
+  }
+]

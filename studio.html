@@ -48,7 +48,7 @@
   .studio-main{padding:36px 40px 80px;max-width:1000px;}
   .studio-note{background:rgba(255,155,147,.12);border:1px solid rgba(255,155,147,.35);color:#ffd2cd;border-radius:14px;padding:14px 18px;margin-bottom:24px;font-size:.95rem;}
   .studio-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:26px;flex-wrap:wrap;}
-  .studio-head h1{font-family:"Montserrat",sans-serif;font-weight:400;font-size:2.1rem;margin:0;}
+  .studio-head h1{color:#FFF8EA;font-family:"Montserrat",sans-serif;font-weight:400;font-size:2.1rem;margin:0;}
   .studio-head .muted{color:var(--mut);margin:6px 0 0;font-size:1rem;}
   .studio-head-acts{display:flex;gap:10px;}
   .studio-back{display:inline-block;color:var(--accent);font-weight:500;font-size:.92rem;cursor:pointer;margin-bottom:8px;}
@@ -198,7 +198,7 @@
   .media-editor-card{width:min(1180px,100%);max-height:calc(100vh - 48px);display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(15,102,99,.35);border-radius:24px;background:linear-gradient(155deg,#1B5D60,#14424A 68%,#0D2733);box-shadow:0 34px 100px rgba(0,0,0,.58);}
   .media-editor-head{flex:none;display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:21px 24px 18px;border-bottom:1px solid rgba(255,255,255,.1);}
   .media-editor-eyebrow{font-family:"Source Sans 3";font-size:.64rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 4px;}
-  .media-editor-head h2{font-family:"Montserrat",sans-serif;font-weight:400;font-size:1.85rem;line-height:1.1;margin:0;}
+  .media-editor-head h2{color:#FFF8EA;font-family:"Montserrat",sans-serif;font-weight:400;font-size:1.85rem;line-height:1.1;margin:0;}
   .media-editor-head p:last-child{color:var(--mut);font-size:.84rem;margin:5px 0 0;}
   .media-editor-close{flex:none;width:43px;height:43px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;font-size:1.5rem;cursor:pointer;}
   .media-editor-close:hover{background:rgba(255,255,255,.12);}
@@ -234,6 +234,16 @@
   .media-stage-copy.stage-on-light .stage-kick{color:#29A5A0;}
   .media-stage-copy.stage-on-light strong{color:#223A5E;}
   .media-stage-copy.stage-on-light strong em{color:#29A5A0;}
+  .media-image-url-field{margin-top:16px;}
+  .media-image-url-field button{margin-top:8px;}
+  .media-library{margin-top:18px;border:1px solid rgba(255,255,255,.16);padding:12px;}
+  .media-library summary{cursor:pointer;font-weight:700;color:var(--accent);}
+  .media-library-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px;max-height:400px;overflow:auto;}
+  .media-library-photo{border:1px solid rgba(255,255,255,.2);padding:0;background:#0D2733;color:#FFF8EA;text-align:left;cursor:pointer;}
+  .media-library-photo img{display:block;width:100%;height:90px;object-fit:cover;}
+  .media-library-photo span{display:block;padding:7px;font-size:.76rem;line-height:1.25;}
+  .media-library-photo:hover,.media-library-photo:focus-visible{outline:2px solid #7FD1CB;outline-offset:1px;}
+  @media(max-width:560px){.media-library-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
   .media-text-fields{display:flex;flex-direction:column;gap:11px;}
   .media-text-field label{display:block;font-size:.7rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.62);margin-bottom:5px;}
   .media-text-field input,.media-text-field textarea{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:8px;color:#fff;padding:9px 11px;font:inherit;font-size:.92rem;line-height:1.4;resize:vertical;}
@@ -696,6 +706,7 @@
     <button class="snav" data-view="blog" style="display:none" data-view-label="Blog"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg> Blog</button>
     <button class="snav" data-view="missions" data-view-label="Missions"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg> Missions</button>
     <button class="snav" data-view="people" data-view-label="People &amp; ministries"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v2"/><path d="M16 3.5a4 4 0 0 1 0 7M19 14a5 5 0 0 1 3 5v2"/></svg> People &amp; ministries</button>
+    <button class="snav" data-view="jubilee" data-view-label="Appalachian Jubilee"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18M8 15h3M8 18h7"/></svg> Appalachian Jubilee</button>
     <button class="snav" data-view="pages" data-view-label="Pages &amp; menu"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg> Pages and menu</button>
     <button class="snav" data-view="media" data-view-label="Pages &amp; media"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg> Pages &amp; media</button>
     <button class="snav" data-view="sermons" data-view-label="Video hubs"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/></svg> Video hubs</button>
@@ -1090,55 +1101,85 @@
         </div>
 
         <div class="studio-fieldset"><h3>Our Staff</h3>
-          <p class="studio-hint" style="margin:-7px 0 18px;">Use a specific role for each person. Portraits and the optional group photo are managed under Media &amp; videos.</p>
+          <p class="studio-hint" style="margin:-7px 0 18px;">Profiles follow the order on Our Staff. Add or replace portraits in Pages &amp; media. A profile without a portrait still shows its name and role.</p>
           <div class="people-grid">
             <div class="people-card">
-              <h4>Lead profile</h4>
-              <div class="frow"><label>Show this person</label><select data-key="pastor_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
-              <div class="frow two"><div><label>Name</label><input data-key="pastor_name" value="Pastor Michael Spurlock" required></div><div><label>Role</label><input data-key="pastor_role" value="Pastor" required></div></div>
-              <div class="frow"><label>Bio</label><textarea data-key="pastor_bio" rows="6" required>Pastor Michael Spurlock leads Fairview Baptist Temple in Clay, West Virginia. Replace this short bio with his story: how long he has served, his family, and his heart for this church and community.</textarea></div>
+              <h4>Pastor Michael Spurlock</h4>
+              <div class="frow"><label for="people-pastor_visible">Show this person</label><select id="people-pastor_visible" data-key="pastor_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
+              <div class="frow two"><div><label for="people-pastor_name">Name</label><input id="people-pastor_name" data-key="pastor_name" value="Pastor Michael Spurlock" required></div><div><label for="people-pastor_role">Role</label><input id="people-pastor_role" data-key="pastor_role" value="Pastor" required></div></div>
+              <div class="frow"><label for="people-pastor_bio">Bio (optional)</label><textarea id="people-pastor_bio" data-key="pastor_bio" rows="4">Pastor Michael Spurlock began serving as pastor of Fairview Baptist Temple in the summer of 2024. With over eight years of full time ministry, his calling has been marked by a passion for souls, Bible centered preaching, and a heart to reach Clay County with the gospel of Jesus Christ. Before coming to Fairview he served at Mt. Pleasant Baptist Church in Elkview, WV and Hanes Baptist Church in Winston-Salem, NC. He holds a Bachelor&#x27;s degree in Theology and a Master&#x27;s in Biblical Exposition from Andersonville Theological Seminary.</textarea></div>
+            </div>
+            <div class="people-card">
+              <h4>Curt Moore</h4>
+              <div class="frow"><label for="people-staff4_visible">Show this person</label><select id="people-staff4_visible" data-key="staff4_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
+              <div class="frow two"><div><label for="people-staff4_name">Name</label><input id="people-staff4_name" data-key="staff4_name" value="Curt Moore" required></div><div><label for="people-staff4_role">Role</label><input id="people-staff4_role" data-key="staff4_role" value="Head Deacon / H.O.P.E. Ministry Director" required></div></div>
+              <div class="frow"><label for="people-staff4_bio">Bio (optional)</label><textarea id="people-staff4_bio" data-key="staff4_bio" rows="4"></textarea></div>
+            </div>
+            <div class="people-card">
+              <h4>Jake Pierson</h4>
+              <div class="frow"><label for="people-staff7_visible">Show this person</label><select id="people-staff7_visible" data-key="staff7_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
+              <div class="frow two"><div><label for="people-staff7_name">Name</label><input id="people-staff7_name" data-key="staff7_name" value="Jake Pierson" required></div><div><label for="people-staff7_role">Role</label><input id="people-staff7_role" data-key="staff7_role" value="Deacon / H.O.P.E. Ministry Assistant Director" required></div></div>
+              <div class="frow"><label for="people-staff7_bio">Bio (optional)</label><textarea id="people-staff7_bio" data-key="staff7_bio" rows="4"></textarea></div>
+            </div>
+            <div class="people-card">
+              <h4>Barry Payton</h4>
+              <div class="frow"><label for="people-staff8_visible">Show this person</label><select id="people-staff8_visible" data-key="staff8_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
+              <div class="frow two"><div><label for="people-staff8_name">Name</label><input id="people-staff8_name" data-key="staff8_name" value="Barry Payton" required></div><div><label for="people-staff8_role">Role</label><input id="people-staff8_role" data-key="staff8_role" value="Deacon / Missions Director" required></div></div>
+              <div class="frow"><label for="people-staff8_bio">Bio (optional)</label><textarea id="people-staff8_bio" data-key="staff8_bio" rows="4"></textarea></div>
             </div>
             <div class="people-card">
               <h4>Jamie Taylor</h4>
-              <div class="frow"><label>Show this person</label><select data-key="staff1_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
-              <div class="frow two"><div><label>Name</label><input data-key="staff1_name" value="Jamie Taylor" required></div><div><label>Role</label><input data-key="staff1_role" value="Trustee" required></div></div>
-              <div class="frow"><label>Bio (optional)</label><textarea data-key="staff1_bio" rows="4"></textarea></div>
+              <div class="frow"><label for="people-staff1_visible">Show this person</label><select id="people-staff1_visible" data-key="staff1_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
+              <div class="frow two"><div><label for="people-staff1_name">Name</label><input id="people-staff1_name" data-key="staff1_name" value="Jamie Taylor" required></div><div><label for="people-staff1_role">Role</label><input id="people-staff1_role" data-key="staff1_role" value="Trustee / Tech &amp; Audio Director" required></div></div>
+              <div class="frow"><label for="people-staff1_bio">Bio (optional)</label><textarea id="people-staff1_bio" data-key="staff1_bio" rows="4"></textarea></div>
             </div>
             <div class="people-card">
               <h4>Robbie King</h4>
-              <div class="frow"><label>Show this person</label><select data-key="staff2_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
-              <div class="frow two"><div><label>Name</label><input data-key="staff2_name" value="Robbie King" required></div><div><label>Role</label><input data-key="staff2_role" value="Trustee" required></div></div>
-              <div class="frow"><label>Bio (optional)</label><textarea data-key="staff2_bio" rows="4"></textarea></div>
-            </div>
-            <div class="people-card">
-              <h4>Frank Kleman</h4>
-              <div class="frow"><label>Show this person</label><select data-key="staff3_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
-              <div class="frow two"><div><label>Name</label><input data-key="staff3_name" value="Frank Kleman" required></div><div><label>Role</label><input data-key="staff3_role" value="Deacon" required></div></div>
-              <div class="frow"><label>Bio (optional)</label><textarea data-key="staff3_bio" rows="4"></textarea></div>
-            </div>
-            <div class="people-card">
-              <h4>Curtis Moore</h4>
-              <div class="frow"><label>Show this person</label><select data-key="staff4_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
-              <div class="frow two"><div><label>Name</label><input data-key="staff4_name" value="Curtis Moore" required></div><div><label>Role</label><input data-key="staff4_role" value="Deacon" required></div></div>
-              <div class="frow"><label>Bio (optional)</label><textarea data-key="staff4_bio" rows="4"></textarea></div>
+              <div class="frow"><label for="people-staff2_visible">Show this person</label><select id="people-staff2_visible" data-key="staff2_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
+              <div class="frow two"><div><label for="people-staff2_name">Name</label><input id="people-staff2_name" data-key="staff2_name" value="Robbie King" required></div><div><label for="people-staff2_role">Role</label><input id="people-staff2_role" data-key="staff2_role" value="Trustee / Custodian" required></div></div>
+              <div class="frow"><label for="people-staff2_bio">Bio (optional)</label><textarea id="people-staff2_bio" data-key="staff2_bio" rows="4"></textarea></div>
             </div>
             <div class="people-card">
               <h4>Joyce Legg</h4>
-              <div class="frow"><label>Show this person</label><select data-key="staff5_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
-              <div class="frow two"><div><label>Name</label><input data-key="staff5_name" value="Joyce Legg" required></div><div><label>Role</label><input data-key="staff5_role" value="Treasurer" required></div></div>
-              <div class="frow"><label>Bio (optional)</label><textarea data-key="staff5_bio" rows="4"></textarea></div>
+              <div class="frow"><label for="people-staff5_visible">Show this person</label><select id="people-staff5_visible" data-key="staff5_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
+              <div class="frow two"><div><label for="people-staff5_name">Name</label><input id="people-staff5_name" data-key="staff5_name" value="Joyce Legg" required></div><div><label for="people-staff5_role">Role</label><input id="people-staff5_role" data-key="staff5_role" value="Financial Secretary" required></div></div>
+              <div class="frow"><label for="people-staff5_bio">Bio (optional)</label><textarea id="people-staff5_bio" data-key="staff5_bio" rows="4"></textarea></div>
             </div>
             <div class="people-card">
               <h4>Kris Moore</h4>
-              <div class="frow"><label>Show this person</label><select data-key="staff6_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
-              <div class="frow two"><div><label>Name</label><input data-key="staff6_name" value="Kris Moore" required></div><div><label>Role</label><input data-key="staff6_role" value="Secretary" required></div></div>
-              <div class="frow"><label>Bio (optional)</label><textarea data-key="staff6_bio" rows="4"></textarea></div>
+              <div class="frow"><label for="people-staff6_visible">Show this person</label><select id="people-staff6_visible" data-key="staff6_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
+              <div class="frow two"><div><label for="people-staff6_name">Name</label><input id="people-staff6_name" data-key="staff6_name" value="Kris Moore" required></div><div><label for="people-staff6_role">Role</label><input id="people-staff6_role" data-key="staff6_role" value="Administration Secretary / Sword Club Director" required></div></div>
+              <div class="frow"><label for="people-staff6_bio">Bio (optional)</label><textarea id="people-staff6_bio" data-key="staff6_bio" rows="4"></textarea></div>
+            </div>
+            <div class="people-card">
+              <h4>Edna King</h4>
+              <div class="frow"><label for="people-staff9_visible">Show this person</label><select id="people-staff9_visible" data-key="staff9_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
+              <div class="frow two"><div><label for="people-staff9_name">Name</label><input id="people-staff9_name" data-key="staff9_name" value="Edna King" required></div><div><label for="people-staff9_role">Role</label><input id="people-staff9_role" data-key="staff9_role" value="Custodian" required></div></div>
+              <div class="frow"><label for="people-staff9_bio">Bio (optional)</label><textarea id="people-staff9_bio" data-key="staff9_bio" rows="4"></textarea></div>
+            </div>
+            <div class="people-card">
+              <h4>Jennings &amp; Nellie Elliott</h4>
+              <div class="frow"><label for="people-staff10_visible">Show this person</label><select id="people-staff10_visible" data-key="staff10_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
+              <div class="frow two"><div><label for="people-staff10_name">Name</label><input id="people-staff10_name" data-key="staff10_name" value="Jennings &amp; Nellie Elliott" required></div><div><label for="people-staff10_role">Role</label><input id="people-staff10_role" data-key="staff10_role" value="Teen Ministry Leaders" required></div></div>
+              <div class="frow"><label for="people-staff10_bio">Bio (optional)</label><textarea id="people-staff10_bio" data-key="staff10_bio" rows="4"></textarea></div>
             </div>
           </div>
         </div>
         <div class="people-save-foot"><p id="people-msg" class="studio-msg" role="status" aria-live="polite"></p><button class="btn btn-b" id="people-save-bottom" type="button">Save changes</button></div>
       </form>
     </section>
+    </div>
+
+    <div id="view-jubilee" data-view-pane hidden>
+      <section>
+        <div class="studio-head">
+          <div><h1>Appalachian Jubilee</h1><p class="muted">Manage the event page, daily schedule, music, lodging, and its Home and Events promotion.</p></div>
+          <div class="studio-head-acts"><button class="btn btn-o" id="jubilee-media" type="button">Manage photos</button><button class="btn btn-b" id="jubilee-save" type="button" disabled>Save Jubilee</button></div>
+        </div>
+        <div class="studio-import"><div><b>One event page, ready to keep current</b><p class="muted">Changes appear on the Jubilee page when you save. Hide the promotion after the event without removing the page.</p></div><a class="btn btn-o" href="/jubilee" target="_blank" rel="noopener">View Jubilee page</a></div>
+        <form id="jubilee-form" class="form studio-form" onsubmit="return false"><div id="jubilee-fields"></div></form>
+        <div class="people-save-foot"><p id="jubilee-msg" class="studio-msg" role="status" aria-live="polite"></p><button class="btn btn-b" id="jubilee-save-bottom" type="button" disabled>Save Jubilee</button></div>
+      </section>
     </div>
 
     <div id="view-settings" data-view-pane hidden>
@@ -1188,7 +1229,7 @@
         </div>
         <div class="studio-fieldset"><h3>Social links</h3>
           <div class="frow two"><div><label>Facebook</label><input data-key="facebook_url" value="https://www.facebook.com/FairviewBaptistTemple" placeholder="https://facebook.com/…"></div><div><label>Instagram</label><input data-key="instagram_url" value="https://www.instagram.com/fairviewbaptisttemple" placeholder="https://instagram.com/…"></div></div>
-          <div class="frow two"><div><label>TikTok</label><input data-key="tiktok_url" placeholder="https://tiktok.com/@…"></div><div><label>YouTube</label><input data-key="youtube_url" value="https://www.youtube.com/@FairviewBaptistTemple" placeholder="https://youtube.com/@…"></div></div>
+          <div class="frow two"><div><label>TikTok</label><input data-key="tiktok_url" value="https://www.tiktok.com/@fairviewbaptisttemple" placeholder="https://tiktok.com/@…"></div><div><label>YouTube</label><input data-key="youtube_url" value="https://www.youtube.com/@FairviewBaptistTemple" placeholder="https://youtube.com/@…"></div></div>
         </div>
         <div class="studio-fieldset"><h3>Livestream</h3>
           <div class="frow"><label>YouTube channel ID: powers the automatic live player (starts with UC)</label><input data-key="live_channel_id" placeholder="UC…"></div>
@@ -1308,6 +1349,12 @@
               <button id="media-remove-image" class="media-edit-btn media-danger" type="button">Remove image from page</button>
               <button id="media-remove-video" class="media-edit-btn media-danger" type="button">Remove video from page</button>
             </div>
+            <div class="media-text-field media-image-url-field">
+              <label for="media-image-url">Image URL</label>
+              <input id="media-image-url" type="text" placeholder="https://… or /assets/photos/…" autocomplete="off" spellcheck="false">
+              <button id="media-image-url-apply" class="media-edit-btn" type="button">Use this image</button>
+            </div>
+            <details id="media-library" class="media-library"><summary>Choose a church photo</summary><div id="media-library-grid" class="media-library-grid"></div></details>
           </div>
           <div class="media-controls">
             <div class="media-control-group" id="media-text-group" hidden>
@@ -1415,5 +1462,7 @@
 <script src="assets/sermon-tags.js?v=2"></script>
 <script src="assets/videos.js?v=4"></script>
 <script src="assets/media-styles.js?v=1"></script>
-<script src="assets/studio.js?v=34"></script>
+<script src="assets/cms-schema.js?v=2"></script>
+<script src="assets/photo-library.js?v=1"></script>
+<script src="assets/studio.js?v=35"></script>
 </body></html>

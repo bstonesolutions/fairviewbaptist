@@ -18,6 +18,34 @@
   });
   var owners = (B.OWNER_EMAILS || []).map(function (s) { return String(s).toLowerCase(); });
   var bucket = B.MEDIA_BUCKET || 'fbt-media';
+  var contentSchema = window.FBT_SCHEMA || { groups: [], defaults: {}, mediaSlots: [] };
+  var contentDefaults = contentSchema.defaults || {};
+  var contentFields = {};
+  (contentSchema.groups || []).forEach(function (group) {
+    (group.fields || []).forEach(function (field) { contentFields[field.key] = field; });
+  });
+  function studioContentValue(key, value) {
+    // The former form placeholder was never the pastor's biography.
+    if (key === 'pastor_bio' && /^Pastor Michael Spurlock leads Fairview Baptist Temple in Clay, West Virginia\. Replace this short bio with his story:/.test(String(value || ''))) {
+      return contentDefaults.pastor_bio || '';
+    }
+    return value == null ? '' : String(value);
+  }
+  function studioContentMap(rows) {
+    var map = Object.assign({}, contentDefaults);
+    (rows || []).forEach(function (row) { map[row.key] = studioContentValue(row.key, row.value); });
+    return map;
+  }
+  function fillContentFields(selector, map) {
+    Array.prototype.forEach.call(document.querySelectorAll(selector + ' [data-key]'), function (input) {
+      var key = input.getAttribute('data-key');
+      if (Object.prototype.hasOwnProperty.call(map, key)) input.value = studioContentValue(key, map[key]);
+    });
+  }
+  // Defaults initialize forms before a query, including the real pastor bio.
+  fillContentFields('#view-people', contentDefaults);
+  fillContentFields('#view-settings', contentDefaults);
+
   var studioSidebar = document.getElementById('studio-sidebar');
   var studioNavToggle = $('studio-nav-toggle');
   var studioNavScrim = $('studio-nav-scrim');
@@ -392,6 +420,7 @@
     if (view === 'blog') loadPosts();
     if (view === 'settings') loadSettings();
     if (view === 'people') loadPeople();
+    if (view === 'jubilee') loadJubilee();
     if (view === 'sermons') loadSermons();
     if (view === 'media') loadMedia();
     if (view === 'pages') loadPages();
@@ -1549,10 +1578,9 @@
     if (settingsLoaded) return;
     sb.from('site_content').select('key,value').then(function (r) {
       if (r.error) return;
-      var map = {}; (r.data || []).forEach(function (row) { map[row.key] = row.value; });
-      Array.prototype.forEach.call(document.querySelectorAll('#view-settings [data-key]'), function (inp) {
-        var k = inp.getAttribute('data-key'); if (map[k] != null && String(map[k]).trim()) inp.value = normalizeSetting(k, map[k]);
-      });
+      var map = studioContentMap(r.data);
+      Object.keys(map).forEach(function (key) { map[key] = normalizeSetting(key, map[key]); });
+      fillContentFields('#view-settings', map);
       settingsLoaded = true;
     });
   }
@@ -1585,6 +1613,7 @@
     sb.from('site_content').upsert(rows, { onConflict: 'key' }).then(function (r) {
       btn.disabled = false; btn.textContent = 'Save settings';
       if (r.error) { msg.className = 'studio-msg err'; msg.textContent = 'Couldn\'t save: ' + r.error.message + (/row-level|policy/i.test(r.error.message) ? ' (not on the editor allow-list?)' : ''); return; }
+      mediaReady = false;
       msg.className = 'studio-msg ok'; msg.textContent = 'Saved ✓ Your changes are live across the site.';
     });
   });
@@ -1600,11 +1629,7 @@
         if (msg) { msg.className = 'studio-msg err'; msg.textContent = 'Couldn\'t load: ' + r.error.message; }
         return;
       }
-      var map = {}; (r.data || []).forEach(function (row) { map[row.key] = row.value; });
-      Array.prototype.forEach.call(document.querySelectorAll('#view-people [data-key]'), function (inp) {
-        var k = inp.getAttribute('data-key');
-        if (map[k] != null && String(map[k]).trim() !== '') inp.value = String(map[k]);
-      });
+      fillContentFields('#view-people', studioContentMap(r.data));
       peopleLoaded = true;
       if (msg) { msg.className = 'studio-msg'; msg.textContent = ''; }
     });
@@ -1631,11 +1656,89 @@
         return;
       }
       peopleLoaded = true;
+      mediaReady = false;
       if (msg) { msg.className = 'studio-msg ok'; msg.textContent = 'Saved ✓ Get Involved and Our Staff are updated.'; }
     });
   }
   ['people-save', 'people-save-bottom'].forEach(function (id) { var btn = $(id); if (btn) btn.addEventListener('click', savePeople); });
   if ($('people-media')) $('people-media').addEventListener('click', function () { showView('media'); });
+
+  // ---------- Appalachian Jubilee ----------
+  var jubileeBuilt = false, jubileeLoaded = false, jubileeLoading = false, jubileeSaving = false;
+  function jubileeFields() {
+    var group = (contentSchema.groups || []).filter(function (item) { return item.id === 'jubilee'; })[0];
+    return group ? group.fields.filter(function (field) { return !field.retired && field.type !== 'bg' && field.type !== 'image' && field.type !== 'style'; }) : [];
+  }
+  function buildJubileeForm() {
+    if (jubileeBuilt) return;
+    var groups = [], byName = {};
+    jubileeFields().forEach(function (field) {
+      var name = field.studioSection || 'Event details';
+      if (!byName[name]) { byName[name] = []; groups.push(name); }
+      byName[name].push(field);
+    });
+    $('jubilee-fields').innerHTML = groups.map(function (name) {
+      return '<div class="studio-fieldset"><h3>' + esc(name) + '</h3>' + byName[name].map(function (field) {
+        var id = 'jubilee-field-' + field.key;
+        var value = esc(field.def || '');
+        var control;
+        if (field.type === 'select') {
+          control = '<select id="' + id + '" data-key="' + esc(field.key) + '">' + (field.options || []).map(function (option) {
+            return '<option value="' + esc(option.value) + '"' + (option.value === field.def ? ' selected' : '') + '>' + esc(option.label) + '</option>';
+          }).join('') + '</select>';
+        } else if (field.type === 'multiline') {
+          control = '<textarea id="' + id + '" data-key="' + esc(field.key) + '" rows="3">' + value + '</textarea>';
+        } else {
+          control = '<input id="' + id + '" data-key="' + esc(field.key) + '" type="' + (field.type === 'link' ? 'url' : field.type === 'date' ? 'date' : 'text') + '" value="' + value + '">';
+        }
+        return '<div class="frow"><label for="' + id + '">' + esc(field.label) + (field.type === 'rich' ? ' (wrap accent words in *asterisks*)' : '') + '</label>' + control + (field.hint ? '<small class="field-help">' + esc(field.hint) + '</small>' : '') + '</div>';
+      }).join('') + '</div>';
+    }).join('');
+    jubileeBuilt = true;
+  }
+  function setJubileeSaving(saving) {
+    jubileeSaving = saving;
+    ['jubilee-save', 'jubilee-save-bottom'].forEach(function (id) {
+      $(id).disabled = saving || !jubileeLoaded;
+      $(id).textContent = saving ? 'Saving…' : 'Save Jubilee';
+    });
+    Array.prototype.forEach.call($('jubilee-form').querySelectorAll('[data-key]'), function (field) { field.disabled = saving; });
+  }
+  function loadJubilee() {
+    buildJubileeForm();
+    if (jubileeLoaded || jubileeLoading) return;
+    jubileeLoading = true;
+    var msg = $('jubilee-msg'); msg.className = 'studio-msg'; msg.textContent = 'Loading Jubilee content…';
+    sb.from('site_content').select('key,value').then(function (result) {
+      jubileeLoading = false;
+      if (result.error) { msg.className = 'studio-msg err'; msg.textContent = 'Could not load: ' + result.error.message; return; }
+      fillContentFields('#view-jubilee', studioContentMap(result.data));
+      jubileeLoaded = true;
+      setJubileeSaving(false);
+      msg.textContent = '';
+    }, function () { jubileeLoading = false; msg.className = 'studio-msg err'; msg.textContent = 'Could not load Jubilee. Open this section again to retry.'; });
+  }
+  function saveJubilee() {
+    if (!jubileeLoaded || jubileeSaving || !$('jubilee-form').reportValidity()) return;
+    var rows = [], now = new Date().toISOString();
+    Array.prototype.forEach.call($('jubilee-form').querySelectorAll('[data-key]'), function (input) {
+      rows.push({ key: input.getAttribute('data-key'), value: String(input.value || '').trim(), updated_at: now });
+    });
+    setJubileeSaving(true);
+    var msg = $('jubilee-msg'); msg.className = 'studio-msg'; msg.textContent = 'Saving Jubilee…';
+    sb.from('site_content').upsert(rows, { onConflict: 'key' }).then(function (result) {
+      setJubileeSaving(false);
+      if (result.error) { msg.className = 'studio-msg err'; msg.textContent = 'Could not save: ' + result.error.message; return; }
+      mediaReady = false;
+      msg.className = 'studio-msg ok'; msg.textContent = 'Saved. The Jubilee page and its promotion are updated.';
+    }, function () { setJubileeSaving(false); msg.className = 'studio-msg err'; msg.textContent = 'The connection was interrupted. Your edits are still here; try saving again.'; });
+  }
+  ['jubilee-save', 'jubilee-save-bottom'].forEach(function (id) { $(id).addEventListener('click', saveJubilee); });
+  $('jubilee-media').addEventListener('click', function () {
+    pendingMediaSlot = 'hero_bg_jubilee';
+    showView('media');
+    if (mediaReady) { pendingMediaSlot = ''; openMediaEditor('hero_bg_jubilee'); }
+  });
 
   // ---------- sermons (sermon_tags overrides on the YouTube library) ----------
   var vids = [], smTags = {}, smReady = false, editingVid = null, hubFilter = '';
@@ -2158,14 +2261,17 @@
   }));
   var MEDIA_PHOTO = [
     { key: 'photo_visit', label: 'Visit: welcome photo', page: '/visit', ratio: 'landscape' },
-    { key: 'pastor_photo', label: 'Staff: Pastor Michael Spurlock', page: '/staff', ratio: 'portrait' },
-    { key: 'staff1_photo', label: 'Staff: Jamie Taylor', page: '/staff', ratio: 'square' },
-    { key: 'staff2_photo', label: 'Staff: Robbie King', page: '/staff', ratio: 'square' },
-    { key: 'staff3_photo', label: 'Staff: Frank Kleman', page: '/staff', ratio: 'square' },
-    { key: 'staff4_photo', label: 'Staff: Curtis Moore', page: '/staff', ratio: 'square' },
-    { key: 'staff5_photo', label: 'Staff: Joyce Legg', page: '/staff', ratio: 'square' },
-    { key: 'staff6_photo', label: 'Staff: Kris Moore', page: '/staff', ratio: 'square' },
-    { key: 'photo_staff_group', label: 'Staff: group photo', page: '/staff', ratio: 'four-three', builtIn: 'staff-collage' },
+    {"key": "pastor_photo", "label": "Staff: Pastor Michael Spurlock", "page": "/staff", "ratio": "portrait"},
+    {"key": "staff4_photo", "label": "Staff: Curt Moore", "page": "/staff", "ratio": "square"},
+    {"key": "staff7_photo", "label": "Staff: Jake Pierson", "page": "/staff", "ratio": "square"},
+    {"key": "staff8_photo", "label": "Staff: Barry Payton", "page": "/staff", "ratio": "square"},
+    {"key": "staff1_photo", "label": "Staff: Jamie Taylor", "page": "/staff", "ratio": "square"},
+    {"key": "staff2_photo", "label": "Staff: Robbie King", "page": "/staff", "ratio": "square"},
+    {"key": "staff5_photo", "label": "Staff: Joyce Legg", "page": "/staff", "ratio": "square"},
+    {"key": "staff6_photo", "label": "Staff: Kris Moore", "page": "/staff", "ratio": "square"},
+    {"key": "staff9_photo", "label": "Staff: Edna King", "page": "/staff", "ratio": "square"},
+    {"key": "staff10_photo", "label": "Staff: Jennings & Nellie Elliott", "page": "/staff", "ratio": "square"},
+    { key: 'photo_staff_group', label: 'Staff: group photo', page: '/staff', ratio: 'four-three' },
     { key: 'photo_gi_kids', label: 'Get Involved: Sunday School', page: '/get-involved', ratio: 'wide' },
     { key: 'photo_gi_youth', label: 'Get Involved: Youth Ministry', page: '/get-involved', ratio: 'wide' },
     { key: 'photo_gi_groups', label: 'Get Involved: H.O.P.E. Recovery', page: '/get-involved', ratio: 'wide' },
@@ -3031,13 +3137,34 @@
   Object.keys(MEDIA_TEXT_GEN).forEach(function (k) {
     MEDIA_TEXT[k] = (MEDIA_TEXT[k] || []).concat(MEDIA_TEXT_GEN[k]);
   });
+  (contentSchema.mediaSlots || []).forEach(function (slot) {
+    var existing = MEDIA_BG.concat(MEDIA_PHOTO).filter(function (item) { return item.key === slot.key; })[0];
+    if (!existing) {
+      existing = Object.assign({}, slot);
+      (slot.kind === 'photo' ? MEDIA_PHOTO : MEDIA_BG).push(existing);
+    }
+    var fields = MEDIA_TEXT[slot.key] || [];
+    (slot.textKeys || []).forEach(function (key) {
+      var field = contentFields[key];
+      if (!field || fields.some(function (item) { return item.key === key; })) return;
+      fields.push({ key: key, label: field.label, def: field.def || '', rich: field.type === 'rich', multi: field.type === 'multiline' });
+    });
+    MEDIA_TEXT[slot.key] = fields;
+  });
+  MEDIA_BG.concat(MEDIA_PHOTO).forEach(function (meta) {
+    if (contentDefaults[meta.key]) meta.fallback = contentDefaults[meta.key];
+  });
+  Object.keys(MEDIA_TEXT).forEach(function (key) {
+    MEDIA_TEXT[key].forEach(function (field) {
+      if (Object.prototype.hasOwnProperty.call(contentDefaults, field.key)) field.def = contentDefaults[field.key];
+    });
+  });
   function mediaTextFields(meta) { return (meta && MEDIA_TEXT[meta.key]) || []; }
   function mediaTextValue(field, draft) {
     if (draft && mediaEdit && Object.prototype.hasOwnProperty.call(mediaEdit.pendingValues, field.key)) {
       return mediaEdit.pendingValues[field.key];
     }
-    var saved = nn(mediaVals[field.key]);
-    return saved || field.def;
+    return Object.prototype.hasOwnProperty.call(mediaVals, field.key) ? String(mediaVals[field.key] == null ? '' : mediaVals[field.key]) : field.def;
   }
   // The church palette, offered on every text color control so pages match.
   var MEDIA_PALETTE = ['#FFF8EA', '#7FD1CB', '#29A5A0', '#1A9088', '#223A5E', '#16212B', '#FFFFFF'];
@@ -3065,7 +3192,7 @@
   function mediaHeroOnPhoto() {
     if (!mediaEdit) return true;
     var st = mediaEdit.style || {};
-    return st.source === 'image' || st.source === 'video' || st.source === 'background' ||
+    return !!mediaEdit.meta.dark || st.source === 'image' || st.source === 'video' || st.source === 'background' ||
       (st.source === 'auto' && (mediaHasImage(mediaEdit.meta, true) || !!mediaVideo(mediaEdit.meta, true)));
   }
   function mediaColorAuto(role) {
@@ -3078,7 +3205,7 @@
     return esc(text).replace(/\*([^*]+)\*/g, '<em>$1</em>');
   }
   var IMG_SVG = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>';
-  var mediaBuilt = false, mediaReady = false, mediaLoading = false, mediaVals = {}, mediaEdit = null;
+  var mediaBuilt = false, mediaReady = false, mediaLoading = false, mediaVals = {}, mediaSavedKeys = {}, mediaEdit = null;
   var mediaEditorTrigger = null, mediaPointerDown = false, mediaPointerStart = null, mediaSessionSeq = 0;
 
   function nn(x) { return (x && String(x).trim()) ? String(x).trim() : ''; }
@@ -3091,7 +3218,11 @@
     }
     return mediaVals[key];
   }
-  function mediaImage(meta, draft) { return meta ? nn(mediaValue(meta.key, draft)) || meta.fallback || '' : ''; }
+  function mediaImage(meta, draft) {
+    if (!meta) return '';
+    var value = mediaValue(meta.key, draft);
+    return value == null ? (meta.fallback || '') : nn(value);
+  }
   function mediaVideo(meta, draft) { return meta ? nn(mediaValue(mediaVideoKey(meta), draft)) : ''; }
   function mediaHasImage(meta, draft) { return !!mediaImage(meta, draft) || !!(meta && meta.builtIn); }
   function mediaStyleKey(meta) { return mediaStyleApi && meta ? mediaStyleApi.styleKey(meta.key) : ''; }
@@ -3099,7 +3230,16 @@
     var key = mediaStyleKey(meta);
     return key ? mediaStyleApi.parse(mediaVals[key], meta.kind) : null;
   }
-  function mediaStyle(meta) { return mediaStoredStyle(meta) || mediaStyleApi.defaults(meta.kind); }
+  function mediaHasCustomStyle(meta) {
+    var key = mediaStyleKey(meta);
+    return !!(key && mediaSavedKeys[key] && nn(mediaVals[key]) && mediaVals[key] !== contentDefaults[key]);
+  }
+  function mediaDefaultStyle(meta) {
+    var style = mediaStyleApi.parse(contentDefaults[mediaStyleKey(meta)], meta.kind) || mediaStyleApi.defaults(meta.kind);
+    if (meta.defaultFit) style.fit = meta.defaultFit;
+    return style;
+  }
+  function mediaStyle(meta) { return mediaStoredStyle(meta) || mediaDefaultStyle(meta); }
   function mediaBackdrop(style, meta) {
     var chosen = mediaStyleApi.backgroundValue(style, meta.kind);
     if (chosen) return chosen;
@@ -3158,7 +3298,7 @@
       if (meta.builtIn === 'staff-collage' && !mediaImage(meta, editorMode)) {
         media = document.createElement('span');
         media.className = 'media-preview-collage';
-        ['pastor_photo', 'staff1_photo', 'staff2_photo', 'staff3_photo'].forEach(function (key) {
+        ['pastor_photo', 'staff4_photo', 'staff1_photo', 'staff2_photo'].forEach(function (key) {
           var personMeta = mediaByKey(key);
           var image = document.createElement('img');
           image.src = mediaImage(personMeta, editorMode);
@@ -3191,7 +3331,7 @@
     }
     var overlay = document.createElement('span');
     overlay.className = 'media-preview-overlay';
-    overlay.style.background = (originalPreview || (editorMode && mediaEdit && mediaEdit.restoreOriginal)) && meta.kind === 'background'
+    overlay.style.background = (originalPreview || (editorMode && mediaEdit && mediaEdit.restoreOriginal)) && meta.kind === 'background' && !contentDefaults[mediaStyleKey(meta)]
       ? (source === 'video'
         ? 'linear-gradient(165deg,rgba(10,38,46,.6),rgba(10,38,46,.88))'
         : source === 'image'
@@ -3201,7 +3341,7 @@
     if (suppressMedia) overlay.style.background = 'transparent';
     host.appendChild(overlay);
     var isHeroBg = meta.kind === 'background' && meta.key.indexOf('hero_bg_tile_') !== 0 && !meta.noCopy;
-    var heroScrim = !suppressMedia && isHeroBg && (source === 'image' || source === 'video' || present.source === 'background' || style.source === 'background');
+    var heroScrim = meta.previewScrim !== false && !suppressMedia && isHeroBg && (source === 'image' || source === 'video' || present.source === 'background' || style.source === 'background');
     if (heroScrim) {
       // Mirror the live hero: pages add a fixed readability scrim over any photo.
       var scrim = document.createElement('span');
@@ -3221,6 +3361,7 @@
         if (panelSrc) copy.innerHTML += '<span class="stage-welcome-panel"><img src="' + esc(panelSrc) + '" alt=""></span>';
       }
       host.appendChild(copy);
+      styleMediaPreviewCopy(copy, meta);
     }
     if (editorMode) {
       var point = viewport === 'mobile' ? style.mobile : style.desktop;
@@ -3233,6 +3374,37 @@
     }
     return source;
   }
+  function styleMediaPreviewCopy(copy, meta) {
+    if (!copy || meta.previewTypography !== 'jubilee-hero') return;
+    if (!document.getElementById('studio-jubilee-fonts')) {
+      var font = document.createElement('link');
+      font.id = 'studio-jubilee-fonts'; font.rel = 'stylesheet';
+      font.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap';
+      document.head.appendChild(font);
+    }
+    copy.style.textAlign = 'left'; copy.style.top = '9%'; copy.style.bottom = 'auto';
+    copy.style.maxWidth = '86%';
+    var kick = copy.querySelector('.stage-kick');
+    if (kick) {
+      kick.style.fontFamily = '"Source Sans 3", sans-serif'; kick.style.fontSize = '.7rem';
+      kick.style.letterSpacing = '.09em'; kick.style.textTransform = 'uppercase';
+      if (!kick.style.color) kick.style.color = '#F0D36F';
+    }
+    var heading = copy.querySelector('strong');
+    if (heading) {
+      heading.style.fontFamily = '"Cormorant Garamond", Georgia, serif'; heading.style.fontWeight = '500';
+      heading.style.fontSize = mediaEdit && mediaEdit.viewport === 'mobile' ? '2.35rem' : 'clamp(2.2rem,5vw,3.8rem)'; heading.style.lineHeight = '.95';
+      heading.style.letterSpacing = '-.025em'; heading.style.textTransform = 'none';
+      if (!heading.style.color) heading.style.color = '#FFF8E6';
+      Array.prototype.forEach.call(heading.querySelectorAll('em'), function (accent) {
+        accent.style.fontFamily = '"Mrs Saint Delafield", cursive'; accent.style.fontWeight = '400';
+        accent.style.fontSize = '1.3em'; accent.style.lineHeight = '.86'; accent.style.marginTop = '.12em';
+        if (!accent.style.color) accent.style.color = '#F0D36F';
+      });
+    }
+    var sub = copy.querySelector('.stage-sub');
+    if (sub) { sub.style.marginLeft = '0'; sub.style.maxWidth = '43ch'; }
+  }
   function stageCopyHtml(meta) {
     var fields = mediaTextFields(meta);
     if (!fields.length) {
@@ -3240,10 +3412,12 @@
     }
     var byRole = {};
     fields.forEach(function (f) {
-      if (/_kick$/.test(f.key)) byRole.kick = f;
-      else if (/_heading$|_title$/.test(f.key)) byRole.heading = f;
-      else if (/_sub$/.test(f.key)) byRole.sub = f;
+      if (/_kick$/.test(f.key) && !byRole.kick) byRole.kick = f;
+      else if (/_heading$|_title$|_featured$/.test(f.key) && !byRole.heading) byRole.heading = f;
+      else if (/_sub$/.test(f.key) && !byRole.sub) byRole.sub = f;
+      else if (/_body$|_copy$/.test(f.key) && !byRole.body) byRole.body = f;
     });
+    if (!byRole.sub && byRole.body) byRole.sub = byRole.body;
     var html = '';
     if (meta.key.indexOf('hero_bg_tile_') === 0) {
       if (byRole.heading) html += '<strong>' + esc(mediaTextValue(byRole.heading, true)) + '</strong>';
@@ -3261,7 +3435,11 @@
       if (accent) headingHtml = headingHtml.replace(/<em>/g, '<em style="color:' + accent + '">');
       html += '<strong' + tint(byRole.heading.key + '_color') + '>' + headingHtml + '</strong>';
     }
-    if (byRole.sub && meta.ratio === 'hero-home') html += '<span class="stage-sub"' + tint(byRole.sub.key + '_color') + '>' + esc(mediaTextValue(byRole.sub, true)) + '</span>';
+    if (meta.previewTypography === 'jubilee-hero') {
+      var dateField = fields.filter(function (field) { return field.key === 'jubilee_dates'; })[0];
+      if (dateField) html += '<span class="stage-event-date" style="display:block;margin-top:12px;font-size:.8rem;letter-spacing:.05em;color:#F0D36F">' + esc(mediaTextValue(dateField, true)) + '</span>';
+    }
+    if (byRole.sub) html += '<span class="stage-sub"' + tint(byRole.sub.key + '_color') + '>' + esc(mediaTextValue(byRole.sub, true)) + '</span>';
     return html;
   }
   function refreshStageText() {
@@ -3270,6 +3448,7 @@
     if (!copy) return;
     copy.classList.toggle('no-shadow', mediaShadowNone(mediaEdit.meta));
     copy.innerHTML = stageCopyHtml(mediaEdit.meta);
+    styleMediaPreviewCopy(copy, mediaEdit.meta);
   }
   var MATCH_FIELDS = ['background', 'backgroundColor', 'overlay', 'overlayColor', 'overlayOpacity', 'imageOpacity'];
   function buildMediaMatch(meta) {
@@ -3286,7 +3465,7 @@
     function section(title, list) {
       if (!list.length) return '';
       return '<div class="media-match-head">' + title + '</div><div class="media-match-row">' + list.map(function (m) {
-        var custom = !!mediaStoredStyle(m);
+        var custom = mediaHasCustomStyle(m);
         return '<button type="button" class="media-match-item" data-match="' + esc(m.key) + '">' +
           '<span class="media-match-thumb" id="mmatch-' + esc(m.key) + '"></span>' +
           '<span>' + esc(m.label) + (custom ? '' : ' <small>(default)</small>') + '</span></button>';
@@ -3303,7 +3482,7 @@
         var el = document.getElementById('mmatch-' + m.key);
         if (!el) return;
         var stored = mediaStoredStyle(m);
-        mediaRender(el, m, stored || mediaStyleApi.defaults(m.kind), 'desktop', false, !stored);
+        mediaRender(el, m, stored || mediaDefaultStyle(m), 'desktop', false, !stored);
       });
     });
   }
@@ -3323,7 +3502,7 @@
       };
     }
     var stored = mediaStoredStyle(srcMeta);
-    var srcStyle = stored || mediaStyleApi.defaults(srcMeta.kind);
+    var srcStyle = stored || mediaDefaultStyle(srcMeta);
     if (copyLook) {
       MATCH_FIELDS.forEach(function (field) {
         if (srcStyle[field] !== undefined) mediaEdit.style[field] = srcStyle[field];
@@ -3436,7 +3615,7 @@
   function renderMediaPreview(meta) {
     var el = document.getElementById('mprev-' + meta.key); if (!el) return;
     var stored = mediaStoredStyle(meta);
-    var style = stored || mediaStyleApi.defaults(meta.kind);
+    var style = stored || mediaDefaultStyle(meta);
     var source = mediaRender(el, meta, style, 'desktop', false, !stored);
     var badge = document.createElement('span');
     badge.className = 'media-preview-badge';
@@ -3447,7 +3626,7 @@
     edit.innerHTML = EDIT_SVG + ' Edit design';
     el.appendChild(edit);
     var status = $('mstatus-' + meta.key);
-    if (status) status.textContent = stored ? 'Custom design saved' : 'Using the page default';
+    if (status) status.textContent = mediaHasCustomStyle(meta) ? 'Custom design saved' : 'Using the page default';
     mediaPrevRendered[meta.key] = true;
   }
   function refreshMediaPreviews() {
@@ -3550,7 +3729,7 @@
     }
     var overlay = stage.querySelector('.media-preview-overlay');
     if (overlay) {
-      overlay.style.background = mediaEdit.restoreOriginal && mediaEdit.meta.kind === 'background'
+      overlay.style.background = mediaEdit.restoreOriginal && mediaEdit.meta.kind === 'background' && !contentDefaults[mediaStyleKey(mediaEdit.meta)]
         ? (source === 'video'
           ? 'linear-gradient(165deg,rgba(10,38,46,.6),rgba(10,38,46,.88))'
           : source === 'image'
@@ -3560,6 +3739,7 @@
     }
     var focal = stage.querySelector('.media-focal');
     if (focal) { focal.style.left = present.x + '%'; focal.style.top = present.y + '%'; }
+    styleMediaPreviewCopy(stage.querySelector('.media-stage-copy'), mediaEdit.meta);
   }
   function syncMediaEditor(rebuildPreview) {
     if (!mediaEdit) return;
@@ -3620,7 +3800,11 @@
     $('media-editor-image-pick').disabled = busy;
     $('media-editor-video-pick').disabled = busy;
     $('media-remove-video').disabled = busy || !nn(mediaValue(mediaVideoKey(mediaEdit.meta), true));
-    $('media-remove-image').disabled = busy || !nn(mediaValue(mediaEdit.meta.key, true));
+    $('media-remove-image').disabled = busy || !mediaHasImage(mediaEdit.meta, true);
+    if (document.activeElement !== $('media-image-url')) $('media-image-url').value = mediaImage(mediaEdit.meta, true);
+    $('media-image-url').disabled = busy;
+    $('media-image-url-apply').disabled = busy;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-library-photo]'), function (button) { button.disabled = busy; });
     $('media-editor-close').disabled = busy;
     $('media-editor-cancel').disabled = busy;
     $('media-editor-save').disabled = busy || !mediaEdit.dirty;
@@ -3657,17 +3841,17 @@
     mediaEdit = {
       token: ++mediaSessionSeq,
       meta: meta,
-      style: stored || mediaStyleApi.defaults(meta.kind),
+      style: stored || mediaDefaultStyle(meta),
       viewport: 'desktop',
       dirty: false,
       restoreOriginal: !stored,
-      stored: !!stored,
+      stored: mediaHasCustomStyle(meta),
       pendingValues: {},
       busy: false
     };
     $('media-editor-title').textContent = meta.label;
     $('media-editor-subtitle').textContent = meta.kind === 'background'
-      ? 'Design the page background for desktop and phone screens.'
+      ? 'Preview this section for desktop and phone screens. Open the public page to review its full layout.'
       : 'Position this photo without changing the original file.';
     $('media-editor').hidden = false;
     document.body.classList.add('media-editor-open');
@@ -3681,7 +3865,7 @@
       mediaEdit.restoreOriginal = false;
       setMediaEditorMessage('Restored your unsaved changes from before the page reloaded. Save to keep them, or Cancel to let them go.', '');
     } else {
-      setMediaEditorMessage(stored ? 'Saved custom design loaded' : 'Using the original page look', '');
+      setMediaEditorMessage(mediaEdit.stored ? 'Saved custom design loaded' : 'Using the original page look', '');
     }
     buildMediaTextFields(meta);
     buildMediaMatch(meta);
@@ -3728,7 +3912,7 @@
     var edit = mediaEdit;
     var meta = edit.meta;
     var key = mediaStyleKey(meta);
-    var value = edit.restoreOriginal ? '' : mediaStyleApi.serialize(edit.style, meta.kind);
+    var value = edit.restoreOriginal ? (contentDefaults[key] || '') : mediaStyleApi.serialize(edit.style, meta.kind);
     var now = new Date().toISOString();
     var rows = [{ key: key, value: value, updated_at: now }];
     Object.keys(edit.pendingValues).forEach(function (assetKey) {
@@ -3745,11 +3929,12 @@
         syncMediaEditor(false);
         return;
       }
-      rows.forEach(function (row) { mediaVals[row.key] = row.value; });
+      rows.forEach(function (row) { mediaVals[row.key] = row.value; mediaSavedKeys[row.key] = true; });
+      settingsLoaded = false; peopleLoaded = false; jubileeLoaded = false;
       clearMediaDraft();
       edit.pendingValues = {};
       edit.dirty = false;
-      edit.stored = !!value;
+      edit.stored = mediaHasCustomStyle(meta);
       refreshMediaPreviews();
       syncMediaEditor(false);
       setMediaEditorMessage('Saved. The media and design are live on the site.', 'ok');
@@ -3763,7 +3948,7 @@
   }
   function restoreMediaLook() {
     if (!mediaEdit) return;
-    mediaEdit.style = mediaStyleApi.defaults(mediaEdit.meta.kind);
+    mediaEdit.style = mediaDefaultStyle(mediaEdit.meta);
     mediaEdit.restoreOriginal = true;
     mediaEdit.dirty = true;
     syncMediaEditor();
@@ -3773,7 +3958,7 @@
     if (!mediaEdit || !key || mediaEdit.busy ||
         !window.confirm('Remove this ' + label + ' from the page when you save? The uploaded file will stay safely stored.')) return;
     mediaEdit.pendingValues[key] = '';
-    mediaEdit.style.source = 'auto';
+    mediaEdit.style.source = label === 'image' && (mediaEdit.meta.fallback || mediaEdit.meta.builtIn) ? 'background' : 'auto';
     mediaMarkDirty();
     syncMediaEditor();
     setMediaEditorMessage('The ' + label + ' will be removed from the page when you save. Cancel keeps it.', '');
@@ -3843,6 +4028,29 @@
       setMediaEditorMessage('Upload failed because the connection was interrupted. Try again.', 'err');
     });
   }
+  function mediaImageUrl(value) {
+    var text = String(value || '').trim();
+    if (/^\/assets\/[^\s]+$/i.test(text) && text.indexOf('..') < 0) return text;
+    try { var parsed = new URL(text); return parsed.protocol === 'https:' ? parsed.href : ''; } catch (error) { return ''; }
+  }
+  function chooseMediaImage(value) {
+    if (!mediaEdit || mediaEdit.busy) return;
+    var url = mediaImageUrl(value);
+    if (!url) { setMediaEditorMessage('Use an HTTPS image URL or a path beginning /assets/.', 'err'); return; }
+    mediaEdit.pendingValues[mediaEdit.meta.key] = url;
+    mediaEdit.style.source = 'image';
+    $('media-image-url').value = url;
+    mediaMarkDirty();
+    syncMediaEditor();
+    setMediaEditorMessage('Image selected. Save changes to publish it.', '');
+  }
+  function buildMediaLibrary() {
+    var photos = (window.FBT_PHOTOS || []).filter(function (photo) { return photo && mediaImageUrl(photo.url); });
+    $('media-library').hidden = !photos.length;
+    $('media-library-grid').innerHTML = photos.map(function (photo) {
+      return '<button class="media-library-photo" type="button" data-library-photo="' + esc(photo.url) + '"><img loading="lazy" src="' + esc(photo.url) + '" alt=""><span>' + esc(photo.label || 'Church photo') + '</span></button>';
+    }).join('');
+  }
   function loadMedia() {
     if (!mediaBuilt) {
       if (!mediaStyleApi) {
@@ -3875,6 +4083,10 @@
       $('media-editor-image-pick').addEventListener('click', function () { $('media-editor-image-file').click(); });
       $('media-editor-video-pick').addEventListener('click', function () { $('media-editor-video-file').click(); });
       $('media-editor-save').addEventListener('click', saveMediaDesign);
+      buildMediaLibrary();
+      $('media-image-url-apply').addEventListener('click', function () { chooseMediaImage($('media-image-url').value); });
+      $('media-image-url').addEventListener('keydown', function (event) { if (event.key === 'Enter') { event.preventDefault(); chooseMediaImage(this.value); } });
+      $('media-library-grid').addEventListener('click', function (event) { var item = event.target.closest('[data-library-photo]'); if (item) chooseMediaImage(item.getAttribute('data-library-photo')); });
       $('media-match-grid').addEventListener('click', function (event) {
         var item = event.target.closest('[data-match]');
         if (item) applyMediaMatch(item.getAttribute('data-match'));
@@ -4065,8 +4277,9 @@
         $('media-msg').textContent = 'Could not load media: ' + result.error.message;
         return;
       }
-      mediaVals = {};
-      (result.data || []).forEach(function (row) { mediaVals[row.key] = row.value; });
+      mediaVals = studioContentMap(result.data);
+      mediaSavedKeys = {};
+      (result.data || []).forEach(function (row) { mediaSavedKeys[row.key] = true; });
       var groups = [], groupIndex = {};
       mediaAll().forEach(function (m) {
         var name = m.pageLabel || 'Other';
@@ -4099,7 +4312,7 @@
   var PAGES_DEFAULT = [
     { page: 'visit.html', label: 'Plan a Visit', menu: true }, { page: 'beliefs.html', label: 'What We Believe', menu: true },
     { page: 'watch.html', label: 'The Overlook', menu: true }, { page: 'next-steps.html', label: 'Next Steps', menu: true },
-    { page: 'events.html', label: 'Events', menu: true },
+    { page: 'events.html', label: 'Events', menu: true }, { page: 'jubilee.html', label: 'Appalachian Jubilee', menu: true },
     { page: 'blog.html', label: 'Blog', menu: true }, { page: 'missions.html', label: 'Missions', menu: true },
     { page: 'get-involved.html', label: 'Get Involved', menu: true }, { page: 'prayer.html', label: 'Prayer', menu: true },
     { page: 'staff.html', label: 'Our Staff', menu: true }, { page: 'contact.html', label: 'Contact', menu: true },
@@ -4110,7 +4323,7 @@
   var PAGE_SECTIONS = [
     { id: 'visit', label: 'Visit menu', note: 'Service Times stays with Plan a Visit.', pages: ['visit.html', 'beliefs.html'] },
     { id: 'stream', label: 'The Overlook', note: 'Fixed main-menu link', pages: ['watch.html'], fixed: true },
-    { id: 'connect', label: 'Connect menu', note: 'Order these pages for the Connect dropdown.', pages: ['next-steps.html', 'events.html', 'blog.html', 'missions.html', 'get-involved.html', 'prayer.html'] },
+    { id: 'connect', label: 'Connect menu', note: 'Order these pages for the Connect dropdown.', pages: ['next-steps.html', 'events.html', 'jubilee.html', 'blog.html', 'missions.html', 'get-involved.html', 'prayer.html'] },
     { id: 'about', label: 'About menu', note: 'Order these pages for the About dropdown.', pages: ['staff.html', 'contact.html'] },
     { id: 'give', label: 'Give', note: 'Fixed giving button', pages: ['give.html'], fixed: true }
   ];

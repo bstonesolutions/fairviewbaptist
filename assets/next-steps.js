@@ -42,11 +42,6 @@
       label: 'Serving',
       kind: 'next_step_serve',
       prompt: 'Are there any areas where you already enjoy helping?'
-    },
-    pastor: {
-      label: 'Talking with a pastor',
-      kind: 'next_step_pastor',
-      prompt: 'Share only what you are comfortable sharing before we connect.'
     }
   };
 

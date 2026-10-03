@@ -34,6 +34,16 @@
     return esc(s).replace(/\*([^*]+)\*/g, '<em>$1</em>');
   }
   function nonEmpty(v) { return v !== null && v !== undefined && String(v).trim() !== ''; }
+  function contentDefaults() {
+    var defaults = {};
+    var groups = (window.FBT_SCHEMA && window.FBT_SCHEMA.groups) || [];
+    groups.forEach(function (group) {
+      (group.fields || []).forEach(function (field) {
+        if (field.def != null) defaults[field.key] = field.def;
+      });
+    });
+    return defaults;
+  }
   function displayValue(key, value) {
     var s = String(value == null ? '' : value).trim();
     if (key === 'contact_city' && /^clay$/i.test(s)) return 'Clay, WV 25043';
@@ -314,6 +324,7 @@
     applyHeroColors(map);
     applyWelcomeLayout(map);
     applyPersonSchema();
+    document.dispatchEvent(new CustomEvent('fbt:content', { detail: map }));
   }
 
   function applyPersonSchema() {
@@ -558,10 +569,16 @@
   // nav_config is a JSON array of { page, label, menu }. Absent/invalid → the
   // page keeps its built-in nav, so nothing breaks if it isn't set.
   function applyNav(map) {
+    // The dedicated event landing page uses in-page event navigation.
+    if (document.querySelector('[data-event-navigation]')) return;
     var raw = map.nav_config;
     if (!nonEmpty(raw)) return;
     var items; try { items = JSON.parse(raw); } catch (e) { return; }
     if (!Array.isArray(items) || !items.length) return;
+    if (!items.some(function (item) { return item && item.page === 'jubilee.html'; })) {
+      var eventAt = items.findIndex(function (item) { return item && item.page === 'events.html'; });
+      items.splice(eventAt >= 0 ? eventAt + 1 : items.length, 0, { page: 'jubilee.html', label: 'Appalachian Jubilee', menu: true });
+    }
     // Add newer permanent pages to older saved menu configurations without
     // forcing the owner to rebuild or resave the menu first.
     if (!items.some(function (item) { return item && item.page === 'next-steps.html'; })) {
@@ -658,7 +675,7 @@
   function maybeLive() { if (state.map !== null && state.live !== undefined) { try { applyLivePlayer(state.map, state.live); } catch (e) {} } }
 
   sb.from('site_content').select('key,value').then(function (res) {
-    var map = {};
+    var map = contentDefaults();
     if (!res.error && res.data) res.data.forEach(function (row) { map[row.key] = row.value; });
     contentMap = map;
     try { applyContent(map); } catch (e) { /* never block the page */ }

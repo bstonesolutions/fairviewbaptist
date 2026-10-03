@@ -16,7 +16,7 @@ if (hd) addEventListener('scroll', function () { hd.classList.toggle('solid', sc
 // in one place instead of being copied into every page's header markup; it's
 // hidden on desktop via CSS, where the nav already has a Give link.
 var cta = document.querySelector('.nav .cta');
-if (cta && !cta.querySelector('.mgive')) {
+if (cta && !document.querySelector('[data-event-navigation]') && !cta.querySelector('.mgive')) {
   var give = document.createElement('a');
   give.href = '/give';
   give.className = 'mgive';

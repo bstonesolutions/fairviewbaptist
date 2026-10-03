@@ -3,6 +3,12 @@ const assert = require('node:assert/strict');
 
 const notify = require('../api/notify');
 
+test('retired pastoral appointment requests are rejected even from an older cached page', function () {
+  assert.throws(function () {
+    notify.validate({ kind: 'next_step_pastor', name: 'A Visitor', email: 'visitor@example.com', message: 'A meeting request.' });
+  }, /kind|type|unsupported|invalid/i);
+});
+
 test('public email validation matches durable Studio form requirements', function () {
   assert.throws(function () {
     notify.validate({ kind: 'contact', name: 'A Visitor', email: 'visitor@example.com' });
