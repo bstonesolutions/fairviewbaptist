@@ -493,13 +493,6 @@ window.FBT_SCHEMA.groups.push({
   "title": "Appalachian Jubilee",
   "fields": [
     {
-      "key": "jubilee_hero_kick",
-      "type": "text",
-      "label": "Hero Script line",
-      "def": "Fairview Baptist Temple · Clay, West Virginia",
-      "studioSection": "Mountain hero"
-    },
-    {
       "key": "jubilee_hero_heading",
       "type": "rich",
       "label": "Hero Heading",
@@ -542,20 +535,6 @@ window.FBT_SCHEMA.groups.push({
       "studioSection": "Event introduction"
     },
     {
-      "key": "jubilee_intro_kick",
-      "type": "text",
-      "label": "Introduction script line",
-      "def": "November 14-18, 2026",
-      "studioSection": "Event introduction"
-    },
-    {
-      "key": "jubilee_intro_heading",
-      "type": "rich",
-      "label": "Introduction heading",
-      "def": "The Appalachian *Jubilee*",
-      "studioSection": "Event introduction"
-    },
-    {
       "key": "jubilee_intro_copy",
       "type": "multiline",
       "label": "Introduction paragraph",
@@ -566,155 +545,162 @@ window.FBT_SCHEMA.groups.push({
       "key": "jubilee_schedule_heading",
       "type": "text",
       "label": "Schedule Heading",
-      "def": "Services and guest speakers",
-      "studioSection": "Service schedule"
+      "def": "Services, speakers & music",
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_schedule_sub",
       "type": "multiline",
       "label": "Schedule introduction",
       "def": "Join us Saturday through Wednesday. All service times are Eastern.",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_sat_day",
       "type": "text",
       "label": "Sat Day",
       "def": "Saturday, November 14",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_sat_time",
       "type": "text",
       "label": "Sat Time",
       "def": "10:00am",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_sat_speakers",
       "type": "text",
       "label": "Sat Speakers",
       "def": "Brandon Stone",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_sun_day",
       "type": "text",
       "label": "Sun Day",
       "def": "Sunday, November 15",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_sun_time",
       "type": "text",
       "label": "Sun Time",
       "def": "10:00am, 11:00am & 6:00pm",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_sun_speakers",
       "type": "text",
       "label": "Sun Speakers",
       "def": "Travis Groves and Jason Holley",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_mon_day",
       "type": "text",
       "label": "Mon Day",
       "def": "Monday, November 16",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_mon_time",
       "type": "text",
       "label": "Mon Time",
       "def": "7:00pm",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_mon_speakers",
       "type": "text",
       "label": "Mon Speakers",
       "def": "Brandon Stone and Scott Matthews",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_tue_day",
       "type": "text",
       "label": "Tue Day",
       "def": "Tuesday, November 17",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_tue_time",
       "type": "text",
       "label": "Tue Time",
       "def": "7:00pm",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_tue_speakers",
       "type": "text",
       "label": "Tue Speakers",
       "def": "Jason Holley and David King",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_wed_day",
       "type": "text",
       "label": "Wed Day",
       "def": "Wednesday, November 18",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_wed_time",
       "type": "text",
       "label": "Wed Time",
       "def": "7:00pm",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_wed_speakers",
       "type": "text",
       "label": "Wed Speakers",
       "def": "Scott Matthews and Preston Milan",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_music_kick",
       "type": "text",
       "label": "Music section script line",
       "def": "Come hear them sing",
-      "studioSection": "Choir and special singing"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_music_heading",
       "type": "text",
       "label": "Music Heading",
       "def": "Choir and special singing",
-      "studioSection": "Choir and special singing"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_music_copy",
       "type": "multiline",
       "label": "Music Copy",
       "def": "Choir and special singing nightly with Kathy Spurlock, Brandon Stone, Tiffani Holley, The Matthews Family, and more.",
-      "studioSection": "Choir and special singing"
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_watch_copy",
       "type": "multiline",
       "label": "Watch Copy",
       "def": "Watch live on Facebook and YouTube.",
-      "studioSection": "Service schedule"
+      "studioSection": "Services, speakers and music"
     },
     {
-      "key": "jubilee_music_family_dates",
+      "key": "jubilee_matthews_name",
       "type": "text",
-      "label": "The Matthews Family dates",
-      "def": "The Matthews Family · Monday-Wednesday, November 16-18",
-      "studioSection": "Choir and special singing"
+      "label": "Family photo name",
+      "def": "The Matthews Family",
+      "studioSection": "Services, speakers and music"
+    },
+    {
+      "key": "jubilee_matthews_dates",
+      "type": "text",
+      "label": "Family photo dates",
+      "def": "Monday-Wednesday, November 16-18",
+      "studioSection": "Services, speakers and music"
     },
     {
       "key": "jubilee_s1_kick",
@@ -931,7 +917,7 @@ window.FBT_SCHEMA.groups.push({
     {
       "key": "hero_bg_jubilee_s1",
       "type": "bg",
-      "label": "Jubilee: service schedule",
+      "label": "Jubilee: services, speakers and music",
       "def": ""
     },
     {
@@ -953,12 +939,6 @@ window.FBT_SCHEMA.groups.push({
       "def": "/assets/photos/appalachian-jubilee-music-2026.png"
     },
     {
-      "key": "photo_jubilee_worship",
-      "type": "image",
-      "label": "Jubilee: congregation worship",
-      "def": "/assets/photos/congregation-worship.jpg"
-    },
-    {
       "key": "photo_jubilee_fellowship",
       "type": "image",
       "label": "Jubilee: church fellowship",
@@ -968,12 +948,6 @@ window.FBT_SCHEMA.groups.push({
       "key": "hero_bg_jubilee_promo",
       "type": "bg",
       "label": "Home and Events: Jubilee promotion",
-      "def": ""
-    },
-    {
-      "key": "hero_bg_jubilee_music",
-      "type": "bg",
-      "label": "Jubilee: choir and special singing",
       "def": ""
     },
     {
@@ -989,6 +963,20 @@ window.FBT_SCHEMA.groups.push({
       "def": ""
     },
     {
+      "key": "photo_jubilee_matthews",
+      "type": "image",
+      "label": "Jubilee: The Matthews Family photo",
+      "def": "/assets/photos/matthews-family.jpg"
+    },
+    {
+      "key": "jubilee_hero_kick",
+      "type": "text",
+      "label": "Hero Script line",
+      "def": "Fairview Baptist Temple · Clay, West Virginia",
+      "studioSection": "Mountain hero",
+      "retired": true
+    },
+    {
       "key": "jubilee_music_featured",
       "type": "text",
       "label": "Featured family",
@@ -1002,6 +990,44 @@ window.FBT_SCHEMA.groups.push({
       "type": "text",
       "def": "Monday-Wednesday, November 16-18",
       "studioSection": "Mountain hero",
+      "retired": true
+    },
+    {
+      "key": "jubilee_intro_kick",
+      "type": "text",
+      "label": "Introduction script line",
+      "def": "November 14-18, 2026",
+      "studioSection": "Event introduction",
+      "retired": true
+    },
+    {
+      "key": "jubilee_intro_heading",
+      "type": "rich",
+      "label": "Introduction heading",
+      "def": "The Appalachian *Jubilee*",
+      "studioSection": "Event introduction",
+      "retired": true
+    },
+    {
+      "key": "jubilee_music_family_dates",
+      "type": "text",
+      "label": "The Matthews Family dates",
+      "def": "The Matthews Family · Monday-Wednesday, November 16-18",
+      "studioSection": "Services, speakers and music",
+      "retired": true
+    },
+    {
+      "key": "photo_jubilee_worship",
+      "type": "image",
+      "label": "Jubilee: congregation worship",
+      "def": "/assets/photos/congregation-worship.jpg",
+      "retired": true
+    },
+    {
+      "key": "hero_bg_jubilee_music",
+      "type": "bg",
+      "label": "Jubilee: choir and special singing",
+      "def": "",
       "retired": true
     },
     {
@@ -1044,7 +1070,6 @@ window.FBT_SCHEMA.mediaSlots = window.FBT_SCHEMA.mediaSlots.concat([
     "page": "/jubilee",
     "pageLabel": "Jubilee page",
     "textKeys": [
-      "jubilee_hero_kick",
       "jubilee_hero_heading",
       "jubilee_dates",
       "jubilee_hero_sub"
@@ -1069,8 +1094,6 @@ window.FBT_SCHEMA.mediaSlots = window.FBT_SCHEMA.mediaSlots.concat([
     "page": "/jubilee#jubilee-intro",
     "pageLabel": "Jubilee page",
     "textKeys": [
-      "jubilee_intro_kick",
-      "jubilee_intro_heading",
       "jubilee_intro_copy",
       "jubilee_host"
     ],
@@ -1081,7 +1104,7 @@ window.FBT_SCHEMA.mediaSlots = window.FBT_SCHEMA.mediaSlots.concat([
   },
   {
     "key": "hero_bg_jubilee_s1",
-    "label": "Jubilee: service schedule",
+    "label": "Jubilee: services, speakers and music",
     "page": "/jubilee#jubilee-details",
     "pageLabel": "Jubilee page",
     "textKeys": [
@@ -1102,27 +1125,20 @@ window.FBT_SCHEMA.mediaSlots = window.FBT_SCHEMA.mediaSlots.concat([
       "jubilee_wed_day",
       "jubilee_wed_time",
       "jubilee_wed_speakers",
-      "jubilee_watch_copy"
-    ],
-    "kind": "background",
-    "ratio": "hero-page",
-    "backdrop": "#FAF6ED",
-    "dark": false
-  },
-  {
-    "key": "hero_bg_jubilee_music",
-    "label": "Jubilee: choir and special singing",
-    "page": "/jubilee#jubilee-music",
-    "pageLabel": "Jubilee page",
-    "kind": "background",
-    "ratio": "hero-page",
-    "backdrop": "#FAF6ED",
-    "dark": false,
-    "textKeys": [
+      "jubilee_watch_copy",
       "jubilee_music_kick",
       "jubilee_music_heading",
       "jubilee_music_copy",
-      "jubilee_music_family_dates"
+      "jubilee_matthews_name",
+      "jubilee_matthews_dates"
+    ],
+    "kind": "background",
+    "ratio": "hero-page",
+    "backdrop": "#F2ECDD",
+    "dark": false,
+    "previewTextKeys": [
+      "jubilee_schedule_heading",
+      "jubilee_schedule_sub"
     ]
   },
   {
@@ -1177,12 +1193,18 @@ window.FBT_SCHEMA.mediaSlots = window.FBT_SCHEMA.mediaSlots.concat([
     "backdrop": "#123F3C"
   },
   {
-    "key": "photo_jubilee_worship",
-    "label": "Jubilee: congregation worship",
+    "key": "photo_jubilee_matthews",
+    "label": "Jubilee: The Matthews Family photo",
     "ratio": "landscape",
-    "page": "/jubilee",
+    "page": "/jubilee#jubilee-music",
     "kind": "photo",
-    "pageLabel": "Jubilee page"
+    "pageLabel": "Jubilee page",
+    "textKeys": [
+      "jubilee_matthews_name",
+      "jubilee_matthews_dates"
+    ],
+    "defaultFit": "contain",
+    "backdrop": "#FAF6ED"
   },
   {
     "key": "photo_jubilee_fellowship",

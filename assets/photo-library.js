@@ -1,6 +1,10 @@
 /* Original church photographs and flyers, plus the credited NPS landscape. */
 window.FBT_PHOTOS = [
   {
+    "url": "/assets/photos/matthews-family.jpg",
+    "label": "The Matthews Family (official ministry photo)"
+  },
+  {
     "url": "/assets/photos/wv-appalachian-mountains.jpg",
     "label": "West Virginia mountains: Grandview (NPS / Louise McLaughlin)"
   },

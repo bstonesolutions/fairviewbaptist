@@ -575,10 +575,13 @@
     if (!nonEmpty(raw)) return;
     var items; try { items = JSON.parse(raw); } catch (e) { return; }
     if (!Array.isArray(items) || !items.length) return;
-    if (!items.some(function (item) { return item && item.page === 'jubilee.html'; })) {
-      var eventAt = items.findIndex(function (item) { return item && item.page === 'events.html'; });
-      items.splice(eventAt >= 0 ? eventAt + 1 : items.length, 0, { page: 'jubilee.html', label: 'Appalachian Jubilee', menu: true });
-    }
+    // Jubilee is a standalone destination after The Overlook. Keep an owner's
+    // saved label and visibility, including older configurations that placed it
+    // among the Connect links.
+    var jubileeAt = items.findIndex(function (item) { return item && item.page === 'jubilee.html'; });
+    var jubileeItem = jubileeAt >= 0 ? items.splice(jubileeAt, 1)[0] : { page: 'jubilee.html', label: 'Appalachian Jubilee', menu: true };
+    var watchAt = items.findIndex(function (item) { return item && item.page === 'watch.html'; });
+    items.splice(watchAt >= 0 ? watchAt + 1 : 0, 0, jubileeItem);
     // Add newer permanent pages to older saved menu configurations without
     // forcing the owner to rebuild or resave the menu first.
     if (!items.some(function (item) { return item && item.page === 'next-steps.html'; })) {

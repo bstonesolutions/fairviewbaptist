@@ -47,10 +47,9 @@
 .jubilee-page .jubilee-hero>.bg{background:#18363B;}
 .jubilee-page .jubilee-hero>.bg:not(.cms-overlay-managed)::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,28,33,.76),rgba(9,28,33,.35) 54%,rgba(9,28,33,.05));}
 .jubilee-page .jubilee-hero>.wrap{width:100%;}
-.jubilee-page .jubilee-hero .phero-in{max-width:710px;text-align:left;margin:0;}
-.jubilee-eyebrow{font-family:'Source Sans 3',sans-serif;font-size:.85rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;display:block;color:#FFF5D4;}
-.jubilee-page .jubilee-hero h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.8rem,5.8vw,5rem);font-weight:400;line-height:1.05;letter-spacing:-.025em;text-transform:none;color:#FFF9EB;margin:32px 0 0;}
-.jubilee-page .jubilee-hero h1 em{display:block;font-family:'Mrs Saint Delafield',cursive;font-size:clamp(6.5rem,13vw,11.5rem);font-weight:400;font-style:normal;letter-spacing:-.025em;line-height:.78;color:#F4D985;margin:24px 0 30px 10px;}
+.jubilee-page .jubilee-hero .phero-in{max-width:940px;text-align:left;margin:0;}
+.jubilee-page .jubilee-hero h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3.45rem,7.8vw,7rem);font-weight:400;line-height:1.05;letter-spacing:-.025em;text-transform:none;color:#FFF9EB;margin:0;}
+.jubilee-page .jubilee-hero h1 em{display:block;font-family:'Mrs Saint Delafield',cursive;font-size:clamp(9.5rem,17.8vw,16rem);font-weight:400;font-style:normal;letter-spacing:-.025em;line-height:.78;color:#F4D985;margin:30px 0 38px 10px;}
 .jubilee-page .jubilee-hero .jubilee-hero-date{font-size:clamp(1.45rem,2.2vw,1.8rem);font-weight:600;letter-spacing:.04em;color:#FFF9EB;margin:18px 0 0;}
 .jubilee-page .jubilee-hero .jubilee-hero-copy{font-size:1.17rem;line-height:1.6;max-width:42ch;color:#F2F0E7;margin:12px 0 0;}
 .jubilee-page .jubilee-hero .acts{justify-content:flex-start;margin-top:30px;}
@@ -68,8 +67,25 @@
 .jubilee-page .jubilee-schedule thead{background:#123F3D;border-bottom:3px solid #C5A647;}
 .jubilee-page .jubilee-lodging .card{border-radius:0;border-top:3px solid #C5A647;}
 @media(max-width:900px){.jubilee-music-feature>.wrap{grid-template-columns:1fr;gap:30px;}.jubilee-music-intro{max-width:620px;}.jubilee-page .jubilee-hero{min-height:640px;padding:64px 0 80px;}.jubilee-page .jubilee-hero .phero-in{max-width:610px;}}
-@media(max-width:540px){.jubilee-page #hd .nav{height:72px;}.jubilee-page #hd .btn{font-size:.65rem;padding:11px 14px;}.jubilee-eyebrow{font-size:.65rem;letter-spacing:.13em;max-width:32ch;}.jubilee-page .jubilee-hero{min-height:630px;padding:50px 0 82px;}.jubilee-page .jubilee-hero h1{font-size:2.85rem;margin-top:28px;}.jubilee-page .jubilee-hero h1 em{font-size:7.3rem;margin:22px 0 28px;}.jubilee-page .jubilee-hero .jubilee-hero-copy{font-size:1.05rem;max-width:30ch;}.jubilee-page .jubilee-hero .acts{gap:12px;}.jubilee-page .jubilee-hero .btn{padding:14px 17px;font-size:.65rem;}.jubilee-music-feature .jubilee-flyer{max-width:100%;}}
+@media(max-width:540px){.jubilee-page #hd .nav{height:72px;}.jubilee-page #hd .btn{font-size:.65rem;padding:11px 14px;}.jubilee-page .jubilee-hero{min-height:630px;padding:50px 0 82px;}.jubilee-page .jubilee-hero h1{font-size:3.45rem;margin-top:0;}.jubilee-page .jubilee-hero h1 em{font-size:9.5rem;margin:28px 0 34px;}.jubilee-page .jubilee-hero .jubilee-hero-copy{font-size:1.05rem;max-width:30ch;}.jubilee-page .jubilee-hero .acts{gap:12px;}.jubilee-page .jubilee-hero .btn{padding:14px 17px;font-size:.65rem;}.jubilee-music-feature .jubilee-flyer{max-width:100%;}}
 
 @media(max-width:720px){.jubilee-page #hd .cta .btn{display:inline-flex;}.jubilee-page #hd:has(.mbtn.open) .cta .btn{visibility:hidden;}}
 
 .jubilee-page .jubilee-program{margin-top:0;}.jubilee-schedule-note{color:var(--mut);margin-top:14px;}.jubilee-lodging-heading{margin-top:72px;scroll-margin-top:110px;}.jubilee-plan-intro .jubilee-actions{gap:10px;}.jubilee-plan-intro .btn{font-size:.65rem;padding:14px 17px;}.jubilee-page .jubilee-music-feature h2{font-family:var(--font-display);font-weight:var(--font-display-wt);font-size:clamp(1.8rem,3.4vw,3rem);line-height:1.1;text-transform:uppercase;}.jubilee-introduction .jubilee-host{font-weight:600;color:var(--brand);}
+
+/* Lead with the invitation and complete event artwork, followed by one program. */
+.jubilee-introduction .split{grid-template-columns:.65fr 1.35fr;gap:48px;}
+.jubilee-introduction .split p{font-size:1.3rem;line-height:1.65;}
+.jubilee-introduction .split .jubilee-host{font-size:1.04rem;}
+.jubilee-introduction .jubilee-flyer{margin:0;border:0;}
+.jubilee-music-lineup{display:grid;grid-template-columns:1fr .8fr;gap:64px;align-items:center;margin-top:56px;padding-top:52px;border-top:1px solid var(--line);scroll-margin-top:110px;}
+.jubilee-music-copy h3{font-size:clamp(1.7rem,3vw,2.6rem);line-height:1.15;}
+.jubilee-music-copy p{font-size:1.15rem;line-height:1.65;color:var(--mut);margin-top:20px;max-width:46ch;}
+.jubilee-family{margin:0;}
+.jubilee-family-photo{position:relative;aspect-ratio:2457/1512;overflow:hidden;background:var(--paper);}
+.jubilee-family-photo>img{display:block;width:100%;height:100%;object-fit:cover;}
+.jubilee-family figcaption{padding-top:17px;text-align:center;}
+.jubilee-family figcaption strong{display:block;font-size:1.25rem;color:var(--jubilee-forest);}
+.jubilee-family figcaption span{display:block;margin-top:4px;color:var(--mut);}
+@media(max-width:900px){.jubilee-introduction .split{grid-template-columns:1fr;gap:28px;}.jubilee-introduction .jubilee-flyer{grid-row:1;}.jubilee-introduction .split p{font-size:1.16rem;}.jubilee-music-lineup{gap:32px;grid-template-columns:1fr 1fr;}}
+@media(max-width:640px){.jubilee-music-lineup{grid-template-columns:1fr;}.jubilee-family{max-width:460px;width:100%;margin:0 auto;}}

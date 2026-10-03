@@ -34,7 +34,7 @@
       var parts = [text('jubilee_' + day + '_day'), text('jubilee_' + day + '_time'), text('jubilee_' + day + '_speakers')].filter(Boolean);
       if (parts.length) descriptions.push(parts.join(': ') + '.');
     });
-    descriptions.push(text('jubilee_host'), text('jubilee_music_heading'), text('jubilee_music_family_dates'), text('jubilee_music_copy'));
+    descriptions.push(text('jubilee_host'), text('jubilee_music_heading'), text('jubilee_matthews_name'), text('jubilee_matthews_dates'), text('jubilee_music_copy'));
     var schema = {
       '@context': 'https://schema.org', '@type': 'Event',
       name: text('jubilee_hero_heading') || 'The Appalachian Jubilee',

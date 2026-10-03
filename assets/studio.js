@@ -3392,13 +3392,17 @@
     }
     var heading = copy.querySelector('strong');
     if (heading) {
-      heading.style.fontFamily = '"Cormorant Garamond", Georgia, serif'; heading.style.fontWeight = '500';
-      heading.style.fontSize = mediaEdit && mediaEdit.viewport === 'mobile' ? '2.35rem' : 'clamp(2.2rem,5vw,3.8rem)'; heading.style.lineHeight = '.95';
+      var phonePreview = mediaEdit && mediaEdit.viewport === 'mobile';
+      var previewWidth = copy.parentNode.getBoundingClientRect().width || (phonePreview ? 360 : 640);
+      var previewScale = previewWidth / (phonePreview ? 390 : 1280);
+      heading.style.fontFamily = '"Cormorant Garamond", Georgia, serif'; heading.style.fontWeight = '400';
+      heading.style.fontSize = (phonePreview ? 55.2 : 99.84) * previewScale + 'px'; heading.style.lineHeight = '1.05';
       heading.style.letterSpacing = '-.025em'; heading.style.textTransform = 'none';
       if (!heading.style.color) heading.style.color = '#FFF8E6';
       Array.prototype.forEach.call(heading.querySelectorAll('em'), function (accent) {
         accent.style.fontFamily = '"Mrs Saint Delafield", cursive'; accent.style.fontWeight = '400';
-        accent.style.fontSize = '1.3em'; accent.style.lineHeight = '.86'; accent.style.marginTop = '.12em';
+        accent.style.fontSize = (phonePreview ? 152 : 227.84) * previewScale + 'px'; accent.style.lineHeight = '.78';
+        accent.style.margin = (phonePreview ? 28 : 30) * previewScale + 'px 0 ' + (phonePreview ? 34 : 38) * previewScale + 'px';
         if (!accent.style.color) accent.style.color = '#F0D36F';
       });
     }
@@ -3407,6 +3411,7 @@
   }
   function stageCopyHtml(meta) {
     var fields = mediaTextFields(meta);
+    if (meta.previewTextKeys) fields = fields.filter(function (field) { return meta.previewTextKeys.indexOf(field.key) >= 0; });
     if (!fields.length) {
       return '<span class="stage-kick">Fairview Baptist Temple</span><strong>' + esc(meta.label) + '</strong>';
     }
@@ -4311,19 +4316,20 @@
   // ---------- pages and menu (nav_config in site_content, applied by content.js) ----------
   var PAGES_DEFAULT = [
     { page: 'visit.html', label: 'Plan a Visit', menu: true }, { page: 'beliefs.html', label: 'What We Believe', menu: true },
-    { page: 'watch.html', label: 'The Overlook', menu: true }, { page: 'next-steps.html', label: 'Next Steps', menu: true },
-    { page: 'events.html', label: 'Events', menu: true }, { page: 'jubilee.html', label: 'Appalachian Jubilee', menu: true },
+    { page: 'watch.html', label: 'The Overlook', menu: true }, { page: 'jubilee.html', label: 'Appalachian Jubilee', menu: true },
+    { page: 'next-steps.html', label: 'Next Steps', menu: true }, { page: 'events.html', label: 'Events', menu: true },
     { page: 'blog.html', label: 'Blog', menu: true }, { page: 'missions.html', label: 'Missions', menu: true },
     { page: 'get-involved.html', label: 'Get Involved', menu: true }, { page: 'prayer.html', label: 'Prayer', menu: true },
     { page: 'staff.html', label: 'Our Staff', menu: true }, { page: 'contact.html', label: 'Contact', menu: true },
     { page: 'give.html', label: 'Give', menu: true }
   ];
   // These sections mirror the hand-built public navigation. Pages can be
-  // reordered inside a dropdown; The Overlook and Give keep their fixed spots.
+  // reordered inside a dropdown; The Overlook, Jubilee, and Give keep their fixed spots.
   var PAGE_SECTIONS = [
     { id: 'visit', label: 'Visit menu', note: 'Service Times stays with Plan a Visit.', pages: ['visit.html', 'beliefs.html'] },
     { id: 'stream', label: 'The Overlook', note: 'Fixed main-menu link', pages: ['watch.html'], fixed: true },
-    { id: 'connect', label: 'Connect menu', note: 'Order these pages for the Connect dropdown.', pages: ['next-steps.html', 'events.html', 'jubilee.html', 'blog.html', 'missions.html', 'get-involved.html', 'prayer.html'] },
+    { id: 'jubilee', label: 'Appalachian Jubilee', note: 'Fixed main-menu link', pages: ['jubilee.html'], fixed: true },
+    { id: 'connect', label: 'Connect menu', note: 'Order these pages for the Connect dropdown.', pages: ['next-steps.html', 'events.html', 'blog.html', 'missions.html', 'get-involved.html', 'prayer.html'] },
     { id: 'about', label: 'About menu', note: 'Order these pages for the About dropdown.', pages: ['staff.html', 'contact.html'] },
     { id: 'give', label: 'Give', note: 'Fixed giving button', pages: ['give.html'], fixed: true }
   ];

@@ -37,9 +37,7 @@ header.solid{box-shadow:0 8px 30px rgba(31,50,56,.09);}
 .nav ul a::after{content:"";position:absolute;left:0;bottom:-4px;width:0;height:2px;background:var(--brand);border-radius:2px;transition:width .25s;}
 .nav ul a:hover{color:var(--tx);}.nav ul a:hover::after{width:100%;}
 .nav ul a.active{color:var(--tx);}.nav ul a.active::after{width:100%;}
-/* The Stream is the one standalone destination between grouped menus. Give it
-   a distinct "watch" treatment so it reads as intentional without competing
-   with the solid Give button. */
+/* The Overlook keeps its watch treatment beside the standalone Jubilee link. */
 .nav .cta{display:flex;align-items:center;gap:14px;}
 .nav .btn{padding:12px 24px;font-size:.74rem;white-space:nowrap;}
 .mbtn{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;width:42px;height:42px;align-items:center;justify-content:center;}
@@ -1308,3 +1306,11 @@ html.kiosk .miss-modal-photo{height:300px;}
 .btn-jubilee{flex-shrink:0;background:#F2D56D;color:#143D39;border:2px solid #F2D56D;}
 .btn-jubilee:hover{background:#FFE490;color:#143D39;border-color:#FFE490;}
 @media(max-width:760px){.jubilee-callout>.wrap{flex-direction:column;align-items:flex-start;gap:24px;}.jubilee-callout .btn{width:100%;text-align:center;}}
+
+/* Use the mobile menu before the full Jubilee label crowds the main header. */
+@media(min-width:721px) and (max-width:1080px){
+  header:not([data-event-navigation]) .nav > ul,
+  header:not([data-event-navigation]) .nav .cta > .btn{display:none;}
+  header:not([data-event-navigation]) .mbtn{display:flex;position:relative;z-index:80;width:44px;height:44px;}
+  header:not([data-event-navigation]) .mbtn.open{position:fixed;top:18px;right:24px;z-index:90;}
+}

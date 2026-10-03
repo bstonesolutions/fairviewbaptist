@@ -52,3 +52,9 @@ The dedicated Jubilee header uses an authentic panorama of Horseshoe Bend from G
 The page crops the original responsively using CSS and applies a left-side contrast overlay. The original pixels are unchanged. The photo and framing are editable in Studio; the original page look restores the landscape and its shared style. The event masthead has its own section navigation and serif/script typography. The Matthews Family appears in the music lineup. Visit planning, directions, and lodging are combined in the final section.
 
 The visible bottom-right photo credit was removed at Brandon’s request. The NPS image record confirms public-domain full granting rights; [NPS reuse guidance](https://www.nps.gov/aboutus/disclaimer.htm) says acknowledgement is appreciated. Source and photographer attribution remain recorded here.
+
+## Final navigation and lineup refinement
+
+Appalachian Jubilee is a standalone navigation item between The Overlook and Connect. Its own navigation includes Home, Schedule, Special singing, Lodging, and Plan your visit. The hero title is larger on desktop and narrow screens; the small church/location line is removed. Directly below, the invitation and main music flyer replace the repeated title/date. Music is incorporated into the speaker and service schedule section.
+
+The Matthews Family appears independently using the authentic, unchanged ministry-published group photo at `assets/photos/matthews-family.jpg` (2457 x 1512). Source: https://matthewsfamilyministries.com/ ; original: https://matthewsfamilyministries.com/wp-content/uploads/2025/03/matthews-2025.jpg . Source credit: Matthews Family Ministries. The source site states All Rights Reserved and provides no separate reuse license or photographer credit. This is a publicity photo for the invited ministry, included at Brandon’s request. The full photograph includes the additional family members outside the supplied flyer’s crop. No identity or photo alterations were made.
