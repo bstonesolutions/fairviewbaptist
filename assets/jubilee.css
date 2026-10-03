@@ -43,12 +43,12 @@
 .jubilee-page #hd .nav{height:84px;}
 .jubilee-page #hd .brand{box-shadow:none;border:0;background:none;padding-left:0;}
 .jubilee-page #hd .btn-b{background:#123F3D;color:#FFF8E6;border-radius:0;box-shadow:none;}
-.jubilee-page .jubilee-hero{min-height:670px;display:flex;align-items:center;padding:70px 0 76px;border:0;background:#18363B;}
+.jubilee-page .jubilee-hero{margin-top:0;min-height:670px;display:flex;align-items:center;padding:70px 0 76px;border:0;background:#18363B;}
 .jubilee-page .jubilee-hero>.bg{background:#18363B;}
 .jubilee-page .jubilee-hero>.bg:not(.cms-overlay-managed)::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,28,33,.76),rgba(9,28,33,.35) 54%,rgba(9,28,33,.05));}
 .jubilee-page .jubilee-hero>.wrap{width:100%;}
 .jubilee-page .jubilee-hero .phero-in{max-width:940px;text-align:left;margin:0;}
-.jubilee-page .jubilee-hero h1{font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(3.45rem,7.8vw,7rem);font-weight:400;line-height:1.05;letter-spacing:-.025em;text-transform:none;color:#FFF9EB;margin:0;}
+.jubilee-page .jubilee-hero h1{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(3.45rem,7.8vw,7rem);font-weight:400;line-height:1.05;letter-spacing:-.025em;text-transform:none;color:#FFF9EB;margin:0;}
 .jubilee-page .jubilee-hero h1 em{display:block;font-family:'Mrs Saint Delafield',cursive;font-size:clamp(9.5rem,17.8vw,16rem);font-weight:400;font-style:normal;letter-spacing:-.025em;line-height:.78;color:#F4D985;margin:30px 0 38px 10px;}
 .jubilee-page .jubilee-hero .jubilee-hero-date{font-size:clamp(1.45rem,2.2vw,1.8rem);font-weight:600;letter-spacing:.04em;color:#FFF9EB;margin:18px 0 0;}
 .jubilee-page .jubilee-hero .jubilee-hero-copy{font-size:1.17rem;line-height:1.6;max-width:42ch;color:#F2F0E7;margin:12px 0 0;}

@@ -3379,7 +3379,7 @@
     if (!document.getElementById('studio-jubilee-fonts')) {
       var font = document.createElement('link');
       font.id = 'studio-jubilee-fonts'; font.rel = 'stylesheet';
-      font.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap';
+      font.href = 'https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap';
       document.head.appendChild(font);
     }
     copy.style.textAlign = 'left'; copy.style.top = '9%'; copy.style.bottom = 'auto';
@@ -3395,7 +3395,7 @@
       var phonePreview = mediaEdit && mediaEdit.viewport === 'mobile';
       var previewWidth = copy.parentNode.getBoundingClientRect().width || (phonePreview ? 360 : 640);
       var previewScale = previewWidth / (phonePreview ? 390 : 1280);
-      heading.style.fontFamily = '"Cormorant Garamond", Georgia, serif'; heading.style.fontWeight = '400';
+      heading.style.fontFamily = '"DM Serif Display", Georgia, serif'; heading.style.fontWeight = '400';
       heading.style.fontSize = (phonePreview ? 55.2 : 99.84) * previewScale + 'px'; heading.style.lineHeight = '1.05';
       heading.style.letterSpacing = '-.025em'; heading.style.textTransform = 'none';
       if (!heading.style.color) heading.style.color = '#FFF8E6';
