@@ -9,7 +9,7 @@
    ============================================================ */
 (function () {
   var DOMAIN = 'https://fairviewbaptist.vercel.app';
-  var SHARE_IMAGE = 'https://www.fairviewbaptisttemple.com/assets/fairview-share-2026.jpg';
+  var SHARE_IMAGE = 'https://www.fairviewbaptisttemple.com/assets/fairview-share-2026-v2.jpg';
   function metaEl(kind, key) {
     var el = document.head.querySelector('meta[' + kind + '="' + key + '"]');
     if (!el) { el = document.createElement('meta'); el.setAttribute(kind, key); document.head.appendChild(el); }

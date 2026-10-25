@@ -1316,10 +1316,10 @@ html.kiosk .miss-modal-photo{height:300px;}
   header:not([data-event-navigation]) .mbtn.open{position:fixed;top:18px;right:24px;z-index:90;}
 }
 
-/* The supplied mark keeps its original pixels inside a round white plate. */
-.brand-disc{display:block;border-radius:50%;overflow:hidden;isolation:isolate;background:radial-gradient(circle at 46% 40%,#0bb9b5,#079c9e 74%,#078d90);}
+/* A document-local alpha filter keeps the supplied white mark on one teal disc. */
+.brand-disc{display:block;border-radius:50%;overflow:hidden;background:#079c9e;}
 img.brand-mark{display:block;border-radius:50%;object-fit:cover;aspect-ratio:1;box-sizing:border-box;border:0;}
-.brand-disc>img.brand-mark{filter:grayscale(1) brightness(.65) contrast(20);mix-blend-mode:screen;transform:scale(.84);}
+.brand-disc>img.brand-mark{-webkit-filter:url(#fbt-white-mark);filter:url(#fbt-white-mark);transform:scale(.84);}
 .nav .brand:has(.brand-mark){padding:2px;border-radius:50%;flex-shrink:0;}
 .nav .brand .brand-mark{height:60px;width:60px;}
 .logo-plate:has(.brand-mark){border-radius:50%;padding:3px!important;}

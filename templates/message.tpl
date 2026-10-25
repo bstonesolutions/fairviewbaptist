@@ -19,27 +19,28 @@
   <meta property="og:url" content="https://fairviewbaptist.vercel.app/message">
   <meta property="og:title" content="Message | Fairview Baptist Temple, Clay WV">
   <meta property="og:description" content="Watch a message from Fairview Baptist Temple in Clay, West Virginia.">
-  <meta property="og:image" content="https://www.fairviewbaptisttemple.com/assets/fairview-share-2026.jpg">
+  <meta property="og:image" content="https://www.fairviewbaptisttemple.com/assets/fairview-share-2026-v2.jpg">
 <meta property="og:image:height" content="630">
 <meta property="og:image:width" content="1200">
   <meta property="og:image:alt" content="Fairview Baptist Temple in Clay, West Virginia">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Message | Fairview Baptist Temple, Clay WV">
   <meta name="twitter:description" content="Watch a message from Fairview Baptist Temple in Clay, West Virginia.">
-  <meta name="twitter:image" content="https://www.fairviewbaptisttemple.com/assets/fairview-share-2026.jpg">
+  <meta name="twitter:image" content="https://www.fairviewbaptisttemple.com/assets/fairview-share-2026-v2.jpg">
 <meta name="twitter:image:alt" content="Fairview Baptist Temple in Clay, West Virginia">
   <link rel="icon" href="/assets/optimized/logo-fairview-2026-w64-fe089e11649b.png" type="image/png" sizes="64x64">
   <link rel="apple-touch-icon" href="/assets/optimized/logo-fairview-2026-w180-5851433f5cbd.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/site.css?v=15">
+  <link rel="stylesheet" href="/assets/site.css?v=16">
   <link rel="stylesheet" href="/assets/message.css?v=3">
   <script src="/assets/analytics.js"></script>
 <link rel="stylesheet" href="/assets/page-editor.css?v=3">
 <link rel="stylesheet" href="/assets/inline-page-editor.css?v=1">
 </head>
 <body>
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden;pointer-events:none"><defs><filter id="fbt-white-mark" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 2 0 0 1 -2"/></filter></defs></svg>
 <a class="message-skip" href="#message-content">Skip to message</a>
 <header id="hd"><div class="wrap"><nav class="nav">
   <a href="/" class="brand" aria-label="Fairview Baptist Temple, home"><span class="brand-disc"><img class="brand-mark logo" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="Fairview Baptist Temple, Clay, West Virginia" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></span><span class="brand-disc"><img class="brand-mark mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="Fairview Baptist Temple" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></span></a>

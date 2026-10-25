@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const DOMAIN = 'https://fairviewbaptist.vercel.app';
-const SHARE_IMAGE = 'https://www.fairviewbaptisttemple.com/assets/fairview-share-2026.jpg';
+const SHARE_IMAGE = 'https://www.fairviewbaptisttemple.com/assets/fairview-share-2026-v2.jpg';
 const SHARE_ALT = 'Fairview Baptist Temple in Clay, West Virginia';
 // Set during CMS-SETUP: the Fairview Baptist Temple Supabase project URL and
 // anon key (see CMS-SETUP.md). Until then this page serves its template shell.
