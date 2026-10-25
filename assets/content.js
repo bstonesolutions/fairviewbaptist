@@ -386,8 +386,8 @@
       var person = {
         '@type': 'Person',
         name: name,
-        worksFor: { '@id': 'https://fairviewbaptist.vercel.app/#church' },
-        url: 'https://fairviewbaptist.vercel.app/staff'
+        worksFor: { '@id': 'https://www.fairviewbaptisttemple.com/#church' },
+        url: 'https://www.fairviewbaptisttemple.com/staff'
       };
       // "Staff" is a generic placeholder, not a real job title. Keep the
       // person discoverable without publishing that value as search metadata.

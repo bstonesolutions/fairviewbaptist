@@ -69,7 +69,7 @@
 @media(max-width:900px){.jubilee-music-feature>.wrap{grid-template-columns:1fr;gap:30px;}.jubilee-music-intro{max-width:620px;}.jubilee-page .jubilee-hero{min-height:640px;padding:64px 0 80px;}.jubilee-page .jubilee-hero .phero-in{max-width:610px;}}
 @media(max-width:540px){.jubilee-page #hd .nav{height:72px;}.jubilee-page #hd .btn{font-size:.65rem;padding:11px 14px;}.jubilee-page .jubilee-hero{min-height:630px;padding:50px 0 82px;}.jubilee-page .jubilee-hero h1{font-size:3.45rem;margin-top:0;}.jubilee-page .jubilee-hero h1 em{font-size:9.5rem;margin:28px 0 34px;}.jubilee-page .jubilee-hero .jubilee-hero-copy{font-size:1.05rem;max-width:30ch;}.jubilee-page .jubilee-hero .acts{gap:12px;}.jubilee-page .jubilee-hero .btn{padding:14px 17px;font-size:.65rem;}.jubilee-music-feature .jubilee-flyer{max-width:100%;}}
 
-@media(max-width:720px){.jubilee-page #hd .cta .btn{display:inline-flex;}.jubilee-page #hd:has(.mbtn.open) .cta .btn{visibility:hidden;}}
+@media(max-width:720px){.jubilee-page #hd .nav{height:80px;}.jubilee-page #hd .cta .btn{display:inline-flex;}.jubilee-page #hd:has(.mbtn.open) .cta .btn{visibility:hidden;}}
 
 .jubilee-page .jubilee-program{margin-top:0;}.jubilee-schedule-note{color:var(--mut);margin-top:14px;}.jubilee-lodging-heading{margin-top:72px;scroll-margin-top:110px;}.jubilee-plan-intro .jubilee-actions{gap:10px;}.jubilee-plan-intro .btn{font-size:.65rem;padding:14px 17px;}.jubilee-page .jubilee-music-feature h2{font-family:var(--font-display);font-weight:var(--font-display-wt);font-size:clamp(1.8rem,3.4vw,3rem);line-height:1.1;text-transform:uppercase;}.jubilee-introduction .jubilee-host{font-weight:600;color:var(--brand);}
 

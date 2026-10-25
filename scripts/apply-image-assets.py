@@ -38,10 +38,10 @@ for path in list(ROOT.glob('*.html'))+list((ROOT/'templates').glob('*.tpl')):
         if '/assets/image-assets.js' not in html:
             anchor = '<script src="assets/media-styles.js?v=1"></script>'
             if anchor not in html: anchor='<script src="/assets/page-catalog.js?v=1"></script>'
-            html=html.replace(anchor, '<script src="/assets/image-assets.js?v=1"></script>\n<script src="/assets/image-loader.js?v=1"></script>\n'+anchor)
+            html=html.replace(anchor, '<script src="/assets/image-assets.js?v=1"></script>\n<script src="/assets/image-loader.js?v=2"></script>\n'+anchor)
     if path.name=='studio.html' and '/assets/image-upload.js' not in html:
         html=html.replace('<script src="/assets/studio-page-editor.js?v=1"></script>','<script src="/assets/image-upload.js?v=1"></script>\n<script src="/assets/studio-page-editor.js?v=1"></script>')
     html=html.replace('content.js?v=14','content.js?v=15').replace('studio.js?v=39','studio.js?v=40').replace('site.css?v=10','site.css?v=11')
     path.write_text(html)
 for name in ['api/_giving-receipt.js','api/donor-portal.js']:
-    p=ROOT/name;p.write_text(p.read_text().replace('https://fairviewbaptist.vercel.app/assets/logo-fairview-2026.png','https://fairviewbaptist.vercel.app'+logo['appleTouchIcon']))
+    p=ROOT/name;p.write_text(p.read_text().replace('https://www.fairviewbaptisttemple.com/assets/logo-fairview-2026.png','https://www.fairviewbaptisttemple.com'+logo['appleTouchIcon']))

@@ -6322,7 +6322,7 @@ window.FBT_PAGE_CATALOG = {
               "key": "privacy_section_2_text_2",
               "label": "Text: Fairview Baptist Temple respects the trust you place in us. This polic",
               "type": "text",
-              "def": "Fairview Baptist Temple respects the trust you place in us. This policy explains how we collect, use, share, and protect information through fairviewbaptist.vercel.app."
+              "def": "Fairview Baptist Temple respects the trust you place in us. This policy explains how we collect, use, share, and protect information through www.fairviewbaptisttemple.com."
             },
             {
               "key": "privacy_section_2_text_3",

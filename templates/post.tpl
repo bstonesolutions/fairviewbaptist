@@ -22,11 +22,11 @@
 <meta name="twitter:description" content="A post from Notes from Fairview, the blog of Fairview Baptist Temple in Clay, West Virginia.">
 <meta name="twitter:image" content="https://www.fairviewbaptisttemple.com/assets/fairview-share-2026-v2.jpg">
 <meta name="twitter:image:alt" content="Fairview Baptist Temple in Clay, West Virginia">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["Church","ReligiousOrganization"],"@id":"https://fairviewbaptist.vercel.app/#church","name":"Fairview Baptist Temple","alternateName":["Fairview Baptist Temple of Clay, WV"],"description":"An independent Baptist church in Clay, West Virginia. Fairview Baptist Temple gathers for Sunday School at 10:00am, morning worship at 11:00am, evening service at 6:00pm, and Wednesday prayer meeting and Bible study at 7:00pm. Come as you are.","url":"https://fairviewbaptist.vercel.app/","logo":"https://fairviewbaptist.vercel.app/assets/logo-fairview-2026.png","image":"https://fairviewbaptist.vercel.app/assets/logo-fairview-2026.png","telephone":"+1-304-587-4709","isAccessibleForFree":true,"address":{"@type":"PostalAddress","streetAddress":"2294 Main Street","addressLocality":"Clay","addressRegion":"WV","postalCode":"25043","addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":38.4611,"longitude":-81.0869},"hasMap":"https://www.google.com/maps/search/?api=1&query=2294+Main+Street%2C+Clay%2C+WV+25043","areaServed":["Clay, WV","Maysel, WV","Lizemores, WV","Bickmore, WV","Indore, WV","Procious, WV","Bomont, WV","Wallback, WV","Big Otter, WV","Ivydale, WV","Duck, WV","Clendenin, WV","Clay County, WV"],"knowsLanguage":"en-US","sameAs":["https://www.facebook.com/FairviewBaptistTemple","https://www.instagram.com/fairviewbaptisttemple","https://www.youtube.com/@FairviewBaptistTemple"],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"10:00","closes":"13:00","name":"Sunday School 10:00am & Worship 11:00am"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"18:00","closes":"19:30","name":"Sunday evening service"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Wednesday","opens":"19:00","closes":"20:30","name":"Wednesday prayer meeting & Bible study"}]},{"@type":"WebSite","@id":"https://fairviewbaptist.vercel.app/#website","url":"https://fairviewbaptist.vercel.app/","name":"Fairview Baptist Temple","inLanguage":"en-US","publisher":{"@id":"https://fairviewbaptist.vercel.app/#church"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":["Church","ReligiousOrganization"],"@id":"https://www.fairviewbaptisttemple.com/#church","name":"Fairview Baptist Temple","alternateName":["Fairview Baptist Temple of Clay, WV"],"description":"An independent Baptist church in Clay, West Virginia. Fairview Baptist Temple gathers for Sunday School at 10:00am, morning worship at 11:00am, evening service at 6:00pm, and Wednesday prayer meeting and Bible study at 7:00pm. Come as you are.","url":"https://www.fairviewbaptisttemple.com/","logo":"https://www.fairviewbaptisttemple.com/assets/logo-fairview-2026.png","image":"https://www.fairviewbaptisttemple.com/assets/logo-fairview-2026.png","telephone":"+1-304-587-4709","isAccessibleForFree":true,"address":{"@type":"PostalAddress","streetAddress":"2294 Main Street","addressLocality":"Clay","addressRegion":"WV","postalCode":"25043","addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":38.4611,"longitude":-81.0869},"hasMap":"https://www.google.com/maps/search/?api=1&query=2294+Main+Street%2C+Clay%2C+WV+25043","areaServed":["Clay, WV","Maysel, WV","Lizemores, WV","Bickmore, WV","Indore, WV","Procious, WV","Bomont, WV","Wallback, WV","Big Otter, WV","Ivydale, WV","Duck, WV","Clendenin, WV","Clay County, WV"],"knowsLanguage":"en-US","sameAs":["https://www.facebook.com/FairviewBaptistTemple","https://www.instagram.com/fairviewbaptisttemple","https://www.youtube.com/@FairviewBaptistTemple"],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"10:00","closes":"13:00","name":"Sunday School 10:00am & Worship 11:00am"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"18:00","closes":"19:30","name":"Sunday evening service"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Wednesday","opens":"19:00","closes":"20:30","name":"Wednesday prayer meeting & Bible study"}]},{"@type":"WebSite","@id":"https://www.fairviewbaptisttemple.com/#website","url":"https://www.fairviewbaptisttemple.com/","name":"Fairview Baptist Temple","inLanguage":"en-US","publisher":{"@id":"https://www.fairviewbaptisttemple.com/#church"}}]}</script>
 <link rel="icon" href="/assets/optimized/logo-fairview-2026-w64-fe089e11649b.png" type="image/png" sizes="64x64">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=17">
+<link rel="stylesheet" href="assets/site.css?v=18">
 <script src="assets/analytics.js"></script>
 <link rel="stylesheet" href="/assets/page-editor.css?v=3">
 <link rel="stylesheet" href="/assets/inline-page-editor.css?v=1">
@@ -80,15 +80,15 @@
 <script src="assets/config.js"></script>
 <script src="/assets/map-settings.js?v=1"></script>
 <script src="/assets/image-assets.js?v=1"></script>
-<script src="/assets/image-loader.js?v=1"></script>
-<script src="/assets/page-catalog.js?v=1"></script>
+<script src="/assets/image-loader.js?v=2"></script>
+<script src="/assets/page-catalog.js?v=2"></script>
 <script src="/assets/page-editor.js?v=1"></script>
 <script src="/assets/inline-page-editor.js?v=1"></script>
-<script src="assets/content.js?v=17"></script>
+<script src="assets/content.js?v=18"></script>
 <script src="assets/posts.js"></script>
 <script src="assets/fbt.feeds.js"></script>
 <script src="assets/videos.js?v=3"></script>
-<script src="assets/seo-item.js?v=2"></script>
+<script src="assets/seo-item.js?v=3"></script>
 <script src="assets/blog.js?v=2"></script>
 <script src="assets/site.js"></script>
 </body></html>

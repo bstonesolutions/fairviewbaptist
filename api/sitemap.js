@@ -3,7 +3,7 @@
    returns the static pages and the bundled YouTube catalog. */
 const CATALOG = require('../assets/catalog.json');
 const { isMessageVideo } = require('./_message-classification');
-const DOMAIN = 'https://fairviewbaptist.vercel.app';
+const DOMAIN = 'https://www.fairviewbaptisttemple.com';
 // Set during CMS-SETUP: the Fairview Baptist Temple Supabase project URL and
 // anon key (see CMS-SETUP.md). Until then only the static pages are listed.
 const SUPABASE_URL = 'https://qlbylvhmkbopszmzmipm.supabase.co';

@@ -7,7 +7,7 @@
   'use strict';
   function find(value, manifest, origin) {
     manifest = manifest || (root && root.FBT_IMAGE_ASSETS) || {};
-    origin = origin || (root && root.location.origin) || 'https://fairviewbaptist.vercel.app';
+    origin = origin || (root && root.location.origin) || 'https://www.fairviewbaptisttemple.com';
     var path;
     try { var url = new URL(String(value || ''), origin); if (url.origin !== origin) return null; path = url.pathname; } catch (e) { return null; }
     if (Object.prototype.hasOwnProperty.call(manifest, path)) return { original: path, asset: manifest[path] };

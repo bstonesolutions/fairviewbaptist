@@ -819,24 +819,21 @@ html.kiosk .miss-modal-photo{height:300px;}
 /* Mobile-only Give pill, injected into the header by site.js (top-right). */
 .mgive{display:none;}
 
-/* Mobile header + hero polish: a compact, transparent header that blends into
-   the hero gradient (solid navy once scrolled), a Give button top-right, and
-   the hero content pulled up to the top instead of floating mid-screen. */
+/* Keep the mobile logo inside the header. Only the home photo extends behind
+   it; page heroes stay in document flow so their titles clear the navigation. */
 @media(max-width:720px){
-  .nav{height:64px;}
+  .nav{height:80px;}
   header{background:transparent;border-bottom:none;}
   header.solid{background:var(--paper);border-bottom:1px solid var(--line);}
 
-  /* Pull the top hero up behind the now-transparent header so the gradient
-     shows through, then start content just below the header (no big top gap). */
-  .hero,.phero{margin-top:-64px;}
+  .hero{margin-top:-80px;}
+  .phero{margin-top:0;}
   /* Bottom padding reserves room for the absolutely-positioned service-times
      bar (.ticker, ~50px) so it never overlaps the CTA buttons. */
-  .hero{align-items:flex-start;padding:84px 0 44px;}
+  .hero{align-items:flex-start;padding:104px 0 44px;}
   .hero h1{margin:14px 0;}
   .hero .sub{margin-bottom:26px;}
   .hero .acts{gap:12px;}
-  .phero{padding-top:92px;}
 
   .mgive{
     display:inline-flex;align-items:center;justify-content:center;
@@ -1322,7 +1319,6 @@ img.brand-mark{display:block;border-radius:50%;object-fit:cover;aspect-ratio:1;b
 .brand-disc>img.brand-mark{-webkit-filter:url(#fbt-white-mark);filter:url(#fbt-white-mark);transform:scale(.84);}
 .nav .brand:has(.brand-mark){padding:2px;border-radius:50%;flex-shrink:0;}
 .nav .brand .brand-mark{height:60px;width:60px;}
-@media(max-width:720px){.nav .brand:has(.brand-mark){position:relative;top:8px;}}
 .logo-plate:has(.brand-mark){border-radius:50%;padding:3px!important;}
 .logo-plate img.brand-mark{width:68px!important;height:68px!important;}
 .ftr .fmark{background:#fff;border-radius:50%;padding:3px;box-shadow:0 6px 16px rgba(31,50,56,.1);}

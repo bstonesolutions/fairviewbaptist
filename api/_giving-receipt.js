@@ -15,7 +15,7 @@ async function sendGivingReceipt(o) {
     const row = function (label, value) { return '<tr><td style="padding:8px 0;color:#5D6759;font-size:14px;">' + label + '</td><td style="padding:8px 0;text-align:right;color:#14424A;font-weight:600;font-size:14px;">' + esc(value) + '</td></tr>'; };
     const html =
       '<div style="max-width:520px;margin:0 auto;font-family:\'Source Sans 3\',Arial,Helvetica,sans-serif;color:#1F3238;">' +
-        '<div style="text-align:center;padding:8px 0 20px;"><img src="https://fairviewbaptist.vercel.app/assets/optimized/logo-fairview-2026-w180-5851433f5cbd.png" alt="Fairview Baptist Temple" style="height:60px;width:60px;border:6px solid #fff;border-radius:50%;"></div>' +
+        '<div style="text-align:center;padding:8px 0 20px;"><img src="https://www.fairviewbaptisttemple.com/assets/optimized/logo-fairview-2026-w180-5851433f5cbd.png" alt="Fairview Baptist Temple" style="height:60px;width:60px;border:6px solid #fff;border-radius:50%;"></div>' +
         '<div style="background:#FAF6ED;border:1px solid #E4DCC9;border-radius:14px;padding:28px 26px;">' +
           '<h1 style="margin:0 0 6px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:20px;color:#14424A;">Thank you for your gift</h1>' +
           '<p style="margin:0 0 18px;color:#4C5B4F;font-size:15px;line-height:1.5;">' + hi + ' we received your gift to Fairview Baptist Temple. Your generosity helps carry the gospel here in Clay, West Virginia and around the world. Please keep this email as your receipt.</p>' +

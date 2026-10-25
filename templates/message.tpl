@@ -7,7 +7,7 @@
   <title>Message | Fairview Baptist Temple, Clay WV</title>
   <meta name="description" content="Watch a message from Fairview Baptist Temple in Clay, West Virginia.">
   <meta name="robots" content="noindex, follow, max-image-preview:large">
-  <link rel="canonical" href="https://fairviewbaptist.vercel.app/message">
+  <link rel="canonical" href="https://www.fairviewbaptisttemple.com/message">
   <meta name="theme-color" content="#14424A">
   <meta name="geo.region" content="US-WV">
   <meta name="geo.placename" content="Clay, West Virginia">
@@ -16,7 +16,7 @@
   <meta property="og:type" content="video.other">
   <meta property="og:site_name" content="Fairview Baptist Temple">
   <meta property="og:locale" content="en_US">
-  <meta property="og:url" content="https://fairviewbaptist.vercel.app/message">
+  <meta property="og:url" content="https://www.fairviewbaptisttemple.com/message">
   <meta property="og:title" content="Message | Fairview Baptist Temple, Clay WV">
   <meta property="og:description" content="Watch a message from Fairview Baptist Temple in Clay, West Virginia.">
   <meta property="og:image" content="https://www.fairviewbaptisttemple.com/assets/fairview-share-2026-v2.jpg">
@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/site.css?v=17">
+  <link rel="stylesheet" href="/assets/site.css?v=18">
   <link rel="stylesheet" href="/assets/message.css?v=3">
   <script src="/assets/analytics.js"></script>
 <link rel="stylesheet" href="/assets/page-editor.css?v=3">
@@ -178,16 +178,16 @@
 <script src="/assets/config.js"></script>
 <script src="/assets/map-settings.js?v=1"></script>
 <script src="/assets/image-assets.js?v=1"></script>
-<script src="/assets/image-loader.js?v=1"></script>
-<script src="/assets/page-catalog.js?v=1"></script>
+<script src="/assets/image-loader.js?v=2"></script>
+<script src="/assets/page-catalog.js?v=2"></script>
 <script src="/assets/page-editor.js?v=1"></script>
 <script src="/assets/inline-page-editor.js?v=1"></script>
-<script src="/assets/content.js?v=17"></script>
+<script src="/assets/content.js?v=18"></script>
 <script src="/assets/fbt.feeds.js"></script>
 <script src="/assets/sermon-tags.js"></script>
 <script src="/assets/videos.js?v=3"></script>
-<script src="/assets/seo-item.js?v=2"></script>
-<script src="/assets/message.js?v=4"></script>
+<script src="/assets/seo-item.js?v=3"></script>
+<script src="/assets/message.js?v=5"></script>
 <script src="/assets/site.js"></script>
 </body>
 </html>
