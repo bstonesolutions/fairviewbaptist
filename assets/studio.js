@@ -3329,6 +3329,15 @@
     if (image) return 'image';
     return 'background';
   }
+  function mediaRenderIdentity(meta, source, draft) {
+    var images = meta.builtIn === 'staff-collage' && !mediaImage(meta, draft)
+      ? ['pastor_photo', 'staff4_photo', 'staff1_photo', 'staff2_photo'].map(function (key) {
+        return mediaImage(mediaByKey(key), draft);
+      }) : [];
+    return JSON.stringify([meta.key, source, mediaImage(meta, draft), mediaVideo(meta, draft),
+      meta.builtIn || '', images,
+      meta.key === 'hero_bg_welcome_home' ? mediaSettingValue('welcome_photo_layout', 'panel') : '']);
+  }
   function mediaRender(host, meta, style, viewport, editorMode, originalPreview) {
     if (!host || !meta || !mediaStyleApi) return;
     style = mediaStyleApi.normalize(style, meta.kind);
@@ -3336,6 +3345,7 @@
     var source = mediaActiveSource(meta, style, editorMode);
     host.innerHTML = '';
     host.setAttribute('data-media-source', source);
+    host.setAttribute('data-media-identity', mediaRenderIdentity(meta, source, editorMode));
     host.style.background = mediaBackdrop(style, meta);
     // The welcome card's photo lives in a panel (or nowhere) unless the owner
     // chose the background placement; preview whatever the live page will do.
@@ -3780,7 +3790,9 @@
     var stage = $('media-stage');
     var style = mediaStyleApi.normalize(mediaEdit.style, mediaEdit.meta.kind);
     var source = mediaActiveSource(mediaEdit.meta, style, true);
-    if (stage.getAttribute('data-media-source') !== source) {
+    // Reuse the current image for framing sliders, but never reuse another
+    // slot's image (or an older URL in the same slot) just because both are images.
+    if (stage.getAttribute('data-media-identity') !== mediaRenderIdentity(mediaEdit.meta, source, true)) {
       mediaRender(stage, mediaEdit.meta, style, mediaEdit.viewport, true);
       return;
     }
@@ -3959,7 +3971,7 @@
     }
     buildMediaTextFields(meta);
     buildMediaMatch(meta);
-    syncMediaEditor(false);
+    syncMediaEditor();
     var editorBody = $('media-editor').querySelector('.media-editor-body');
     if (editorBody) editorBody.scrollTop = 0;
     window.setTimeout(function () { $('media-editor-close').focus(); }, 20);
