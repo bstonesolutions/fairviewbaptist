@@ -9,6 +9,7 @@
    ============================================================ */
 (function () {
   var DOMAIN = 'https://fairviewbaptist.vercel.app';
+  var SHARE_IMAGE = 'https://www.fairviewbaptisttemple.com/assets/fairview-share-2026.jpg';
   function metaEl(kind, key) {
     var el = document.head.querySelector('meta[' + kind + '="' + key + '"]');
     if (!el) { el = document.createElement('meta'); el.setAttribute(kind, key); document.head.appendChild(el); }
@@ -22,6 +23,7 @@
   }
   window.FBTSeo = {
     DOMAIN: DOMAIN,
+    SHARE_IMAGE: SHARE_IMAGE,
     // o: { title, description, image, url, type, jsonld }
     setItem: function (o) {
       try {
@@ -35,7 +37,13 @@
         setM('property', 'og:description', o.description);
         setM('name', 'twitter:title', o.title);
         setM('name', 'twitter:description', o.description);
-        if (o.image) { setM('property', 'og:image', o.image); setM('name', 'twitter:image', o.image); }
+        if (o.image) {
+          setM('property', 'og:image', o.image); setM('name', 'twitter:image', o.image);
+          var imageAlt = o.image === SHARE_IMAGE ? 'Fairview Baptist Temple in Clay, West Virginia' : o.title;
+          setM('property', 'og:image:alt', imageAlt); setM('name', 'twitter:image:alt', imageAlt);
+          document.head.querySelectorAll('meta[property="og:image:width"],meta[property="og:image:height"]').forEach(function (old) { old.remove(); });
+          if (o.image === SHARE_IMAGE) { setM('property', 'og:image:width', '1200'); setM('property', 'og:image:height', '630'); }
+        }
         if (o.jsonld) {
           document.head.querySelectorAll('script[data-seo-item],script[data-server-item]').forEach(function (old) { old.remove(); });
           var s = document.createElement('script');

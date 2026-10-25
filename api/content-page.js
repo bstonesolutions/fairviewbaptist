@@ -5,6 +5,8 @@ const fs = require('fs');
 const path = require('path');
 
 const DOMAIN = 'https://fairviewbaptist.vercel.app';
+const SHARE_IMAGE = 'https://www.fairviewbaptisttemple.com/assets/fairview-share-2026.jpg';
+const SHARE_ALT = 'Fairview Baptist Temple in Clay, West Virginia';
 // Set during CMS-SETUP: the Fairview Baptist Temple Supabase project URL and
 // anon key (see CMS-SETUP.md). Until then this page serves its template shell.
 const SUPABASE_URL = 'https://qlbylvhmkbopszmzmipm.supabase.co';
@@ -63,6 +65,10 @@ function applyHead(html, item) {
   html = replaceMeta(html, 'pog:description', item.description);
   html = replaceMeta(html, 'pog:image', item.image);
   html = replaceMeta(html, 'pog:image:alt', item.imageAlt);
+  if (item.image === SHARE_IMAGE) {
+    html = replaceMeta(html, 'pog:image:width', '1200');
+    html = replaceMeta(html, 'pog:image:height', '630');
+  }
   html = replaceMeta(html, 'ntwitter:title', item.title);
   html = replaceMeta(html, 'ntwitter:description', item.description);
   html = replaceMeta(html, 'ntwitter:image', item.image);
@@ -119,7 +125,7 @@ function postPage(html, row) {
   const url = DOMAIN + '/post?slug=' + encodeURIComponent(row.slug);
   const title = row.title + ' | Fairview Baptist Temple, Clay WV';
   const desc = description(row.excerpt || row.body, row.title + ' from Fairview Baptist Temple in Clay, West Virginia.');
-  const image = absoluteUrl(row.cover, DOMAIN + '/assets/og-image.jpg');
+  const image = absoluteUrl(row.cover, SHARE_IMAGE);
   const published = row.date || row.updated_at;
   const schema = {
     '@context': 'https://schema.org', '@graph': [
@@ -143,7 +149,7 @@ function postPage(html, row) {
       }
     ]
   };
-  html = applyHead(html, { title: title, description: desc, image: image, imageAlt: row.title, url: url, ogType: 'article', schema: schema });
+  html = applyHead(html, { title: title, description: desc, image: image, imageAlt: image === SHARE_IMAGE ? SHARE_ALT : row.title, url: url, ogType: 'article', schema: schema });
   const tags = Array.isArray(row.tags) ? row.tags : [];
   html = html.replace('<span class="post-tag" data-post-tag></span>', '<span class="post-tag" data-post-tag>' + esc(tags[0] || '') + '</span>');
   html = html.replace('<h1 data-post-title>&nbsp;</h1>', '<h1 data-post-title>' + esc(row.title) + '</h1>');
@@ -155,7 +161,7 @@ function eventPage(html, row) {
   const url = DOMAIN + '/event?e=' + encodeURIComponent(row.slug);
   const title = row.title + ' | Fairview Baptist Temple, Clay WV';
   const desc = description(row.summary || row.body, 'Join us for ' + row.title + ' at Fairview Baptist Temple in Clay, West Virginia.');
-  const image = absoluteUrl(row.cover || row.hero, DOMAIN + '/assets/og-image.jpg');
+  const image = absoluteUrl(row.cover || row.hero, SHARE_IMAGE);
   const placeName = row.location || 'Fairview Baptist Temple';
   const schema = {
     '@context': 'https://schema.org', '@graph': [
@@ -177,7 +183,7 @@ function eventPage(html, row) {
       }
     ]
   };
-  html = applyHead(html, { title: title, description: desc, image: image, imageAlt: row.title, url: url, ogType: 'website', schema: schema });
+  html = applyHead(html, { title: title, description: desc, image: image, imageAlt: image === SHARE_IMAGE ? SHARE_ALT : row.title, url: url, ogType: 'website', schema: schema });
   html = html.replace('<span class="post-tag" data-event-cat></span>', '<span class="post-tag" data-event-cat>' + esc(row.category || '') + '</span>');
   html = html.replace('<h1 data-event-title>&nbsp;</h1>', '<h1 data-event-title>' + esc(row.title) + '</h1>');
   html = html.replace('<div class="ev-when-hero" data-event-when></div>', '<div class="ev-when-hero" data-event-when>' + esc(row.recurring || fmtEventDate(row.start_at)) + '</div>');

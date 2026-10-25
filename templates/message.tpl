@@ -19,12 +19,15 @@
   <meta property="og:url" content="https://fairviewbaptist.vercel.app/message">
   <meta property="og:title" content="Message | Fairview Baptist Temple, Clay WV">
   <meta property="og:description" content="Watch a message from Fairview Baptist Temple in Clay, West Virginia.">
-  <meta property="og:image" content="https://fairviewbaptist.vercel.app/assets/logo-fairview-2026.png">
-  <meta property="og:image:alt" content="Fairview Baptist Temple, Clay, West Virginia">
+  <meta property="og:image" content="https://www.fairviewbaptisttemple.com/assets/fairview-share-2026.jpg">
+<meta property="og:image:height" content="630">
+<meta property="og:image:width" content="1200">
+  <meta property="og:image:alt" content="Fairview Baptist Temple in Clay, West Virginia">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Message | Fairview Baptist Temple, Clay WV">
   <meta name="twitter:description" content="Watch a message from Fairview Baptist Temple in Clay, West Virginia.">
-  <meta name="twitter:image" content="https://fairviewbaptist.vercel.app/assets/logo-fairview-2026.png">
+  <meta name="twitter:image" content="https://www.fairviewbaptisttemple.com/assets/fairview-share-2026.jpg">
+<meta name="twitter:image:alt" content="Fairview Baptist Temple in Clay, West Virginia">
   <link rel="icon" href="/assets/optimized/logo-fairview-2026-w64-fe089e11649b.png" type="image/png" sizes="64x64">
   <link rel="apple-touch-icon" href="/assets/optimized/logo-fairview-2026-w180-5851433f5cbd.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -182,7 +185,7 @@
 <script src="/assets/fbt.feeds.js"></script>
 <script src="/assets/sermon-tags.js"></script>
 <script src="/assets/videos.js?v=3"></script>
-<script src="/assets/seo-item.js"></script>
+<script src="/assets/seo-item.js?v=2"></script>
 <script src="/assets/message.js?v=4"></script>
 <script src="/assets/site.js"></script>
 </body>

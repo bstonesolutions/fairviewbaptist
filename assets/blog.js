@@ -50,7 +50,7 @@
     document.title = post.title + ' | Fairview Baptist Temple';
     if (window.FBTSeo) {
       var pUrl = window.FBTSeo.DOMAIN + '/post?slug=' + encodeURIComponent(post.slug || '');
-      var pImg = (post.cover && /^https?:/.test(post.cover)) ? post.cover : (window.FBTSeo.DOMAIN + '/assets/og-image.jpg');
+      var pImg = (post.cover && /^https?:/.test(post.cover)) ? post.cover : window.FBTSeo.SHARE_IMAGE;
       var pDesc = post.excerpt || (post.title + ', from Fairview Baptist Temple in Clay, WV.');
       var pLd = {
         '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.title,

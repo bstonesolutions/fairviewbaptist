@@ -92,6 +92,8 @@ function replaceMeta(html, kind, key, value) {
 }
 function applyHead(html, item) {
   html = html.replace(/<title>[\s\S]*?<\/title>/i, '<title>' + esc(item.pageTitle) + '</title>');
+  // A message uses its own YouTube thumbnail, whose dimensions can vary.
+  html = html.replace(/<meta\s+property="og:image:(?:width|height)"[^>]*>\s*/gi, '');
   html = replaceMeta(html, 'name', 'description', item.description);
   html = replaceMeta(html, 'name', 'robots', 'index, follow, max-image-preview:large');
   html = replaceMeta(html, 'property', 'og:url', item.url);
@@ -102,6 +104,7 @@ function applyHead(html, item) {
   html = replaceMeta(html, 'name', 'twitter:title', item.pageTitle);
   html = replaceMeta(html, 'name', 'twitter:description', item.description);
   html = replaceMeta(html, 'name', 'twitter:image', item.image);
+  html = replaceMeta(html, 'name', 'twitter:image:alt', item.title);
   html = html.replace(/<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i, '<link rel="canonical" href="' + esc(item.url) + '">');
   const schema = {
     '@context': 'https://schema.org',
