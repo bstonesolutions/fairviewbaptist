@@ -611,6 +611,7 @@ html.kiosk .miss-modal-photo{height:300px;}
 
 /* events hub */
 .nav ul{gap:17px;}
+@media(min-width:1200px){.nav>ul{gap:36px;}}
 .ev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:28px;}
 .ev-card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:transform .3s,box-shadow .3s,border-color .3s;}
 .ev-card:hover{transform:translateY(-4px);box-shadow:0 20px 44px rgba(31,50,56,.1);border-color:rgba(15,102,99,.4);}
