@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/site.css?v=18">
+  <link rel="stylesheet" href="/assets/site.css?v=19">
   <link rel="stylesheet" href="/assets/message.css?v=3">
   <script src="/assets/analytics.js"></script>
 <link rel="stylesheet" href="/assets/page-editor.css?v=3">
@@ -185,7 +185,7 @@
 <script src="/assets/content.js?v=18"></script>
 <script src="/assets/fbt.feeds.js"></script>
 <script src="/assets/sermon-tags.js"></script>
-<script src="/assets/videos.js?v=3"></script>
+<script src="/assets/videos.js?v=5"></script>
 <script src="/assets/seo-item.js?v=3"></script>
 <script src="/assets/message.js?v=5"></script>
 <script src="/assets/site.js"></script>

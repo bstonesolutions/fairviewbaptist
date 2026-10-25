@@ -13,7 +13,7 @@
 .jubilee-actions{display:flex;flex-wrap:wrap;gap:14px;}
 .jubilee-section.has-cms-photo .split p,.jubilee-section.has-cms-photo .shead p,.jubilee-section.has-cms-photo .jubilee-lodging-note{color:var(--dmut);}
 .jubilee-section.has-cms-photo .split .jubilee-details{color:var(--navy);}
-.jubilee-section.has-cms-photo .split .btn-o{color:var(--dtx);border-color:var(--dtx);}
+.jubilee-section.has-cms-photo .split .btn-o{background:transparent;color:var(--dtx);border-color:var(--dtx);}
 .jubilee-section.has-cms-photo .jubilee-lodging .card{background:var(--panel);color:var(--tx);}
 @media(max-width:640px){.jubilee-lodging{grid-template-columns:1fr;}.jubilee-actions{align-items:stretch;}.jubilee-actions .btn{flex:1 1 200px;}}
 
@@ -34,7 +34,7 @@
 .jubilee-watch > span{margin-right:8px;font-weight:600;}
 .jubilee-section.has-cms-photo .jubilee-program > h3,.jubilee-section.has-cms-photo .jubilee-music h3,.jubilee-section.has-cms-photo .jubilee-watch{color:var(--dtx);}
 .jubilee-section.has-cms-photo .jubilee-music p{color:var(--dmut);}
-.jubilee-section.has-cms-photo .jubilee-watch .btn-o{color:var(--dtx);border-color:var(--dtx);}
+.jubilee-section.has-cms-photo .jubilee-watch .btn-o{background:transparent;color:var(--dtx);border-color:var(--dtx);}
 @media(max-width:640px){.jubilee-schedule{font-size:.91rem;}.jubilee-schedule th,.jubilee-schedule td{padding:12px 10px;}.jubilee-schedule thead th{font-size:.83rem;}.jubilee-watch > span{flex-basis:100%;}.jubilee-flyer{margin-top:30px;}}
 
 /* A dedicated event masthead, grounded in the West Virginia landscape. */
@@ -55,7 +55,7 @@
 .jubilee-page .jubilee-hero .acts{justify-content:flex-start;margin-top:30px;}
 .jubilee-page .jubilee-hero .btn-b{background:#F0D36F;color:#173A3C;box-shadow:none;}
 .jubilee-page .jubilee-hero .btn-b:hover{background:#FFE9A7;}
-.jubilee-page .jubilee-hero .btn-o{color:#FFF9EB;border-color:rgba(255,249,235,.65);}
+.jubilee-page .jubilee-hero .btn-o{background:transparent;color:#FFF9EB;border-color:rgba(255,249,235,.65);}
 .jubilee-page .jubilee-hero .btn-o:hover{background:rgba(255,255,255,.1);}
 .jubilee-music-feature{scroll-margin-top:84px;}
 .jubilee-music-feature>.wrap{display:grid;grid-template-columns:.8fr 1.4fr;align-items:center;gap:52px;}

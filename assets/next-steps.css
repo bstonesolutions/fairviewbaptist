@@ -15,7 +15,7 @@
 .ns-hero h1 em{color:var(--aqua);}
 .ns-hero p{max-width:63ch;color:var(--dmut);}
 .ns-hero .kick{color:var(--aqua);}
-.ns-hero .btn-o{border-color:rgba(255,248,234,.55);color:var(--dtx);}
+.ns-hero .btn-o{background:transparent;border-color:rgba(255,248,234,.55);color:var(--dtx);}
 .ns-hero .btn-o:hover{border-color:var(--aqua);color:var(--aqua);}
 .ns-hero .wband path{stroke-width:3;stroke-linecap:round;filter:drop-shadow(0 0 3px rgba(23,126,121,.2));}
 .ns-hero .wb1{opacity:.32;}.ns-hero .wb2{opacity:.52;}.ns-hero .wb3{opacity:.24;}

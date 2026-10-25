@@ -121,22 +121,18 @@
   // thumbnail-only dates live as verified owner overrides in sermon-tags.js.
   var MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
   var ISO_DATE_RE = /(?:^|[^\d])(\d{4})-(\d{1,2})-(\d{1,2})(?=$|[^\d])/;
-  var NUMERIC_DATE_RE = /(?:^|[^\d])(\d{1,2})[.\/-](\d{1,2})(?:[.\/-](\d{2,4}))?(?=$|[^\d])/g;
+  var NUMERIC_DATE_RE = /(?:^|[^\w:.\/-])(\d{1,2})[.\/-](\d{1,2})(?:[.\/-](\d{2}|\d{4}))?(?=$|[^\w:.\/-])/g;
   var WRITTEN_DATE_RE = /\b(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t|tember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?\s+(\d{1,2})(?:st|nd|rd|th)?(?:,?\s+(\d{2,4}))?\b/gi;
-  function publishedYear(published) {
-    var d = new Date(published || '');
-    return isNaN(d) ? new Date().getFullYear() : d.getUTCFullYear();
-  }
+  var SCRIPTURE_VERSES = '\\d+(?:\\s*:\\s*\\d+)?(?:\\s*[-–—]\\s*\\d+(?:\\s*:\\s*\\d+)?)?';
+  var SCRIPTURE_DATE_RE = new RegExp('\\b(?:' + BOOKS.concat(Object.keys(ALT)).join('|') + ')\\s+' + SCRIPTURE_VERSES + '(?:\\s*[,;]\\s*' + SCRIPTURE_VERSES + ')*', 'gi');
   function fullYear(raw, published, month, day) {
     if (!raw) {
       var pub = new Date(published || '');
-      var base = publishedYear(published);
-      if (isNaN(pub)) return base;
-      var choices = [base - 1, base, base + 1].map(function (year) {
-        return { year: year, distance: Math.abs(Date.UTC(year, month, day, 12) - pub.getTime()) };
-      });
-      choices.sort(function (a, b) { return a.distance - b.distance; });
-      return choices[0].year;
+      if (isNaN(pub)) return 0;
+      var year = pub.getUTCFullYear();
+      // A recorded message cannot have been preached after it was uploaded.
+      if (Date.UTC(year, month, day) > Date.UTC(year, pub.getUTCMonth(), pub.getUTCDate())) year -= 1;
+      return year;
     }
     var n = Number(raw);
     return String(raw).length <= 2 ? (n >= 70 ? 1900 + n : 2000 + n) : n;
@@ -148,20 +144,21 @@
   }
   function dateFromText(text, published) {
     if (!text) return '';
-    var value = String(text);
+    // Scripture ranges, URLs, and phone numbers are not service dates.
+    var value = String(text).replace(/https?:\/\/\S+/gi, ' ').replace(SCRIPTURE_DATE_RE, ' ');
     var m = value.match(ISO_DATE_RE);
     if (m) return validIsoDate(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
-    NUMERIC_DATE_RE.lastIndex = 0;
-    while ((m = NUMERIC_DATE_RE.exec(value))) {
-      var numericMonth = Number(m[1]) - 1;
-      var numericDate = validIsoDate(fullYear(m[3], published, numericMonth, Number(m[2])), numericMonth, Number(m[2]));
-      if (numericDate) return numericDate;
-    }
     WRITTEN_DATE_RE.lastIndex = 0;
     while ((m = WRITTEN_DATE_RE.exec(value))) {
       var wordMonth = MONTHS[m[1].slice(0, 3).toLowerCase()];
       var writtenDate = validIsoDate(fullYear(m[3], published, wordMonth, Number(m[2])), wordMonth, Number(m[2]));
       if (writtenDate) return writtenDate;
+    }
+    NUMERIC_DATE_RE.lastIndex = 0;
+    while ((m = NUMERIC_DATE_RE.exec(value))) {
+      var numericMonth = Number(m[1]) - 1;
+      var numericDate = validIsoDate(fullYear(m[3], published, numericMonth, Number(m[2])), numericMonth, Number(m[2]));
+      if (numericDate) return numericDate;
     }
     return '';
   }
@@ -252,9 +249,9 @@
   function nonEmpty(v) { return v !== null && v !== undefined && String(v).trim() !== ''; }
   function fmtDate(iso, showWeekday) {
     if (!iso) return '';
-    var d = new Date(iso);
+    var d = new Date(/^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso + 'T12:00:00Z' : iso);
     if (isNaN(d)) return '';
-    var options = { month: 'long', day: 'numeric', year: 'numeric' };
+    var options = { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' };
     if (showWeekday) options.weekday = 'long';
     return d.toLocaleDateString('en-US', options);
   }

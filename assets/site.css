@@ -20,7 +20,7 @@ h1,h2,h3{margin:0;font-family:var(--font-display);font-weight:var(--font-display
 em{font-style:normal;color:var(--brand);}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:"Montserrat",sans-serif;font-weight:800;font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;padding:16px 30px;border-radius:0;cursor:pointer;border:2px solid transparent;transition:transform .25s,background .25s,box-shadow .25s,border-color .25s,color .25s;}
 .btn-b{background:var(--brand);color:#fff;box-shadow:0 10px 26px rgba(26,144,136,.24);}.btn-b:hover{background:var(--brand2);transform:translateY(-2px);}
-.btn-o{border-color:var(--navy);color:var(--navy);}.btn-o:hover{background:var(--navy);color:#fff;transform:translateY(-2px);}
+.btn-o{background:var(--navy);border-color:var(--navy);color:#fff;}.btn-o:hover{background:var(--navy);color:#fff;transform:translateY(-2px);}
 
 header{position:sticky;top:0;z-index:70;background:rgba(250,246,237,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:box-shadow .3s;}
 header.solid{box-shadow:0 8px 30px rgba(31,50,56,.09);}
@@ -85,7 +85,7 @@ header.solid{box-shadow:0 8px 30px rgba(31,50,56,.09);}
 .sec.has-cms-photo h2 em{color:var(--aqua);}
 .watch-sub{color:var(--mut);font-size:1.14rem;margin-bottom:28px;}
 #stream.has-cms-photo .watch-sub,.home-missions.has-cms-photo .hm-sub,#contact.has-cms-photo .shead p{color:var(--dmut);}
-#stream.has-cms-photo .btn-o{border-color:rgba(255,248,234,.55);color:var(--dtx);}
+#stream.has-cms-photo .btn-o{background:transparent;border-color:rgba(255,248,234,.55);color:var(--dtx);}
 .hero{position:relative;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding:104px 0 96px;}
 .hero .bg{position:absolute;inset:0;z-index:0;background:radial-gradient(70% 55% at 78% 12%,rgba(41,165,160,.15),transparent 60%),radial-gradient(50% 60% at 8% 90%,rgba(34,58,94,.07),transparent 60%),var(--paper);}
 .wband{position:absolute;left:-10%;width:120%;height:240px;z-index:1;}
@@ -1015,7 +1015,6 @@ html.kiosk .miss-modal-photo{height:300px;}
 .miss-partner-copy p{max-width:55ch;margin:11px 0 0;color:var(--mut);font-size:.94rem;line-height:1.6;}
 .miss-partner-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:19px;}
 .miss-partner-actions .btn{padding:12px 20px;font-size:.88rem;}
-.miss-share-btn{background:transparent;}
 .miss-share-btn.copied{border-color:#82dca6;background:rgba(112,209,154,.12);}
 .miss-share-status{display:block;min-height:1.4em;margin-top:7px;color:var(--accent);font-size:.79rem;}
 .miss-partner .miss-qr{margin-top:15px;background:rgba(6,37,45,.48);border-color:rgba(31,50,56,.45);}
@@ -1217,7 +1216,7 @@ html.kiosk .miss-modal-photo{height:300px;}
 /* Buttons inside prose keep button styling (beliefs gospel CTA etc.). */
 .prose a.btn{text-decoration:none;}
 .prose a.btn-b{color:#FCF8EE;}
-.prose a.btn-o{color:var(--brand);}
+.prose a.btn-o{color:#fff;}
 
 
 /* When Studio sets a hero background photo, the dark overlay comes with it
@@ -1227,7 +1226,7 @@ html.kiosk .miss-modal-photo{height:300px;}
 .hero.has-cms-photo em,.phero.has-cms-photo em{color:var(--aqua);}
 .hero.has-cms-photo .sub,.phero.has-cms-photo p{color:var(--dmut);}
 .hero.has-cms-photo .kick,.phero.has-cms-photo .kick{color:var(--aqua);}
-.hero.has-cms-photo .btn-o,.phero.has-cms-photo .btn-o{border-color:rgba(255,248,234,.5);color:var(--dtx);}
+.hero.has-cms-photo .btn-o,.phero.has-cms-photo .btn-o{background:transparent;border-color:rgba(255,248,234,.5);color:var(--dtx);}
 .hero.has-cms-photo .btn-o:hover,.phero.has-cms-photo .btn-o:hover{border-color:var(--dtx);background:rgba(255,248,234,.1);}
 .hero.has-cms-photo .wband path,.phero.has-cms-photo .wband path{stroke:rgba(127,209,203,.6);}
 /* A photo can be any brightness; this scrim guarantees the light hero text
@@ -1281,7 +1280,7 @@ html.kiosk .miss-modal-photo{height:300px;}
 .ftr .fname span{display:block;font-weight:600;font-size:.58rem;letter-spacing:.34em;color:var(--brand);margin-top:4px;}
 .ftr .fmeta{margin:20px 0 24px;font-size:.98rem;line-height:1.9;}
 .ftr .soc{display:flex;gap:12px;justify-content:center;margin-bottom:30px;}
-.ftr .soc a{width:44px;height:44px;border:1.5px solid rgba(34,58,94,.35);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--navy);transition:.25s;}
+.ftr .soc a{width:44px;height:44px;background:var(--navy);border:1.5px solid var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;transition:.25s;}
 .ftr .soc a:hover{background:var(--brand);border-color:var(--brand);color:#fff;transform:translateY(-3px);}
 .ftr .flinks{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin-bottom:28px;}
 .ftr .flinks a{font-family:"Montserrat",sans-serif;font-weight:700;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(22,33,43,.65);}
