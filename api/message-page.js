@@ -5,7 +5,7 @@ const path = require('path');
 const CATALOG = require('../assets/catalog.json');
 const { isMessageVideo } = require('./_message-classification');
 
-const DOMAIN = 'https://fairviewbaptisttemple.com';
+const DOMAIN = 'https://fairviewbaptist.vercel.app';
 // The Fairview Baptist Temple channel id (UC...) is not published yet. Set it
 // with the YT_CHANNEL_ID env var (or in Studio Settings) once it is known.
 const DEFAULT_CHANNEL = 'UCpVuAImXOHZcdGDbw6fQLIA';

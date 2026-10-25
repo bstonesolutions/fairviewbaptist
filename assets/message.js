@@ -2,7 +2,7 @@
 (function () {
   'use strict';
 
-  var DOMAIN = 'https://fairviewbaptisttemple.com';
+  var DOMAIN = 'https://fairviewbaptist.vercel.app';
   var $ = function (selector, root) { return (root || document).querySelector(selector); };
   var loading = $('[data-message-loading]');
   var view = $('[data-message-view]');

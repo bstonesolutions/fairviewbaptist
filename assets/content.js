@@ -2,8 +2,8 @@
    Fairview Baptist Temple — live content hydration.
    On page load, reads editable content from Supabase and applies it
    to elements tagged with data-cms-* attributes. If Supabase is not
-   configured, the library failed to load, or a value is empty, the
-   page keeps its built-in content. Nothing ever breaks.
+   configured, the library failed to load, the
+   page keeps its built-in content. Saved blank text deliberately clears copy. Nothing ever breaks.
 
    Attribute hooks (put on elements in the HTML):
      data-cms-text="key"   set textContent from a site_content value
@@ -26,6 +26,26 @@
   var sb = cfg.getPublicClient ? cfg.getPublicClient() : window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
   if (!sb) return;
   var mediaStyles = window.FBTMediaStyles || null;
+  var savedContentKeys = Object.create(null);
+  var previewOverlay = Object.create(null);
+  var previewMode = window.parent !== window && new URLSearchParams(location.search).get('studio_preview') === '1';
+  function hasSavedValue(key, value) { return nonEmpty(value) || !!savedContentKeys[key]; }
+  function safeHref(value) {
+    var s = String(value || '').trim();
+    if (!s) return '';
+    try {
+      var u = new URL(s, location.origin);
+      return /^(https?:|mailto:|tel:)$/.test(u.protocol) ? s : '';
+    } catch (e) { return ''; }
+  }
+  if (previewMode) {
+    document.addEventListener('submit', function (event) { event.preventDefault(); event.stopImmediatePropagation(); }, true);
+    document.addEventListener('click', function (event) {
+      var target = event.target.closest('a, form button, form input[type="submit"], #card-button, #apple-pay-button, #google-pay-button');
+      if (!target) return;
+      event.preventDefault(); event.stopImmediatePropagation();
+    }, true);
+  }
 
   function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -35,7 +55,7 @@
   }
   function nonEmpty(v) { return v !== null && v !== undefined && String(v).trim() !== ''; }
   function contentDefaults() {
-    var defaults = {};
+    var defaults = Object.assign({}, (window.FBT_PAGE_CATALOG && window.FBT_PAGE_CATALOG.defaults) || {});
     var groups = (window.FBT_SCHEMA && window.FBT_SCHEMA.groups) || [];
     groups.forEach(function (group) {
       (group.fields || []).forEach(function (field) {
@@ -60,7 +80,7 @@
     return String(value == null ? '' : value).trim();
   }
   function reveal(el) {
-    if (!el) return;
+    if (!el || el.closest('[data-cms-no-reveal]')) return;
     el.hidden = false;
     var wrap = el.closest('[data-cms-reveal]');
     if (wrap) wrap.hidden = false;
@@ -111,10 +131,18 @@
     el.appendChild(overlay);
   }
 
-  function makeDecorativeImage(url, className) {
+  function imageOriginal(img) {
+    var value = img && (img.getAttribute('data-image-source') || img.getAttribute('src'));
+    return window.FBTImages ? window.FBTImages.original(value) : value;
+  }
+  function setPhotoSource(img, url, host, hero) {
+    if (window.FBTImages) window.FBTImages.assign(img, url, { host: host, hero: !!hero, sizes: host && host.closest('.team') ? '(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 360px' : undefined });
+    else { img.src = String(url); img.decoding = 'async'; }
+  }
+  function makeDecorativeImage(url, className, host) {
     var img = document.createElement('img');
     img.className = className;
-    img.src = String(url);
+    setPhotoSource(img, url, host, true);
     img.alt = '';
     img.setAttribute('aria-hidden', 'true');
     img.decoding = 'async';
@@ -167,6 +195,7 @@
   // honors a companion <key>_color row; rich headings also honor
   // <key minus _heading>_accent_color for their <em> words. Inline styles so
   // they win over both the light default and photo mode.
+  var originalTextColors = new WeakMap();
   function applyHeroColors(map) {
     function hex(key) {
       var v = String(map[key] || '').trim();
@@ -175,7 +204,8 @@
     document.querySelectorAll('[data-cms-rich],[data-cms-text]').forEach(function (el) {
       var key = el.getAttribute('data-cms-rich') || el.getAttribute('data-cms-text');
       var c = hex(key + '_color');
-      if (c) el.style.color = c;
+      if (!originalTextColors.has(el)) originalTextColors.set(el, el.style.color);
+      el.style.color = c || originalTextColors.get(el);
       if (el.hasAttribute('data-cms-rich')) {
         var accent = hex(key.replace(/_heading$/, '_accent') + '_color');
         if (accent) el.querySelectorAll('em').forEach(function (em) { em.style.color = accent; });
@@ -208,11 +238,11 @@
     // panel layout with a photo
     if (media && src) {
       var img = media.querySelector('img');
-      if (!img || img.getAttribute('src') !== src) {
+      if (!img || imageOriginal(img) !== (window.FBTImages ? window.FBTImages.original(src) : src)) {
         img = document.createElement('img');
         img.loading = 'lazy';
         img.decoding = 'async';
-        img.src = src;
+        setPhotoSource(img, src, media, false);
         img.alt = media.getAttribute('data-cms-alt') || '';
         media.innerHTML = '';
         media.appendChild(img);
@@ -237,7 +267,7 @@
     document.querySelectorAll('[data-cms-text]').forEach(function (el) {
       var key = el.getAttribute('data-cms-text');
       var v = map[key];
-      if (nonEmpty(v)) {
+      if (hasSavedValue(key, v)) {
         el.textContent = displayValue(key, v);
         if (el.hasAttribute('data-cms-specific') && /^staff$/i.test(el.textContent.trim())) el.hidden = true;
         else reveal(el);
@@ -245,14 +275,16 @@
     });
     // rich text (accent word via *asterisks*)
     document.querySelectorAll('[data-cms-rich]').forEach(function (el) {
-      var v = map[el.getAttribute('data-cms-rich')];
-      if (nonEmpty(v)) { el.innerHTML = rich(v); reveal(el); }
+      var key = el.getAttribute('data-cms-rich');
+      var v = map[key];
+      if (hasSavedValue(key, v)) { el.innerHTML = rich(v == null ? '' : v); reveal(el); }
     });
     // links
     document.querySelectorAll('[data-cms-href]').forEach(function (el) {
-      var v = map[el.getAttribute('data-cms-href')];
-      if (nonEmpty(v)) { el.setAttribute('href', v); if (el.hasAttribute('data-cms-optional')) reveal(el); }
-      else if (el.hasAttribute('data-cms-optional')) el.hidden = true;
+      var key = el.getAttribute('data-cms-href');
+      var v = safeHref(map[key]);
+      if (v) { el.setAttribute('href', v); if (el.hasAttribute('data-cms-optional')) reveal(el); }
+      else if (savedContentKeys[key] || el.hasAttribute('data-cms-optional')) { el.removeAttribute('href'); if (el.hasAttribute('data-cms-optional')) el.hidden = true; }
     });
     // Optional sections can name several settings and stay out of the page
     // until at least one real destination has been configured.
@@ -269,7 +301,11 @@
     // email links: update both the visible address and the mailto: target
     document.querySelectorAll('[data-cms-mailto]').forEach(function (el) {
       var v = map[el.getAttribute('data-cms-mailto')];
-      if (nonEmpty(v)) { el.textContent = v; el.setAttribute('href', 'mailto:' + v); }
+      v = String(v || '').trim();
+      if (/^[^\s<>@]+@[^\s<>@]+\.[^\s<>@]+$/.test(v)) { el.textContent = v; el.setAttribute('href', 'mailto:' + v); el.hidden = false; }
+      else { el.hidden = true; el.removeAttribute('href'); }
+      var group = el.closest('[data-cms-email-group]');
+      if (group) group.hidden = el.hidden;
     });
     // hero background: a video wins if set (hero_vid_*), else the photo.
     // A dark overlay keeps the hero text legible either way.
@@ -282,27 +318,33 @@
     document.querySelectorAll('[data-cms-img]').forEach(function (el) {
       var mediaKey = el.getAttribute('data-cms-img');
       var v = map[mediaKey];
+      if (savedContentKeys[mediaKey] && !nonEmpty(v)) {
+        el.querySelectorAll('img,.staff-collage-grid').forEach(function (image) { image.remove(); });
+        el.hidden = true; return;
+      }
       var altKey = el.getAttribute('data-cms-alt-key');
       var alt = (altKey && nonEmpty(map[altKey])) ? displayValue(altKey, map[altKey]) : (el.getAttribute('data-cms-alt') || '');
       var current = Array.prototype.filter.call(el.children, function (child) { return child.tagName === 'IMG'; })[0] || null;
       if (nonEmpty(v)) {
-        if (!current || current.getAttribute('src') !== String(v)) {
+        if (!current || imageOriginal(current) !== (window.FBTImages ? window.FBTImages.original(v) : String(v))) {
           current = document.createElement('img');
           current.loading = 'lazy';
           current.decoding = 'async';
-          current.src = String(v);
+          setPhotoSource(current, v, el, false);
           el.innerHTML = '';
           el.appendChild(current);
         }
         reveal(el);
       }
+      if (current && nonEmpty(v)) setPhotoSource(current, v, el, false);
       if (current && alt) current.setAttribute('alt', alt);
       var photoStyle = savedMediaStyle(map, mediaKey, 'photo');
       var builtIn = Array.prototype.filter.call(el.children, function (child) {
         return child.classList && child.classList.contains('staff-collage-grid');
       })[0] || null;
+      clearMediaAppearance(el);
+      Array.prototype.slice.call(el.querySelectorAll('.cms-media-overlay')).forEach(function (node) { node.remove(); });
       if (photoStyle && (current || builtIn || photoStyle.source === 'background')) {
-        Array.prototype.slice.call(el.querySelectorAll('.cms-media-overlay')).forEach(function (node) { node.remove(); });
         applyMediaAppearance(el, photoStyle, 'photo');
         appendMediaOverlay(el, photoStyle, 'photo', 'cms-media-overlay');
         if (current || builtIn || photoStyle.source === 'background') reveal(el);
@@ -324,6 +366,7 @@
     applyHeroColors(map);
     applyWelcomeLayout(map);
     applyPersonSchema();
+    if (window.FBTMapSettings) window.FBTMapSettings.apply(map);
     document.dispatchEvent(new CustomEvent('fbt:content', { detail: map }));
   }
 
@@ -341,8 +384,8 @@
       var person = {
         '@type': 'Person',
         name: name,
-        worksFor: { '@id': 'https://fairviewbaptisttemple.com/#church' },
-        url: 'https://fairviewbaptisttemple.com/staff'
+        worksFor: { '@id': 'https://fairviewbaptist.vercel.app/#church' },
+        url: 'https://fairviewbaptist.vercel.app/staff'
       };
       // "Staff" is a generic placeholder, not a real job title. Keep the
       // person discoverable without publishing that value as search metadata.
@@ -364,7 +407,7 @@
       el.removeAttribute('data-cms-bg-alt');
       return applyBackground(el, alt, map);
     }
-    el.innerHTML = '';
+    var previousMedia = el.querySelector('.cms-bg-media');
     clearMediaAppearance(el);
     el.style.removeProperty('background-image');
     el.style.removeProperty('background-size');
@@ -376,23 +419,27 @@
     if (source === 'video' && !useVideo && nonEmpty(img)) useImage = true;
     if (style) applyMediaAppearance(el, style, 'background');
 
+    var nextMedia = null;
     if (source !== 'background' && useVideo) {
-      var video = document.createElement('video');
+      var previousSource = previousMedia && previousMedia.querySelector('source');
+      var video = previousMedia && previousMedia.tagName === 'VIDEO' && previousSource && previousSource.getAttribute('src') === String(vid) ? previousMedia : document.createElement('video');
       video.className = 'cms-bg-media cms-bg-video';
-      video.autoplay = true;
-      video.muted = true;
-      video.loop = true;
-      video.playsInline = true;
+      video.autoplay = true; video.muted = true; video.loop = true; video.playsInline = true;
       video.setAttribute('muted', '');
-      if (nonEmpty(img)) video.poster = String(img);
-      var videoSource = document.createElement('source');
-      videoSource.src = String(vid);
-      if (/\.mp4(?:$|[?#])/i.test(String(vid))) videoSource.type = 'video/mp4';
-      video.appendChild(videoSource);
-      el.appendChild(video);
+      if (nonEmpty(img)) video.poster = window.FBTImages ? window.FBTImages.source(img) : String(img);
+      else video.removeAttribute('poster');
+      if (!video.querySelector('source')) {
+        var videoSource = document.createElement('source'); videoSource.src = String(vid);
+        if (/\.mp4(?:$|[?#])/i.test(String(vid))) videoSource.type = 'video/mp4';
+        video.appendChild(videoSource);
+      }
+      nextMedia = video;
     } else if (source !== 'background' && useImage) {
-      el.appendChild(makeDecorativeImage(img, 'cms-bg-media cms-bg-image'));
+      nextMedia = previousMedia && previousMedia.tagName === 'IMG' ? previousMedia : makeDecorativeImage(img, 'cms-bg-media cms-bg-image', el);
+      setPhotoSource(nextMedia, img, el, true);
     }
+    Array.prototype.slice.call(el.children).forEach(function (child) { if (child !== nextMedia) child.remove(); });
+    if (nextMedia && nextMedia.parentNode !== el) el.appendChild(nextMedia);
 
     if (style) {
       appendMediaOverlay(el, style, 'background', 'cms-bg-overlay');
@@ -673,13 +720,76 @@
     }
   }
 
+  // Drafts stay inside Studio's own same-origin iframe. Only declared page
+  // fields and the selected media slot can change; this never writes to the CMS.
+  var focusedPreviewSlot = '';
+  function previewSlotElement(slot) {
+    if (!/^[a-z0-9_:-]{1,120}$/i.test(String(slot || ''))) return null;
+    var target = document.querySelector('[data-cms-bg="' + slot + '"],[data-cms-img="' + slot + '"]');
+    if (!target && /^hero_bg_(live|messages|music)$/.test(slot)) target = document.querySelector('[data-cms-bg-panel]');
+    return target;
+  }
+  function focusMediaPreview(slot, target) {
+    var panel = target.closest('.media-panel');
+    var tab = panel ? panel.getAttribute('data-panel') : (/^hero_bg_(live|messages|music)$/.test(slot) ? slot.replace('hero_bg_', '') : '');
+    if (tab && location.hash !== '#' + tab) {
+      history.replaceState(null, '', '#' + tab);
+      window.dispatchEvent(new Event('hashchange'));
+    }
+    if (focusedPreviewSlot === slot) return;
+    focusedPreviewSlot = slot;
+    requestAnimationFrame(function () {
+      var host = target.closest('[data-page-section],.hero,.phero') || target;
+      var header = document.querySelector('header');
+      var top = host.getBoundingClientRect().top + window.scrollY - (header ? header.getBoundingClientRect().height : 0);
+      window.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
+    });
+  }
+  if (previewMode) window.addEventListener('message', function (event) {
+    if (event.origin !== location.origin || event.source !== window.parent) return;
+    var message = event.data;
+    if (!message || !['fbt:page-preview', 'fbt:media-preview'].includes(message.type)) return;
+    var pages = (window.FBT_PAGE_CATALOG && window.FBT_PAGE_CATALOG.pages) || [];
+    var page = pages.find(function (entry) { return entry.id === message.pageId && entry.path === (location.pathname.replace(/\/$/, '') || '/'); });
+    if (!page || !message.content || typeof message.content !== 'object' || Array.isArray(message.content)) return;
+    var media = message.type === 'fbt:media-preview';
+    var target = media ? previewSlotElement(message.slot) : null;
+    if (media && (!target || new URLSearchParams(location.search).get('media_slot') !== message.slot)) return;
+    var allowed = Object.create(null);
+    page.sections.forEach(function (section) { (section.fields || []).forEach(function (field) {
+      allowed[field.key] = true;
+      if (field.type === 'image') allowed['media_style_' + field.key] = true;
+      if (media) { allowed[field.key + '_color'] = true; allowed[field.key.replace(/_heading$/, '_accent') + '_color'] = true; }
+    }); });
+    if (media) {
+      allowed[message.slot] = true;
+      allowed['media_style_' + message.slot] = true;
+      allowed[message.slot + '_shadow'] = true;
+      if (/^hero_bg_/.test(message.slot)) allowed[message.slot.replace('hero_bg_', 'hero_vid_')] = true;
+      if (message.slot === 'hero_bg_welcome_home') allowed.welcome_photo_layout = true;
+    }
+    var map = Object.assign({}, contentMap || contentDefaults());
+    Object.keys(message.content).forEach(function (key) {
+      var value = message.content[key];
+      if (allowed[key] && typeof value === 'string' && value.length <= 50000) { map[key] = value; previewOverlay[key] = value; savedContentKeys[key] = true; }
+    });
+    contentMap = map;
+    applyContent(map);
+    if (media) focusMediaPreview(message.slot, target);
+    applyStreamBackground(location.hash.slice(1) || 'live');
+  });
+
   // ---- fetch + coordinate ----
   var state = { map: null, live: undefined };
   function maybeLive() { if (state.map !== null && state.live !== undefined) { try { applyLivePlayer(state.map, state.live); } catch (e) {} } }
 
+  contentMap = contentDefaults();
+  try { applyContent(contentMap); applyStreamBackground(location.hash.slice(1) || 'live'); } catch (e) {}
+
   sb.from('site_content').select('key,value').then(function (res) {
     var map = contentDefaults();
-    if (!res.error && res.data) res.data.forEach(function (row) { map[row.key] = row.value; });
+    if (!res.error && res.data) res.data.forEach(function (row) { map[row.key] = row.value; savedContentKeys[row.key] = true; });
+    Object.keys(previewOverlay).forEach(function (key) { map[key] = previewOverlay[key]; });
     contentMap = map;
     try { applyContent(map); } catch (e) { /* never block the page */ }
     try { applyStreamBackground(location.hash.slice(1) || 'live'); } catch (e) { /* never block the page */ }

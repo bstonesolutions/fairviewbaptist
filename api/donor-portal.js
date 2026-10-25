@@ -457,7 +457,7 @@ async function sendAccessEmail(email, name, access, expiresAt) {
   const first = cleanText(name, 120).split(/\s+/)[0];
   const greeting = first ? ('Hi ' + esc(first) + ',') : 'Hi,';
   const html = '<div style="max-width:540px;margin:0 auto;font-family:\'Source Sans 3\',Arial,Helvetica,sans-serif;color:#1F3238;">' +
-    '<div style="text-align:center;padding:8px 0 20px;"><img src="https://fairviewbaptisttemple.com/assets/logo-full-color.png" alt="Fairview Baptist Temple" style="height:44px;width:auto;"></div>' +
+    '<div style="text-align:center;padding:8px 0 20px;"><img src="https://fairviewbaptist.vercel.app/assets/optimized/logo-fairview-2026-w180-5851433f5cbd.png" alt="Fairview Baptist Temple" style="height:60px;width:60px;border:6px solid #fff;border-radius:50%;"></div>' +
     '<div style="background:#FAF6ED;border:1px solid #E4DCC9;border-radius:14px;padding:30px 27px;">' +
     '<p style="margin:0 0 12px;color:#4C5B4F;font-size:15px;line-height:1.6;">' + greeting + '</p>' +
     '<h1 style="margin:0 0 10px;font-family:Montserrat,Arial,sans-serif;font-weight:600;font-size:23px;color:#14424A;">Your private giving link</h1>' +

@@ -4,4 +4,4 @@ Disallow: /api/
 Disallow: /studio.html
 Disallow: /studio
 
-Sitemap: https://fairviewbaptisttemple.com/sitemap.xml
+Sitemap: https://fairviewbaptist.vercel.app/sitemap.xml

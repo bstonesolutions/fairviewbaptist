@@ -1,7 +1,7 @@
 /* Keep event discovery metadata aligned with the content saved in Studio. */
 (function () {
   'use strict';
-  var ORIGIN = 'https://fairviewbaptisttemple.com';
+  var ORIGIN = 'https://fairviewbaptist.vercel.app';
   function value(map, key, fallback) {
     return Object.prototype.hasOwnProperty.call(map, key) ? String(map[key] == null ? '' : map[key]).trim() : fallback;
   }

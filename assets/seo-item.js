@@ -8,7 +8,7 @@
    Best-effort and self-contained — never throws, never blocks render.
    ============================================================ */
 (function () {
-  var DOMAIN = 'https://fairviewbaptisttemple.com';
+  var DOMAIN = 'https://fairviewbaptist.vercel.app';
   function metaEl(kind, key) {
     var el = document.head.querySelector('meta[' + kind + '="' + key + '"]');
     if (!el) { el = document.createElement('meta'); el.setAttribute(kind, key); document.head.appendChild(el); }

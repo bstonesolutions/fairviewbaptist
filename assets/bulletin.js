@@ -64,7 +64,7 @@
     host.innerHTML =
       '<div class="bl-feature rv">' +
         '<div class="bl-cover"><canvas id="bl-cover-cv" aria-hidden="true"></canvas>' +
-          '<div class="bl-cover-fallback"><img src="assets/logo-mark-white.png" alt="">' +
+          '<div class="bl-cover-fallback"><img class="brand-mark" src="/assets/logo-fairview-2026.png" alt="">' +
           '<span>' + esc(latest.title || 'Weekly Bulletin') + '</span><em>' + esc(fmtDate(latest.date)) + '</em></div></div>' +
         '<div class="bl-info">' +
           '<span class="kick">This week at Fairview</span>' +

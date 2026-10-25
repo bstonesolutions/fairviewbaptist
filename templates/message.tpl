@@ -7,7 +7,7 @@
   <title>Message | Fairview Baptist Temple, Clay WV</title>
   <meta name="description" content="Watch a message from Fairview Baptist Temple in Clay, West Virginia.">
   <meta name="robots" content="noindex, follow, max-image-preview:large">
-  <link rel="canonical" href="https://fairviewbaptisttemple.com/message">
+  <link rel="canonical" href="https://fairviewbaptist.vercel.app/message">
   <meta name="theme-color" content="#14424A">
   <meta name="geo.region" content="US-WV">
   <meta name="geo.placename" content="Clay, West Virginia">
@@ -16,28 +16,29 @@
   <meta property="og:type" content="video.other">
   <meta property="og:site_name" content="Fairview Baptist Temple">
   <meta property="og:locale" content="en_US">
-  <meta property="og:url" content="https://fairviewbaptisttemple.com/message">
+  <meta property="og:url" content="https://fairviewbaptist.vercel.app/message">
   <meta property="og:title" content="Message | Fairview Baptist Temple, Clay WV">
   <meta property="og:description" content="Watch a message from Fairview Baptist Temple in Clay, West Virginia.">
-  <meta property="og:image" content="https://fairviewbaptisttemple.com/assets/og-image.jpg?v=1">
+  <meta property="og:image" content="https://fairviewbaptist.vercel.app/assets/logo-fairview-2026.png">
   <meta property="og:image:alt" content="Fairview Baptist Temple, Clay, West Virginia">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Message | Fairview Baptist Temple, Clay WV">
   <meta name="twitter:description" content="Watch a message from Fairview Baptist Temple in Clay, West Virginia.">
-  <meta name="twitter:image" content="https://fairviewbaptisttemple.com/assets/og-image.jpg?v=1">
-  <link rel="icon" href="/favicon.png?v=2" type="image/png" sizes="64x64">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="twitter:image" content="https://fairviewbaptist.vercel.app/assets/logo-fairview-2026.png">
+  <link rel="icon" href="/assets/optimized/logo-fairview-2026-w64-fe089e11649b.png" type="image/png" sizes="64x64">
+  <link rel="apple-touch-icon" href="/assets/optimized/logo-fairview-2026-w180-5851433f5cbd.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/site.css?v=9">
+  <link rel="stylesheet" href="/assets/site.css?v=11">
   <link rel="stylesheet" href="/assets/message.css?v=3">
   <script src="/assets/analytics.js"></script>
+<link rel="stylesheet" href="/assets/page-editor.css?v=1">
 </head>
 <body>
 <a class="message-skip" href="#message-content">Skip to message</a>
 <header id="hd"><div class="wrap"><nav class="nav">
-  <a href="/" class="brand" aria-label="Fairview Baptist Temple, home"><img class="logo" src="/assets/logo-full-color.png?v=1" alt="Fairview Baptist Temple, Clay, West Virginia"><img class="mark" src="/assets/logo-mark-color.png?v=1" alt="Fairview Baptist Temple"></a>
+  <a href="/" class="brand" aria-label="Fairview Baptist Temple, home"><img class="brand-mark logo" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="Fairview Baptist Temple, Clay, West Virginia" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"><img class="brand-mark mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="Fairview Baptist Temple" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></a>
   <ul>
     <li class="has-menu"><button type="button" class="nav-top" aria-haspopup="true" aria-expanded="false">Visit <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div class="nav-dd"><a href="/visit">Plan a Visit</a><a href="/visit#service-times">Service Times</a><a href="/beliefs">What We Believe</a></div></li>
     <li><a href="/watch" class="nav-feature active" aria-current="page">The Overlook</a></li><li><a class="nav-jubilee" href="/jubilee">Appalachian Jubilee</a></li>
@@ -160,7 +161,7 @@
 </main>
 
 <footer class="ftr">
-<div class="fmark"><img src="/assets/logo-mark-color.png?v=1" alt="Fairview Baptist Temple"></div>
+<div class="fmark"><img class="brand-mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="Fairview Baptist Temple" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></div>
 <div class="fname">Fairview Baptist Temple<span>Clay, West Virginia</span></div>
 <p class="fmeta"><span data-cms-text="contact_address">2294 Main Street</span>, <span data-cms-text="contact_city">Clay, WV 25043</span> · PO Box 700<br><a href="tel:3045874709" data-cms-tel="contact_phone">304-587-4709</a><br>Sundays <span data-cms-text="time_sunday_school">10:00am</span>, <span data-cms-text="time_worship">11:00am</span> &amp; <span data-cms-text="time_evening">6:00pm</span> · Wednesdays <span data-cms-text="time_midweek">7:00pm</span></p>
 <div class="soc"><a href="https://www.facebook.com/FairviewBaptistTemple" target="_blank" rel="noopener" data-cms-href="facebook_url" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M14 13.5h2.5l1-4H14V7c0-1 .5-2 2-2h1.5V1.5S16 1 14.5 1C11.5 1 10 2.8 10 5.5v4H7v4h3V23h4z"/></svg></a><a href="https://www.instagram.com/fairviewbaptisttemple" target="_blank" rel="noopener" data-cms-href="instagram_url" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a><a href="https://www.youtube.com/@FairviewBaptistTemple" target="_blank" rel="noopener" data-cms-href="youtube_url" aria-label="YouTube"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22 8s-.2-1.5-.8-2.1c-.8-.8-1.6-.8-2-.9C16.4 4.7 12 4.7 12 4.7s-4.4 0-7.2.3c-.4 0-1.2 0-2 .9C2.2 6.5 2 8 2 8s-.2 1.7-.2 3.5v1c0 1.8.2 3.5.2 3.5s.2 1.5.8 2.1c.8.8 1.8.8 2.3.9 1.7.2 6.9.3 6.9.3s4.4 0 7.2-.3c.4 0 1.2 0 2-.9.6-.6.8-2.1.8-2.1s.2-1.7.2-3.5v-1c0-1.8-.2-3.5-.2-3.5zM10 15V9l5.2 3z"/></svg></a></div>
@@ -170,7 +171,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
 <script src="/assets/config.js"></script>
-<script src="/assets/content.js?v=13"></script>
+<script src="/assets/map-settings.js?v=1"></script>
+<script src="/assets/image-assets.js?v=1"></script>
+<script src="/assets/image-loader.js?v=1"></script>
+<script src="/assets/page-catalog.js?v=1"></script>
+<script src="/assets/page-editor.js?v=1"></script>
+<script src="/assets/content.js?v=15"></script>
 <script src="/assets/fbt.feeds.js"></script>
 <script src="/assets/sermon-tags.js"></script>
 <script src="/assets/videos.js?v=3"></script>

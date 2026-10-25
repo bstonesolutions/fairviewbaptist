@@ -56,7 +56,7 @@
         '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.title,
         image: pImg, description: pDesc, url: pUrl,
         author: { '@type': post.author ? 'Person' : 'Organization', name: post.author || 'Fairview Baptist Temple' },
-        publisher: { '@type': 'Organization', name: 'Fairview Baptist Temple', logo: { '@type': 'ImageObject', url: window.FBTSeo.DOMAIN + '/assets/logo-full-color.png' } }
+        publisher: { '@type': 'Organization', name: 'Fairview Baptist Temple', logo: { '@type': 'ImageObject', url: window.FBTSeo.DOMAIN + '/assets/logo-fairview-2026.png' } }
       };
       if (post.date) pLd.datePublished = post.date;
       if (post.updatedAt || post.date) pLd.dateModified = post.updatedAt || post.date;

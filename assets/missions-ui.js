@@ -1,6 +1,6 @@
 /* ============================================================
    Fairview Baptist Temple — interactive missionary map (website + lobby touchscreen).
-   Renders a dark world map (Leaflet + free CARTO tiles, no API key) with
+   Renders a world map (Leaflet + OpenStreetMap tiles, no API key) with
    a pin per missionary; tapping a pin or a card opens a full profile.
    Data comes from Supabase (missionaries table) with assets/missions.js
    as a fallback. Add ?kiosk=1 for a full-screen, idle-resetting display.
@@ -168,9 +168,9 @@
     // ctrl/cmd + scroll. A hint shows when someone tries the "wrong" gesture, so
     // nobody has to figure out how to scroll past the map. Off in kiosk mode
     // (the full-screen display, where the map should own every gesture).
-    map = L.map(host, { worldCopyJump: true, scrollWheelZoom: !kiosk, gestureHandling: !kiosk, zoomControl: true, minZoom: 1, attributionControl: false }).setView([20, 0], 2);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      subdomains: 'abcd', maxZoom: 18
+    map = L.map(host, { worldCopyJump: true, scrollWheelZoom: !kiosk, gestureHandling: !kiosk, zoomControl: true, minZoom: 1, attributionControl: true }).setView([20, 0], 2);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
     if (map.zoomControl) map.zoomControl.setPosition('bottomright');
     refreshMarkers();

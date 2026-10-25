@@ -1,11 +1,11 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Studio | Fairview Baptist Temple</title>
 <meta name="robots" content="noindex">
-<link rel="icon" href="/favicon.png?v=2" type="image/png" sizes="64x64">
+<link rel="icon" href="/assets/optimized/logo-fairview-2026-w64-fe089e11649b.png" type="image/png" sizes="64x64">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="assets/site.css?v=9">
+<link rel="stylesheet" href="assets/site.css?v=11">
 <style>
   [hidden]{display:none !important;}
   /* Studio is the dark admin surface. site.css now carries the light public
@@ -392,7 +392,7 @@
   .pg-toggle input{width:16px;height:16px;}
   @media(max-width:620px){.pg-section{padding:11px;}.pg-section-head{align-items:flex-start;flex-direction:column;gap:3px;}.pg-section-head small{text-align:left;}.pg-row{flex-wrap:wrap;}.pg-page{display:none;}.pg-reorder,.pg-fixed{order:2;width:auto;}.pg-toggle{order:3;margin-left:auto;}.pg-label{flex-basis:100%;order:1;}.pg-arrow{width:44px;height:44px;}}
   .mi-map{height:300px;border-radius:12px;overflow:hidden;border:1.5px solid rgba(255,255,255,.14);}
-  .mi-map .leaflet-tile{filter:brightness(1.7) contrast(1.12) saturate(1.15);}
+  .mi-map .leaflet-tile{filter:none;}
   .mi-latlng{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:9px;}
   .mi-clear{background:none;border:1px solid rgba(255,255,255,.2);color:var(--mut);border-radius:8px;padding:6px 13px;cursor:pointer;font-size:.85rem;}
   .mi-clear:hover{color:#fff;border-color:rgba(255,255,255,.4);}
@@ -661,13 +661,15 @@
   }
   @media(max-width:420px){.gift-summary{grid-template-columns:1fr;}.gift-sub-actions{grid-template-columns:1fr}.gift-visible-count{display:none}.gift-detail-grid{grid-template-columns:1fr}}
 </style>
+<link rel="stylesheet" href="/assets/page-editor.css?v=1">
+<link rel="stylesheet" href="/assets/media-page-preview.css?v=1">
 </head><body>
 
 <div id="loading" class="studio-center"><div class="spin"></div></div>
 
 <div id="login" class="studio-center" hidden>
   <div class="studio-card">
-    <span class="logo-plate" style="padding:13px 22px;margin-bottom:22px;"><img class="studio-logo" src="assets/logo-full-color.png?v=5" alt="Fairview Baptist Temple" style="margin:0;display:block;"></span>
+    <span class="logo-plate" style="padding:13px 22px;margin-bottom:22px;"><img class="studio-logo brand-mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="Fairview Baptist Temple" style="margin:0;display:block;" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></span>
     <h1>Studio</h1>
     <p class="muted">Sign in to manage your site.</p>
     <form id="login-form" class="form">
@@ -682,7 +684,7 @@
 
 <div id="setpw" class="studio-center" hidden>
   <div class="studio-card">
-    <span class="logo-plate" style="padding:13px 22px;margin-bottom:22px;"><img class="studio-logo" src="assets/logo-full-color.png?v=5" alt="Fairview Baptist Temple" style="margin:0;display:block;"></span>
+    <span class="logo-plate" style="padding:13px 22px;margin-bottom:22px;"><img class="studio-logo brand-mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="Fairview Baptist Temple" style="margin:0;display:block;" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></span>
     <h1>Set your password</h1>
     <p class="muted">Choose a password you'll use to sign in from now on.</p>
     <form id="setpw-form" class="form">
@@ -696,7 +698,7 @@
 <div id="app" class="studio-app" hidden>
   <button class="studio-nav-scrim" id="studio-nav-scrim" type="button" aria-label="Close Studio menu" tabindex="-1"></button>
   <aside class="studio-side" id="studio-sidebar" aria-label="Studio navigation">
-    <div class="studio-brand"><span class="logo-plate" style="padding:5px 8px;"><img src="assets/logo-mark-color.png?v=5" alt=""></span><span class="studio-brand-copy"><span>Studio</span><small class="studio-view-name" id="studio-view-name">Dashboard</small></span></div>
+    <div class="studio-brand"><span class="logo-plate" style="padding:5px 8px;"><img class="brand-mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></span><span class="studio-brand-copy"><span>Studio</span><small class="studio-view-name" id="studio-view-name">Dashboard</small></span></div>
     <button class="snav active" data-view="dashboard" data-view-label="Dashboard" aria-current="page"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg> Dashboard <span class="snav-count" id="dashboard-badge" hidden></span></button>
     <button class="snav" data-view="events" data-view-label="Events"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Events</button>
     <button class="snav" data-view="inbox" data-view-label="Inbox"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.5h13l3 6.5v6a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 2 18v-6z"/></svg> Inbox <span class="snav-count" id="inbox-badge" hidden></span></button>
@@ -707,6 +709,7 @@
     <button class="snav" data-view="missions" data-view-label="Missions"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg> Missions</button>
     <button class="snav" data-view="people" data-view-label="People &amp; ministries"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v2"/><path d="M16 3.5a4 4 0 0 1 0 7M19 14a5 5 0 0 1 3 5v2"/></svg> People &amp; ministries</button>
     <button class="snav" data-view="jubilee" data-view-label="Appalachian Jubilee"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18M8 15h3M8 18h7"/></svg> Appalachian Jubilee</button>
+    <button class="snav" data-view="page-editor" data-view-label="Page editor"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg>Page editor</button>
     <button class="snav" data-view="pages" data-view-label="Pages &amp; menu"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg> Pages and menu</button>
     <button class="snav" data-view="media" data-view-label="Pages &amp; media"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg> Pages &amp; media</button>
     <button class="snav" data-view="sermons" data-view-label="Video hubs"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/></svg> Video hubs</button>
@@ -1188,6 +1191,11 @@
       </section>
     </div>
 
+    <div id="view-page-editor" data-view-pane hidden>
+      <div class="studio-head"><div><h1>Page editor</h1><p class="muted">Choose a page to change its content, layout, and section order.</p></div></div>
+      <div id="page-editor-root"></div>
+    </div>
+
     <div id="view-settings" data-view-pane hidden>
     <section>
       <div class="studio-head">
@@ -1227,7 +1235,12 @@
         </div>
         <div class="studio-fieldset"><h3>Contact</h3>
           <div class="frow two"><div><label>Street address</label><input data-key="contact_address" placeholder="2294 Main Street"></div><div><label>City, state ZIP</label><input data-key="contact_city" placeholder="Clay, WV 25043"></div></div>
-          <div class="frow two"><div><label>Phone</label><input data-key="contact_phone" placeholder="304-587-4709"></div><div><label>Email</label><input data-key="contact_email" placeholder="[Church email address]"></div></div>
+          <div class="frow two"><div><label>Phone</label><input data-key="contact_phone" placeholder="304-587-4709"></div><div><label>Email</label><input data-key="contact_email" placeholder="Church email (optional)"></div></div>
+        </div>
+        <div class="studio-fieldset"><h3>Map &amp; directions</h3>
+          <p class="studio-hint">The map uses the church address above. You can use a specific Google Maps location by pasting its embed URL and directions link here. Leave these blank to use the address map.</p>
+          <div class="frow"><label for="set-maps-url">Google Maps directions link</label><input id="set-maps-url" data-key="maps_url" type="url" placeholder="https://www.google.com/maps/dir/..."></div>
+          <div class="frow"><label for="set-maps-embed">Google Maps embed URL</label><input id="set-maps-embed" data-key="maps_embed_url" type="url" placeholder="https://www.google.com/maps/embed?pb=..."></div>
         </div>
         <div class="studio-fieldset"><h3>Service times</h3>
           <div class="frow two"><div><label>Sunday school</label><input data-key="time_sunday_school" placeholder="10:00am"></div><div><label>Worship</label><input data-key="time_worship" placeholder="11:00am"></div></div>
@@ -1340,13 +1353,18 @@
                 <button type="button" class="active" data-media-viewport="desktop">Desktop</button>
                 <button type="button" data-media-viewport="mobile">Phone</button>
               </div>
-              <span class="media-mode-note">Shown in the page's real target shape.</span>
+              <span class="media-mode-note">Preview the actual page at each screen width.</span>
             </div>
-            <div class="media-stage-wrap">
-              <div id="media-stage" class="media-stage" tabindex="0" role="group" aria-label="Media preview" aria-describedby="media-stage-help media-focal-status"></div>
-            </div>
-            <p class="media-stage-help" id="media-stage-help"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="7"/></svg><span>Click or drag on a computer, or tap on a phone, to place the focal point. The sliders below give precise control.</span></p>
-            <p id="media-focal-status" class="media-source-note" role="status" aria-live="polite">Focal point: 50% across, 50% down.</p>
+            <div id="media-page-preview"></div>
+            <details id="media-framing-detail" class="media-framing-detail">
+              <summary>Adjust photo framing</summary>
+              <p class="media-framing-note">Use this crop guide to place the focal point. Review the finished result in the page preview above.</p>
+              <div class="media-stage-wrap">
+                <div id="media-stage" class="media-stage" tabindex="0" role="group" aria-label="Photo framing guide" aria-describedby="media-stage-help media-focal-status"></div>
+              </div>
+              <p class="media-stage-help" id="media-stage-help"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="7"/></svg><span>Click or drag to place the focal point. The framing sliders also give precise control.</span></p>
+              <p id="media-focal-status" class="media-source-note" role="status" aria-live="polite">Focal point: 50% across, 50% down.</p>
+            </details>
             <div class="media-assets">
               <button id="media-editor-image-pick" class="media-up" type="button">Replace image</button>
               <input id="media-editor-image-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" data-editor-upload="image" hidden>
@@ -1467,8 +1485,16 @@
 <script src="assets/fbt.feeds.js"></script>
 <script src="assets/sermon-tags.js?v=2"></script>
 <script src="assets/videos.js?v=4"></script>
+<script src="/assets/image-assets.js?v=1"></script>
+<script src="/assets/image-loader.js?v=1"></script>
 <script src="assets/media-styles.js?v=1"></script>
-<script src="assets/cms-schema.js?v=5"></script>
+<script src="assets/cms-schema.js?v=6"></script>
 <script src="assets/photo-library.js?v=5"></script>
-<script src="assets/studio.js?v=38"></script>
+<script src="/assets/map-settings.js?v=1"></script>
+<script src="/assets/page-catalog.js?v=1"></script>
+<script src="/assets/page-editor.js?v=1"></script>
+<script src="/assets/image-upload.js?v=1"></script>
+<script src="/assets/studio-page-editor.js?v=1"></script>
+<script src="/assets/media-page-preview.js?v=1"></script>
+<script src="assets/studio.js?v=40"></script>
 </body></html>

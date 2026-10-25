@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DOMAIN = 'https://fairviewbaptisttemple.com';
+const DOMAIN = 'https://fairviewbaptist.vercel.app';
 // Set during CMS-SETUP: the Fairview Baptist Temple Supabase project URL and
 // anon key (see CMS-SETUP.md). Until then this page serves its template shell.
 const SUPABASE_URL = 'https://qlbylvhmkbopszmzmipm.supabase.co';
@@ -131,7 +131,7 @@ function postPage(html, row) {
         publisher: {
           '@type': 'Organization', '@id': DOMAIN + '/#church',
           name: 'Fairview Baptist Temple',
-          logo: { '@type': 'ImageObject', url: DOMAIN + '/assets/logo-full-color.png' }
+          logo: { '@type': 'ImageObject', url: DOMAIN + '/assets/logo-fairview-2026.png' }
         }
       },
       {

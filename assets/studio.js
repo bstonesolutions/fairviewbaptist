@@ -287,13 +287,25 @@
   $('f-cover').addEventListener('input', function () { setCoverPrev(v('f-cover')); });
   $('f-hero').addEventListener('input', function () { setHeroPrev(v('f-hero')); });
 
+  function uploadStudioImage(path, file, options) {
+    var prepare = window.FBTImageUpload ? window.FBTImageUpload.prepare(file) : Promise.resolve(file);
+    return prepare.then(function (upload) {
+      if (upload !== file && upload.type === 'image/webp') path = path.replace(/\.[^/.]+$/, '.webp');
+      var settings = Object.assign({}, options);
+      if (upload.type) settings.contentType = upload.type;
+      return sb.storage.from(bucket).upload(path, upload, settings).then(function (result) {
+        if (!result.error) result.publicUrl = sb.storage.from(bucket).getPublicUrl(path).data.publicUrl;
+        return result;
+      });
+    });
+  }
   function uploadImg(file, kind, done) {
     var ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
     var path = 'events/' + (slugify(v('f-title')) || 'event') + '-' + kind + '-' + Date.now() + '.' + ext;
-    sb.storage.from(bucket).upload(path, file, { upsert: true, contentType: file.type }).then(function (r) {
+    uploadStudioImage(path, file, { upsert: true, contentType: file.type }).then(function (r) {
       if (r.error) { done(null, r.error.message); return; }
-      done(sb.storage.from(bucket).getPublicUrl(path).data.publicUrl);
-    });
+      done(r.publicUrl);
+    }).catch(function (error) { done(null, error.message || 'The connection was interrupted.'); });
   }
   $('f-cover-file').addEventListener('change', function () {
     var file = this.files && this.files[0]; if (!file) return;
@@ -403,7 +415,9 @@
       }));
     } catch (err) { /* ignore */ }
   });
+  var pageEditorController = null;
   function showView(view) {
+    if (studioMain) studioMain.classList.toggle('with-page-editor', view === 'page-editor');
     Array.prototype.forEach.call(document.querySelectorAll('[data-view-pane]'), function (p) { p.hidden = (p.id !== 'view-' + view); });
     var activeButton = null;
     Array.prototype.forEach.call(document.querySelectorAll('.studio-side .snav[data-view]'), function (b) {
@@ -424,6 +438,12 @@
     if (view === 'sermons') loadSermons();
     if (view === 'media') loadMedia();
     if (view === 'pages') loadPages();
+    if (view === 'page-editor' && pageEditorController) pageEditorController.refresh();
+    if (view === 'page-editor' && window.FBT_PAGE_EDITOR && !pageEditorController) {
+      pageEditorController = window.FBT_PAGE_EDITOR.mount({ element: $('page-editor-root'), client: sb, onSaved: function () {
+        settingsLoaded = false; peopleLoaded = false; mediaReady = false; jubileeLoaded = false;
+      } });
+    }
     if (view === 'missions') loadMissions();
     if (view === 'dashboard') loadDashboard();
     if (view === 'inbox') loadInbox();
@@ -1511,11 +1531,11 @@
     var msg = $('b-cover-msg'); msg.textContent = 'Uploading…';
     var ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
     var path = 'posts/' + (slugify(v('b-title')) || 'post') + '-' + Date.now() + '.' + ext;
-    sb.storage.from(bucket).upload(path, file, { upsert: true, contentType: file.type }).then(function (r) {
+    uploadStudioImage(path, file, { upsert: true, contentType: file.type }).then(function (r) {
       if (r.error) { msg.textContent = 'Upload failed: ' + r.error.message; return; }
-      var url = sb.storage.from(bucket).getPublicUrl(path).data.publicUrl;
+      var url = r.publicUrl;
       setV('b-cover', url); setBcover(url); msg.textContent = 'Uploaded ✓';
-    });
+    }).catch(function (error) { msg.textContent = 'Upload failed: ' + (error.message || 'The connection was interrupted.'); });
   });
 
   $('bl-save').addEventListener('click', savePost);
@@ -1604,6 +1624,13 @@
   }
   $('set-save').addEventListener('click', function () {
     var btn = $('set-save'), msg = $('set-msg'); btn.disabled = true; btn.textContent = 'Saving…'; msg.textContent = ''; msg.className = 'studio-msg';
+    var mapEmbed = document.querySelector('#view-settings [data-key="maps_embed_url"]');
+    var mapDirections = document.querySelector('#view-settings [data-key="maps_url"]');
+    if ((mapEmbed && mapEmbed.value.trim() && !window.FBTMapSettings.embedURL(mapEmbed.value)) ||
+        (mapDirections && mapDirections.value.trim() && !window.FBTMapSettings.directionsURL(mapDirections.value))) {
+      btn.disabled = false; btn.textContent = 'Save settings'; msg.className = 'studio-msg err';
+      msg.textContent = 'Use a Google Maps embed URL for the map and a Google Maps link for directions.'; return;
+    }
     var rows = [];
     Array.prototype.forEach.call(document.querySelectorAll('#view-settings [data-key]'), function (inp) {
       var key = inp.getAttribute('data-key'), value = normalizeSetting(key, inp.value);
@@ -3208,6 +3235,17 @@
   var IMG_SVG = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>';
   var mediaBuilt = false, mediaReady = false, mediaLoading = false, mediaVals = {}, mediaSavedKeys = {}, mediaEdit = null;
   var mediaEditorTrigger = null, mediaPointerDown = false, mediaPointerStart = null, mediaSessionSeq = 0;
+  var mediaPagePreview = null;
+
+  function syncMediaPagePreview() {
+    if (!mediaEdit || !window.FBT_MEDIA_PAGE_PREVIEW || !$('media-page-preview')) return;
+    if (!mediaPagePreview) mediaPagePreview = window.FBT_MEDIA_PAGE_PREVIEW.mount({ element: $('media-page-preview') });
+    var values = Object.assign({}, mediaVals, mediaEdit.pendingValues);
+    var styleKey = mediaStyleKey(mediaEdit.meta);
+    // Preview the same value Save changes will write, including an original-look reset.
+    values[styleKey] = mediaEdit.restoreOriginal ? (contentDefaults[styleKey] || '') : mediaStyleApi.serialize(mediaEdit.style, mediaEdit.meta.kind);
+    mediaPagePreview.update({ path: mediaEdit.meta.page, slot: mediaEdit.meta.key, viewport: mediaEdit.viewport, content: values });
+  }
 
   function nn(x) { return (x && String(x).trim()) ? String(x).trim() : ''; }
   function mediaAll() { return MEDIA_BG.concat(MEDIA_PHOTO); }
@@ -3302,13 +3340,14 @@
         ['pastor_photo', 'staff4_photo', 'staff1_photo', 'staff2_photo'].forEach(function (key) {
           var personMeta = mediaByKey(key);
           var image = document.createElement('img');
-          image.src = mediaImage(personMeta, editorMode);
+          image.src = window.FBTImages ? window.FBTImages.source(mediaImage(personMeta, editorMode), true) : mediaImage(personMeta, editorMode);
           image.alt = '';
           media.appendChild(image);
         });
       } else {
         media = document.createElement('img');
-        media.src = mediaImage(meta, editorMode);
+        if (window.FBTImages) window.FBTImages.assign(media, mediaImage(meta, editorMode), { host: host, eager: true, thumbnail: !editorMode });
+        else media.src = mediaImage(meta, editorMode);
         media.alt = '';
         media.decoding = 'async';
       }
@@ -3450,6 +3489,7 @@
   }
   function refreshStageText() {
     if (!mediaEdit) return;
+    syncMediaPagePreview();
     var copy = $('media-stage').querySelector('.media-stage-copy');
     if (!copy) return;
     copy.classList.toggle('no-shadow', mediaShadowNone(mediaEdit.meta));
@@ -3827,6 +3867,7 @@
     $('media-stage').setAttribute('aria-disabled', backgroundOnly || busy ? 'true' : 'false');
     if (rebuildPreview === false) paintMediaStage();
     else mediaRender($('media-stage'), mediaEdit.meta, style, mediaEdit.viewport, true);
+    syncMediaPagePreview();
   }
   function setMediaBackgroundInert(inert) {
     ['studio-sidebar', 'studio-nav-toggle'].forEach(function (id) {
@@ -3856,9 +3897,8 @@
       busy: false
     };
     $('media-editor-title').textContent = meta.label;
-    $('media-editor-subtitle').textContent = meta.kind === 'background'
-      ? 'Preview this section for desktop and phone screens. Open the public page to review its full layout.'
-      : 'Position this photo without changing the original file.';
+    $('media-editor-subtitle').textContent = 'Edit the design and review your changes on the actual page before saving.';
+    if ($('media-framing-detail')) $('media-framing-detail').open = false;
     $('media-editor').hidden = false;
     document.body.classList.add('media-editor-open');
     try { window.history.replaceState(null, '', '#media/' + meta.key); } catch (err) { /* ignore */ }
@@ -3876,6 +3916,8 @@
     buildMediaTextFields(meta);
     buildMediaMatch(meta);
     syncMediaEditor(false);
+    var editorBody = $('media-editor').querySelector('.media-editor-body');
+    if (editorBody) editorBody.scrollTop = 0;
     window.setTimeout(function () { $('media-editor-close').focus(); }, 20);
   }
   function closeMediaEditor(force) {
@@ -3887,6 +3929,7 @@
     document.body.classList.remove('media-editor-open');
     try { window.history.replaceState(null, '', '#media'); } catch (err) { /* ignore */ }
     setMediaBackgroundInert(false);
+    if (mediaPagePreview) mediaPagePreview.close();
     mediaEdit = null;
     mediaPointerDown = false;
     mediaPointerStart = null;
@@ -4011,7 +4054,7 @@
     var path = 'site/' + key + '-' + Date.now() + '.' + ext;
     var uploadOptions = { upsert: false };
     if (file.type) uploadOptions.contentType = file.type;
-    sb.storage.from(bucket).upload(path, file, uploadOptions).then(function (result) {
+    uploadStudioImage(path, file, uploadOptions).then(function (result) {
       if (prev) prev.classList.remove('uploading');
       if (!sameMediaSession(edit)) return;
       edit.busy = false;
@@ -4020,7 +4063,7 @@
         setMediaEditorMessage('Upload failed: ' + result.error.message, 'err');
         return;
       }
-      var url = sb.storage.from(bucket).getPublicUrl(path).data.publicUrl;
+      var url = result.publicUrl;
       edit.pendingValues[key] = url;
       edit.style.source = video ? 'video' : 'image';
       mediaMarkDirty();
@@ -4054,7 +4097,7 @@
     var photos = (window.FBT_PHOTOS || []).filter(function (photo) { return photo && mediaImageUrl(photo.url); });
     $('media-library').hidden = !photos.length;
     $('media-library-grid').innerHTML = photos.map(function (photo) {
-      return '<button class="media-library-photo" type="button" data-library-photo="' + esc(photo.url) + '"><img loading="lazy" src="' + esc(photo.url) + '" alt=""><span>' + esc(photo.label || 'Church photo') + '</span></button>';
+      return '<button class="media-library-photo" type="button" data-library-photo="' + esc(photo.url) + '"><img loading="lazy" src="' + esc(window.FBTImages ? window.FBTImages.source(photo.url, true) : photo.url) + '" alt=""><span>' + esc(photo.label || 'Church photo') + '</span></button>';
     }).join('');
   }
   function loadMedia() {
@@ -4259,7 +4302,7 @@
         if (event.key === 'Escape') { event.preventDefault(); closeMediaEditor(false); return; }
         if (event.key !== 'Tab') return;
         var focusable = Array.prototype.filter.call(
-          $('media-editor').querySelectorAll('button:not([disabled]),input:not([disabled]),select:not([disabled]),[tabindex="0"]'),
+          $('media-editor').querySelectorAll('button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),summary,a[href],iframe,[tabindex="0"]'),
           function (element) { return !element.hidden && element.offsetParent !== null; }
         );
         if (!focusable.length) return;
@@ -4563,8 +4606,8 @@
   function ensureMiMap() {
     if (!window.L) return;
     if (miMap) { setTimeout(function () { miMap.invalidateSize(); }, 60); return; }
-    miMap = L.map('mi-map', { worldCopyJump: true, minZoom: 1, scrollWheelZoom: false, attributionControl: false }).setView([20, 0], 1);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { subdomains: 'abcd', maxZoom: 18 }).addTo(miMap);
+    miMap = L.map('mi-map', { worldCopyJump: true, minZoom: 1, scrollWheelZoom: false, attributionControl: true }).setView([20, 0], 1);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(miMap);
     miMap.on('click', function (e) { setMiCoords(e.latlng.lat, e.latlng.lng); });
     setTimeout(function () { miMap.invalidateSize(); }, 90);
   }
@@ -4600,10 +4643,10 @@
     var file = this.files && this.files[0]; if (!file) return; var msg = $('mi-photo-msg'); msg.textContent = 'Uploading…';
     var ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
     var path = 'missionaries/' + (slugify(v('mi-name')) || 'photo') + '-' + Date.now() + '.' + ext;
-    sb.storage.from(bucket).upload(path, file, { upsert: true, contentType: file.type }).then(function (r) {
+    uploadStudioImage(path, file, { upsert: true, contentType: file.type }).then(function (r) {
       if (r.error) { msg.textContent = 'Upload failed: ' + r.error.message; return; }
-      var url = sb.storage.from(bucket).getPublicUrl(path).data.publicUrl; setV('mi-photo', url); miPhotoPrev(url); msg.textContent = 'Uploaded ✓';
-    });
+      var url = r.publicUrl; setV('mi-photo', url); miPhotoPrev(url); msg.textContent = 'Uploaded ✓';
+    }).catch(function (error) { msg.textContent = 'Upload failed: ' + (error.message || 'The connection was interrupted.'); });
   });
   function renderMiLetters() {
     $('mi-letters').innerHTML = miLetters.map(function (l, i) {
@@ -4645,11 +4688,11 @@
     var msg = $('mi-photos-msg'); msg.textContent = 'Uploading…';
     var ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
     var path = 'missionaries/' + (slugify(v('mi-name')) || 'm') + '-' + Date.now() + '.' + ext;
-    sb.storage.from(bucket).upload(path, file, { upsert: true, contentType: file.type }).then(function (r) {
+    uploadStudioImage(path, file, { upsert: true, contentType: file.type }).then(function (r) {
       inp.value = '';
       if (r.error) { msg.textContent = 'Upload failed: ' + r.error.message; return; }
-      miPhotos.push(sb.storage.from(bucket).getPublicUrl(path).data.publicUrl); renderMiPhotos(); msg.textContent = 'Added ✓';
-    });
+      miPhotos.push(r.publicUrl); renderMiPhotos(); msg.textContent = 'Added ✓';
+    }).catch(function (error) { inp.value = ''; msg.textContent = 'Upload failed: ' + (error.message || 'The connection was interrupted.'); });
   });
   $('mi-save').addEventListener('click', function () {
     var name = v('mi-name').trim(); if (!name) { alert('Please add a name.'); return; }
