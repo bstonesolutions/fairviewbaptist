@@ -179,7 +179,7 @@
 <script src="/assets/map-settings.js?v=1"></script>
 <script src="/assets/image-assets.js?v=1"></script>
 <script src="/assets/image-loader.js?v=2"></script>
-<script src="/assets/page-catalog.js?v=2"></script>
+<script src="/assets/page-catalog.js?v=3"></script>
 <script src="/assets/page-editor.js?v=1"></script>
 <script src="/assets/inline-page-editor.js?v=1"></script>
 <script src="/assets/content.js?v=18"></script>

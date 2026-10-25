@@ -1082,7 +1082,7 @@ window.FBT_PAGE_CATALOG = {
               "key": "visit_s3_sub",
               "label": "Text: Tell us a little about your visit and we will be watching for you, sav",
               "type": "text",
-              "def": "Tell us a little about your visit and we will be watching for you, save you a seat, and have a friendly face ready to say hello. No pressure, and no sales pitch."
+              "def": "Tell us a little about your visit and we will be watching for you, save you a seat, and have a friendly face ready to say hello."
             },
             {
               "key": "visit_nursery_heading",
@@ -3452,24 +3452,6 @@ window.FBT_PAGE_CATALOG = {
               "label": "Link: What we believe",
               "type": "url",
               "def": "/beliefs"
-            },
-            {
-              "key": "next_steps_section_1_text_5",
-              "label": "Text: A real conversation",
-              "type": "text",
-              "def": "A real conversation"
-            },
-            {
-              "key": "next_steps_section_1_text_6",
-              "label": "Text: No pressure",
-              "type": "text",
-              "def": "No pressure"
-            },
-            {
-              "key": "next_steps_section_1_text_7",
-              "label": "Text: At your pace",
-              "type": "text",
-              "def": "At your pace"
             }
           ],
           "collections": []
@@ -3588,18 +3570,6 @@ window.FBT_PAGE_CATALOG = {
               "label": "Text: Someone from Fairview reaches out personally.",
               "type": "text",
               "def": "Someone from Fairview reaches out personally."
-            },
-            {
-              "key": "next_steps_section_2_text_20",
-              "label": "Text: Step 3",
-              "type": "text",
-              "def": "Step 3"
-            },
-            {
-              "key": "next_steps_section_2_text_21",
-              "label": "Text: Move forward in a way that fits your season.",
-              "type": "text",
-              "def": "Move forward in a way that fits your season."
             }
           ],
           "collections": [
@@ -3649,11 +3619,6 @@ window.FBT_PAGE_CATALOG = {
                   "id": "next-steps-section-2-items-2-2",
                   "label": "Step 2Someone from Fairview reaches out personally.",
                   "selector": "[data-page-item=\"next-steps-section-2-items-2-2\"]"
-                },
-                {
-                  "id": "next-steps-section-2-items-2-3",
-                  "label": "Step 3Move forward in a way that fits your season.",
-                  "selector": "[data-page-item=\"next-steps-section-2-items-2-3\"]"
                 }
               ]
             }
@@ -3686,9 +3651,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "nextsteps_s2_sub",
-              "label": "Text: This is not a commitment or an application. It is simply a way to star",
+              "label": "Text: Send your question to the church using the form below.",
               "type": "text",
-              "def": "This is not a commitment or an application. It is simply a way to start a real conversation with someone who cares."
+              "def": "Send your question to the church using the form below."
             },
             {
               "key": "next_steps_section_3_text_1",

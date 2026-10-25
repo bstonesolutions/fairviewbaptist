@@ -2477,7 +2477,7 @@
     {
       "key": "visit_s3_sub",
       "label": "Paragraph",
-      "def": "Tell us a little about your visit and we will be watching for you, save you a seat, and have a friendly face ready to say hello. No pressure, and no sales pitch.",
+      "def": "Tell us a little about your visit and we will be watching for you, save you a seat, and have a friendly face ready to say hello.",
       "multi": true
     }
   ],
@@ -2781,7 +2781,7 @@
     {
       "key": "nextsteps_s2_sub",
       "label": "Paragraph",
-      "def": "This is not a commitment or an application. It is simply a way to start a real conversation with someone who cares.",
+      "def": "Send your question to the church using the form below.",
       "multi": true
     }
   ],
