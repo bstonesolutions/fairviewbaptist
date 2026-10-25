@@ -2262,7 +2262,8 @@
   var MEDIA_PHOTO = [
     { key: 'photo_visit', label: 'Visit: welcome photo', page: '/visit', ratio: 'landscape' },
     {"key": "pastor_photo", "label": "Staff: Pastor Michael Spurlock", "page": "/staff", "ratio": "portrait"},
-    {"key": "staff4_photo", "label": "Staff: Curt Moore", "page": "/staff", "ratio": "square"},
+    {"key": "staff11_photo", "label": "Staff: Kaylee Spurlock", "page": "/staff", "ratio": "square"},
+    {"key": "staff4_photo", "label": "Staff: Curtis Moore", "page": "/staff", "ratio": "square"},
     {"key": "staff7_photo", "label": "Staff: Jake Pierson", "page": "/staff", "ratio": "square"},
     {"key": "staff8_photo", "label": "Staff: Barry Payton", "page": "/staff", "ratio": "square"},
     {"key": "staff1_photo", "label": "Staff: Jamie Taylor", "page": "/staff", "ratio": "square"},
