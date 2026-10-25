@@ -458,7 +458,7 @@
     if (view === 'pages') loadPages();
     if (view === 'page-editor' && pageEditorController && !requestedPage) pageEditorController.refresh();
     if (view === 'page-editor' && window.FBT_PAGE_EDITOR && !pageEditorController) {
-      pageEditorController = window.FBT_PAGE_EDITOR.mount({ element: $('page-editor-root'), client: sb, onPageChange: pageEditorLocation, onDesign: openPageMediaDesigner, onSaved: function () {
+      pageEditorController = window.FBT_PAGE_EDITOR.mount({ element: $('page-editor-root'), client: sb, initialPage: requestedPage, onPageChange: pageEditorLocation, onDesign: openPageMediaDesigner, onSaved: function () {
         settingsLoaded = false; peopleLoaded = false; mediaReady = false; jubileeLoaded = false;
       } });
     }
@@ -471,7 +471,9 @@
     if (view === 'bulletin') loadBulletins();
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     // Keep the place on refresh: /studio#media reopens on Photos & media.
-    try { window.history.replaceState(null, '', '#' + requestedView); } catch (err) { /* ignore */ }
+    if (view !== 'page-editor') {
+      try { window.history.replaceState(null, '', '#' + requestedView); } catch (err) { /* ignore */ }
+    }
     if (view !== restoreScrollFor) restoreScrollFor = '';
   }
   Array.prototype.forEach.call(document.querySelectorAll('.studio-side .snav[data-view]'), function (b) {

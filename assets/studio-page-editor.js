@@ -159,10 +159,11 @@
     var catalog = options.catalog || root.FBT_PAGE_CATALOG || { pages: [] }, pages = catalog.pages || [];
     var session = null, destroyed = false, busy = false, request = 0, previewTimer, previewSize = 'desktop';
     var selectedSection = '', selectedField = '', selectedMedia = '', history = [], lastHistoryToken = '', lastHistoryAt = 0;
-    var inlineReady = false, inlineActive = false, commitSequence = 0, pendingCommit = null;
+    var inlineReady = false, inlineActive = false, frameLoading = false, commitSequence = 0, pendingCommit = null;
     var defaults = options.defaults || (root.FBT_SCHEMA && root.FBT_SCHEMA.defaults) || {};
     var document = element.ownerDocument, currentStatus = '', currentStatusKind = '';
     element.classList.add('fbt-page-editor');
+    element.setAttribute('tabindex', '-1');
     element.innerHTML = '<div class="pe-toolbar"><label class="pe-page-label"><span>Page</span><select data-pe-page aria-label="Choose a page"></select></label>' +
       '<div class="pe-view-tools" role="group" aria-label="Page width"><button type="button" data-pe-size="desktop" aria-pressed="true">Desktop</button><button type="button" data-pe-size="phone" aria-pressed="false">Phone</button></div>' +
       '<div class="pe-save-tools"><button type="button" data-pe-undo disabled>Undo</button><button type="button" class="pe-primary" data-pe-save>Save page</button></div></div>' +
@@ -204,9 +205,9 @@
     }
     function setBusy(value) {
       busy = value;
-      // A second inline edit must not begin while a save or page load is in flight.
-      // postMessage can still flush the existing edit while its frame is inert.
-      frame.inert = value;
+      // Move keyboard focus out and block pointer input while saving. Keep the
+      // iframe browsing context active so pending navigations can complete.
+      if (value && document.activeElement === frame) element.focus({ preventScroll: true });
       frame.style.pointerEvents = value ? 'none' : '';
       if (value) frame.setAttribute('tabindex', '-1'); else frame.removeAttribute('tabindex');
       Array.prototype.forEach.call(element.querySelectorAll('input,select,textarea,button'), function (input) { input.disabled = value || input.getAttribute('data-pe-boundary') === 'true'; });
@@ -217,8 +218,25 @@
       frame.contentWindow.postMessage({ type: 'fbt:page-preview', pageId: session.page.id, layout: copy(session.layout), content: contentForPreview(session) }, root.location.origin);
     }
     function postFocus() {
-      if (!session || !frame.contentWindow || !selectedSection || destroyed) return;
+      if (!session || !frame.contentWindow || !selectedSection || destroyed || busy) return;
       frame.contentWindow.postMessage({ type: 'fbt:page-focus', pageId: session.page.id, sectionId: selectedSection, fieldKey: selectedField || undefined }, root.location.origin);
+    }
+    function notifyPageChange() {
+      if (!session || destroyed || typeof options.onPageChange !== 'function') return;
+      try { options.onPageChange(session.page); } catch (error) { /* Host navigation must not interrupt a loaded page. */ }
+    }
+    function frameLoaded() {
+      if (!session || destroyed) return;
+      try {
+        var pageUrl = new URL(frameUrl(session.page), root.location.href);
+        var expected = new URL(frame.src, root.location.href);
+        var actual = new URL(frame.contentWindow.location.href);
+        if (expected.origin !== pageUrl.origin || expected.pathname !== pageUrl.pathname || actual.origin !== expected.origin || actual.pathname !== expected.pathname || actual.search !== expected.search) return;
+      } catch (error) { return; }
+      frameLoading = false; postPreview(); sizePreview();
+      // Changing the Studio route while its iframe navigation is pending can
+      // leave Chrome displaying the previous document. Announce only this load.
+      notifyPageChange();
     }
     function flushInline() {
       if (!inlineReady || !session || !frame.contentWindow) return Promise.resolve();
@@ -342,6 +360,22 @@
       update();
     }
     function frameUrl(page) { var url = new URL(page.path, root.location.href); url.searchParams.set('studio_preview', '1'); url.searchParams.set('visual_edit', '1'); return url.pathname + url.search + url.hash; }
+    function navigateFrame(url) {
+      var next = document.createElement('iframe');
+      next.setAttribute('title', 'Edit this page');
+      next.setAttribute('sandbox', 'allow-scripts allow-same-origin');
+      next.setAttribute('data-pe-frame', '');
+      next.style.cssText = frame.style.cssText;
+      if (busy) next.setAttribute('tabindex', '-1');
+      next.addEventListener('load', frameLoaded);
+      // Set the destination before insertion, with a fresh browsing context.
+      // This also prevents late messages from the previous page entering a draft.
+      next.src = url;
+      frame.removeEventListener('load', frameLoaded);
+      frame.replaceWith(next); frame = next;
+      inlineReady = false; inlineActive = false; frameLoading = true;
+      sizePreview();
+    }
     async function load(page) {
       var current = ++request;
       setBusy(true); status('Loading page…');
@@ -353,7 +387,7 @@
         session = createSession(page, result.data, defaults); picker.value = page.id; history = []; lastHistoryToken = '';
         if (!sectionById(selectedSection)) { selectedSection = session.layout.order[0] || ''; selectedField = ''; selectedMedia = ''; }
         renderOutline(); renderInspector(); status('Your saved page. Changes stay here until you save.');
-        element.querySelector('[data-pe-open]').href = page.path; inlineReady = false; inlineActive = false; frame.src = frameUrl(page);
+        element.querySelector('[data-pe-open]').href = page.path; navigateFrame(frameUrl(page));
         return true;
       } catch (error) {
         if (current === request && !destroyed) { if (session) picker.value = session.page.id; status(error.message || 'The page could not be loaded. Please retry.', 'error'); }
@@ -363,16 +397,12 @@
     async function selectPage(id) {
       var page = pages.filter(function (item) { return item.id === id; })[0];
       if (!page || busy) return false;
-      if (session && session.page.id === id) { sizePreview(); return true; }
+      if (session && session.page.id === id) { sizePreview(); if (!frameLoading) notifyPageChange(); return true; }
       setBusy(true);
       try { await flushInline(); } catch (error) { status(error.message, 'error'); setBusy(false); if (session) picker.value = session.page.id; return false; }
       setBusy(false);
       if (session && dirty() && !root.confirm('Discard the unsaved changes on this page?')) { picker.value = session.page.id; return false; }
-      var loaded = await load(page);
-      if (loaded && typeof options.onPageChange === 'function') {
-        try { options.onPageChange(page); } catch (error) { /* Host navigation must not interrupt a loaded page. */ }
-      }
-      return loaded;
+      return load(page);
     }
     async function upload(input) {
       var file = input.files && input.files[0], key = input.dataset.peUpload;
@@ -404,7 +434,7 @@
         history = newerEdits ? [{ values: copy(session.baseValues), auxValues: copy(session.baseAuxValues), layout: Layout.normalize(session.baseLayout, session.page) }] : [];
         lastHistoryToken = ''; status(newerEdits ? 'Saved submitted changes. New edits are still unsaved.' : result.changed ? 'Saved and verified. The page is live.' : 'No changes to save.', newerEdits ? 'draft' : 'saved');
         if (result.changed) {
-          inlineReady = false; inlineActive = false; frame.src = frameUrl(session.page) + '&saved=' + Date.now();
+          navigateFrame(frameUrl(session.page) + '&saved=' + Date.now());
           if (typeof options.onSaved === 'function') {
             try { options.onSaved({ page: session.page, rows: result.rows, content: contentForPreview(session), layout: copy(session.layout) }); }
             catch (error) { /* The completed save must not depend on a host refresh. */ }
@@ -508,16 +538,14 @@
     }
     function beforeUnload(event) { if (dirty() || inlineActive) { event.preventDefault(); event.returnValue = ''; } }
     element.addEventListener('input', input); element.addEventListener('change', change); element.addEventListener('click', click);
-    frame.addEventListener('load', postPreview); frame.addEventListener('load', sizePreview); root.addEventListener('message', message); root.addEventListener('beforeunload', beforeUnload);
+    frame.addEventListener('load', frameLoaded); root.addEventListener('message', message); root.addEventListener('beforeunload', beforeUnload);
     var controller = {
       refresh: async function () {
         if (!session) return false;
-        var loaded = !dirty() && !inlineActive ? await load(session.page) : true;
+        if (!dirty() && !inlineActive) return load(session.page);
         await Promise.resolve();
-        if (loaded && typeof options.onPageChange === 'function') {
-          try { options.onPageChange(session.page); } catch (error) { /* Keep the active editor usable if host navigation fails. */ }
-        }
-        return loaded;
+        if (!frameLoading) notifyPageChange();
+        return true;
       },
       selectPage: selectPage,
       focusSection: function (id, key) { return focusSection(id, key); },
@@ -527,14 +555,15 @@
         destroyed = true; request++; root.clearTimeout(previewTimer);
         if (pendingCommit) { root.clearTimeout(pendingCommit.timer); pendingCommit.reject(new Error('The page editor was closed.')); pendingCommit = null; }
         element.removeEventListener('input', input); element.removeEventListener('change', change); element.removeEventListener('click', click);
-        frame.removeEventListener('load', postPreview); frame.removeEventListener('load', sizePreview); root.removeEventListener('resize', sizePreview);
+        frame.removeEventListener('load', frameLoaded); root.removeEventListener('resize', sizePreview);
         if (resizeObserver) resizeObserver.disconnect();
         root.removeEventListener('message', message); root.removeEventListener('beforeunload', beforeUnload);
         delete element.__fbtPageEditor;
       }
     };
     element.__fbtPageEditor = controller;
-    if (pages.length) controller.ready = load(pages[0]); else { status('No editable pages are available.', 'error'); syncState(); controller.ready = Promise.resolve(); }
+    var initialPage = pages.filter(function (page) { return page.id === options.initialPage; })[0] || pages[0];
+    if (initialPage) controller.ready = load(initialPage); else { status('No editable pages are available.', 'error'); syncState(); controller.ready = Promise.resolve(); }
     return controller;
   }
   return { mount: mount, fieldsFor: fieldsFor, auxiliaryKeys: auxiliaryKeys, createSession: createSession, applyInlineEdit: applyInlineEdit, stageDesign: stageDesign, dirtyRows: dirtyRows, saveSession: saveSession, contentForPreview: contentForPreview, move: move, moveSection: moveSection };

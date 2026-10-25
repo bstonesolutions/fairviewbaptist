@@ -5,7 +5,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="assets/site.css?v=13">
+<link rel="stylesheet" href="assets/site.css?v=14">
 <style>
   [hidden]{display:none !important;}
   /* Studio is the dark admin surface. site.css now carries the light public
@@ -669,7 +669,7 @@
 
 <div id="login" class="studio-center" hidden>
   <div class="studio-card">
-    <span class="logo-plate" style="padding:13px 22px;margin-bottom:22px;"><img class="studio-logo brand-mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="Fairview Baptist Temple" style="margin:0;display:block;" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></span>
+    <span class="logo-plate" style="padding:13px 22px;margin-bottom:22px;"><span class="brand-disc"><img class="studio-logo brand-mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="Fairview Baptist Temple" style="margin:0;display:block;" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></span></span>
     <h1>Studio</h1>
     <p class="muted">Sign in to manage your site.</p>
     <form id="login-form" class="form">
@@ -684,7 +684,7 @@
 
 <div id="setpw" class="studio-center" hidden>
   <div class="studio-card">
-    <span class="logo-plate" style="padding:13px 22px;margin-bottom:22px;"><img class="studio-logo brand-mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="Fairview Baptist Temple" style="margin:0;display:block;" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></span>
+    <span class="logo-plate" style="padding:13px 22px;margin-bottom:22px;"><span class="brand-disc"><img class="studio-logo brand-mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="Fairview Baptist Temple" style="margin:0;display:block;" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></span></span>
     <h1>Set your password</h1>
     <p class="muted">Choose a password you'll use to sign in from now on.</p>
     <form id="setpw-form" class="form">
@@ -698,7 +698,7 @@
 <div id="app" class="studio-app" hidden>
   <button class="studio-nav-scrim" id="studio-nav-scrim" type="button" aria-label="Close Studio menu" tabindex="-1"></button>
   <aside class="studio-side" id="studio-sidebar" aria-label="Studio navigation">
-    <div class="studio-brand"><span class="logo-plate" style="padding:5px 8px;"><img class="brand-mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></span><span class="studio-brand-copy"><span>Studio</span><small class="studio-view-name" id="studio-view-name">Dashboard</small></span></div>
+    <div class="studio-brand"><span class="logo-plate" style="padding:5px 8px;"><span class="brand-disc"><img class="brand-mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></span></span><span class="studio-brand-copy"><span>Studio</span><small class="studio-view-name" id="studio-view-name">Dashboard</small></span></div>
     <button class="snav active" data-view="dashboard" data-view-label="Dashboard" aria-current="page"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg> Dashboard <span class="snav-count" id="dashboard-badge" hidden></span></button>
     <button class="snav" data-view="events" data-view-label="Events"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Events</button>
     <button class="snav" data-view="inbox" data-view-label="Inbox"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.5h13l3 6.5v6a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 2 18v-6z"/></svg> Inbox <span class="snav-count" id="inbox-badge" hidden></span></button>
@@ -1494,7 +1494,7 @@
 <script src="/assets/page-catalog.js?v=1"></script>
 <script src="/assets/page-editor.js?v=1"></script>
 <script src="/assets/image-upload.js?v=1"></script>
-<script src="/assets/studio-page-editor.js?v=2"></script>
+<script src="/assets/studio-page-editor.js?v=3"></script>
 <script src="/assets/media-page-preview.js?v=2"></script>
-<script src="assets/studio.js?v=41"></script>
+<script src="assets/studio.js?v=42"></script>
 </body></html>
