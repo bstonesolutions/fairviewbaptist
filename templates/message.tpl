@@ -30,10 +30,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/site.css?v=11">
+  <link rel="stylesheet" href="/assets/site.css?v=12">
   <link rel="stylesheet" href="/assets/message.css?v=3">
   <script src="/assets/analytics.js"></script>
-<link rel="stylesheet" href="/assets/page-editor.css?v=1">
+<link rel="stylesheet" href="/assets/page-editor.css?v=2">
+<link rel="stylesheet" href="/assets/inline-page-editor.css?v=1">
 </head>
 <body>
 <a class="message-skip" href="#message-content">Skip to message</a>
@@ -176,7 +177,8 @@
 <script src="/assets/image-loader.js?v=1"></script>
 <script src="/assets/page-catalog.js?v=1"></script>
 <script src="/assets/page-editor.js?v=1"></script>
-<script src="/assets/content.js?v=15"></script>
+<script src="/assets/inline-page-editor.js?v=1"></script>
+<script src="/assets/content.js?v=16"></script>
 <script src="/assets/fbt.feeds.js"></script>
 <script src="/assets/sermon-tags.js"></script>
 <script src="/assets/videos.js?v=3"></script>

@@ -265,6 +265,7 @@
     });
     // text
     document.querySelectorAll('[data-cms-text]').forEach(function (el) {
+      if (previewMode && el.hasAttribute('data-fbt-inline-editing')) return;
       var key = el.getAttribute('data-cms-text');
       var v = map[key];
       if (hasSavedValue(key, v)) {
@@ -275,6 +276,7 @@
     });
     // rich text (accent word via *asterisks*)
     document.querySelectorAll('[data-cms-rich]').forEach(function (el) {
+      if (previewMode && el.hasAttribute('data-fbt-inline-editing')) return;
       var key = el.getAttribute('data-cms-rich');
       var v = map[key];
       if (hasSavedValue(key, v)) { el.innerHTML = rich(v == null ? '' : v); reveal(el); }
@@ -758,8 +760,12 @@
     var allowed = Object.create(null);
     page.sections.forEach(function (section) { (section.fields || []).forEach(function (field) {
       allowed[field.key] = true;
-      if (field.type === 'image') allowed['media_style_' + field.key] = true;
-      if (media) { allowed[field.key + '_color'] = true; allowed[field.key.replace(/_heading$/, '_accent') + '_color'] = true; }
+      if (field.type === 'image') {
+        allowed['media_style_' + field.key] = true; allowed[field.key + '_shadow'] = true;
+        if (/^hero_bg_/.test(field.key)) allowed[field.key.replace('hero_bg_', 'hero_vid_')] = true;
+        if (field.key === 'hero_bg_welcome_home') allowed.welcome_photo_layout = true;
+      }
+      if (field.type === 'text' || field.type === 'rich') { allowed[field.key + '_color'] = true; allowed[field.key.replace(/_heading$/, '_accent') + '_color'] = true; }
     }); });
     if (media) {
       allowed[message.slot] = true;

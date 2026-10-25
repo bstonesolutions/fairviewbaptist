@@ -50,7 +50,7 @@
       var serialized = JSON.stringify(message);
       if (!message || serialized === sent) return;
       frame.contentWindow.postMessage(message, origin); sent = serialized;
-      status.textContent = 'Preview ready. Save changes to publish.';
+      status.textContent = 'Preview ready. Your changes are shown on the actual page.';
     }
     function loaded() {
       if (!current || !frame.getAttribute('src') || frame.getAttribute('src') === 'about:blank') return;

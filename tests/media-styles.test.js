@@ -105,9 +105,27 @@ test('Studio stages asset changes and publishes them with the design', function 
   assert.match(save, /Object\.keys\(edit\.pendingValues\)/);
   assert.match(save, /upsert\(rows,/);
   assert.match(save, /if \(!sameMediaSession\(edit\)\) return;/);
-  assert.doesNotMatch(save, /closeMediaEditor/);
+  // Standalone saves keep their confirmation open; page-draft designs return
+  // to the canvas after applying, without writing to the database themselves.
+  assert.doesNotMatch(save.slice(save.indexOf("edit.busy = 'saving'")), /closeMediaEditor/);
   assert.match(studio, /Cancel keeps it/);
   assert.match(studio, /mediaEdit\.busy \|\| mediaEdit\.style\.source === 'background'/);
+});
+
+test('the page designer applies a draft without publishing and preserves rejected changes', function () {
+  const vm = require('node:vm');
+  const studio = fs.readFileSync(path.join(__dirname, '../assets/studio.js'), 'utf8');
+  const save = studio.slice(studio.indexOf('function saveMediaDesign'), studio.indexOf('function restoreMediaLook'));
+  for (const accepted of [true, false]) {
+    let closed = false, applied;
+    const edit = { dirty: true, meta: { key: 'hero_bg_jubilee', kind: 'background' }, style: {}, pendingValues: { jubilee_hero_heading: 'Fresh copy' }, pageDraft: { onApply: values => { applied = values; return accepted; } } };
+    const context = { mediaEdit: edit, mediaStyleKey: () => 'media_style_hero_bg_jubilee', mediaStyleApi: { serialize: () => '{"v":1}' }, contentDefaults: {}, closeMediaEditor: () => { closed = true; }, setMediaEditorMessage: () => {}, sb: { from: () => { throw new Error('Draft design must not publish'); } } };
+    vm.runInNewContext(save + ';saveMediaDesign();', context);
+    assert.equal(applied.jubilee_hero_heading, 'Fresh copy');
+    assert.equal(applied.media_style_hero_bg_jubilee, '{"v":1}');
+    assert.equal(closed, accepted);
+    assert.equal(edit.dirty, !accepted);
+  }
 });
 
 test('the designer text panel has every helper it calls', function () {

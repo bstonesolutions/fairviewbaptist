@@ -26,9 +26,10 @@
 <link rel="icon" href="/assets/optimized/logo-fairview-2026-w64-fe089e11649b.png" type="image/png" sizes="64x64">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=11">
+<link rel="stylesheet" href="assets/site.css?v=12">
 <script src="assets/analytics.js"></script>
-<link rel="stylesheet" href="/assets/page-editor.css?v=1">
+<link rel="stylesheet" href="/assets/page-editor.css?v=2">
+<link rel="stylesheet" href="/assets/inline-page-editor.css?v=1">
 </head><body>
 <header id="hd"><div class="wrap"><nav class="nav">
 <a href="/" class="brand" aria-label="Fairview Baptist Temple, home"><img class="brand-mark logo" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="Fairview Baptist Temple, Clay, West Virginia" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"><img class="brand-mark mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="Fairview Baptist Temple" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></a>
@@ -81,7 +82,8 @@
 <script src="/assets/image-loader.js?v=1"></script>
 <script src="/assets/page-catalog.js?v=1"></script>
 <script src="/assets/page-editor.js?v=1"></script>
-<script src="assets/content.js?v=15"></script>
+<script src="/assets/inline-page-editor.js?v=1"></script>
+<script src="assets/content.js?v=16"></script>
 <script src="assets/posts.js"></script>
 <script src="assets/fbt.feeds.js"></script>
 <script src="assets/videos.js?v=3"></script>

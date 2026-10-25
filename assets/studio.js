@@ -384,13 +384,14 @@
 
   // ---------- view switching (Events / Blog / …) ----------
   var RETIRED_VIEWS = ['giving', 'prayers', 'bulletin', 'blog'];
-  var pendingMediaSlot = '';
+  var pendingMediaSlot = '', pendingEditorPage = '';
   var restoreScrollFor = '';
   function initialStudioView() {
     var h = (window.location.hash || '').replace(/^#/, '');
     var parts = h.split('/');
     var view = parts[0];
     if (view === 'media' && parts[1]) pendingMediaSlot = parts[1];
+    if (view === 'page-editor' && /^[a-z0-9-]+$/.test(parts[1] || '')) pendingEditorPage = parts[1];
     if (view && document.getElementById('view-' + view) && RETIRED_VIEWS.indexOf(view) < 0) {
       // Refreshing should put the owner back at the same spot on the page too.
       try {
@@ -406,7 +407,10 @@
     }
     return 'dashboard';
   }
-  window.addEventListener('beforeunload', function () {
+  window.addEventListener('beforeunload', function (event) {
+    if (mediaEdit && mediaEdit.pageDraft && (mediaEdit.dirty || mediaEdit.busy)) {
+      event.preventDefault(); event.returnValue = '';
+    }
     try {
       var active = document.querySelector('.studio-side .snav.active[data-view]');
       window.sessionStorage.setItem('fbt-studio-place', JSON.stringify({
@@ -415,13 +419,27 @@
       }));
     } catch (err) { /* ignore */ }
   });
-  var pageEditorController = null;
+  var pageEditorController = null, pendingPageMediaDesign = null;
+  function pageEditorLocation(page) {
+    if ($('view-page-editor').hidden) return;
+    var view = page.id === 'jubilee' ? 'jubilee' : 'page-editor';
+    Array.prototype.forEach.call(document.querySelectorAll('.studio-side .snav[data-view]'), function (button) {
+      var active = button.getAttribute('data-view') === view;
+      button.classList.toggle('active', active);
+      if (active) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current');
+      if (active && studioViewName) studioViewName.textContent = button.getAttribute('data-view-label') || view;
+    });
+    try { window.history.replaceState(null, '', view === 'jubilee' ? '#jubilee' : '#page-editor/' + page.id); } catch (err) { /* ignore */ }
+  }
   function showView(view) {
+    var requestedView = view;
+    var requestedPage = view === 'jubilee' ? 'jubilee' : view === 'page-editor' ? pendingEditorPage : '';
+    if (requestedPage) { view = 'page-editor'; pendingEditorPage = ''; }
     if (studioMain) studioMain.classList.toggle('with-page-editor', view === 'page-editor');
     Array.prototype.forEach.call(document.querySelectorAll('[data-view-pane]'), function (p) { p.hidden = (p.id !== 'view-' + view); });
     var activeButton = null;
     Array.prototype.forEach.call(document.querySelectorAll('.studio-side .snav[data-view]'), function (b) {
-      var active = b.getAttribute('data-view') === view;
+      var active = b.getAttribute('data-view') === requestedView;
       b.classList.toggle('active', active);
       if (active) { b.setAttribute('aria-current', 'page'); activeButton = b; }
       else b.removeAttribute('aria-current');
@@ -438,12 +456,13 @@
     if (view === 'sermons') loadSermons();
     if (view === 'media') loadMedia();
     if (view === 'pages') loadPages();
-    if (view === 'page-editor' && pageEditorController) pageEditorController.refresh();
+    if (view === 'page-editor' && pageEditorController && !requestedPage) pageEditorController.refresh();
     if (view === 'page-editor' && window.FBT_PAGE_EDITOR && !pageEditorController) {
-      pageEditorController = window.FBT_PAGE_EDITOR.mount({ element: $('page-editor-root'), client: sb, onSaved: function () {
+      pageEditorController = window.FBT_PAGE_EDITOR.mount({ element: $('page-editor-root'), client: sb, onPageChange: pageEditorLocation, onDesign: openPageMediaDesigner, onSaved: function () {
         settingsLoaded = false; peopleLoaded = false; mediaReady = false; jubileeLoaded = false;
       } });
     }
+    if (requestedPage && pageEditorController) pageEditorController.ready.then(function () { pageEditorController.selectPage(requestedPage); });
     if (view === 'missions') loadMissions();
     if (view === 'dashboard') loadDashboard();
     if (view === 'inbox') loadInbox();
@@ -452,7 +471,7 @@
     if (view === 'bulletin') loadBulletins();
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     // Keep the place on refresh: /studio#media reopens on Photos & media.
-    try { window.history.replaceState(null, '', '#' + view); } catch (err) { /* ignore */ }
+    try { window.history.replaceState(null, '', '#' + requestedView); } catch (err) { /* ignore */ }
     if (view !== restoreScrollFor) restoreScrollFor = '';
   }
   Array.prototype.forEach.call(document.querySelectorAll('.studio-side .snav[data-view]'), function (b) {
@@ -3570,7 +3589,7 @@
     mediaMarkDirty();
     buildMediaTextFields(mediaEdit.meta);
     syncMediaEditor(false);
-    setMediaEditorMessage('Matched "' + srcMeta.label + '". Save to keep it, or Undo match to go back.', '');
+    setMediaEditorMessage('Matched "' + srcMeta.label + '". ' + (mediaEdit.pageDraft ? 'Apply to keep it in your page draft' : 'Save to keep it') + ', or Undo match to go back.', '');
   }
   function undoMediaMatch() {
     if (!mediaEdit || !mediaEdit.matchUndo) return;
@@ -3714,7 +3733,7 @@
   }
   var MEDIA_DRAFT_KEY = 'fbt-studio-media-draft';
   function saveMediaDraft() {
-    if (!mediaEdit || !mediaEdit.dirty) return;
+    if (!mediaEdit || !mediaEdit.dirty || mediaEdit.pageDraft) return;
     try {
       window.sessionStorage.setItem(MEDIA_DRAFT_KEY, JSON.stringify({
         key: mediaEdit.meta.key,
@@ -3741,7 +3760,7 @@
     // Every edit path must light up Save itself; text and color tweaks do not
     // rebuild the whole editor the way the framing controls do.
     var save = $('media-editor-save');
-    if (save && !mediaEdit.busy) { save.disabled = false; save.textContent = 'Save changes'; }
+    if (save && !mediaEdit.busy) { save.disabled = false; save.textContent = mediaEdit.pageDraft ? 'Apply to page' : 'Save changes'; }
     saveMediaDraft();
     setMediaEditorMessage('Unsaved design changes', '');
   }
@@ -3854,7 +3873,7 @@
     $('media-editor-close').disabled = busy;
     $('media-editor-cancel').disabled = busy;
     $('media-editor-save').disabled = busy || !mediaEdit.dirty;
-    $('media-editor-save').textContent = mediaEdit.busy === 'saving' ? 'Saving...' : mediaEdit.busy === 'uploading' ? 'Uploading...' : 'Save changes';
+    $('media-editor-save').textContent = mediaEdit.busy === 'saving' ? 'Saving...' : mediaEdit.busy === 'uploading' ? 'Uploading...' : mediaEdit.pageDraft ? 'Apply to page' : 'Save changes';
     $('media-restore').disabled = busy || (!mediaEdit.stored && !mediaEdit.dirty);
     Array.prototype.forEach.call($('media-source').options, function (option) {
       if (option.value === 'video') {
@@ -3880,13 +3899,36 @@
   function sameMediaSession(edit) {
     return !!(edit && mediaEdit && edit.token === mediaEdit.token);
   }
-  function openMediaEditor(key, trigger) {
+  function openPageMediaDesigner(key, request) {
+    return new Promise(function (resolve, reject) {
+      pendingPageMediaDesign = { key: key, request: request, resolve: resolve, reject: reject };
+      loadMedia();
+      if (mediaReady) finishPageMediaDesign();
+    });
+  }
+  function finishPageMediaDesign() {
+    if (!pendingPageMediaDesign || !mediaReady) return;
+    var pending = pendingPageMediaDesign; pendingPageMediaDesign = null;
+    if (!mediaByKey(pending.key)) { pending.reject(new Error('This image has no designer yet. Use its photo field to replace it.')); return; }
+    var originalValues = mediaVals, originalSaved = mediaSavedKeys;
+    mediaVals = Object.assign({}, mediaVals, pending.request.content || {});
+    mediaSavedKeys = Object.assign({}, mediaSavedKeys);
+    Object.keys(pending.request.content || {}).forEach(function (key) { mediaSavedKeys[key] = true; });
+    openMediaEditor(pending.key, document.activeElement, {
+      onApply: pending.request.onApply,
+      originalValues: originalValues, originalSaved: originalSaved,
+      returnHash: location.hash || '#page-editor'
+    });
+    pending.resolve();
+  }
+  function openMediaEditor(key, trigger, pageDraft) {
     var meta = mediaByKey(key);
     if (!meta || !mediaStyleApi || !mediaReady) return;
     mediaEditorTrigger = trigger || document.activeElement;
     var stored = mediaStoredStyle(meta);
     mediaEdit = {
       token: ++mediaSessionSeq,
+      pageDraft: pageDraft || null,
       meta: meta,
       style: stored || mediaDefaultStyle(meta),
       viewport: 'desktop',
@@ -3897,13 +3939,13 @@
       busy: false
     };
     $('media-editor-title').textContent = meta.label;
-    $('media-editor-subtitle').textContent = 'Edit the design and review your changes on the actual page before saving.';
+    $('media-editor-subtitle').textContent = pageDraft ? 'Adjust this part of your page. Apply returns to your page draft; Save page publishes everything together.' : 'Edit the design and review your changes on the actual page before saving.';
     if ($('media-framing-detail')) $('media-framing-detail').open = false;
     $('media-editor').hidden = false;
     document.body.classList.add('media-editor-open');
     try { window.history.replaceState(null, '', '#media/' + meta.key); } catch (err) { /* ignore */ }
     setMediaBackgroundInert(true);
-    var draft = takeMediaDraft(key);
+    var draft = pageDraft ? null : takeMediaDraft(key);
     if (draft) {
       mediaEdit.style = mediaStyleApi.normalize(draft.style, meta.kind);
       mediaEdit.pendingValues = draft.pending || {};
@@ -3911,7 +3953,7 @@
       mediaEdit.restoreOriginal = false;
       setMediaEditorMessage('Restored your unsaved changes from before the page reloaded. Save to keep them, or Cancel to let them go.', '');
     } else {
-      setMediaEditorMessage(mediaEdit.stored ? 'Saved custom design loaded' : 'Using the original page look', '');
+      setMediaEditorMessage(pageDraft ? 'Editing your page draft' : (mediaEdit.stored ? 'Saved custom design loaded' : 'Using the original page look'), '');
     }
     buildMediaTextFields(meta);
     buildMediaMatch(meta);
@@ -3924,12 +3966,17 @@
     if (!mediaEdit) return;
     if (mediaEdit.busy) return;
     if (!force && mediaEdit.dirty && !window.confirm('Close without saving these design changes?')) return;
-    clearMediaDraft();
+    if (!mediaEdit.pageDraft) clearMediaDraft();
+    var pageDraft = mediaEdit.pageDraft;
     $('media-editor').hidden = true;
     document.body.classList.remove('media-editor-open');
-    try { window.history.replaceState(null, '', '#media'); } catch (err) { /* ignore */ }
+    try { window.history.replaceState(null, '', pageDraft ? pageDraft.returnHash : '#media'); } catch (err) { /* ignore */ }
     setMediaBackgroundInert(false);
     if (mediaPagePreview) mediaPagePreview.close();
+    if (pageDraft) {
+      mediaVals = pageDraft.originalValues; mediaSavedKeys = pageDraft.originalSaved;
+      refreshMediaPreviews();
+    }
     mediaEdit = null;
     mediaPointerDown = false;
     mediaPointerStart = null;
@@ -3967,6 +4014,19 @@
     Object.keys(edit.pendingValues).forEach(function (assetKey) {
       rows.push({ key: assetKey, value: edit.pendingValues[assetKey], updated_at: now });
     });
+    if (edit.pageDraft) {
+      var changes = {}; rows.forEach(function (row) { changes[row.key] = row.value; });
+      try {
+        if (edit.pageDraft.onApply(changes) === false) {
+          setMediaEditorMessage('Could not apply these changes to the page. Your design is still here.', 'err');
+          return;
+        }
+      } catch (error) {
+        setMediaEditorMessage('Could not apply these changes: ' + error.message, 'err');
+        return;
+      }
+      edit.dirty = false; closeMediaEditor(true); return;
+    }
     edit.busy = 'saving';
     syncMediaEditor(false);
     setMediaEditorMessage('Saving the media and design together...', '');
@@ -4001,7 +4061,7 @@
     mediaEdit.restoreOriginal = true;
     mediaEdit.dirty = true;
     syncMediaEditor();
-    setMediaEditorMessage('Original page look selected. Save to apply it.', '');
+    setMediaEditorMessage('Original page look selected. ' + (mediaEdit.pageDraft ? 'Apply it to your page draft.' : 'Save to apply it.'), '');
   }
   function removeMedia(key, label) {
     if (!mediaEdit || !key || mediaEdit.busy ||
@@ -4068,7 +4128,7 @@
       edit.style.source = video ? 'video' : 'image';
       mediaMarkDirty();
       syncMediaEditor();
-      setMediaEditorMessage((video ? 'Video' : 'Image') + ' uploaded. Finish the design, then Save changes to publish it.', 'ok');
+      setMediaEditorMessage((video ? 'Video' : 'Image') + ' uploaded. Finish the design, then ' + (edit.pageDraft ? 'apply it to your page draft.' : 'Save changes to publish it.'), 'ok');
     }, function () {
       if (prev) prev.classList.remove('uploading');
       if (!sameMediaSession(edit)) return;
@@ -4091,7 +4151,7 @@
     $('media-image-url').value = url;
     mediaMarkDirty();
     syncMediaEditor();
-    setMediaEditorMessage('Image selected. Save changes to publish it.', '');
+    setMediaEditorMessage('Image selected. ' + (mediaEdit.pageDraft ? 'Apply it to your page draft.' : 'Save changes to publish it.'), '');
   }
   function buildMediaLibrary() {
     var photos = (window.FBT_PHOTOS || []).filter(function (photo) { return photo && mediaImageUrl(photo.url); });
@@ -4324,6 +4384,7 @@
       if (result.error) {
         $('media-msg').className = 'studio-msg err';
         $('media-msg').textContent = 'Could not load media: ' + result.error.message;
+        if (pendingPageMediaDesign) { pendingPageMediaDesign.reject(new Error(result.error.message)); pendingPageMediaDesign = null; }
         return;
       }
       mediaVals = studioContentMap(result.data);
@@ -4348,11 +4409,20 @@
       if (photoHead) photoHead.hidden = true;
       mediaReady = true;
       refreshMediaPreviews();
+      finishPageMediaDesign();
       $('media-msg').textContent = '';
       if (pendingMediaSlot) {
         var reopen = pendingMediaSlot;
         pendingMediaSlot = '';
-        if (mediaByKey(reopen)) openMediaEditor(reopen);
+        if (mediaByKey(reopen) && !mediaEdit) openMediaEditor(reopen);
+      }
+    }, function () {
+      mediaLoading = false;
+      var message = 'Could not load media because the connection was interrupted. Please try again.';
+      $('media-msg').className = 'studio-msg err';
+      $('media-msg').textContent = message;
+      if (pendingPageMediaDesign) {
+        pendingPageMediaDesign.reject(new Error(message)); pendingPageMediaDesign = null;
       }
     });
   }
