@@ -1926,7 +1926,7 @@
     { key: 'hero_bg_tile_new', label: 'Home tile: I\'m New', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: "I'M NEW" },
     { key: 'hero_bg_tile_overlook', label: 'Home tile: The Overlook', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: 'THE OVERLOOK' },
     { key: 'hero_bg_tile_ministries', label: 'Home tile: Ministries', page: '/', pageLabel: 'Home page', ratio: 'tile-card', stage: 'MINISTRIES' },
-    { key: 'hero_bg_hope', label: 'Home: H.O.P.E. band photo', page: '/', pageLabel: 'Home page', ratio: 'tile-card', noCopy: true },
+    { key: 'hero_bg_hope', fallbackKey: 'photo_gi_groups', label: 'Home: H.O.P.E. band photo', page: '/', pageLabel: 'Home page', ratio: 'tile-card', noCopy: true },
     { key: 'hero_bg_stream_home', label: 'Home: The Overlook section', page: '/', pageLabel: 'Home page', ratio: 'hero-page' },
     { key: 'hero_bg_missions_home', label: 'Home: missions section', page: '/', pageLabel: 'Home page', ratio: 'hero-page' },
     { key: 'hero_bg_contact_home', label: 'Home: come visit section', page: '/', pageLabel: 'Home page', ratio: 'hero-page' },
@@ -3261,7 +3261,7 @@
   function syncMediaPagePreview() {
     if (!mediaEdit || !window.FBT_MEDIA_PAGE_PREVIEW || !$('media-page-preview')) return;
     if (!mediaPagePreview) mediaPagePreview = window.FBT_MEDIA_PAGE_PREVIEW.mount({ element: $('media-page-preview') });
-    var values = Object.assign({}, mediaVals, mediaEdit.pendingValues);
+    var values = Object.assign({}, mediaVals, mediaDesignValues(mediaEdit));
     var styleKey = mediaStyleKey(mediaEdit.meta);
     // Preview the same value Save changes will write, including an original-look reset.
     values[styleKey] = mediaEdit.restoreOriginal ? (contentDefaults[styleKey] || '') : mediaStyleApi.serialize(mediaEdit.style, mediaEdit.meta.kind);
@@ -3278,8 +3278,19 @@
     }
     return mediaVals[key];
   }
+  function mediaFallback(meta, draft) {
+    if (!meta || !meta.fallbackKey || nn(mediaValue(meta.key, draft)) ||
+        nn(mediaValue(mediaVideoKey(meta), draft)) ||
+        mediaStyleApi.parse(mediaValue(mediaStyleKey(meta), draft), meta.kind)) return null;
+    return mediaByKey(meta.fallbackKey);
+  }
   function mediaImage(meta, draft) {
     if (!meta) return '';
+    var inherited = mediaFallback(meta, draft);
+    if (inherited) {
+      var image = mediaValue(inherited.key, draft);
+      return image == null ? (inherited.fallback || '') : nn(image);
+    }
     var value = mediaValue(meta.key, draft);
     return value == null ? (meta.fallback || '') : nn(value);
   }
@@ -3288,7 +3299,20 @@
   function mediaStyleKey(meta) { return mediaStyleApi && meta ? mediaStyleApi.styleKey(meta.key) : ''; }
   function mediaStoredStyle(meta) {
     var key = mediaStyleKey(meta);
-    return key ? mediaStyleApi.parse(mediaVals[key], meta.kind) : null;
+    var style = key ? mediaStyleApi.parse(mediaVals[key], meta.kind) : null;
+    var inherited = !style && mediaFallback(meta, false);
+    return style || (inherited ? mediaStyleApi.parse(mediaVals[mediaStyleKey(inherited)], meta.kind) : null);
+  }
+  function mediaDesignValues(edit) {
+    var values = Object.assign({}, edit.pendingValues);
+    // Once a design belongs to this slot, retain the image it inherited instead
+    // of leaving a nonempty style with no image on the public page.
+    if (!edit.restoreOriginal && edit.style.source !== 'background' &&
+        !Object.prototype.hasOwnProperty.call(values, edit.meta.key) && mediaFallback(edit.meta, true)) {
+      var image = mediaImage(edit.meta, true);
+      if (image) values[edit.meta.key] = image;
+    }
+    return values;
   }
   function mediaHasCustomStyle(meta) {
     var key = mediaStyleKey(meta);
@@ -4025,8 +4049,9 @@
     var value = edit.restoreOriginal ? (contentDefaults[key] || '') : mediaStyleApi.serialize(edit.style, meta.kind);
     var now = new Date().toISOString();
     var rows = [{ key: key, value: value, updated_at: now }];
-    Object.keys(edit.pendingValues).forEach(function (assetKey) {
-      rows.push({ key: assetKey, value: edit.pendingValues[assetKey], updated_at: now });
+    var pendingValues = mediaDesignValues(edit);
+    Object.keys(pendingValues).forEach(function (assetKey) {
+      rows.push({ key: assetKey, value: pendingValues[assetKey], updated_at: now });
     });
     if (edit.pageDraft) {
       var changes = {}; rows.forEach(function (row) { changes[row.key] = row.value; });
@@ -4081,7 +4106,7 @@
     if (!mediaEdit || !key || mediaEdit.busy ||
         !window.confirm('Remove this ' + label + ' from the page when you save? The uploaded file will stay safely stored.')) return;
     mediaEdit.pendingValues[key] = '';
-    mediaEdit.style.source = label === 'image' && (mediaEdit.meta.fallback || mediaEdit.meta.builtIn) ? 'background' : 'auto';
+    mediaEdit.style.source = label === 'image' && (mediaEdit.meta.fallback || mediaEdit.meta.fallbackKey || mediaEdit.meta.builtIn) ? 'background' : 'auto';
     mediaMarkDirty();
     syncMediaEditor();
     setMediaEditorMessage('The ' + label + ' will be removed from the page when you save. Cancel keeps it.', '');

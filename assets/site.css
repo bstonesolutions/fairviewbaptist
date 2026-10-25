@@ -1322,6 +1322,7 @@ img.brand-mark{display:block;border-radius:50%;object-fit:cover;aspect-ratio:1;b
 .brand-disc>img.brand-mark{-webkit-filter:url(#fbt-white-mark);filter:url(#fbt-white-mark);transform:scale(.84);}
 .nav .brand:has(.brand-mark){padding:2px;border-radius:50%;flex-shrink:0;}
 .nav .brand .brand-mark{height:60px;width:60px;}
+@media(max-width:720px){.nav .brand:has(.brand-mark){position:relative;top:8px;}}
 .logo-plate:has(.brand-mark){border-radius:50%;padding:3px!important;}
 .logo-plate img.brand-mark{width:68px!important;height:68px!important;}
 .ftr .fmark{background:#fff;border-radius:50%;padding:3px;box-shadow:0 6px 16px rgba(31,50,56,.1);}

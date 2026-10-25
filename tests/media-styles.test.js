@@ -102,7 +102,8 @@ test('Studio stages asset changes and publishes them with the design', function 
 
   assert.match(upload, /edit\.pendingValues\[key\] = url/);
   assert.doesNotMatch(upload, /from\('site_content'\)\.upsert/);
-  assert.match(save, /Object\.keys\(edit\.pendingValues\)/);
+  assert.match(save, /mediaDesignValues\(edit\)/);
+  assert.match(save, /Object\.keys\(pendingValues\)/);
   assert.match(save, /upsert\(rows,/);
   assert.match(save, /if \(!sameMediaSession\(edit\)\) return;/);
   // Standalone saves keep their confirmation open; page-draft designs return
@@ -119,7 +120,7 @@ test('the page designer applies a draft without publishing and preserves rejecte
   for (const accepted of [true, false]) {
     let closed = false, applied;
     const edit = { dirty: true, meta: { key: 'hero_bg_jubilee', kind: 'background' }, style: {}, pendingValues: { jubilee_hero_heading: 'Fresh copy' }, pageDraft: { onApply: values => { applied = values; return accepted; } } };
-    const context = { mediaEdit: edit, mediaStyleKey: () => 'media_style_hero_bg_jubilee', mediaStyleApi: { serialize: () => '{"v":1}' }, contentDefaults: {}, closeMediaEditor: () => { closed = true; }, setMediaEditorMessage: () => {}, sb: { from: () => { throw new Error('Draft design must not publish'); } } };
+    const context = { mediaEdit: edit, mediaDesignValues: value => value.pendingValues, mediaStyleKey: () => 'media_style_hero_bg_jubilee', mediaStyleApi: { serialize: () => '{"v":1}' }, contentDefaults: {}, closeMediaEditor: () => { closed = true; }, setMediaEditorMessage: () => {}, sb: { from: () => { throw new Error('Draft design must not publish'); } } };
     vm.runInNewContext(save + ';saveMediaDesign();', context);
     assert.equal(applied.jubilee_hero_heading, 'Fresh copy');
     assert.equal(applied.media_style_hero_bg_jubilee, '{"v":1}');

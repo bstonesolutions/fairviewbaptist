@@ -405,9 +405,11 @@
     // A slot can name an older slot to inherit from until its own media is set
     // (the home H.O.P.E. band took over from the shared Get Involved photo).
     var alt = el.getAttribute('data-cms-bg-alt');
-    if (alt && !nonEmpty(img) && !nonEmpty(vid) && !style) {
-      el.removeAttribute('data-cms-bg-alt');
-      return applyBackground(el, alt, map);
+    if (alt && alt !== key && !nonEmpty(img) && !nonEmpty(vid) && !style) {
+      key = alt;
+      img = map[key];
+      vid = key.indexOf('hero_bg_') === 0 ? map[key.replace('hero_bg_', 'hero_vid_')] : null;
+      style = savedMediaStyle(map, key, 'background');
     }
     var previousMedia = el.querySelector('.cms-bg-media');
     clearMediaAppearance(el);
