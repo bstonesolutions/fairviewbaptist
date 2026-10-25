@@ -2001,7 +2001,7 @@
   },
   {
     "key": "hero_bg_visit_s8",
-    "label": "Visit: We saved you a seat",
+    "label": "Visit: Join us this Sunday",
     "page": "/visit",
     "pageLabel": "Visit page",
     "backdrop": "radial-gradient(90% 100% at 85% 0%,rgba(127,209,203,.18),transparent 55%),linear-gradient(135deg,#24466B,#16304D)",
@@ -2105,7 +2105,7 @@
   },
   {
     "key": "hero_bg_nextsteps_s2",
-    "label": "Next Steps: Let us walk with you",
+    "label": "Next Steps: Send a question or request",
     "page": "/next-steps",
     "pageLabel": "Next Steps page",
     "backdrop": "#FAF6ED",
@@ -2193,7 +2193,7 @@
   },
   {
     "key": "hero_bg_give_s3",
-    "label": "Give: Every gift fuels real ministry",
+    "label": "Give: Ministries your giving supports",
     "page": "/give",
     "pageLabel": "Give page",
     "backdrop": "#FAF6ED",
@@ -2344,8 +2344,8 @@
     ],
     hero_bg_visit: [
       { key: 'visit_hero_kick', label: 'Script line', def: 'New to Fairview?' },
-      { key: 'visit_hero_heading', label: 'Headline (*words* turn teal)', def: 'Walking in somewhere new is *easier* than you think', rich: true },
-      { key: 'visit_hero_sub', label: 'Subtext', def: 'This page answers the questions folks usually have when they are looking for a church home. Come as you are. There is no pressure, and no spotlight on the new face in the room.', multi: true }
+      { key: 'visit_hero_heading', label: 'Headline (*words* turn teal)', def: 'Plan your *first visit*', rich: true },
+      { key: 'visit_hero_sub', label: 'Subtext', def: 'Find service times, directions, and answers to common questions before your first visit.', multi: true }
     ],
     hero_bg_beliefs: [
       { key: 'beliefs_hero_kick', label: 'Script line', def: 'What we believe' },
@@ -2355,21 +2355,21 @@
     hero_bg_staff: [
       { key: 'staff_hero_kick', label: 'Script line', def: 'Our staff' },
       { key: 'staff_hero_heading', label: 'Headline (*words* turn teal)', def: 'Come meet the church *family*', rich: true },
-      { key: 'staff_hero_sub', label: 'Subtext', def: 'There is no front desk between you and us. When you pull in off Main Street, real folks are glad to see you. Meet our pastor here, then come shake hands with the whole church family on Sunday.', multi: true }
+      { key: 'staff_hero_sub', label: 'Subtext', def: 'Meet Pastor Michael Spurlock and the people who serve at Fairview Baptist Temple.', multi: true }
     ],
     hero_bg_getinvolved: [
       { key: 'getinvolved_hero_kick', label: 'Script line', def: 'Get Involved' },
       { key: 'getinvolved_hero_heading', label: 'Headline (*words* turn teal)', def: "There's a place *for you* here", rich: true },
-      { key: 'getinvolved_hero_sub', label: 'Subtext', def: 'Church is meant to be lived together. Whatever season you are in and whatever you carry, there is a place for you at Fairview and people ready to walk with you.', multi: true }
+      { key: 'getinvolved_hero_sub', label: 'Subtext', def: 'Find Sunday School classes, youth ministry, H.O.P.E. recovery, and opportunities to serve through the church van, visitation, missions, and music.', multi: true }
     ],
     hero_bg_nextsteps: [
       { key: 'nextsteps_hero_kick', label: 'Script line', def: 'Your Next Step' },
-      { key: 'nextsteps_hero_heading', label: 'Headline (*words* turn teal)', def: 'You do not have to take it *alone*', rich: true },
-      { key: 'nextsteps_hero_sub', label: 'Subtext', def: 'Whether you are wondering about salvation, ready to be baptized, looking for a church family, or simply need someone to talk with, there is a place to begin. Tell us where you are, and a real person from Fairview will walk with you.', multi: true }
+      { key: 'nextsteps_hero_heading', label: 'Headline (*words* turn teal)', def: 'Your *next step* at Fairview', rich: true },
+      { key: 'nextsteps_hero_sub', label: 'Subtext', def: 'Ask about salvation, baptism, church membership, joining a class, or serving. Choose a topic below and tell us how to contact you.', multi: true }
     ],
     hero_bg_events: [
       { key: 'events_hero_heading', label: 'Headline (*words* turn teal)', def: "What's happening at *Fairview*", rich: true },
-      { key: 'events_hero_sub', label: 'Subtext', def: 'Revival meetings, homecoming Sundays, church fellowships, Vacation Bible School, and special services. There is always a seat for you here.', multi: true }
+      { key: 'events_hero_sub', label: 'Subtext', def: 'Revival meetings, homecoming Sundays, church fellowships, Vacation Bible School, and special services.', multi: true }
     ],
     hero_bg_missions: [
       { key: 'missions_hero_heading', label: 'Headline (*words* turn teal)', def: 'Beyond these *hills*', rich: true },
@@ -2383,7 +2383,7 @@
     hero_bg_contact: [
       { key: 'contact_hero_kick', label: 'Script line', def: 'Contact' },
       { key: 'contact_hero_heading', label: 'Headline (*words* turn teal)', def: 'We would *love* to hear from you', rich: true },
-      { key: 'contact_hero_sub', label: 'Subtext', def: 'The best way to reach us is a phone call. Have a question, need a ride to church, or want help planning your first visit? Call 304-587-4709 and a real person will help you out.', multi: true }
+      { key: 'contact_hero_sub', label: 'Subtext', def: 'Call 304-587-4709 with questions, to request a ride, or for help planning your first visit.', multi: true }
     ],
     hero_bg_hope: [
       { key: 'hope_band_heading', label: 'Band headline (*words* turn aqua)', def: 'Fighting addiction? There is H.O.P.E.', rich: true },
@@ -2393,7 +2393,7 @@
     hero_bg_welcome_home: [
       { key: 'home_welcome_kick', label: 'Script line', def: 'Welcome home to Fairview' },
       { key: 'home_welcome_heading', label: 'Heading', def: 'A church family in the hills' },
-      { key: 'home_welcome_body', label: 'Paragraph', def: 'We are a church family in the hills of Clay County that believes the Bible, loves people, and preaches Christ crucified, buried, and risen again. However you come and whatever you carry, you will find a warm welcome, honest preaching, and a place to belong.', multi: true }
+      { key: 'home_welcome_body', label: 'Paragraph', def: 'We are a church family in the hills of Clay County that believes the Bible, loves people, and preaches Christ crucified, buried, and risen again.', multi: true }
     ],
     hero_bg_stream_home: [
       { key: 'home_stream_kick', label: 'Script line', def: 'The Overlook' },
@@ -2439,7 +2439,7 @@
     {
       "key": "visit_s1_sub",
       "label": "Paragraph",
-      "def": "A simple, honest Sunday. Here is the feel of a service with us.",
+      "def": "",
       "multi": true
     }
   ],
@@ -2458,7 +2458,7 @@
     {
       "key": "visit_s2_sub",
       "label": "Paragraph",
-      "def": "No guessing, no surprises. From Main Street to the last amen, here is what a Sunday looks like.",
+      "def": "",
       "multi": true
     }
   ],
@@ -2477,7 +2477,7 @@
     {
       "key": "visit_s3_sub",
       "label": "Paragraph",
-      "def": "Tell us a little about your visit and we will be watching for you, save you a seat, and have a friendly face ready to say hello.",
+      "def": "Tell us which service you plan to attend and whether you are bringing children. Add any questions or requests for help in the message box.",
       "multi": true
     }
   ],
@@ -2556,7 +2556,7 @@
     {
       "key": "visit_s8_heading",
       "label": "Heading (*words* turn teal)",
-      "def": "We saved you a *seat*",
+      "def": "Join us *this Sunday*",
       "rich": true
     },
     {
@@ -2658,7 +2658,7 @@
     {
       "key": "staff_s1_sub",
       "label": "Paragraph",
-      "def": "Fairview is served by folks who love this church and love the people who walk through its doors. Come put faces to the names on Sunday.",
+      "def": "",
       "multi": true
     }
   ],
@@ -2710,7 +2710,7 @@
     {
       "key": "getinvolved_s1_sub",
       "label": "Paragraph",
-      "def": "Not sure where to begin? Take the first small step, and we'll help you find the rest.",
+      "def": "Visit a service, read about our ministries, or contact the church to ask about serving.",
       "multi": true
     }
   ],
@@ -2762,7 +2762,7 @@
     {
       "key": "nextsteps_s1_sub",
       "label": "Paragraph",
-      "def": "You do not need to have the right words or know the whole plan. Choose the place that best fits today, and we will help with what comes next.",
+      "def": "",
       "multi": true
     }
   ],
@@ -2775,7 +2775,7 @@
     {
       "key": "nextsteps_s2_heading",
       "label": "Heading (*words* turn teal)",
-      "def": "Let us walk *with you*",
+      "def": "Send a *question or request*",
       "rich": true
     },
     {
@@ -2952,13 +2952,13 @@
     {
       "key": "give_s3_heading",
       "label": "Heading (*words* turn teal)",
-      "def": "Every gift fuels *real ministry*",
+      "def": "Ministries your *giving supports*",
       "rich": true
     },
     {
       "key": "give_s3_sub",
       "label": "Paragraph",
-      "def": "Here's how your giving goes to work, in Clay and far beyond.",
+      "def": "",
       "multi": true
     }
   ],
@@ -3003,7 +3003,7 @@
     {
       "key": "give_s6_sub",
       "label": "Paragraph",
-      "def": "Every gift matters here, and every gift goes to work.",
+      "def": "",
       "multi": true
     }
   ],
@@ -3041,7 +3041,7 @@
     {
       "key": "contact_s2_sub",
       "label": "Paragraph",
-      "def": "We are at 2294 Main Street in downtown Clay, an easy drive from anywhere in the county. If you need a ride, our van ministry will come get you free of charge.",
+      "def": "We are at 2294 Main Street in downtown Clay. If you need a ride, our van ministry will come get you free of charge.",
       "multi": true
     }
   ],

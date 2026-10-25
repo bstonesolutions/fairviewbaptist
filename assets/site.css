@@ -124,6 +124,7 @@ header.solid{box-shadow:0 8px 30px rgba(31,50,56,.09);}
 
 .sec{padding:clamp(64px,9vw,116px) 0;position:relative;}
 .sec.d1{background:var(--paper);}.sec.d2{background:var(--paper2);}.sec.d3{background:var(--sage);}
+p[data-cms-text]:empty{display:none;}
 .shead{max-width:720px;margin-bottom:50px;}
 .shead h2{font-size:clamp(2.1rem,4.6vw,3.5rem);margin-top:18px;}
 .shead p{color:var(--mut);font-size:1.18rem;margin-top:18px;max-width:60ch;}

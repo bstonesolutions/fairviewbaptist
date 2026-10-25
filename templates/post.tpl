@@ -26,7 +26,7 @@
 <link rel="icon" href="/assets/optimized/logo-fairview-2026-w64-fe089e11649b.png" type="image/png" sizes="64x64">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=19">
+<link rel="stylesheet" href="assets/site.css?v=20">
 <script src="assets/analytics.js"></script>
 <link rel="stylesheet" href="/assets/page-editor.css?v=3">
 <link rel="stylesheet" href="/assets/inline-page-editor.css?v=1">
@@ -81,7 +81,7 @@
 <script src="/assets/map-settings.js?v=1"></script>
 <script src="/assets/image-assets.js?v=1"></script>
 <script src="/assets/image-loader.js?v=2"></script>
-<script src="/assets/page-catalog.js?v=3"></script>
+<script src="/assets/page-catalog.js?v=4"></script>
 <script src="/assets/page-editor.js?v=1"></script>
 <script src="/assets/inline-page-editor.js?v=1"></script>
 <script src="assets/content.js?v=18"></script>

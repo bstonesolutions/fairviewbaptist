@@ -297,7 +297,7 @@ window.FBT_PAGE_CATALOG = {
               "key": "home_welcome_body",
               "label": "Home welcome paragraph",
               "type": "text",
-              "def": "We are a church family in the hills of Clay County that believes the Bible, loves people, and preaches Christ crucified, buried, and risen again. However you come and whatever you carry, you will find a warm welcome, honest preaching, and a place to belong."
+              "def": "We are a church family in the hills of Clay County that believes the Bible, loves people, and preaches Christ crucified, buried, and risen again."
             },
             {
               "key": "index_section_5_text_2",
@@ -731,7 +731,7 @@ window.FBT_PAGE_CATALOG = {
       "sections": [
         {
           "id": "visit-section-1",
-          "label": "Walking in somewhere new is easier than you think",
+          "label": "Plan your first visit",
           "parentGroup": "visit-body",
           "parentLabel": "Page",
           "selector": "[data-page-section=\"visit-section-1\"]",
@@ -752,13 +752,13 @@ window.FBT_PAGE_CATALOG = {
               "key": "visit_hero_heading",
               "label": "Visit: headline",
               "type": "rich",
-              "def": "Walking in somewhere new is *easier* than you think"
+              "def": "Plan your *first visit*"
             },
             {
               "key": "visit_hero_sub",
               "label": "Visit: subtext",
               "type": "text",
-              "def": "This page answers the questions folks usually have when they are looking for a church home. Come as you are. There is no pressure, and no spotlight on the new face in the room."
+              "def": "Find service times, directions, and answers to common questions before your first visit."
             },
             {
               "key": "visit_section_1_text_1",
@@ -814,9 +814,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "visit_s1_sub",
-              "label": "Text: A simple, honest Sunday. Here is the feel of a service with us.",
+              "label": "Text: visit_s1_sub",
               "type": "text",
-              "def": "A simple, honest Sunday. Here is the feel of a service with us."
+              "def": ""
             },
             {
               "key": "visit_section_2_text_1",
@@ -862,9 +862,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "visit_section_2_text_8",
-              "label": "Text: A friendly face at the door and a seat saved for you. No awkward spotl",
+              "label": "Text: Someone at the door can help you find a seat.",
               "type": "text",
-              "def": "A friendly face at the door and a seat saved for you. No awkward spotlight, just folks glad you came."
+              "def": "Someone at the door can help you find a seat."
             },
             {
               "key": "photo_visit",
@@ -936,9 +936,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "visit_s2_sub",
-              "label": "Text: No guessing, no surprises. From Main Street to the last amen, here is ",
+              "label": "Text: visit_s2_sub",
               "type": "text",
-              "def": "No guessing, no surprises. From Main Street to the last amen, here is what a Sunday looks like."
+              "def": ""
             },
             {
               "key": "visit_section_3_text_1",
@@ -984,9 +984,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "visit_section_3_text_7",
-              "label": "Text: Sit wherever you like. There are no assigned seats, and no spotlight o",
+              "label": "Text: Sit wherever you like. There are no assigned seats.",
               "type": "text",
-              "def": "Sit wherever you like. There are no assigned seats, and no spotlight on the new face in the room."
+              "def": "Sit wherever you like. There are no assigned seats."
             },
             {
               "key": "visit_section_3_text_8",
@@ -1080,9 +1080,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "visit_s3_sub",
-              "label": "Text: Tell us a little about your visit and we will be watching for you, sav",
+              "label": "Text: Tell us which service you plan to attend and whether you are bringing ",
               "type": "text",
-              "def": "Tell us a little about your visit and we will be watching for you, save you a seat, and have a friendly face ready to say hello."
+              "def": "Tell us which service you plan to attend and whether you are bringing children. Add any questions or requests for help in the message box."
             },
             {
               "key": "visit_nursery_heading",
@@ -1734,7 +1734,7 @@ window.FBT_PAGE_CATALOG = {
         },
         {
           "id": "visit-section-9",
-          "label": "We saved you a seat",
+          "label": "Join us this Sunday",
           "parentGroup": "visit-body",
           "parentLabel": "Page",
           "selector": "[data-page-section=\"visit-section-9\"]",
@@ -1747,9 +1747,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "visit_s8_heading",
-              "label": "Heading: We saved you a *seat*",
+              "label": "Heading: Join us *this Sunday*",
               "type": "rich",
-              "def": "We saved you a *seat*"
+              "def": "Join us *this Sunday*"
             },
             {
               "key": "visit_s8_sub",
@@ -2209,7 +2209,7 @@ window.FBT_PAGE_CATALOG = {
               "key": "staff_hero_sub",
               "label": "Staff: subtext",
               "type": "text",
-              "def": "There is no front desk between you and us. When you pull in off Main Street, real folks are glad to see you. Meet our pastor here, then come shake hands with the whole church family on Sunday."
+              "def": "Meet Pastor Michael Spurlock and the people who serve at Fairview Baptist Temple."
             },
             {
               "key": "staff_section_1_text_2",
@@ -2299,9 +2299,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "staff_s1_sub",
-              "label": "Text: Fairview is served by folks who love this church and love the people w",
+              "label": "Text: staff_s1_sub",
               "type": "text",
-              "def": "Fairview is served by folks who love this church and love the people who walk through its doors. Come put faces to the names on Sunday."
+              "def": ""
             },
             {
               "key": "staff11_photo",
@@ -2756,7 +2756,7 @@ window.FBT_PAGE_CATALOG = {
               "key": "getinvolved_hero_sub",
               "label": "Get Involved: subtext",
               "type": "text",
-              "def": "Church is meant to be lived together. Whatever season you are in and whatever you carry, there is a place for you at Fairview and people ready to walk with you."
+              "def": "Find Sunday School classes, youth ministry, H.O.P.E. recovery, and opportunities to serve through the church van, visitation, missions, and music."
             },
             {
               "key": "get_involved_section_1_text_2",
@@ -2812,9 +2812,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "getinvolved_s1_sub",
-              "label": "Text: Not sure where to begin? Take the first small step, and we'll help you",
+              "label": "Text: Visit a service, read about our ministries, or contact the church to a",
               "type": "text",
-              "def": "Not sure where to begin? Take the first small step, and we'll help you find the rest."
+              "def": "Visit a service, read about our ministries, or contact the church to ask about serving."
             },
             {
               "key": "get_involved_section_2_link_1",
@@ -3115,9 +3115,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "gi_van",
-              "label": "Text: No way to get to church? Our van will come get you for any service, fr",
+              "label": "Text: Our van offers a free ride to any service, and the van team goes out v",
               "type": "text",
-              "def": "No way to get to church? Our van will come get you for any service, free of charge, and the van team goes out visiting on Saturdays. Call 304-587-4709 and we'll save you a seat."
+              "def": "Our van offers a free ride to any service, and the van team goes out visiting on Saturdays. Call 304-587-4709 to arrange a ride."
             },
             {
               "key": "gi_van_meets",
@@ -3400,7 +3400,7 @@ window.FBT_PAGE_CATALOG = {
       "sections": [
         {
           "id": "next-steps-section-1",
-          "label": "You do not have to take it alone",
+          "label": "Your next step at Fairview",
           "parentGroup": "next-steps-main",
           "parentLabel": "Page",
           "selector": "[data-page-section=\"next-steps-section-1\"]",
@@ -3421,13 +3421,13 @@ window.FBT_PAGE_CATALOG = {
               "key": "nextsteps_hero_heading",
               "label": "Next Steps: headline",
               "type": "rich",
-              "def": "You do not have to take it *alone*"
+              "def": "Your *next step* at Fairview"
             },
             {
               "key": "nextsteps_hero_sub",
               "label": "Next Steps: subtext",
               "type": "text",
-              "def": "Whether you are wondering about salvation, ready to be baptized, looking for a church family, or simply need someone to talk with, there is a place to begin. Tell us where you are, and a real person from Fairview will walk with you."
+              "def": "Ask about salvation, baptism, church membership, joining a class, or serving. Choose a topic below and tell us how to contact you."
             },
             {
               "key": "next_steps_section_1_text_2",
@@ -3483,9 +3483,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "nextsteps_s1_sub",
-              "label": "Text: You do not need to have the right words or know the whole plan. Choose",
+              "label": "Text: nextsteps_s1_sub",
               "type": "text",
-              "def": "You do not need to have the right words or know the whole plan. Choose the place that best fits today, and we will help with what comes next."
+              "def": ""
             },
             {
               "key": "next_steps_section_2_text_2",
@@ -3626,7 +3626,7 @@ window.FBT_PAGE_CATALOG = {
         },
         {
           "id": "next-steps-section-3",
-          "label": "Let us walk with you",
+          "label": "Send a question or request",
           "parentGroup": "next-steps-main",
           "parentLabel": "Page",
           "selector": "[data-page-section=\"next-steps-section-3\"]",
@@ -3645,9 +3645,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "nextsteps_s2_heading",
-              "label": "Heading: Let us walk *with you*",
+              "label": "Heading: Send a *question or request*",
               "type": "rich",
-              "def": "Let us walk *with you*"
+              "def": "Send a *question or request*"
             },
             {
               "key": "nextsteps_s2_sub",
@@ -3817,7 +3817,7 @@ window.FBT_PAGE_CATALOG = {
               "key": "events_hero_sub",
               "label": "Events: subtext",
               "type": "text",
-              "def": "Revival meetings, homecoming Sundays, church fellowships, Vacation Bible School, and special services. There is always a seat for you here."
+              "def": "Revival meetings, homecoming Sundays, church fellowships, Vacation Bible School, and special services."
             }
           ],
           "collections": []
@@ -4523,7 +4523,7 @@ window.FBT_PAGE_CATALOG = {
         },
         {
           "id": "give-section-4",
-          "label": "Every gift fuels real ministry",
+          "label": "Ministries your giving supports",
           "parentGroup": "give-body",
           "parentLabel": "Page",
           "selector": "[data-page-section=\"give-section-4\"]",
@@ -4542,15 +4542,15 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "give_s3_heading",
-              "label": "Heading: Every gift fuels *real ministry*",
+              "label": "Heading: Ministries your *giving supports*",
               "type": "rich",
-              "def": "Every gift fuels *real ministry*"
+              "def": "Ministries your *giving supports*"
             },
             {
               "key": "give_s3_sub",
-              "label": "Text: Here's how your giving goes to work, in Clay and far beyond.",
+              "label": "Text: give_s3_sub",
               "type": "text",
-              "def": "Here's how your giving goes to work, in Clay and far beyond."
+              "def": ""
             },
             {
               "key": "give_section_4_text_1",
@@ -4861,9 +4861,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "give_s6_sub",
-              "label": "Text: Every gift matters here, and every gift goes to work.",
+              "label": "Text: give_s6_sub",
               "type": "text",
-              "def": "Every gift matters here, and every gift goes to work."
+              "def": ""
             },
             {
               "key": "give_section_7_text_2",
@@ -4916,7 +4916,7 @@ window.FBT_PAGE_CATALOG = {
               "key": "contact_hero_sub",
               "label": "Contact: subtext",
               "type": "text",
-              "def": "The best way to reach us is a phone call. Have a question, need a ride to church, or want help planning your first visit? Call 304-587-4709 and a real person will help you out."
+              "def": "Call 304-587-4709 with questions, to request a ride, or for help planning your first visit."
             },
             {
               "key": "contact_section_1_text_2",
@@ -5118,9 +5118,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "contact_s2_sub",
-              "label": "Text: We are at 2294 Main Street in downtown Clay, an easy drive from anywhe",
+              "label": "Text: We are at 2294 Main Street in downtown Clay. If you need a ride, our v",
               "type": "text",
-              "def": "We are at 2294 Main Street in downtown Clay, an easy drive from anywhere in the county. If you need a ride, our van ministry will come get you free of charge."
+              "def": "We are at 2294 Main Street in downtown Clay. If you need a ride, our van ministry will come get you free of charge."
             },
             {
               "key": "contact_section_3_text_1",
