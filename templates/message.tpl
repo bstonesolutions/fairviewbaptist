@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="/assets/site.css?v=14">
   <link rel="stylesheet" href="/assets/message.css?v=3">
   <script src="/assets/analytics.js"></script>
-<link rel="stylesheet" href="/assets/page-editor.css?v=2">
+<link rel="stylesheet" href="/assets/page-editor.css?v=3">
 <link rel="stylesheet" href="/assets/inline-page-editor.css?v=1">
 </head>
 <body>

@@ -150,6 +150,32 @@
     });
     return true;
   }
+  function createPreviewWatchdog(options) {
+    var timer = null, generation = 0, active = false, attempted = false;
+    var delay = options.timeoutMs == null ? 10000 : options.timeoutMs;
+    function cancel() {
+      active = false; generation++;
+      if (timer !== null) options.clearTimeout(timer);
+      timer = null;
+    }
+    function arm() {
+      var current = generation;
+      timer = options.setTimeout(function () {
+        if (!active || current !== generation) return;
+        timer = null;
+        if (!attempted) {
+          attempted = true;
+          options.onRetry();
+          if (active && current === generation) arm();
+        } else { active = false; options.onTimeout(); }
+      }, delay);
+    }
+    return {
+      start: function (manual) { cancel(); active = true; attempted = !!manual; arm(); },
+      ready: cancel,
+      cancel: cancel
+    };
+  }
   function escape(value) { return string(value).replace(/[&<>"']/g, function (char) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]; }); }
   function mount(options) {
     options = options || {};
@@ -159,7 +185,7 @@
     var catalog = options.catalog || root.FBT_PAGE_CATALOG || { pages: [] }, pages = catalog.pages || [];
     var session = null, destroyed = false, busy = false, request = 0, previewTimer, previewSize = 'desktop';
     var selectedSection = '', selectedField = '', selectedMedia = '', history = [], lastHistoryToken = '', lastHistoryAt = 0;
-    var inlineReady = false, inlineActive = false, frameLoading = false, commitSequence = 0, pendingCommit = null;
+    var inlineReady = false, inlineActive = false, frameLoading = false, previewUrl = '', commitSequence = 0, pendingCommit = null;
     var defaults = options.defaults || (root.FBT_SCHEMA && root.FBT_SCHEMA.defaults) || {};
     var document = element.ownerDocument, currentStatus = '', currentStatusKind = '';
     element.classList.add('fbt-page-editor');
@@ -169,6 +195,7 @@
       '<div class="pe-save-tools"><button type="button" data-pe-undo disabled>Undo</button><button type="button" class="pe-primary" data-pe-save>Save page</button></div></div>' +
       '<div class="pe-feedback"><p class="pe-status" data-pe-status role="status" aria-live="polite"></p><a data-pe-open target="_blank" rel="noopener">Open saved page ↗</a></div>' +
       '<div class="pe-workspace"><section class="pe-preview" aria-label="Editable page"><p class="pe-canvas-hint">Click text to edit it. Select a photo or section to change its design.</p>' +
+      '<div class="pe-preview-status" data-pe-preview-state hidden><span data-pe-preview-status role="status" aria-live="polite"></span><button type="button" data-pe-preview-retry>Retry preview</button></div>' +
       '<div class="pe-frame-shell"><iframe title="Edit this page" sandbox="allow-scripts allow-same-origin" data-pe-frame></iframe></div></section>' +
       '<aside class="pe-inspector" aria-label="Selected section settings"><details class="pe-outline" data-pe-outline><summary>Page sections <span data-pe-count></span></summary>' +
       '<div data-pe-sections></div><div class="pe-outline-actions"><button type="button" data-pe-reset>Reset layout</button><button type="button" data-pe-reload>Reload saved page</button></div></details>' +
@@ -176,6 +203,19 @@
     var picker = element.querySelector('[data-pe-page]'), list = element.querySelector('[data-pe-sections]');
     var inspector = element.querySelector('[data-pe-inspector]'), frame = element.querySelector('[data-pe-frame]');
     var saveButton = element.querySelector('[data-pe-save]');
+    function previewStatus(message, kind) {
+      var bar = element.querySelector('[data-pe-preview-state]');
+      bar.hidden = !message; bar.dataset.kind = kind || '';
+      element.querySelector('[data-pe-preview-status]').textContent = message;
+    }
+    var previewWatchdog = createPreviewWatchdog({
+      setTimeout: function (callback, delay) { return root.setTimeout(callback, delay); },
+      clearTimeout: function (timer) { root.clearTimeout(timer); },
+      onRetry: function () { if (!destroyed && frameLoading && previewUrl) navigateFrame(previewUrl, 'auto'); },
+      onTimeout: function () {
+        if (!destroyed && frameLoading) previewStatus('The preview did not finish loading. Your edits are safe here. Retry the preview to continue.', 'error');
+      }
+    });
     function sizePreview() {
       var shell = element.querySelector('.pe-frame-shell'), width = shell.clientWidth;
       if (!width) return;
@@ -233,10 +273,10 @@
         var actual = new URL(frame.contentWindow.location.href);
         if (expected.origin !== pageUrl.origin || expected.pathname !== pageUrl.pathname || actual.origin !== expected.origin || actual.pathname !== expected.pathname || actual.search !== expected.search) return;
       } catch (error) { return; }
-      frameLoading = false; postPreview(); sizePreview();
-      // Changing the Studio route while its iframe navigation is pending can
-      // leave Chrome displaying the previous document. Announce only this load.
-      notifyPageChange();
+      var newlyLoaded = frameLoading;
+      frameLoading = false; previewWatchdog.ready(); previewStatus(''); postPreview(); sizePreview();
+      // Announce the Studio route only after the requested child is available.
+      if (newlyLoaded) notifyPageChange();
     }
     function flushInline() {
       if (!inlineReady || !session || !frame.contentWindow) return Promise.resolve();
@@ -360,7 +400,7 @@
       update();
     }
     function frameUrl(page) { var url = new URL(page.path, root.location.href); url.searchParams.set('studio_preview', '1'); url.searchParams.set('visual_edit', '1'); return url.pathname + url.search + url.hash; }
-    function navigateFrame(url) {
+    function navigateFrame(url, retry) {
       var next = document.createElement('iframe');
       next.setAttribute('title', 'Edit this page');
       next.setAttribute('sandbox', 'allow-scripts allow-same-origin');
@@ -373,11 +413,14 @@
       next.src = url;
       frame.removeEventListener('load', frameLoaded);
       frame.replaceWith(next); frame = next;
-      inlineReady = false; inlineActive = false; frameLoading = true;
+      inlineReady = false; inlineActive = false; frameLoading = true; previewUrl = url;
+      if (retry !== 'auto') previewWatchdog.start(retry === 'manual');
+      previewStatus(retry === 'auto' ? 'The preview is taking longer than expected. Trying once more…' : retry === 'manual' ? 'Retrying page preview. Your edits are safe here…' : 'Loading page preview…', 'loading');
       sizePreview();
     }
     async function load(page) {
       var current = ++request;
+      previewWatchdog.cancel();
       setBusy(true); status('Loading page…');
       try {
         var keys = fieldsFor(page).map(function (field) { return field.key; }).concat(Layout.layoutKey(page), auxiliaryKeys(page));
@@ -496,6 +539,10 @@
       if (own(data, 'peSave')) { save(); return; }
       if (own(data, 'peUndo')) { undo(); return; }
       if (own(data, 'peReload')) { reloadSaved(); return; }
+      if (own(data, 'pePreviewRetry')) {
+        if (session && frameLoading && previewUrl) navigateFrame(previewUrl, 'manual');
+        return;
+      }
       if (data.peSize) {
         previewSize = data.peSize; element.querySelector('.pe-frame-shell').classList.toggle('pe-phone', data.peSize === 'phone');
         Array.prototype.forEach.call(element.querySelectorAll('[data-pe-size]'), function (button) { button.setAttribute('aria-pressed', button === target ? 'true' : 'false'); });
@@ -516,8 +563,8 @@
     function message(event) {
       if (event.origin !== root.location.origin || event.source !== frame.contentWindow || !event.data || !session || event.data.pageId !== session.page.id) return;
       var data = event.data;
-      if (data.type === 'fbt:page-preview-ready') { postPreview(); return; }
-      if (data.type === 'fbt:page-inline-ready') { inlineReady = true; postFocus(); return; }
+      if (data.type === 'fbt:page-preview-ready') { frameLoaded(); return; }
+      if (data.type === 'fbt:page-inline-ready') { inlineReady = true; frameLoaded(); postFocus(); return; }
       if (data.type === 'fbt:page-editing' && typeof data.active === 'boolean') { inlineActive = data.active; syncState(); return; }
       if (data.type === 'fbt:page-committed') {
         if (pendingCommit && data.requestId === pendingCommit.id) { var pending = pendingCommit; pendingCommit = null; root.clearTimeout(pending.timer); pending.resolve(); }
@@ -552,7 +599,7 @@
       hasUnsavedChanges: function () { return dirty() || inlineActive; },
       save: save,
       destroy: function () {
-        destroyed = true; request++; root.clearTimeout(previewTimer);
+        destroyed = true; request++; root.clearTimeout(previewTimer); previewWatchdog.cancel();
         if (pendingCommit) { root.clearTimeout(pendingCommit.timer); pendingCommit.reject(new Error('The page editor was closed.')); pendingCommit = null; }
         element.removeEventListener('input', input); element.removeEventListener('change', change); element.removeEventListener('click', click);
         frame.removeEventListener('load', frameLoaded); root.removeEventListener('resize', sizePreview);
@@ -566,5 +613,5 @@
     if (initialPage) controller.ready = load(initialPage); else { status('No editable pages are available.', 'error'); syncState(); controller.ready = Promise.resolve(); }
     return controller;
   }
-  return { mount: mount, fieldsFor: fieldsFor, auxiliaryKeys: auxiliaryKeys, createSession: createSession, applyInlineEdit: applyInlineEdit, stageDesign: stageDesign, dirtyRows: dirtyRows, saveSession: saveSession, contentForPreview: contentForPreview, move: move, moveSection: moveSection };
+  return { mount: mount, fieldsFor: fieldsFor, auxiliaryKeys: auxiliaryKeys, createSession: createSession, applyInlineEdit: applyInlineEdit, stageDesign: stageDesign, dirtyRows: dirtyRows, saveSession: saveSession, contentForPreview: contentForPreview, move: move, moveSection: moveSection, createPreviewWatchdog: createPreviewWatchdog };
 });
