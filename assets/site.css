@@ -1316,14 +1316,14 @@ html.kiosk .miss-modal-photo{height:300px;}
 }
 
 /* The supplied mark keeps its original pixels inside a round white plate. */
-img.brand-mark{border-radius:50%;object-fit:cover;aspect-ratio:1;}
+img.brand-mark{border-radius:50%;object-fit:cover;aspect-ratio:1;box-sizing:border-box;border:5px solid #09a3a4;}
 .nav .brand:has(.brand-mark){padding:2px;border-radius:50%;flex-shrink:0;}
-.nav .brand .brand-mark{height:60px;width:60px;}
+.nav .brand .brand-mark{height:60px;width:60px;border-width:5px;}
 .logo-plate:has(.brand-mark){border-radius:50%;padding:3px!important;}
 .logo-plate img.brand-mark{width:68px!important;height:68px!important;}
 .ftr .fmark{background:#fff;border-radius:50%;padding:3px;box-shadow:0 6px 16px rgba(31,50,56,.1);}
-.ftr .fmark img.brand-mark{object-fit:cover;}
-.studio-brand .logo-plate img.brand-mark{width:42px!important;height:42px!important;}
+.ftr .fmark img.brand-mark{object-fit:cover;border-width:7px;}
+.studio-brand .logo-plate img.brand-mark{width:42px!important;height:42px!important;border-width:4px;}
 .phero.slim.has-cms-photo .slim-sub{color:var(--dmut);}
 .missions-map .leaflet-control-attribution{background:rgba(255,255,255,.92);color:#333;font-size:11px;line-height:1.5;}
 .missions-map .leaflet-control-attribution a{color:#086b83;}
