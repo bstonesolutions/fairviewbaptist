@@ -41,7 +41,7 @@
 .jubilee-page{--jubilee-forest:#123F3D;--jubilee-deep:#102C30;--jubilee-gold:#F0D36F;}
 .jubilee-page #hd{background:#FAF6ED;border-bottom:1px solid rgba(18,63,61,.14);backdrop-filter:none;}
 .jubilee-page #hd .nav{height:84px;}
-.jubilee-page #hd .brand{box-shadow:none;border:0;background:none;padding-left:0;}
+.jubilee-page #hd .brand{box-shadow:none;border:1px solid var(--line);background:#fff;padding:6px;border-radius:50%;}
 .jubilee-page #hd .btn-b{background:#123F3D;color:#FFF8E6;border-radius:0;box-shadow:none;}
 .jubilee-page .jubilee-hero{margin-top:0;min-height:670px;display:flex;align-items:center;padding:70px 0 76px;border:0;background:#18363B;}
 .jubilee-page .jubilee-hero>.bg{background:#18363B;}
