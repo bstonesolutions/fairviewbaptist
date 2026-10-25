@@ -74,7 +74,7 @@ window.FBT_SCHEMA = {
         {"key": "staff4_name", "label": "Curtis Moore name", "type": "text", "def": "Curtis Moore"},
         {"key": "staff4_role", "label": "Curtis Moore role", "type": "text", "def": "Head Deacon / H.O.P.E. Director"},
         {"key": "staff4_bio", "label": "Curtis Moore bio", "type": "multiline", "def": ""},
-        {"key": "staff4_photo", "label": "Curtis Moore portrait", "type": "image", "def": "/assets/staff/curtis-moore.webp"},
+        {"key": "staff4_photo", "label": "Curtis Moore portrait", "type": "image", "def": "/assets/staff/incoming-2026-10-24/curtis-moore.jpg"},
         {"key": "staff7_visible", "label": "Jake Pierson visibility", "type": "text", "def": "show"},
         {"key": "staff7_name", "label": "Jake Pierson name", "type": "text", "def": "Jake Pierson"},
         {"key": "staff7_role", "label": "Jake Pierson role", "type": "text", "def": "Deacon / Assistant H.O.P.E. Director"},

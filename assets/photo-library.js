@@ -1,6 +1,10 @@
 /* Original church photographs and flyers, plus the credited NPS landscape. */
 window.FBT_PHOTOS = [
   {
+    "url": "/assets/staff/incoming-2026-10-24/curtis-moore.jpg",
+    "label": "Curtis Moore"
+  },
+  {
     "url": "/assets/staff/incoming-2026-10-24/portrait-01.jpg",
     "label": "Edna King"
   },
