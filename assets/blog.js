@@ -50,7 +50,7 @@
     document.title = post.title + ' | Fairview Baptist Temple';
     if (window.FBTSeo) {
       var pUrl = window.FBTSeo.DOMAIN + '/post?slug=' + encodeURIComponent(post.slug || '');
-      var pImg = (post.cover && /^https?:/.test(post.cover)) ? post.cover : window.FBTSeo.SHARE_IMAGE;
+      var pImg = window.FBTSeo.imageFor('post', post.cover);
       var pDesc = post.excerpt || (post.title + ', from Fairview Baptist Temple in Clay, WV.');
       var pLd = {
         '@context': 'https://schema.org', '@type': 'BlogPosting', headline: post.title,
@@ -60,7 +60,7 @@
       };
       if (post.date) pLd.datePublished = post.date;
       if (post.updatedAt || post.date) pLd.dateModified = post.updatedAt || post.date;
-      window.FBTSeo.setItem({ title: post.title + ' | Fairview Baptist Temple', description: pDesc, image: pImg, url: pUrl, type: 'article', jsonld: pLd });
+      window.FBTSeo.setItem({ title: post.title + ' | Fairview Baptist Temple', description: pDesc, image: pImg, imageAlt: post.title, url: pUrl, type: 'article', jsonld: pLd });
     }
     setText('[data-post-title]', post.title);
     var meta = document.querySelector('[data-post-meta]');

@@ -138,7 +138,7 @@
     document.title = ev.title + ' | Fairview Baptist Temple';
     if (window.FBTSeo) {
       var evUrl = window.FBTSeo.DOMAIN + '/event?e=' + encodeURIComponent(ev.slug || '');
-      var evImg = (ev.cover && /^https?:/.test(ev.cover)) ? ev.cover : window.FBTSeo.SHARE_IMAGE;
+      var evImg = window.FBTSeo.imageFor('event', ev.cover || ev.hero);
       var evDesc = ev.summary || ('Join us for ' + ev.title + ' at Fairview Baptist Temple in Clay, WV.');
       var evLd = {
         '@context': 'https://schema.org', '@type': 'Event', name: ev.title,
@@ -150,7 +150,7 @@
       };
       if (ev.start) evLd.startDate = ev.start;
       if (ev.end) evLd.endDate = ev.end;
-      window.FBTSeo.setItem({ title: ev.title + ' | Fairview Baptist Temple', description: evDesc, image: evImg, url: evUrl, type: 'website', jsonld: evLd });
+      window.FBTSeo.setItem({ title: ev.title + ' | Fairview Baptist Temple', description: evDesc, image: evImg, imageAlt: ev.title, url: evUrl, type: 'website', jsonld: evLd });
     }
     setText('[data-event-title]', ev.title);
     if (ev.category) setText('[data-event-cat]', ev.category);

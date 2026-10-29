@@ -1,0 +1,140 @@
+[
+  {
+    "id": "visit",
+    "layout": "invite",
+    "label": "Plan a visit",
+    "title": "You're invited",
+    "subtitle": "This Sunday at Fairview",
+    "detail": "Sunday School 10am<br>Worship 11am &amp; 6pm",
+    "image": "/scripts/share-src/church.jpg",
+    "footer": "2294 Main Street, Clay, West Virginia"
+  },
+  {
+    "id": "missions",
+    "layout": "missions",
+    "label": "Missions",
+    "title": "MISSIONS",
+    "subtitle": "From Clay to the world.",
+    "detail": "Meet the missionaries<br>we pray for and support.",
+    "footer": "fairviewbaptisttemple.com/missions"
+  },
+  {
+    "id": "watch",
+    "layout": "broadcast",
+    "label": "The Overlook",
+    "title": "THE<br>OVERLOOK",
+    "subtitle": "Watch live. Hear the preaching.<br>Sing along with the music.",
+    "image": "/assets/photos/congregation-worship.jpg",
+    "footer": "fairviewbaptisttemple.com/watch"
+  },
+  {
+    "id": "events",
+    "layout": "split events",
+    "label": "Events at Fairview",
+    "title": "ON THE<br>CALENDAR",
+    "subtitle": "Revivals, church fellowships,<br>and special services.",
+    "image": "/assets/photos/church-fellowship.jpg",
+    "footer": "fairviewbaptisttemple.com/events"
+  },
+  {
+    "id": "get-involved",
+    "layout": "collage ministries dark",
+    "label": "Get involved",
+    "title": "MINISTRIES<br>AT FAIRVIEW",
+    "subtitle": "Sunday School, youth, H.O.P.E.,<br>music, missions, and serving.",
+    "images": [
+      "/assets/photos/childrens-choir.jpg",
+      "/assets/photos/church-fellowship.jpg",
+      "/assets/photos/missions-gathering.jpg"
+    ],
+    "footer": "fairviewbaptisttemple.com/get-involved"
+  },
+  {
+    "id": "next-steps",
+    "layout": "split next",
+    "label": "Next steps",
+    "title": "YOUR<br>NEXT STEP",
+    "subtitle": "Salvation, baptism,<br>membership, and serving.",
+    "image": "/assets/photos/baptism.jpg",
+    "footer": "fairviewbaptisttemple.com/next-steps"
+  },
+  {
+    "id": "beliefs",
+    "layout": "split beliefs dark",
+    "label": "Our faith",
+    "title": "WHAT WE<br>BELIEVE",
+    "subtitle": "“Thy word is truth.”",
+    "detail": "John 17:17, KJV",
+    "image": "/assets/photos/bible-in-worship.jpg",
+    "footer": "fairviewbaptisttemple.com/beliefs"
+  },
+  {
+    "id": "staff",
+    "layout": "collage staff",
+    "label": "Our staff",
+    "title": "MEET OUR<br>CHURCH<br>STAFF",
+    "subtitle": "Pastor Michael Spurlock<br>and the Fairview team.",
+    "images": [
+      "/assets/staff/incoming-2026-10-24/portrait-04.jpg",
+      "/assets/staff/incoming-2026-10-24/curtis-moore.jpg",
+      "/assets/staff/incoming-2026-10-24/portrait-07.jpg"
+    ],
+    "footer": "fairviewbaptisttemple.com/staff"
+  },
+  {
+    "id": "give",
+    "layout": "split giving",
+    "label": "Giving",
+    "title": "TITHES &amp;<br>OFFERINGS",
+    "subtitle": "Give to Fairview<br>Baptist Temple.",
+    "image": "/scripts/share-src/church.jpg",
+    "footer": "fairviewbaptisttemple.com/give"
+  },
+  {
+    "id": "contact",
+    "layout": "contact",
+    "label": "Contact Fairview",
+    "title": "GET IN<br>TOUCH",
+    "subtitle": "304-587-4709",
+    "detail": "2294 Main Street<br>Clay, West Virginia 25043",
+    "image": "/scripts/share-src/church.jpg",
+    "footer": "fairviewbaptisttemple.com/contact"
+  },
+  {
+    "id": "jubilee",
+    "layout": "jubilee",
+    "label": "Appalachian Jubilee",
+    "title": "The Appalachian<br>Jubilee",
+    "subtitle": "NOVEMBER 14–18, 2026",
+    "detail": "Preaching, choir, and special singing",
+    "image": "/assets/photos/wv-appalachian-mountains.jpg",
+    "footer": "FAIRVIEW BAPTIST TEMPLE  ·  CLAY, WEST VIRGINIA"
+  },
+  {
+    "id": "blog",
+    "layout": "split notes",
+    "label": "Church news",
+    "title": "NOTES FROM<br>FAIRVIEW",
+    "subtitle": "News and notes<br>from the church.",
+    "image": "/assets/photos/welcome.jpg",
+    "footer": "fairviewbaptisttemple.com/blog"
+  },
+  {
+    "id": "prayer",
+    "layout": "split prayer dark",
+    "label": "Prayer requests",
+    "title": "HOW CAN<br>WE PRAY<br>FOR YOU?",
+    "subtitle": "Share a prayer request<br>with the church.",
+    "image": "/assets/photos/worship.jpg",
+    "footer": "fairviewbaptisttemple.com/prayer"
+  },
+  {
+    "id": "privacy",
+    "layout": "privacy",
+    "label": "Privacy",
+    "title": "YOUR<br>PRIVACY",
+    "subtitle": "How Fairview handles<br>your information.",
+    "detail": "Website privacy policy",
+    "footer": "fairviewbaptisttemple.com/privacy"
+  }
+]

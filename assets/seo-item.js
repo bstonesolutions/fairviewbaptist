@@ -1,15 +1,29 @@
 /* ============================================================
    Fairview Baptist Temple — per-item SEO for the dynamic template pages
    (a single event on event.html, a single post on post.html).
-   Those pages load one item client-side, so their canonical URL,
-   social preview, and structured data can only be set once the item
-   is known. events-ui.js / blog.js call window.FBTSeo.setItem(...)
-   with the loaded item; this drops the right tags into <head>.
+   The server supplies item metadata for link previews. events-ui.js /
+   blog.js call window.FBTSeo.setItem(...) after loading the item to keep
+   the browser metadata aligned with the current content.
    Best-effort and self-contained — never throws, never blocks render.
    ============================================================ */
 (function () {
   var DOMAIN = 'https://www.fairviewbaptisttemple.com';
   var SHARE_IMAGE = 'https://www.fairviewbaptisttemple.com/assets/fairview-share-2026-v2.jpg';
+  var SHARE_CARDS = {
+    post: { image: DOMAIN + '/assets/share/blog-v1.jpg', alt: 'Notes from Fairview, church news and notes from Fairview Baptist Temple in Clay, West Virginia' },
+    event: { image: DOMAIN + '/assets/share/events-v1.jpg', alt: 'Upcoming events at Fairview Baptist Temple in Clay, West Virginia' }
+  };
+  function shareCard(image) {
+    if (image === SHARE_IMAGE) return { image: SHARE_IMAGE, alt: 'Fairview Baptist Temple in Clay, West Virginia' };
+    return Object.keys(SHARE_CARDS).map(function (key) { return SHARE_CARDS[key]; }).filter(function (card) { return card.image === image; })[0];
+  }
+  function imageFor(kind, value) {
+    var v = String(value || '').trim();
+    if (!v) return (SHARE_CARDS[kind] || { image: SHARE_IMAGE }).image;
+    if (/^https?:\/\//i.test(v)) return v;
+    if (/^\/\//.test(v)) return 'https:' + v;
+    return DOMAIN + '/' + v.replace(/^\//, '');
+  }
   function metaEl(kind, key) {
     var el = document.head.querySelector('meta[' + kind + '="' + key + '"]');
     if (!el) { el = document.createElement('meta'); el.setAttribute(kind, key); document.head.appendChild(el); }
@@ -24,7 +38,8 @@
   window.FBTSeo = {
     DOMAIN: DOMAIN,
     SHARE_IMAGE: SHARE_IMAGE,
-    // o: { title, description, image, url, type, jsonld }
+    imageFor: imageFor,
+    // o: { title, description, image, imageAlt, url, type, jsonld }
     setItem: function (o) {
       try {
         o = o || {};
@@ -39,10 +54,11 @@
         setM('name', 'twitter:description', o.description);
         if (o.image) {
           setM('property', 'og:image', o.image); setM('name', 'twitter:image', o.image);
-          var imageAlt = o.image === SHARE_IMAGE ? 'Fairview Baptist Temple in Clay, West Virginia' : o.title;
+          var card = shareCard(o.image);
+          var imageAlt = card ? card.alt : (o.imageAlt || o.title);
           setM('property', 'og:image:alt', imageAlt); setM('name', 'twitter:image:alt', imageAlt);
           document.head.querySelectorAll('meta[property="og:image:width"],meta[property="og:image:height"]').forEach(function (old) { old.remove(); });
-          if (o.image === SHARE_IMAGE) { setM('property', 'og:image:width', '1200'); setM('property', 'og:image:height', '630'); }
+          if (card) { setM('property', 'og:image:width', '1200'); setM('property', 'og:image:height', '630'); }
         }
         if (o.jsonld) {
           document.head.querySelectorAll('script[data-seo-item],script[data-server-item]').forEach(function (old) { old.remove(); });
