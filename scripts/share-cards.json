@@ -3,7 +3,7 @@
     "id": "visit",
     "layout": "invite",
     "label": "Plan a visit",
-    "title": "You're invited",
+    "title": "You’re<em>invited!</em>",
     "subtitle": "This Sunday at Fairview",
     "detail": "Sunday School 10am<br>Worship 11am &amp; 6pm",
     "image": "/scripts/share-src/church.jpg",
@@ -104,11 +104,11 @@
     "id": "jubilee",
     "layout": "jubilee",
     "label": "Appalachian Jubilee",
-    "title": "The Appalachian<br>Jubilee",
-    "subtitle": "NOVEMBER 14–18, 2026",
+    "title": "The Appalachian<em>Jubilee</em>",
+    "subtitle": "November 14–18, 2026",
     "detail": "Preaching, choir, and special singing",
     "image": "/assets/photos/wv-appalachian-mountains.jpg",
-    "footer": "FAIRVIEW BAPTIST TEMPLE  ·  CLAY, WEST VIRGINIA"
+    "footer": ""
   },
   {
     "id": "blog",
