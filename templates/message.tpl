@@ -19,15 +19,15 @@
   <meta property="og:url" content="https://www.fairviewbaptisttemple.com/message">
   <meta property="og:title" content="Message | Fairview Baptist Temple, Clay WV">
   <meta property="og:description" content="Watch a message from Fairview Baptist Temple in Clay, West Virginia.">
-  <meta property="og:image" content="https://www.fairviewbaptisttemple.com/assets/fairview-share-2026-v2.jpg">
+  <meta property="og:image" content="https://www.fairviewbaptisttemple.com/assets/share/watch-v1.jpg">
 <meta property="og:image:height" content="630">
 <meta property="og:image:width" content="1200">
-  <meta property="og:image:alt" content="Fairview Baptist Temple in Clay, West Virginia">
+  <meta property="og:image:alt" content="The Overlook at Fairview Baptist Temple: watch live, messages, and music.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Message | Fairview Baptist Temple, Clay WV">
   <meta name="twitter:description" content="Watch a message from Fairview Baptist Temple in Clay, West Virginia.">
-  <meta name="twitter:image" content="https://www.fairviewbaptisttemple.com/assets/fairview-share-2026-v2.jpg">
-<meta name="twitter:image:alt" content="Fairview Baptist Temple in Clay, West Virginia">
+  <meta name="twitter:image" content="https://www.fairviewbaptisttemple.com/assets/share/watch-v1.jpg">
+<meta name="twitter:image:alt" content="The Overlook at Fairview Baptist Temple: watch live, messages, and music.">
   <link rel="icon" href="/assets/optimized/logo-fairview-2026-w64-fe089e11649b.png" type="image/png" sizes="64x64">
   <link rel="apple-touch-icon" href="/assets/optimized/logo-fairview-2026-w180-5851433f5cbd.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">

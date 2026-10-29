@@ -7,3 +7,5 @@ Native HTML/CSS artwork lives in ../share-cards.html; page copy and photo select
 - World silhouette: Natural Earth, public domain, 1:110m land; https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_land.geojson. Equirectangular projection, no coverage claims or destination markers.
 - Jubilee landscape: NPS / Louise McLaughlin, Grandview, West Virginia; existing credited site asset.
 - Fonts: Montserrat, Source Sans 3, Mrs Saint Delafield, DM Serif Display, from Google Fonts. SIL Open Font Licenses are included beside the font files.
+
+The review gallery displays the published JPEGs, including the approved Home cover. When replacing artwork, update the page OG/Twitter metadata and its `shareImage` field in ../share-cards.json together. The ?page=ID route remains the editable HTML/CSS rendering source.
