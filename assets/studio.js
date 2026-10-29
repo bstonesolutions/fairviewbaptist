@@ -1914,8 +1914,8 @@
     { key: 'hero_bg_visit', label: 'Plan a Visit', page: '/visit', pageLabel: 'Visit page' },
     { key: 'hero_bg_beliefs', label: 'What We Believe', page: '/beliefs', pageLabel: 'Beliefs page' },
     { key: 'hero_bg_staff', label: 'Our Staff', page: '/staff', pageLabel: 'Staff page' },
-    { key: 'hero_bg_getinvolved', label: 'Get Involved', page: '/get-involved', pageLabel: 'Get Involved page' },
-    { key: 'hero_bg_nextsteps', label: 'Next Steps', page: '/next-steps', pageLabel: 'Next Steps page' },
+    { key: 'hero_bg_getinvolved', label: 'Get Involved', page: '/ministries', pageLabel: 'Get Involved page' },
+    { key: 'hero_bg_nextsteps', label: 'Next Steps', page: '/nextsteps', pageLabel: 'Next Steps page' },
     { key: 'hero_bg_live', label: 'The Overlook: Live', page: '/watch#live', pageLabel: 'The Overlook page' },
     { key: 'hero_bg_messages', label: 'The Overlook: Messages', page: '/watch#messages', pageLabel: 'The Overlook page' },
     { key: 'hero_bg_music', label: 'The Overlook: Music', page: '/watch#music', pageLabel: 'The Overlook page' },
@@ -2074,7 +2074,7 @@
   {
     "key": "hero_bg_getinvolved_s1",
     "label": "Get Involved: Your next step",
-    "page": "/get-involved",
+    "page": "/ministries",
     "pageLabel": "Get Involved page",
     "backdrop": "#FAF6ED",
     "dark": false
@@ -2082,7 +2082,7 @@
   {
     "key": "hero_bg_getinvolved_s2",
     "label": "Get Involved: Where you can belong",
-    "page": "/get-involved",
+    "page": "/ministries",
     "pageLabel": "Get Involved page",
     "backdrop": "#F2ECDD",
     "dark": false
@@ -2090,7 +2090,7 @@
   {
     "key": "hero_bg_getinvolved_s3",
     "label": "Get Involved: Take the first step.",
-    "page": "/get-involved",
+    "page": "/ministries",
     "pageLabel": "Get Involved page",
     "backdrop": "radial-gradient(90% 100% at 85% 0%,rgba(127,209,203,.18),transparent 55%),linear-gradient(135deg,#24466B,#16304D)",
     "dark": true
@@ -2098,7 +2098,7 @@
   {
     "key": "hero_bg_nextsteps_s1",
     "label": "Next Steps: What feels like your next step?",
-    "page": "/next-steps",
+    "page": "/nextsteps",
     "pageLabel": "Next Steps page",
     "backdrop": "#FAF6ED",
     "dark": false
@@ -2106,7 +2106,7 @@
   {
     "key": "hero_bg_nextsteps_s2",
     "label": "Next Steps: Send a question or request",
-    "page": "/next-steps",
+    "page": "/nextsteps",
     "pageLabel": "Next Steps page",
     "backdrop": "#FAF6ED",
     "dark": false
@@ -2114,7 +2114,7 @@
   {
     "key": "hero_bg_nextsteps_s3",
     "label": "Next Steps: Still getting to know Fairview?",
-    "page": "/next-steps",
+    "page": "/nextsteps",
     "pageLabel": "Next Steps page",
     "backdrop": "radial-gradient(90% 100% at 85% 0%,rgba(127,209,203,.18),transparent 55%),linear-gradient(135deg,#24466B,#16304D)",
     "dark": true
@@ -2321,16 +2321,16 @@
     {"key": "staff9_photo", "label": "Staff: Edna King", "page": "/staff", "ratio": "square"},
     {"key": "staff10_photo", "label": "Staff: Jennings & Nellie Elliott", "page": "/staff", "ratio": "square"},
     { key: 'photo_staff_group', label: 'Staff: group photo', page: '/staff', ratio: 'four-three' },
-    { key: 'photo_gi_kids', label: 'Get Involved: Sunday School', page: '/get-involved', ratio: 'wide' },
-    { key: 'photo_gi_youth', label: 'Get Involved: Youth Ministry', page: '/get-involved', ratio: 'wide' },
-    { key: 'photo_gi_groups', label: 'Get Involved: H.O.P.E. Recovery', page: '/get-involved', ratio: 'wide' },
-    { key: 'photo_gi_van', label: 'Get Involved: Van Ministry', page: '/get-involved', ratio: 'wide' },
-    { key: 'photo_gi_menswomens', label: 'Get Involved: Soul-Winning Visitation', page: '/get-involved', ratio: 'wide' },
-    { key: 'photo_gi_missions', label: 'Get Involved: Missions', page: '/get-involved', ratio: 'wide' },
-    { key: 'photo_gi_music', label: 'Get Involved: Music and Choir', page: '/get-involved', ratio: 'wide' },
+    { key: 'photo_gi_kids', label: 'Get Involved: Sunday School', page: '/ministries', ratio: 'wide' },
+    { key: 'photo_gi_youth', label: 'Get Involved: Youth Ministry', page: '/ministries', ratio: 'wide' },
+    { key: 'photo_gi_groups', label: 'Get Involved: H.O.P.E. Recovery', page: '/ministries', ratio: 'wide' },
+    { key: 'photo_gi_van', label: 'Get Involved: Van Ministry', page: '/ministries', ratio: 'wide' },
+    { key: 'photo_gi_menswomens', label: 'Get Involved: Soul-Winning Visitation', page: '/ministries', ratio: 'wide' },
+    { key: 'photo_gi_missions', label: 'Get Involved: Missions', page: '/ministries', ratio: 'wide' },
+    { key: 'photo_gi_music', label: 'Get Involved: Music and Choir', page: '/ministries', ratio: 'wide' },
   ].map(function (item) {
     item.kind = 'photo';
-    item.pageLabel = ({ '/': 'Home page', '/visit': 'Visit page', '/staff': 'Staff page', '/get-involved': 'Get Involved page' })[item.page] || 'Photos';
+    item.pageLabel = ({ '/': 'Home page', '/visit': 'Visit page', '/staff': 'Staff page', '/ministries': 'Get Involved page' })[item.page] || 'Photos';
     return item;
   });
   // Text that lives on top of each background slot. Edited inside the media

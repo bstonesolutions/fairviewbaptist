@@ -642,14 +642,14 @@
       var nextStep = { page: 'next-steps.html', label: 'Next Steps', menu: true };
       if (connectAt >= 0) items.splice(connectAt, 0, nextStep); else items.push(nextStep);
     }
-    var here = (location.pathname.split('/').pop() || 'index.html') || 'index.html';
-    // Keep the hand-built Visit / Connect / About groups, but make Studio's
-    // labels and show/hide choices apply to their exact page links.
+    function pageHref(page) {
+      var clean = String(page || '').replace(/^\/+/, '').replace(/\.html$/, '');
+      clean = ({ 'next-steps': 'nextsteps', 'get-involved': 'ministries' })[clean] || clean;
+      return !clean || clean === 'index' ? '/' : '/' + clean;
+    }
+    var here = pageHref(location.pathname);
+    // Saved menu IDs stay unchanged when a public address gets shorter.
     if (document.querySelector('.nav ul .has-menu')) {
-      function pageHref(page) {
-        var clean = String(page || '').replace(/^\/+/, '').replace(/\.html$/, '');
-        return !clean || clean === 'index' ? '/' : '/' + clean;
-      }
       function hrefPage(href) {
         var clean = String(href || '').split('#')[0].split('?')[0];
         return pageHref(clean);
@@ -709,7 +709,7 @@
     if (ul) {
       var menu = items.filter(function (it) { return it && it.page && it.label && it.menu !== false; });
       if (menu.length) ul.innerHTML = menu.map(function (it) {
-        return '<li><a href="' + esc(it.page) + '"' + (it.page === here ? ' class="active"' : '') + '>' + esc(it.label) + '</a></li>';
+        return '<li><a href="' + esc(pageHref(it.page)) + '"' + (pageHref(it.page) === here ? ' class="active"' : '') + '>' + esc(it.label) + '</a></li>';
       }).join('');
     }
     var msh = document.querySelector('.msheet');
@@ -717,7 +717,7 @@
       var all = items.filter(function (it) { return it && it.page && it.label; });
       if (all.length) {
         var html = '<a href="/">Home</a>';
-        html += all.map(function (it) { return '<a href="' + esc(it.page) + '">' + esc(it.label) + '</a>'; }).join('');
+        html += all.map(function (it) { return '<a href="' + esc(pageHref(it.page)) + '">' + esc(it.label) + '</a>'; }).join('');
         html += '<a href="/visit" style="color:var(--accent);">Plan a visit</a>';
         msh.innerHTML = html;
       }
@@ -754,7 +754,8 @@
     var message = event.data;
     if (!message || !['fbt:page-preview', 'fbt:media-preview'].includes(message.type)) return;
     var pages = (window.FBT_PAGE_CATALOG && window.FBT_PAGE_CATALOG.pages) || [];
-    var page = pages.find(function (entry) { return entry.id === message.pageId && entry.path === (location.pathname.replace(/\/$/, '') || '/'); });
+    var matchedPage = window.FBTPageLayout && window.FBTPageLayout.findPage(location.pathname);
+    var page = matchedPage && matchedPage.id === message.pageId ? matchedPage : pages.find(function (entry) { return entry.id === message.pageId && entry.path === (location.pathname.replace(/\/$/, '') || '/'); });
     if (!page || !message.content || typeof message.content !== 'object' || Array.isArray(message.content)) return;
     var media = message.type === 'fbt:media-preview';
     var target = media ? previewSlotElement(message.slot) : null;

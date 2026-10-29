@@ -316,7 +316,7 @@ def catalog_page(page, label, source, defaults):
         if panel:
             section_label = panel.title() + ': ' + section_label
         sections.append({'id': sid, 'label': section_label, 'parentGroup': parent_group, 'parentLabel': parent_label, 'selector': '[data-page-section="' + sid + '"]', 'fields': fields, 'collections': collections})
-    return {'id': page, 'label': label, 'path': '/' if page == 'index' else '/' + page, 'sections': sections}
+    return {'id': page, 'label': label, 'path': {'index': '/', 'next-steps': '/nextsteps', 'get-involved': '/ministries'}.get(page, '/' + page), 'sections': sections}
 
 
 def main():

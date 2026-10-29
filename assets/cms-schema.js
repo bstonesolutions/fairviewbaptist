@@ -488,7 +488,7 @@ window.FBT_SCHEMA.mediaSlots = [
   {
     "key": "photo_nextsteps_baptism",
     "label": "Next Steps: baptism",
-    "page": "/next-steps",
+    "page": "/nextsteps",
     "pageLabel": "Next Steps page",
     "kind": "photo",
     "ratio": "landscape"

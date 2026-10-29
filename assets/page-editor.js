@@ -110,7 +110,7 @@
     if (path.charAt(0) !== '/') path = '/' + path;
     path = path.replace(/\/+$/, '').replace(/\.html$/i, '');
     if (!path || path === '/index') return '/';
-    return path;
+    return ({ '/next-steps': '/nextsteps', '/get-involved': '/ministries' })[path] || path;
   }
   function findPage(path, catalog) {
     catalog = catalog || (root && root.FBT_PAGE_CATALOG);

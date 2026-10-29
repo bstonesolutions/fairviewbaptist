@@ -11,8 +11,8 @@ const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 
 const STATIC = [
   ['/', 'weekly', '1.0'], ['/visit', 'monthly', '0.9'], ['/watch', 'weekly', '0.8'],
-  ['/events', 'weekly', '0.8'], ['/jubilee', 'monthly', '0.8'], ['/get-involved', 'monthly', '0.7'], ['/missions', 'monthly', '0.7'],
-  ['/next-steps', 'monthly', '0.8'],
+  ['/events', 'weekly', '0.8'], ['/jubilee', 'monthly', '0.8'], ['/ministries', 'monthly', '0.7'], ['/missions', 'monthly', '0.7'],
+  ['/nextsteps', 'monthly', '0.8'],
   ['/beliefs', 'yearly', '0.7'], ['/staff', 'monthly', '0.6'],
   ['/give', 'yearly', '0.6'], ['/contact', 'yearly', '0.6'],
   ['/privacy', 'yearly', '0.4'],

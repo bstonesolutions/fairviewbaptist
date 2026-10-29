@@ -54,7 +54,7 @@ el.innerHTML=media+brand+`<div class="body">${title}<h2>${c.subtitle}</h2>${c.de
       a.append(img);f.append(a);
       const caption=document.createElement('figcaption');
       const label=document.createElement('span');label.textContent=c.label;caption.append(label);
-      const page=document.createElement('a');page.className='page-link';page.href=c.id==='home'?'/':'/'+c.id;page.textContent='View page';page.target='_blank';page.rel='noopener';page.setAttribute('aria-label','View '+c.label+' page');caption.append(page);
+      const page=document.createElement('a');page.className='page-link';page.href=c.path||(c.id==='home'?'/':'/'+c.id);page.textContent='View page';page.target='_blank';page.rel='noopener';page.setAttribute('aria-label','View '+c.label+' page');caption.append(page);
       f.append(caption);out.append(f);
     }
   }

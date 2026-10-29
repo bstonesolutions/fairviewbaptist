@@ -176,7 +176,7 @@ window.FBT_PAGE_CATALOG = {
               "key": "index_section_3_link_3",
               "label": "Link: MinistriesH.O.P.E. · Van · Youth · Missions",
               "type": "url",
-              "def": "/get-involved"
+              "def": "/ministries"
             },
             {
               "key": "hero_bg_tile_ministries",
@@ -419,7 +419,7 @@ window.FBT_PAGE_CATALOG = {
               "key": "index_section_7_link_1",
               "label": "Link: Learn about H.O.P.E.",
               "type": "url",
-              "def": "/get-involved"
+              "def": "/ministries"
             }
           ],
           "collections": []
@@ -2725,7 +2725,7 @@ window.FBT_PAGE_CATALOG = {
     {
       "id": "get-involved",
       "label": "Ministries",
-      "path": "/get-involved",
+      "path": "/ministries",
       "sections": [
         {
           "id": "get-involved-section-1",
@@ -3396,7 +3396,7 @@ window.FBT_PAGE_CATALOG = {
     {
       "id": "next-steps",
       "label": "Next Steps",
-      "path": "/next-steps",
+      "path": "/nextsteps",
       "sections": [
         {
           "id": "next-steps-section-1",

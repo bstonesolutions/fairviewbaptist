@@ -11,6 +11,14 @@
   },
   "rewrites": [
     {
+      "source": "/nextsteps",
+      "destination": "/next-steps"
+    },
+    {
+      "source": "/ministries",
+      "destination": "/get-involved"
+    },
+    {
       "source": "/sitemap.xml",
       "destination": "/api/sitemap"
     },
@@ -114,6 +122,23 @@
           "value": "max-age=31536000"
         }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/next-steps",
+      "destination": "/nextsteps",
+      "permanent": true
+    },
+    {
+      "source": "/get-involved",
+      "destination": "/ministries",
+      "permanent": true
+    },
+    {
+      "source": "/covers",
+      "destination": "/scripts/share-cards",
+      "permanent": true
     }
   ]
 }

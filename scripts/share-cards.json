@@ -51,8 +51,9 @@
       "/assets/photos/church-fellowship.jpg",
       "/assets/photos/missions-gathering.jpg"
     ],
-    "footer": "fairviewbaptisttemple.com/get-involved",
-    "shareImage": "/assets/share/get-involved-v1.jpg"
+    "footer": "fairviewbaptisttemple.com/ministries",
+    "shareImage": "/assets/share/get-involved-v2.jpg",
+    "path": "/ministries"
   },
   {
     "id": "next-steps",
@@ -61,8 +62,9 @@
     "title": "YOUR<br>NEXT STEP",
     "subtitle": "Salvation, baptism,<br>membership, and serving.",
     "image": "/assets/photos/baptism.jpg",
-    "footer": "fairviewbaptisttemple.com/next-steps",
-    "shareImage": "/assets/share/next-steps-v1.jpg"
+    "footer": "fairviewbaptisttemple.com/nextsteps",
+    "shareImage": "/assets/share/next-steps-v2.jpg",
+    "path": "/nextsteps"
   },
   {
     "id": "beliefs",

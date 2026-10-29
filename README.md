@@ -26,6 +26,14 @@ static host (Vercel, Netlify, Cloudflare Pages, GitHub Pages).
 | `studio.html` | Studio (private editor at `/studio`) |
 | `live.html`, `messages.html`, `music.html` | Legacy redirects into `/watch` |
 
+## Short public addresses
+
+Use `/visit`, `/jubilee`, `/missions`, `/give`, `/nextsteps`, `/ministries`, `/events`,
+`/watch`, `/beliefs`, `/staff`, `/contact`, `/privacy`, `/blog`, and `/prayer`.
+The cover review gallery is at `/covers`. Older `/next-steps` and `/get-involved` links
+redirect to `/nextsteps` and `/ministries`. Keep the existing HTML filenames and CMS IDs;
+Vercel rewrites the shorter public paths, and the Studio catalog uses those same paths.
+
 ## Editing the site (no code needed)
 
 The site has a built-in editor at **`/studio`**. Sign in with an approved email and password to

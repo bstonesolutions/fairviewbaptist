@@ -294,3 +294,24 @@ test('browser runtime responds to content and permits previews only from its sam
   f.document.emit('fbt:content', { page_layout_visit: '' });
   assert.equal(f.intro.classList.contains('fbt-section-hidden'), true);
 });
+
+
+test('short public paths retain existing Studio page IDs and saved layout keys', () => {
+  const context = { window: {} };
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../assets/page-catalog.js'), 'utf8'), context);
+  const catalog = context.window.FBT_PAGE_CATALOG;
+  for (const [id, address] of [['next-steps', '/nextsteps'], ['get-involved', '/ministries']]) {
+    const current = editor.findPage(address + '?studio_preview=1', catalog);
+    const legacy = editor.findPage('/' + id + '.html', catalog);
+    assert.ok(current);
+    assert.equal(current, legacy);
+    assert.equal(current.id, id);
+    assert.equal(current.path, address);
+    assert.equal(editor.layoutKey(current), 'page_layout_' + id);
+    const section = current.sections[0];
+    const saved = { sections: { [section.id]: { visible: false, spacing: 'compact' } } };
+    const layout = editor.normalize(saved, current);
+    assert.equal(layout.sections[section.id].visible, false);
+    assert.equal(layout.sections[section.id].spacing, 'compact');
+  }
+});
