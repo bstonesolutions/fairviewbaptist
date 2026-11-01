@@ -36,7 +36,9 @@ Vercel rewrites the shorter public paths, and the Studio catalog uses those same
 
 ## Editing the site (no code needed)
 
-The site has a built-in editor at **`/studio`**. Sign in with an approved email and password to
+The site has a built-in editor at **https://www.fairviewbaptisttemple.com/studio**. The old
+`fairviewbaptist.vercel.app` address forwards to the church domain, keeping the page and query.
+Sign in with an approved email and password to
 update content. Changes go live instantly, with no redeploy.
 
 - **Backgrounds**: a photo behind any page header (dark overlay keeps text readable)

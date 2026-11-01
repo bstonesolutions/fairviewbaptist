@@ -35,7 +35,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Mrs+Saint+Delafield&family=Source+Sans+3:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/site.css?v=20">
   <link rel="stylesheet" href="/assets/message.css?v=3">
-  <script src="/assets/analytics.js"></script>
+  <script src="/assets/analytics.js?v=2"></script>
 <link rel="stylesheet" href="/assets/page-editor.css?v=3">
 <link rel="stylesheet" href="/assets/inline-page-editor.css?v=1">
 </head>

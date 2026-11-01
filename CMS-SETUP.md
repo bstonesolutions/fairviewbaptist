@@ -42,9 +42,10 @@ The allowed editor is already set to **brandonstone8567@gmail.com** (in `schema.
 
 1. Go to **Authentication > Providers** and make sure **Email** is enabled (it is by default).
 2. Go to **Authentication > URL Configuration**:
-   - **Site URL**: your live website address (e.g. `https://fairviewbaptisttemple.com`).
-   - **Redirect URLs**: add your Studio URLs so password setup and reset links work. Add all three:
-     - `https://fairviewbaptisttemple.com/studio` (your real domain, once deployed)
+   - **Site URL**: `https://www.fairviewbaptisttemple.com`.
+   - **Redirect URLs**: add your Studio URLs so password setup and reset links work:
+     - `https://www.fairviewbaptisttemple.com/studio` (the canonical Studio address)
+     - `https://fairviewbaptisttemple.com/studio` (older links)
      - the current `*.vercel.app/studio` deploy URL (password-reset links return to
        whichever origin they were requested from)
      - `http://localhost:4332/studio` (for testing locally with `node serve.mjs`)

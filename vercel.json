@@ -126,6 +126,12 @@
   ],
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "fairviewbaptist.vercel.app" }],
+      "destination": "https://www.fairviewbaptisttemple.com/:path*",
+      "permanent": true
+    },
+    {
       "source": "/next-steps",
       "destination": "/nextsteps",
       "permanent": true
