@@ -77,6 +77,12 @@ test('scripture without a service date falls back to the real publication timest
   assert.match(library.card(row, '', true), /Published /);
 });
 
+test('unavailable publication metadata leaves the date label out', async () => {
+  const library = videoLibrary([{ id: 'undated0001', title: 'Grace | Pastor Michael Spurlock', published: '' }]);
+  const [row] = await library.load();
+  assert.doesNotMatch(library.card(row, '', true), /Published Video|class="dt"/);
+});
+
 test('real full numeric, ISO, and written dates remain supported', async () => {
   const dates = ['10/14/2026', '10.14.26', '10-14-2026', '2026-10-14', 'October 14, 2026'];
   const rows = await videoLibrary(dates.map((date, index) => ({

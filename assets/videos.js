@@ -264,6 +264,8 @@
 
   function card(s, badgeText, detailPage) {
     var meta = [s.speaker, s.reference].filter(nonEmpty).join(' &middot; ');
+    var formattedDate = fmtDate(s.date, s.showWeekday);
+    var dateLabel = formattedDate ? (s.dateKind === 'published' ? 'Published ' : '') + formattedDate : '';
     // Full-res thumbnail, with a fallback to hqdefault for older videos that lack maxres.
     var img = nonEmpty(s.id)
       ? '<img class="thumb-img" loading="lazy" alt="" src="https://i.ytimg.com/vi/' + esc(s.id) + '/maxresdefault.jpg" onerror="this.onerror=null;this.src=\'https://i.ytimg.com/vi/' + esc(s.id) + '/hqdefault.jpg\'">'
@@ -274,7 +276,7 @@
     return '' +
       '<a class="mc has-vid" href="' + esc(href) + '" data-vid="' + esc(s.id) + '" data-title="' + esc(s.title) + '"' + detailAttr + ' aria-label="' + (detailPage ? 'View message: ' : 'Play: ') + esc(s.title) + '">' +
         '<div class="th">' + img + '<span class="play" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="#FCF8EE"><path d="M8 5v14l11-7z"/></svg></span><span class="s">' + esc(badge) + '</span></div>' +
-        '<div class="bd"><div class="dt">' + esc((s.dateKind === 'published' ? 'Published ' : '') + (fmtDate(s.date, s.showWeekday) || 'Video')) + '</div>' +
+        '<div class="bd">' + (dateLabel ? '<div class="dt">' + esc(dateLabel) + '</div>' : '') +
         '<h3>' + esc(s.title) + '</h3>' +
         '<div class="me">' + (meta || 'Fairview Baptist Temple') + '</div>' +
         '</div>' +

@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const videosApi = require('../api/videos');
-const { collectUploads, normalizeWatchMetadata } = videosApi._parse;
+const { collectUploads, normalizeWatchMetadata, parseWatchMetadata } = videosApi._parse;
 const CHANNEL = 'UCpVuAImXOHZcdGDbw6fQLIA';
 
 function player(id, extra = {}) {
@@ -39,13 +39,38 @@ test('watch metadata supplies exact dates, duration, channel, and live status', 
   assert.equal(upcoming.isLivestream, true);
 });
 
+test('alternate YouTube microformat retains its exact publication date', () => {
+  const value = player('sermon12345');
+  value.microformat = { microformatDataRenderer: { publishDate: '2026-11-12T05:00:03Z' } };
+  assert.equal(normalizeWatchMetadata({ id: 'sermon12345' }, value, CHANNEL).published, '2026-11-12T05:00:03Z');
+});
+
+test('a partial player response recovers exact primary head metadata only', () => {
+  const html = '<head><link rel="canonical" href="https://www.youtube.com/watch?v=sermon12345">' +
+    '<meta itemprop="datePublished" content="2026-11-12T05:00:03Z">' +
+    '<meta name="description" content="God\'s Word from Romans 5."></head>' +
+    '<meta itemprop="datePublished" content="2099-01-01"><script>var ytInitialPlayerResponse = {"playabilityStatus":{"status":"LOGIN_REQUIRED"}};</script>';
+  const row = parseWatchMetadata({ id: 'sermon12345', title: 'Grace' }, html, CHANNEL);
+  assert.equal(row.published, '2026-11-12T05:00:03Z');
+  assert.equal(row.description, "God's Word from Romans 5.");
+  assert.equal(parseWatchMetadata({ id: 'different01' }, html, CHANNEL), null);
+});
+
+test('head metadata cannot bypass an explicit channel mismatch', () => {
+  const html = '<head><link rel="canonical" href="https://www.youtube.com/watch?v=sermon12345">' +
+    '<meta itemprop="datePublished" content="2026-11-12T05:00:03Z"></head>' +
+    '<script>var ytInitialPlayerResponse = ' + JSON.stringify(player('sermon12345', { channelId: 'other-channel' })) + ';</script>';
+  assert.equal(parseWatchMetadata({ id: 'sermon12345' }, html, CHANNEL), null);
+});
+
 test('an unavailable YouTube RSS feed falls back to the channel upload page', async () => {
   const oldFetch = global.fetch, oldKey = process.env.YT_API_KEY, oldChannel = process.env.YT_CHANNEL_ID;
   delete process.env.YT_API_KEY;
   delete process.env.YT_CHANNEL_ID;
   const requested = [];
-  global.fetch = async url => {
+  global.fetch = async (url, options) => {
     requested.push(url);
+    assert.match(options.headers.cookie, /CONSENT=YES/);
     if (url.includes('/feeds/')) return { ok: false, status: 500 };
     if (url.includes('/videos?')) return { ok: true, text: async () => 'var ytInitialData = ' + JSON.stringify({ contents: [lockup('sermon12345', 'Grace')] }) + ';</script>' };
     if (url.includes('/watch?')) return { ok: true, text: async () => 'var ytInitialPlayerResponse = ' + JSON.stringify(player('sermon12345')) + ';</script>' };

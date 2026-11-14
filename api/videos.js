@@ -27,11 +27,12 @@ const DEFAULT_CHANNEL = 'UCpVuAImXOHZcdGDbw6fQLIA';
 const UA = {
   'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
   'accept-language': 'en-US,en;q=0.9',
+  cookie: 'CONSENT=YES+1; SOCS=CAI',
 };
 let resolvedChannelCache = null;
 
 function request(url, options) {
-  return fetch(url, Object.assign({ headers: UA, signal: AbortSignal.timeout(6000) }, options));
+  return fetch(url, Object.assign({ headers: UA, redirect: 'follow', signal: AbortSignal.timeout(8000) }, options));
 }
 
 function decode(s) {
@@ -128,7 +129,7 @@ function collectUploads(data) {
 function normalizeWatchMetadata(item, player, channelId) {
   const details = player && player.videoDetails;
   if (!details || details.videoId !== item.id || details.channelId !== channelId) return null;
-  const micro = player.microformat?.playerMicroformatRenderer || {};
+  const micro = player.microformat?.playerMicroformatRenderer || player.microformat?.microformatDataRenderer || {};
   const broadcast = micro.liveBroadcastDetails || {};
   const live = details.isLive === true || broadcast.isLiveNow === true;
   const upcoming = !live && (details.isUpcoming === true || player.playabilityStatus?.liveStreamability?.liveStreamabilityRenderer?.offlineSlate?.liveStreamOfflineSlateRenderer?.scheduledStartTime != null);
@@ -142,6 +143,39 @@ function normalizeWatchMetadata(item, player, channelId) {
   });
 }
 
+function parseWatchMetadata(item, html, channelId) {
+  const player = pageJson(html, 'ytInitialPlayerResponse');
+  if ((player?.videoDetails?.channelId && player.videoDetails.channelId !== channelId) ||
+      (player?.videoDetails?.videoId && player.videoDetails.videoId !== item.id)) return null;
+  const verified = normalizeWatchMetadata(item, player, channelId);
+  if (verified && verified.published && verified.description) return verified;
+  // Some datacenter responses omit videoDetails but retain the primary
+  // document's structured metadata. Only use head tags for this exact URL,
+  // never dates/descriptions from recommendations in the page body.
+  const head = String(html).split(/<\/head\s*>/i)[0];
+  const links = head.match(/<link\b[^>]*>/gi) || [];
+  const attribute = (tag, name) => {
+    const match = tag.match(new RegExp('(?:^|\\s)' + name + '\\s*=\\s*(["\'])(.*?)\\1', 'is'));
+    return match ? decode(match[2]) : '';
+  };
+  const canonical = links.find(tag => attribute(tag, 'rel').toLowerCase() === 'canonical');
+  let exact = false;
+  try { const url = new URL(attribute(canonical || '', 'href')); exact = /(^|\.)youtube\.com$/.test(url.hostname) && url.pathname === '/watch' && url.searchParams.get('v') === item.id; } catch (_) {}
+  if (!exact) return verified;
+  const metadata = {};
+  (head.match(/<meta\b[^>]*>/gi) || []).forEach(tag => {
+    const key = attribute(tag, 'itemprop') || attribute(tag, 'property') || attribute(tag, 'name');
+    if (key) metadata[key.toLowerCase()] = attribute(tag, 'content');
+  });
+  const published = metadata.datepublished || metadata.uploaddate || '';
+  const description = metadata.description || metadata['og:description'] || '';
+  if (!verified && !published && !description) return null;
+  return Object.assign({}, verified || item, {
+    published: verified?.published || published,
+    description: verified?.description || description,
+  });
+}
+
 async function scrapeUploads(channelId) {
   const response = await request('https://www.youtube.com/channel/' + encodeURIComponent(channelId) + '/videos?hl=en&gl=US');
   if (!response.ok) return [];
@@ -152,8 +186,8 @@ async function scrapeUploads(channelId) {
     while (next < rows.length) {
       const index = next++, row = rows[index];
       try {
-        const page = await request(row.url + '&hl=en&gl=US');
-        output[index] = page.ok ? normalizeWatchMetadata(row, pageJson(await page.text(), 'ytInitialPlayerResponse'), channelId) : null;
+        const page = await request(row.url);
+        output[index] = page.ok ? parseWatchMetadata(row, await page.text(), channelId) : null;
       } catch (_) { /* retain a truthful undated listing if a detail page fails */ }
       if (!output[index]) output[index] = row;
     }
@@ -250,4 +284,4 @@ module.exports = async function handler(req, res) {
   }
 };
 
-module.exports._parse = { parseFeed, pageJson, collectUploads, normalizeWatchMetadata };
+module.exports._parse = { parseFeed, pageJson, collectUploads, normalizeWatchMetadata, parseWatchMetadata };
