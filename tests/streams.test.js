@@ -83,18 +83,18 @@ test('the current livestream always takes priority', function () {
   assert.equal(chosen.item.id, 'liveNow');
 });
 
-test('a scheduled broadcast waits until the 30-minute pre-live window', function () {
+test('a scheduled broadcast waits until the 60-minute pre-live window', function () {
   const now = Date.parse('2026-07-26T14:00:00Z');
   const latest = { id: 'latestService', title: 'Latest service' };
   const tooEarly = liveSelection.choose(
     null,
-    { id: 'scheduled', startTime: '2026-07-26T14:31:00Z' },
+    { id: 'scheduled', startTime: '2026-07-26T15:01:00Z' },
     latest,
     now
   );
   const startingSoon = liveSelection.choose(
     null,
-    { id: 'scheduled', startTime: '2026-07-26T14:30:00Z' },
+    { id: 'scheduled', startTime: '2026-07-26T15:00:00Z' },
     latest,
     now
   );

@@ -14,42 +14,23 @@
 // Always responds 200. CORS open so it works from the deployed site.
 // ------------------------------------------------------------------
 
-// The Fairview Baptist Temple channel id (UC...) is not published yet. Set it
-// with the YT_CHANNEL_ID env var (or in Studio Settings) once it is known.
 const DEFAULT_CHANNEL = 'UCpVuAImXOHZcdGDbw6fQLIA';
-const UA = { 'user-agent': 'Mozilla/5.0 (compatible; FBTSite/1.0)' };
-
-function clean(t) {
-  return String(t || '').replace(/\s*-\s*YouTube\s*$/i, '')
-    .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"').replace(/&#39;/g, "'").trim();
-}
+const readBroadcast = require('./streams')._parse.readBroadcast;
 
 async function readLiveTab(channelId) {
-  const url = 'https://www.youtube.com/channel/' + channelId + '/live';
-  const html = await (await fetch(url, { headers: UA, redirect: 'follow' })).text();
-  const canon = (html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([\w-]+)">/) || [])[1] || '';
-  const title = clean((html.match(/<meta name="title" content="([^"]*)">/) || [])[1] ||
-                      (html.match(/<title>([^<]*)<\/title>/) || [])[1] || '');
-  const isLiveNow = /"isLiveNow":true/.test(html);
-  const lbc = (html.match(/"liveBroadcastContent":"(\w+)"/) || [])[1] || '';
-  const schedSec = (html.match(/"scheduledStartTime":"(\d+)"/) || [])[1];
-  // Only treat the /live tab as authoritative when it actually resolved to a video.
-  if (!canon) return { live: null, upcoming: null };
-  if (isLiveNow) return { live: { videoId: canon, title: title }, upcoming: null };
-  if (lbc === 'upcoming' || schedSec) {
-    return {
-      live: null,
-      upcoming: { videoId: canon, title: title, startTime: schedSec ? new Date(Number(schedSec) * 1000).toISOString() : '' },
-    };
-  }
-  return { live: null, upcoming: null };
+  const row = await readBroadcast('https://www.youtube.com/channel/' + encodeURIComponent(channelId) + '/live', channelId);
+  if (!row) return { live: null, upcoming: null };
+  return {
+    live: row.live ? { videoId: row.id, title: row.t } : null,
+    upcoming: row.upcoming ? { videoId: row.id, title: row.t, startTime: row.startTime } : null,
+  };
 }
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   if (req.method === 'OPTIONS') { res.statusCode = 204; return res.end(); }
+  res.setHeader('Cache-Control', 's-maxage=15, stale-while-revalidate=15');
   const channelId = process.env.YT_CHANNEL_ID || DEFAULT_CHANNEL;
   try {
     const r = await readLiveTab(channelId);

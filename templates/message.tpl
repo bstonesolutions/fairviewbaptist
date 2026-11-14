@@ -185,7 +185,7 @@
 <script src="/assets/content.js?v=19"></script>
 <script src="/assets/fbt.feeds.js"></script>
 <script src="/assets/sermon-tags.js"></script>
-<script src="/assets/videos.js?v=5"></script>
+<script src="/assets/videos.js?v=6"></script>
 <script src="/assets/seo-item.js?v=4"></script>
 <script src="/assets/message.js?v=5"></script>
 <script src="/assets/site.js"></script>

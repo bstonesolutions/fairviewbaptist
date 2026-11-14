@@ -1,13 +1,13 @@
 /* ============================================================
    Fairview Baptist Temple — live hub (Watch page).
-   The player normally holds the newest completed livestream. Thirty
+   The player normally holds the newest completed livestream. Sixty
    minutes before a scheduled broadcast it becomes the waiting room, and
    when YouTube marks the broadcast live it switches to the live player and
    chat. Auto-refresh keeps those handoffs automatic. The full completed
    service archive remains available below.
    ============================================================ */
 var FBTLiveSelection = (function () {
-  var PRELIVE_WINDOW_MS = 30 * 60 * 1000;
+  var PRELIVE_WINDOW_MS = 60 * 60 * 1000;
   var LATE_START_GRACE_MS = 2 * 60 * 60 * 1000;
 
   function itemId(item) {
@@ -36,6 +36,17 @@ var FBTLiveSelection = (function () {
     })[0] || null;
   }
 
+  function scheduled(items, nowMs) {
+    var now = typeof nowMs === 'number' ? nowMs : Date.now();
+    var seen = {};
+    return (items || []).filter(function (item) {
+      var id = itemId(item), time = Date.parse(startTime(item));
+      if (!id || seen[id] || !Number.isFinite(time) || time < now - LATE_START_GRACE_MS) return false;
+      seen[id] = true;
+      return true;
+    }).sort(function (a, b) { return Date.parse(startTime(a)) - Date.parse(startTime(b)); });
+  }
+
   function latestCompleted(items) {
     var best = null, bestTime = -Infinity;
     (items || []).forEach(function (item) {
@@ -54,6 +65,7 @@ var FBTLiveSelection = (function () {
     if (itemId(live)) return { mode: 'live', item: live };
     if (isStartingSoon(upcoming, nowMs, windowMs)) return { mode: 'upcoming', item: upcoming };
     if (itemId(latestCompleted)) return { mode: 'latest', item: latestCompleted };
+    if (scheduled([upcoming], nowMs).length) return { mode: 'upcoming', item: upcoming };
     return { mode: 'off', item: null };
   }
 
@@ -62,6 +74,7 @@ var FBTLiveSelection = (function () {
     LATE_START_GRACE_MS: LATE_START_GRACE_MS,
     isStartingSoon: isStartingSoon,
     pickUpcoming: pickUpcoming,
+    scheduled: scheduled,
     latestCompleted: latestCompleted,
     choose: choose,
   };
@@ -82,6 +95,9 @@ if (typeof module === 'object' && module.exports) module.exports = FBTLiveSelect
   var statusEl = document.querySelector('[data-live-status]');
   var subEl = document.querySelector('[data-live-sub]');
   var gridWrap = document.querySelector('[data-fbt-services]');
+  var upcomingWrap = document.querySelector('[data-live-upcoming]');
+  var upcomingGrid = document.querySelector('[data-live-upcoming-grid]');
+  var nextEl = document.querySelector('[data-live-next]');
   var LIVE_API = '/api/live';
   var STREAMS_API = '/api/streams';
 
@@ -96,7 +112,26 @@ if (typeof module === 'object' && module.exports) module.exports = FBTLiveSelect
   }
   function chatUrl(id) { return 'https://www.youtube.com/live_chat?v=' + encodeURIComponent(id) + '&embed_domain=' + encodeURIComponent(host()); }
   function fmtWhen(iso) {
-    try { var d = new Date(iso); if (isNaN(d)) return ''; return d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' }) + ' at ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }); } catch (e) { return ''; }
+    try { var d = new Date(iso); if (isNaN(d)) return ''; return d.toLocaleDateString('en-US', { timeZone: 'America/New_York', weekday: 'long', month: 'short', day: 'numeric' }) + ' at ' + d.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }); } catch (e) { return ''; }
+  }
+
+  function renderUpcoming(items) {
+    if (nextEl) {
+      nextEl.hidden = !items.length;
+      nextEl.textContent = items.length ? 'Next livestream: ' + (items[0].rawTitle || items[0].title || 'Service') + ' · ' + fmtWhen(items[0].startTime || items[0]._startTime) : '';
+    }
+    if (!upcomingWrap || !upcomingGrid) return;
+    upcomingWrap.hidden = !items.length;
+    var markup = items.map(function (item) {
+      var id = item.id || item.videoId;
+      var title = item.rawTitle || item.title || 'Scheduled service';
+      var start = item.startTime || item._startTime;
+      return '<a class="mc" href="https://www.youtube.com/watch?v=' + encodeURIComponent(id) + '" target="_blank" rel="noopener" aria-label="Open scheduled service: ' + esc(title) + '">' +
+        '<div class="th"><img class="thumb-img" loading="lazy" src="https://i.ytimg.com/vi/' + encodeURIComponent(id) + '/hqdefault.jpg" alt=""></div>' +
+        '<div class="bd"><div class="dt"><time datetime="' + esc(start) + '">' + esc(fmtWhen(start)) + '</time></div><h3>' + esc(title) + '</h3><div class="me">Set a reminder on YouTube</div></div></a>';
+    }).join('');
+    // Avoid replacing a focused reminder link on each automatic refresh.
+    if (upcomingGrid.innerHTML !== markup) upcomingGrid.innerHTML = markup;
   }
 
   function setPlayer(id, autoplay) {
@@ -363,7 +398,9 @@ if (typeof module === 'object' && module.exports) module.exports = FBTLiveSelect
         title: s.upcoming.title || (matchingUpcoming ? matchingUpcoming.rawTitle : ''),
         startTime: s.upcoming.startTime || (matchingUpcoming ? matchingUpcoming._startTime : ''),
       } : null;
-      var upcoming = selection.pickUpcoming((apiUpcoming ? [apiUpcoming] : []).concat(upcomingStreams), now);
+      var scheduled = selection.scheduled((apiUpcoming ? [apiUpcoming] : []).concat(upcomingStreams), now);
+      renderUpcoming(scheduled);
+      var upcoming = selection.pickUpcoming(scheduled, now) || scheduled[0] || null;
       var featured = selection.choose(live, upcoming, selection.latestCompleted(past), now);
 
       if (featured.mode === 'live') {
@@ -371,10 +408,10 @@ if (typeof module === 'object' && module.exports) module.exports = FBTLiveSelect
         setSub('We are live right now. Join the service, and say hello in the chat.');
       } else if (featured.mode === 'upcoming') {
         setPlayer(featured.item.id, false); setChat(featured.item.id); setStatus('upcoming', featured.item.title, featured.item.startTime);
-        setSub('Our next livestream starts soon. The player and chat are ready right here.');
+        setSub('Our next livestream is scheduled. Join us here when the service begins.');
       } else if (featured.mode === 'latest') {
         setPlayer(featured.item.id, false); setChat(null); setStatus('latest', featured.item.title);
-        setSub('Watch our most recent livestream here. This player switches to the next scheduled broadcast 30 minutes before it begins.');
+        setSub('Watch our most recent livestream here. This player switches to the next scheduled broadcast one hour before it begins.');
       } else {
         setOfflinePlayer();
         setChat(null); setStatus('off');

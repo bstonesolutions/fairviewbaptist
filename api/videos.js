@@ -23,11 +23,16 @@
 // ------------------------------------------------------------------
 
 const DEFAULT_HANDLE = '@FairviewBaptistTemple';
-// The Fairview Baptist Temple channel id (UC...) is not published yet. Set it
-// with the YT_CHANNEL_ID env var (or in Studio Settings) once it is known;
-// until then the handle above is resolved at request time.
-const DEFAULT_CHANNEL = '';
+const DEFAULT_CHANNEL = 'UCpVuAImXOHZcdGDbw6fQLIA';
+const UA = {
+  'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+  'accept-language': 'en-US,en;q=0.9',
+};
 let resolvedChannelCache = null;
+
+function request(url, options) {
+  return fetch(url, Object.assign({ headers: UA, signal: AbortSignal.timeout(6000) }, options));
+}
 
 function decode(s) {
   return String(s || '')
@@ -37,6 +42,7 @@ function decode(s) {
 
 async function resolveChannelId(handle) {
   if (process.env.YT_CHANNEL_ID) return process.env.YT_CHANNEL_ID;
+  if (handle === DEFAULT_HANDLE) return DEFAULT_CHANNEL;
   if (resolvedChannelCache) return resolvedChannelCache;
   try {
     const res = await fetch('https://www.youtube.com/' + handle, {
@@ -69,8 +75,118 @@ function parseFeed(xml) {
   }).filter(Boolean);
 }
 async function fetchRss(feedUrl) {
-  const xml = await (await fetch(feedUrl)).text();
+  const response = await request(feedUrl);
+  if (!response.ok) return [];
+  const xml = await response.text();
   return parseFeed(xml);
+}
+
+function pageJson(html, marker) {
+  const at = html.indexOf(marker);
+  if (at < 0) return null;
+  const start = html.indexOf('{', at);
+  let depth = 0, quoted = false, escaped = false;
+  for (let i = start; i >= 0 && i < html.length; i++) {
+    const c = html[i];
+    if (quoted) {
+      if (escaped) escaped = false;
+      else if (c === '\\') escaped = true;
+      else if (c === '"') quoted = false;
+    } else if (c === '"') quoted = true;
+    else if (c === '{') depth++;
+    else if (c === '}' && --depth === 0) {
+      try { return JSON.parse(html.slice(start, i + 1)); } catch (_) { return null; }
+    }
+  }
+  return null;
+}
+
+function collectUploads(data) {
+  const rows = [], seen = new Set();
+  function walk(node) {
+    if (!node || typeof node !== 'object') return;
+    const modern = node.lockupViewModel;
+    const legacy = node.videoRenderer;
+    const id = modern ? modern.contentId : legacy && legacy.videoId;
+    const title = modern ? modern.metadata?.lockupMetadataViewModel?.title?.content :
+      legacy && (legacy.title?.simpleText || legacy.title?.runs?.map(r => r.text || '').join(''));
+    if (/^[\w-]{11}$/.test(id || '') && title && !seen.has(id)) {
+      seen.add(id);
+      rows.push({ id, title: decode(title), published: '', description: '',
+        url: 'https://www.youtube.com/watch?v=' + id,
+        thumbnail: 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg' });
+      return;
+    }
+    Object.keys(node).forEach(key => walk(node[key]));
+  }
+  walk(data);
+  return rows;
+}
+
+// Use the video's own metadata for exact dates and broadcast status. Relative
+// labels such as "2 days ago" on the channel grid are never made into dates.
+function normalizeWatchMetadata(item, player, channelId) {
+  const details = player && player.videoDetails;
+  if (!details || details.videoId !== item.id || details.channelId !== channelId) return null;
+  const micro = player.microformat?.playerMicroformatRenderer || {};
+  const broadcast = micro.liveBroadcastDetails || {};
+  const live = details.isLive === true || broadcast.isLiveNow === true;
+  const upcoming = !live && (details.isUpcoming === true || player.playabilityStatus?.liveStreamability?.liveStreamabilityRenderer?.offlineSlate?.liveStreamOfflineSlateRenderer?.scheduledStartTime != null);
+  return Object.assign({}, item, {
+    title: details.title || item.title,
+    description: details.shortDescription || '',
+    published: micro.publishDate || micro.uploadDate || '',
+    duration: Number(details.lengthSeconds) || null,
+    isLivestream: details.isLiveContent === true || !!micro.liveBroadcastDetails,
+    live, upcoming,
+  });
+}
+
+async function scrapeUploads(channelId) {
+  const response = await request('https://www.youtube.com/channel/' + encodeURIComponent(channelId) + '/videos?hl=en&gl=US');
+  if (!response.ok) return [];
+  const rows = collectUploads(pageJson(await response.text(), 'ytInitialData')).slice(0, 30);
+  const output = new Array(rows.length);
+  let next = 0;
+  await Promise.all(Array.from({ length: Math.min(6, rows.length) }, async () => {
+    while (next < rows.length) {
+      const index = next++, row = rows[index];
+      try {
+        const page = await request(row.url + '&hl=en&gl=US');
+        output[index] = page.ok ? normalizeWatchMetadata(row, pageJson(await page.text(), 'ytInitialPlayerResponse'), channelId) : null;
+      } catch (_) { /* retain a truthful undated listing if a detail page fails */ }
+      if (!output[index]) output[index] = row;
+    }
+  }));
+  return output;
+}
+
+async function enrichApiVideos(items, key) {
+  const out = [];
+  for (let offset = 0; offset < items.length; offset += 50) {
+    const batch = items.slice(offset, offset + 50);
+    try {
+      const response = await request('https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,liveStreamingDetails&id=' +
+        encodeURIComponent(batch.map(item => item.id).join(',')) + '&key=' + encodeURIComponent(key));
+      if (!response.ok) { out.push(...batch); continue; }
+      const data = await response.json(), byId = {};
+      (data.items || []).forEach(item => { byId[item.id] = item; });
+      batch.forEach(item => {
+        const record = byId[item.id];
+        if (!record) { out.push(item); return; }
+        const details = record.liveStreamingDetails;
+        const state = record.snippet?.liveBroadcastContent;
+        const duration = (record.contentDetails?.duration || '').match(/^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/);
+        out.push(Object.assign({}, item, {
+          duration: duration ? (+duration[1] || 0) * 3600 + (+duration[2] || 0) * 60 + (+duration[3] || 0) : null,
+          isLivestream: !!details,
+          live: state === 'live' || !!(details?.actualStartTime && !details.actualEndTime),
+          upcoming: state === 'upcoming' || !!(details?.scheduledStartTime && !details.actualStartTime),
+        }));
+      });
+    } catch (_) { out.push(...batch); }
+  }
+  return out;
 }
 
 // ---- full library via YouTube Data API (when YT_API_KEY set) ----
@@ -98,12 +214,13 @@ async function fetchPlaylistApi(playlistId, key) {
     pageToken = data.nextPageToken || '';
     if (!pageToken) break;
   }
-  return items;
+  return enrichApiVideos(items, key);
 }
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
   if (req.method === 'OPTIONS') { res.statusCode = 204; return res.end(); }
 
   const key = process.env.YT_API_KEY;
@@ -118,8 +235,12 @@ module.exports = async function handler(req, res) {
       const handle = (req.query && req.query.handle) || DEFAULT_HANDLE;
       const channelId = await resolveChannelId(handle);
       source = { type: 'channel', id: channelId, full: !!key };
-      items = key ? await fetchPlaylistApi('UU' + channelId.slice(2), key)
-                  : await fetchRss('https://www.youtube.com/feeds/videos.xml?channel_id=' + encodeURIComponent(channelId));
+      items = key ? await fetchPlaylistApi('UU' + channelId.slice(2), key).catch(() => [])
+                  : await fetchRss('https://www.youtube.com/feeds/videos.xml?channel_id=' + encodeURIComponent(channelId)).catch(() => []);
+      if (!items.length) {
+        items = await scrapeUploads(channelId);
+        source.method = 'channel-page';
+      }
     }
     res.statusCode = 200;
     return res.end(JSON.stringify({ source: source, count: items.length, items: items }));
@@ -128,3 +249,5 @@ module.exports = async function handler(req, res) {
     return res.end(JSON.stringify({ items: [], error: String(e && e.message || e) }));
   }
 };
+
+module.exports._parse = { parseFeed, pageJson, collectUploads, normalizeWatchMetadata };

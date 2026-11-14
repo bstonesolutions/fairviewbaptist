@@ -174,6 +174,7 @@
   function classify(v, s) {
     var raw = v.title || '';
     var hay = ((v.title || '') + ' ' + (v.description || '')).toLowerCase();
+    if (v.isLivestream) return 'service';
     // Promo Shorts / social clips: hashtag-laden titles or very short videos.
     // Kept out of the Messages / Music / Watch hubs.
     if ((raw.match(/#[\w]+/g) || []).length) return 'clip';
@@ -181,7 +182,7 @@
     if (dur != null && dur > 0 && dur <= 75) return 'clip';
     // Highlight / promo reels (e.g. a "preaching reel") are montages, not a
     // single sermon or song — keep them out of the Messages / Music / Watch hubs.
-    if (/\breels?\b/i.test(raw)) return 'clip';
+    if (/\b(?:reels?|teaser|trailer|promo)\b/i.test(raw)) return 'clip';
     // A clearly dated service title stays in the service archive even when the
     // YouTube description names the preacher or Scripture. Those description
     // details previously made whole services look like individual sermons.
@@ -239,6 +240,10 @@
       if (o.transcript) s.transcript = o.transcript;
     }
     s.type = (o && o.type) || v.playlistType || classify(v, s);
+    // A scheduled or in-progress broadcast is never a posted message, even
+    // if an old playlist/tag calls it one. Completed sermon overrides remain
+    // available for deliberately extracted or sermon-only recordings.
+    if (v.live || v.upcoming) s.type = 'service';
     if (isExcluded(v)) s.type = 'clip'; // owner override wins over everything
     if (!s.series) s.series = s.type === 'message' ? '' : s.service;
     return s;
@@ -420,7 +425,11 @@
     if (FEEDS.sermonsPlaylistId) jobs.push({ url: API + '?playlist=' + encodeURIComponent(FEEDS.sermonsPlaylistId), type: 'message' });
     if (FEEDS.musicPlaylistId) jobs.push({ url: API + '?playlist=' + encodeURIComponent(FEEDS.musicPlaylistId), type: 'music' });
     if (FEEDS.servicesPlaylistId) jobs.push({ url: API + '?playlist=' + encodeURIComponent(FEEDS.servicesPlaylistId), type: 'service' });
-    return Promise.all(jobs.map(function (j) { return fetchFeed(j.url); })).then(function (results) {
+    return Promise.all([
+      Promise.all(jobs.map(function (j) { return fetchFeed(j.url); })),
+      fetchFeed('/api/streams'),
+    ]).then(function (gathered) {
+      var results = gathered[0], streams = gathered[1];
       var map = {};
       results.forEach(function (items, i) {
         var ptype = jobs[i].type;
@@ -430,6 +439,15 @@
           else { for (var k in v) { if ((map[v.id][k] == null || map[v.id][k] === '') && v[k] != null && v[k] !== '') map[v.id][k] = v[k]; } }
           if (ptype) map[v.id].playlistType = ptype;
         });
+      });
+      // Only match verified stream IDs; a service-looking title alone must
+      // not turn an ordinary sermon upload into a livestream recording.
+      streams.forEach(function (stream) {
+        var video = map[stream.id];
+        if (!video) return;
+        video.isLivestream = true;
+        video.live = !!stream.live;
+        video.upcoming = !!stream.upcoming;
       });
       return Object.keys(map).map(function (k) { return map[k]; });
     });
@@ -457,7 +475,7 @@
     // when an owner clears a saved override: an older in-memory value must not
     // survive after the database field has been set back to null.
     TAGS = cloneTags(BASE_TAGS);
-    var KEY = 'fbt_videos_v1';
+    var KEY = 'fbt_videos_v2';
     var fromCache = null;
     // Keep navigation fast without hiding a newly posted message for ten
     // minutes. A one-minute cache is enough to absorb quick tab changes while

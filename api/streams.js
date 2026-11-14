@@ -22,8 +22,7 @@
 // simply keeps its static archive. Nothing breaks.
 // ------------------------------------------------------------------
 
-// The Fairview Baptist Temple channel id (UC...) is not published yet. Set it
-// with the YT_CHANNEL_ID env var (or in Studio Settings) once it is known.
+// Fairview's public channel. A deployment override is optional.
 const DEFAULT_CHANNEL = 'UCpVuAImXOHZcdGDbw6fQLIA';
 // A real desktop browser UA: YouTube serves the full channel-tab markup
 // (ytInitialData video grid) to browsers, but a stripped page to bot-looking
@@ -85,6 +84,7 @@ function titleText(t) {
   if (!t) return '';
   if (Array.isArray(t.runs)) return t.runs.map(function (r) { return r && r.text || ''; }).join('');
   if (typeof t.simpleText === 'string') return t.simpleText;
+  if (typeof t.content === 'string') return t.content;
   return '';
 }
 
@@ -96,6 +96,16 @@ function statusOf(node) {
     if (r && r.style === 'LIVE') status = 'live';
     else if (r && r.style === 'UPCOMING' && !status) status = 'upcoming';
   }
+  // Current YouTube channel grids use lockupViewModel thumbnail badges.
+  const modernOverlays = node.contentImage && node.contentImage.thumbnailViewModel && node.contentImage.thumbnailViewModel.overlays || [];
+  modernOverlays.forEach(function (overlay) {
+    const badges = overlay.thumbnailBottomOverlayViewModel && overlay.thumbnailBottomOverlayViewModel.badges || [];
+    badges.forEach(function (badge) {
+      const b = badge.thumbnailBadgeViewModel || {};
+      if (/^live$/i.test(b.text || '') || /_LIVE$/.test(b.badgeStyle || '')) status = 'live';
+      else if (/^upcoming$/i.test(b.text || '') && !status) status = 'upcoming';
+    });
+  });
   // Upcoming streams also carry an upcomingEventData block.
   if (!status && node.upcomingEventData) status = 'upcoming';
   return status;
@@ -118,23 +128,89 @@ function collectVideos(root) {
   (function walk(node) {
     if (!node || typeof node !== 'object') return;
     if (Array.isArray(node)) { for (let i = 0; i < node.length; i++) walk(node[i]); return; }
-    const id = node.videoId;
-    if (typeof id === 'string' && /^[\w-]{11}$/.test(id) && node.title && !seen[id]) {
+    const modern = node.contentType === 'LOCKUP_CONTENT_TYPE_VIDEO' && node.metadata && node.metadata.lockupMetadataViewModel;
+    const id = modern ? node.contentId : node.videoId;
+    const title = modern ? modern.title : node.title;
+    if (typeof id === 'string' && /^[\w-]{11}$/.test(id) && title && !seen[id]) {
       seen[id] = 1;
       const status = statusOf(node);
       out.push({
         id: id,
-        t: decode(titleText(node.title)),
+        t: decode(titleText(title)),
         d: '', // exact date isn't on the grid; the page derives year from the title
         live: status === 'live',
         upcoming: status === 'upcoming',
         startTime: scheduledStartOf(node),
         endTime: '',
       });
+      return; // Menus repeat the same video and may contain unrelated suggestions.
     }
     for (const k in node) walk(node[k]);
   })(root);
   return out;
+}
+
+// Only the selected Live tab is a stream source. Recommendations and a
+// fallback Videos tab are not evidence of a broadcast.
+function streamsTabContent(data) {
+  const contents = data && data.contents || {};
+  const browse = contents.twoColumnBrowseResultsRenderer || contents.singleColumnBrowseResultsRenderer || {};
+  const tab = (browse.tabs || []).map(function (entry) { return entry.tabRenderer; }).find(function (entry) {
+    if (!entry || !entry.selected) return false;
+    const endpoint = entry.endpoint && entry.endpoint.commandMetadata && entry.endpoint.commandMetadata.webCommandMetadata;
+    return /\/streams(?:[?#]|$)/.test(endpoint && endpoint.url || '') || entry.title === 'Live';
+  });
+  return tab && tab.content || null;
+}
+
+// Read the video's own player response, never page-wide live/schedule flags:
+// recommendations can include unrelated channels that are live right now.
+function parseBroadcastPlayer(html, channelId, expectedId) {
+  const raw = sliceJson(html, 'ytInitialPlayerResponse');
+  if (!raw) return null;
+  let player;
+  try { player = JSON.parse(raw); } catch (e) { return null; }
+  const video = player.videoDetails || {};
+  if (!/^[\w-]{11}$/.test(video.videoId || '') || video.channelId !== channelId ||
+      (expectedId && video.videoId !== expectedId)) return null;
+  const micro = player.microformat && (player.microformat.playerMicroformatRenderer || player.microformat.microformatDataRenderer) || {};
+  const broadcast = micro.liveBroadcastDetails || {};
+  const liveRenderer = player.playabilityStatus && player.playabilityStatus.liveStreamability && player.playabilityStatus.liveStreamability.liveStreamabilityRenderer || {};
+  const slate = liveRenderer.offlineSlate && liveRenderer.offlineSlate.liveStreamOfflineSlateRenderer || {};
+  const scheduled = Number(slate.scheduledStartTime || 0);
+  const scheduledIso = scheduled && Number.isFinite(scheduled) ? new Date(scheduled * 1000).toISOString() : '';
+  if (!video.isLiveContent && !video.isLive && !video.isUpcoming && !micro.liveBroadcastDetails) return null;
+  const ended = !!broadcast.endTimestamp;
+  const live = !ended && (video.isLive === true || broadcast.isLiveNow === true);
+  const upcoming = !ended && !live && (video.isUpcoming === true || !!scheduledIso);
+  return {
+    id: video.videoId, t: decode(video.title || ''),
+    d: micro.publishDate || micro.uploadDate || '',
+    live: live, upcoming: upcoming,
+    startTime: broadcast.startTimestamp || scheduledIso,
+    endTime: broadcast.endTimestamp || '',
+  };
+}
+
+async function readBroadcast(url, channelId, expectedId) {
+  const response = await fetch(url, { headers: UA, redirect: 'follow', signal: AbortSignal.timeout(8000) });
+  if (!response.ok) return null;
+  return parseBroadcastPlayer(await response.text(), channelId, expectedId);
+}
+
+async function hydrateStreams(items, channelId) {
+  // The new grid's schedule text uses the server's local time zone. Fetch
+  // exact timestamps instead of guessing from that label. Also date recent
+  // replays so the newest completed service can be selected accurately.
+  const candidates = items.filter(function (v) { return v.live || v.upcoming; }).slice(0, 12)
+    .concat(items.filter(function (v) { return !v.live && !v.upcoming; }).slice(0, 4));
+  await Promise.all(candidates.map(async function (item) {
+    try {
+      const verified = await readBroadcast('https://www.youtube.com/watch?v=' + encodeURIComponent(item.id), channelId, item.id);
+      if (verified) Object.assign(item, verified);
+    } catch (e) { /* Keep the authoritative stream-tab row if a page is unavailable. */ }
+  }));
+  return items;
 }
 
 function pick(html, re) { const m = html.match(re); return m ? m[1] : ''; }
@@ -160,6 +236,7 @@ function findContinuationToken(node) {
 async function fetchContinuation(apiKey, clientVersion, token) {
   const res = await fetch('https://www.youtube.com/youtubei/v1/browse?key=' + encodeURIComponent(apiKey), {
     method: 'POST',
+    signal: AbortSignal.timeout(8000),
     headers: Object.assign({ 'content-type': 'application/json' }, UA),
     body: JSON.stringify({
       context: { client: { clientName: 'WEB', clientVersion: clientVersion, hl: 'en', gl: 'US' } },
@@ -172,13 +249,17 @@ async function fetchContinuation(apiKey, clientVersion, token) {
 // Source 1: scrape the /streams tab (stream-only, deep via continuation).
 async function scrapeStreamsTab(channelId) {
   const url = 'https://www.youtube.com/channel/' + channelId + '/streams?hl=en&gl=US';
-  const html = await (await fetch(url, { headers: UA, redirect: 'follow' })).text();
+  const response = await fetch(url, { headers: UA, redirect: 'follow', signal: AbortSignal.timeout(10000) });
+  if (!response.ok) return [];
+  const html = await response.text();
   const raw = sliceJson(html, 'ytInitialData');
   if (!raw) return [];
   let data;
   try { data = JSON.parse(raw); } catch (e) { return []; }
 
-  const out = collectVideos(data);
+  const tab = streamsTabContent(data);
+  if (!tab) return [];
+  const out = collectVideos(tab);
   const seen = {}; out.forEach(function (v) { seen[v.id] = 1; });
 
   // Page deeper so the fresh list always reaches back far enough to overlap the
@@ -188,7 +269,7 @@ async function scrapeStreamsTab(channelId) {
   const apiKey = pick(html, /"INNERTUBE_API_KEY":"([^"]+)"/);
   const clientVersion = pick(html, /"INNERTUBE_CONTEXT_CLIENT_VERSION":"([^"]+)"/) ||
                         pick(html, /"clientVersion":"([\d.]+)"/);
-  let token = findContinuationToken(data);
+  let token = findContinuationToken(tab);
   let pages = 0;
   while (token && apiKey && clientVersion && pages < 5 && out.length < 250) {
     pages++;
@@ -200,7 +281,7 @@ async function scrapeStreamsTab(channelId) {
       token = findContinuationToken(cont);
     } catch (e) { break; }
   }
-  return out.slice(0, 250);
+  return hydrateStreams(out.slice(0, 250), channelId);
 }
 
 // Official YouTube Data API (needs a free key in env YT_API_KEY). Unlike the
@@ -287,7 +368,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') { res.statusCode = 204; return res.end(); }
   // Let Vercel's CDN serve one shared scrape to all viewers for a minute, so a
   // busy Sunday doesn't hammer YouTube once per visitor per poll.
-  res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=120');
+  res.setHeader('Cache-Control', 's-maxage=30, stale-while-revalidate=30');
   const channelId = process.env.YT_CHANNEL_ID || DEFAULT_CHANNEL;
   try {
     const r = await readStreams(channelId);
@@ -306,4 +387,7 @@ module.exports._parse = {
   findContinuationToken: findContinuationToken,
   looksLikeService: looksLikeService,
   normalizeVerifiedStreams: normalizeVerifiedStreams,
+  streamsTabContent: streamsTabContent,
+  parseBroadcastPlayer: parseBroadcastPlayer,
+  readBroadcast: readBroadcast,
 };
