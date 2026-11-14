@@ -129,3 +129,16 @@ test('Jubilee teasers cannot replace the latest sermon even when longer than 75 
   assert.equal(rows[0].type, 'clip');
   assert.equal(rows[1].type, 'message');
 });
+
+test('a test upload with a boilerplate sermon description cannot replace the latest message', async () => {
+  const items = [
+    { id: '-DZgKpU5d64', title: 'A Test This Is', description: 'This sermon was preached by Pastor Spurlock. [Date]', published: '2026-11-14T19:34:49Z' },
+    { id: 'sE-gmN8ZKMw', title: 'A Man Who Belongs To Christ | Pastor Michael Spurlock', published: '2026-11-12T05:00:03Z' },
+    { id: 'sermon12345', title: 'The Test of Faith | Pastor Michael Spurlock', published: '2026-11-08T17:00:00Z' },
+  ];
+  const rows = await browserLibrary(items, []).load();
+  assert.deepEqual(Array.from(rows, row => row.type), ['clip', 'message', 'message']);
+  const server = require('../api/_message-classification');
+  assert.equal(server.isMessageVideo(items[0]), false);
+  assert.equal(server.isMessageVideo(items[2]), true);
+});

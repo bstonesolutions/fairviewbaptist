@@ -174,6 +174,8 @@
   function classify(v, s) {
     var raw = v.title || '';
     var hay = ((v.title || '') + ' ' + (v.description || '')).toLowerCase();
+    // Test uploads often inherit the channel's sermon description template.
+    if (/^(?:a test this is|test(?:ing)?)\s*$/i.test(raw) || /\b(?:test (?:stream|broadcast)|(?:live\s*stream|streaming|audio|video) test)\b/i.test(raw)) return 'clip';
     if (v.isLivestream) return 'service';
     // Promo Shorts / social clips: hashtag-laden titles or very short videos.
     // Kept out of the Messages / Music / Watch hubs.

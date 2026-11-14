@@ -67,6 +67,8 @@ function classifyVideo(video, override) {
   const combined = title + '\n' + description;
   const duration = parseDuration(video.duration || video.durationSeconds || video.isoDuration);
 
+  // Test uploads can inherit the channel's sermon description template.
+  if (/^(?:a test this is|test(?:ing)?)\s*$/i.test(title) || /\b(?:test (?:stream|broadcast)|(?:live\s*stream|streaming|audio|video) test)\b/i.test(title)) return CLIP;
   // Shorts and promotional reels never become crawlable message pages.
   if ((duration != null && duration > 0 && duration <= 75) ||
       (title.match(/#[\w]+/g) || []).length || /\breels?\b/i.test(title)) return CLIP;
