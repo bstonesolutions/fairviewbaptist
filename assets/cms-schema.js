@@ -510,7 +510,7 @@ window.FBT_SCHEMA.groups.push({
       "key": "jubilee_hero_sub",
       "type": "multiline",
       "label": "Hero Paragraph",
-      "def": "Five days of preaching, music, and fellowship in the hills of West Virginia.",
+      "def": "Preaching, singing, and moments from our week together at Fairview.",
       "studioSection": "Mountain hero"
     },
     {
@@ -545,7 +545,7 @@ window.FBT_SCHEMA.groups.push({
       "key": "jubilee_intro_copy",
       "type": "multiline",
       "label": "Introduction paragraph",
-      "def": "Join us at Fairview Baptist Temple in Clay, West Virginia, for five days of preaching, choir, and special singing. Come for a service or make plans to stay for the week.",
+      "def": "We are thankful for everyone who has joined us for the 2026 Appalachian Jubilee. Here are the services, songs, and moments we want to remember.",
       "studioSection": "Event introduction"
     },
     {
@@ -559,7 +559,7 @@ window.FBT_SCHEMA.groups.push({
       "key": "jubilee_schedule_sub",
       "type": "multiline",
       "label": "Schedule introduction",
-      "def": "Join us Saturday through Wednesday. All service times are Eastern.",
+      "def": "The service schedule for November 14–18, 2026. All times Eastern.",
       "studioSection": "Services, speakers and music"
     },
     {
@@ -671,7 +671,7 @@ window.FBT_SCHEMA.groups.push({
       "key": "jubilee_music_kick",
       "type": "text",
       "label": "Music section script line",
-      "def": "Come hear them sing",
+      "def": "Music at the Jubilee",
       "studioSection": "Services, speakers and music"
     },
     {
@@ -692,7 +692,7 @@ window.FBT_SCHEMA.groups.push({
       "key": "jubilee_watch_copy",
       "type": "multiline",
       "label": "Watch Copy",
-      "def": "Watch live on Facebook and YouTube.",
+      "def": "More from Fairview on Facebook and YouTube.",
       "studioSection": "Services, speakers and music"
     },
     {
@@ -905,14 +905,14 @@ window.FBT_SCHEMA.groups.push({
       "key": "jubilee_promo_sub",
       "type": "multiline",
       "label": "Promotion paragraph",
-      "def": "Join us for preaching, choir, and special singing at Fairview.",
+      "def": "Watch the services and see photos and clips from this year’s Jubilee.",
       "studioSection": "Home and Events promotion"
     },
     {
       "key": "jubilee_promo_cta",
       "type": "text",
       "label": "Button label",
-      "def": "See the Jubilee schedule",
+      "def": "See Jubilee highlights",
       "studioSection": "Home and Events promotion"
     },
     {
@@ -1238,6 +1238,43 @@ window.FBT_SCHEMA.mediaSlots = window.FBT_SCHEMA.mediaSlots.concat([
     ]
   }
 ]);
+// Recap photos keep their original framing, with editable clip titles.
+(function () {
+  var group = window.FBT_SCHEMA.groups.filter(function (item) { return item.id === 'jubilee'; })[0];
+  var photos = [
+    { caption: 'Worshipping together', ratio: 'landscape' },
+    { caption: 'Preaching through the week', ratio: 'landscape' },
+    { caption: 'From the pulpit', ratio: 'portrait' },
+    { caption: 'Opening the Word', ratio: 'portrait' },
+    { caption: 'A week of Bible preaching', ratio: 'portrait' },
+    { caption: 'Singing together', ratio: 'landscape' },
+    { caption: 'Time with our church family', ratio: 'landscape' }
+  ];
+  var reels = [
+    'Don’t give away what can never be taken away.',
+    'Circumstances do not dictate worship.',
+    'Invest in people. It’s the Bible way.'
+  ];
+  function addPhoto(key, textKey, label, copy, file, ratio, section, anchor) {
+    group.fields.push({ key: key, type: 'image', label: label, def: '/assets/photos/jubilee-2026/' + file + '.webp', studioSection: section });
+    if (textKey) group.fields.push({ key: textKey, type: 'text', label: label + ' title', def: copy, studioSection: section });
+    window.FBT_SCHEMA.mediaSlots.push({
+      key: key, label: label, ratio: ratio, page: '/jubilee#' + anchor,
+      kind: 'photo', pageLabel: 'Jubilee page', textKeys: textKey ? [textKey] : [],
+      defaultFit: 'contain', backdrop: '#FAF6ED'
+    });
+  }
+  photos.forEach(function (photo, index) {
+    var number = index + 1;
+    addPhoto('photo_jubilee_recap_' + number, null,
+      'Jubilee: photo ' + number, photo.caption, 'photo-' + number, photo.ratio, 'Jubilee photos', 'jubilee-photos');
+  });
+  reels.forEach(function (title, index) {
+    var number = index + 1;
+    addPhoto('photo_jubilee_reel_' + number, 'jubilee_reel_title_' + number,
+      'Jubilee: clip ' + number, title, 'reel-' + number, 'portrait', 'Jubilee clips', 'jubilee-clips');
+  });
+})();
 // Original church assets and the ministry contacts shown on the public pages.
 window.FBT_SCHEMA.groups.push({
   "id": "ministry_contacts",

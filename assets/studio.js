@@ -4608,7 +4608,7 @@
   });
 
   // ---------- missions (missionaries table + drop-a-pin map) ----------
-  var miss = [], miReady = false, editingMi = null, miMap = null, miMarker = null, miLat = null, miLng = null, miLetters = [], miPhotos = [];
+  var miss = [], miReady = false, editingMi = null, miMap = null, miMarker = null, miLat = null, miLng = null, miLetters = [], miPhotos = [], miEditSession = 0;
   var miStatuses = ['On the field', 'Home on furlough', 'Sending soon'];
   var miRegions = ['Africa', 'Asia', 'Europe', 'Middle East', 'North America', 'Central America', 'South America', 'Oceania'];
   var COMMON_TIMEZONES = [
@@ -4664,7 +4664,7 @@
     var field = $('mi-tz'), preview = $('mi-tz-preview'); if (!field || !preview) return;
     var zone = field.value.trim();
     preview.style.color = '';
-    if (!zone) { preview.textContent = 'Choose the nearest city. The correct daylight-saving adjustment happens automatically.'; return; }
+    if (!zone) { preview.textContent = 'Enter their city and country or place a map pin to fill this in automatically. You can also choose a time zone here.'; return; }
     if (!isValidTimeZone(zone)) {
       preview.style.color = '#ff9e9e';
       preview.textContent = 'That is not a recognized time zone. Choose one of the city-based options.';
@@ -4675,7 +4675,19 @@
     preview.textContent = 'Current local time there: ' + now;
   }
   fillTimeZones();
-  if ($('mi-tz')) $('mi-tz').addEventListener('input', updateTimeZonePreview);
+  var miTimeZone = window.FBT_MISSIONARY_TIMEZONE ? window.FBT_MISSIONARY_TIMEZONE.create({
+    apply: function (zone) { setV('mi-tz', zone); updateTimeZonePreview(); },
+    status: function (message) { var preview = $('mi-tz-preview'); if (preview) { preview.style.color = ''; preview.textContent = message; } }
+  }) : null;
+  if ($('mi-tz')) $('mi-tz').addEventListener('input', function () {
+    if (miTimeZone) miTimeZone.manual();
+    updateTimeZonePreview();
+  });
+  ['mi-location', 'mi-country'].forEach(function (id) {
+    if ($(id)) $(id).addEventListener('input', function () {
+      if (miTimeZone) miTimeZone.location(v('mi-location'), v('mi-country'));
+    });
+  });
   function buildSelect(id, list, cur, noneLabel) {
     var opts = list.slice();
     if (cur && opts.indexOf(cur) < 0) opts.push(cur);
@@ -4732,11 +4744,18 @@
     if (miMap) { setTimeout(function () { miMap.invalidateSize(); }, 60); return; }
     miMap = L.map('mi-map', { worldCopyJump: true, minZoom: 1, scrollWheelZoom: false, attributionControl: true }).setView([20, 0], 1);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(miMap);
-    miMap.on('click', function (e) { setMiCoords(e.latlng.lat, e.latlng.lng); });
+    miMap.on('click', function (e) {
+      var point = e.latlng.wrap();
+      setMiCoords(point.lat, point.lng);
+      if (miTimeZone) miTimeZone.pin(miLat, miLng);
+    });
     setTimeout(function () { miMap.invalidateSize(); }, 90);
   }
   function openMiEdit(m) {
+    miEditSession += 1;
+    if (miTimeZone) miTimeZone.reset();
     editingMi = m || null;
+    $('mi-save').disabled = false; $('mi-save').textContent = 'Save';
     $('mi-edit-title').textContent = m ? 'Edit missionary' : 'New missionary';
     setV('mi-name', m && m.name); buildSelect('mi-region', miRegions, (m && m.region) || '', 'Choose a continent'); setV('mi-location', m && m.location);
     setV('mi-status', (m && m.status) || 'published');
@@ -4755,13 +4774,20 @@
     var lat = (m && m.lat != null) ? Number(m.lat) : null, lng = (m && m.lng != null) ? Number(m.lng) : null;
     if (lat != null && isNaN(lat)) lat = null; if (lng != null && isNaN(lng)) lng = null;
     setMiCoords(lat, lng);
+    if (miTimeZone && !v('mi-tz').trim()) {
+      if (lat != null && lng != null) miTimeZone.pin(lat, lng);
+      else if (v('mi-location').trim()) miTimeZone.location(v('mi-location'), v('mi-country'), 0);
+    }
     if (lat != null && miMap) setTimeout(function () { try { miMap.setView([lat, lng], 4); miMap.invalidateSize(); } catch (e) { } }, 150);
   }
-  function closeMiEdit() { $('mi-edit').hidden = true; $('mi-list').hidden = false; window.scrollTo(0, 0); }
+  function closeMiEdit() { miEditSession += 1; if (miTimeZone) miTimeZone.close(); $('mi-edit').hidden = true; $('mi-list').hidden = false; window.scrollTo(0, 0); }
   $('mi-new').addEventListener('click', function () { openMiEdit(null); });
   $('mi-back').addEventListener('click', closeMiEdit);
   $('mi-cancel').addEventListener('click', closeMiEdit);
-  $('mi-clear').addEventListener('click', function () { setMiCoords(null, null); });
+  $('mi-clear').addEventListener('click', function () {
+    setMiCoords(null, null);
+    if (miTimeZone) miTimeZone.location(v('mi-location'), v('mi-country'), 0);
+  });
   $('mi-photo').addEventListener('input', function () { miPhotoPrev(v('mi-photo')); });
   $('mi-photo-file').addEventListener('change', function () {
     var file = this.files && this.files[0]; if (!file) return; var msg = $('mi-photo-msg'); msg.textContent = 'Uploading…';
@@ -4819,6 +4845,16 @@
     }).catch(function (error) { inp.value = ''; msg.textContent = 'Upload failed: ' + (error.message || 'The connection was interrupted.'); });
   });
   $('mi-save').addEventListener('click', function () {
+    var session = miEditSession, button = $('mi-save');
+    if (button.disabled) return;
+    button.disabled = true; button.textContent = 'Checking location…';
+    (miTimeZone ? miTimeZone.flush() : Promise.resolve()).then(function () {
+      if (session !== miEditSession || $('mi-edit').hidden) return;
+      button.disabled = false; button.textContent = 'Save';
+      saveMissionary();
+    });
+  });
+  function saveMissionary() {
     var name = v('mi-name').trim(); if (!name) { alert('Please add a name.'); return; }
     var timeZone = v('mi-tz').trim();
     if (timeZone && !isValidTimeZone(timeZone)) {
@@ -4888,7 +4924,7 @@
         closeMiEdit(); loadMissions();
       });
     });
-  });
+  }
   function delMi(m) {
     if (!window.confirm('Delete “' + m.name + '”? This can\'t be undone.')) return;
     sb.from('missionaries').delete().eq('id', m.id).then(function (r) {

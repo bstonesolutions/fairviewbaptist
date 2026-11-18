@@ -251,17 +251,17 @@ window.FBT_PAGE_CATALOG = {
               "key": "jubilee_promo_sub",
               "label": "Promotion paragraph",
               "type": "text",
-              "def": "Join us for preaching, choir, and special singing at Fairview."
+              "def": "Watch the services and see photos and clips from this year’s Jubilee."
             },
             {
               "key": "jubilee_promo_cta",
               "label": "Button label",
               "type": "text",
-              "def": "See the Jubilee schedule"
+              "def": "See Jubilee highlights"
             },
             {
               "key": "index_section_4_link_1",
-              "label": "Link: See the Jubilee schedule",
+              "label": "Link: See Jubilee highlights",
               "type": "url",
               "def": "/jubilee"
             }
@@ -3851,17 +3851,17 @@ window.FBT_PAGE_CATALOG = {
               "key": "jubilee_promo_sub",
               "label": "Promotion paragraph",
               "type": "text",
-              "def": "Join us for preaching, choir, and special singing at Fairview."
+              "def": "Watch the services and see photos and clips from this year’s Jubilee."
             },
             {
               "key": "jubilee_promo_cta",
               "label": "Button label",
               "type": "text",
-              "def": "See the Jubilee schedule"
+              "def": "See Jubilee highlights"
             },
             {
               "key": "events_section_2_link_1",
-              "label": "Link: See the Jubilee schedule",
+              "label": "Link: See Jubilee highlights",
               "type": "url",
               "def": "/jubilee"
             }
@@ -5198,6 +5198,12 @@ window.FBT_PAGE_CATALOG = {
               "def": "/assets/photos/wv-appalachian-mountains.jpg"
             },
             {
+              "key": "jubilee_recap_kick",
+              "label": "Text: 2026 highlights",
+              "type": "text",
+              "def": "2026 highlights"
+            },
+            {
               "key": "jubilee_hero_heading",
               "label": "Hero Heading",
               "type": "rich",
@@ -5213,78 +5219,354 @@ window.FBT_PAGE_CATALOG = {
               "key": "jubilee_hero_sub",
               "label": "Hero Paragraph",
               "type": "text",
-              "def": "Five days of preaching, music, and fellowship in the hills of West Virginia."
+              "def": "Preaching, singing, and moments from our week together at Fairview."
             },
             {
               "key": "jubilee_section_1_text_2",
-              "label": "Button label: View the schedule",
+              "label": "Button label: Watch the services",
               "type": "text",
-              "def": "View the schedule"
+              "def": "Watch the services"
             },
             {
               "key": "jubilee_section_1_link_1",
-              "label": "Link: View the schedule",
+              "label": "Link: Watch the services",
               "type": "url",
-              "def": "#jubilee-details"
+              "def": "#jubilee-services"
             },
             {
               "key": "jubilee_section_1_text_4",
-              "label": "Button label: Places to stay",
+              "label": "Button label: See the photos",
               "type": "text",
-              "def": "Places to stay"
+              "def": "See the photos"
             },
             {
               "key": "jubilee_section_1_link_3",
-              "label": "Link: Places to stay",
+              "label": "Link: See the photos",
               "type": "url",
-              "def": "#lodging"
+              "def": "#jubilee-photos"
             }
           ],
           "collections": []
         },
         {
-          "id": "jubilee-section-2",
-          "label": "Event introduction",
+          "id": "jubilee-recap-intro",
+          "label": "Remembering the week",
           "parentGroup": "jubilee-main",
           "parentLabel": "Page",
-          "selector": "[data-page-section=\"jubilee-section-2\"]",
+          "selector": "[data-page-section=\"jubilee-recap-intro\"]",
           "fields": [
             {
-              "key": "hero_bg_jubilee_intro",
-              "label": "Jubilee: event introduction",
-              "type": "image",
-              "def": ""
+              "key": "jubilee_recap_intro_heading",
+              "label": "Heading: A week at *Fairview*",
+              "type": "rich",
+              "def": "A week at *Fairview*"
             },
             {
               "key": "jubilee_intro_copy",
               "label": "Introduction paragraph",
               "type": "text",
-              "def": "Join us at Fairview Baptist Temple in Clay, West Virginia, for five days of preaching, choir, and special singing. Come for a service or make plans to stay for the week."
+              "def": "We are thankful for everyone who has joined us for the 2026 Appalachian Jubilee. Here are the services, songs, and moments we want to remember."
             },
             {
               "key": "jubilee_host",
               "label": "Host",
               "type": "text",
               "def": "Michael Spurlock, Host Pastor"
+            }
+          ],
+          "collections": []
+        },
+        {
+          "id": "jubilee-recap-photos",
+          "label": "Jubilee photo gallery",
+          "parentGroup": "jubilee-main",
+          "parentLabel": "Page",
+          "selector": "[data-page-section=\"jubilee-recap-photos\"]",
+          "fields": [
+            {
+              "key": "jubilee_recap_photos_heading",
+              "label": "Heading: From this year’s Jubilee",
+              "type": "text",
+              "def": "From this year’s Jubilee"
             },
             {
-              "key": "photo_jubilee_music_flyer",
-              "label": "Jubilee: music flyer",
+              "key": "photo_jubilee_recap_1",
+              "label": "Jubilee: photo 1",
               "type": "image",
-              "def": "/assets/photos/appalachian-jubilee-music-2026.png"
+              "def": "/assets/photos/jubilee-2026/photo-1.webp"
             },
             {
-              "key": "photo_jubilee_music_flyer_alt",
+              "key": "photo_jubilee_recap_1_alt",
               "label": "Photo description",
               "type": "text",
-              "def": "The Appalachian Jubilee music flyer with The Matthews Family and nightly special singing."
+              "def": "The Jubilee congregation with hands raised during singing"
+            },
+            {
+              "key": "photo_jubilee_recap_2",
+              "label": "Jubilee: photo 2",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-2.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_2_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A preacher speaking to the congregation from the aisle"
+            },
+            {
+              "key": "photo_jubilee_recap_3",
+              "label": "Jubilee: photo 3",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-3.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_3_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A guest preacher at Fairview’s pulpit during the Jubilee"
+            },
+            {
+              "key": "photo_jubilee_recap_4",
+              "label": "Jubilee: photo 4",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-4.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_4_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A guest preacher with an open Bible at the Jubilee"
+            },
+            {
+              "key": "photo_jubilee_recap_5",
+              "label": "Jubilee: photo 5",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-5.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_5_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A guest preacher holding a microphone beside the pulpit"
+            },
+            {
+              "key": "photo_jubilee_recap_6",
+              "label": "Jubilee: photo 6",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-6.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_6_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "Fairview’s choir singing during the Appalachian Jubilee"
+            },
+            {
+              "key": "photo_jubilee_recap_7",
+              "label": "Jubilee: photo 7",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-7.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_7_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "Church members visiting together after a Jubilee service"
+            }
+          ],
+          "collections": [
+            {
+              "id": "jubilee-recap-photo-items",
+              "label": "Jubilee photos",
+              "selector": "[data-page-collection=\"jubilee-recap-photo-items\"]",
+              "items": [
+                {
+                  "id": "jubilee-photo-1",
+                  "label": "Worshipping together",
+                  "selector": "[data-page-item=\"jubilee-photo-1\"]"
+                },
+                {
+                  "id": "jubilee-photo-2",
+                  "label": "Preaching through the week",
+                  "selector": "[data-page-item=\"jubilee-photo-2\"]"
+                },
+                {
+                  "id": "jubilee-photo-3",
+                  "label": "From the pulpit",
+                  "selector": "[data-page-item=\"jubilee-photo-3\"]"
+                },
+                {
+                  "id": "jubilee-photo-4",
+                  "label": "Opening the Word",
+                  "selector": "[data-page-item=\"jubilee-photo-4\"]"
+                },
+                {
+                  "id": "jubilee-photo-5",
+                  "label": "A week of Bible preaching",
+                  "selector": "[data-page-item=\"jubilee-photo-5\"]"
+                },
+                {
+                  "id": "jubilee-photo-6",
+                  "label": "Singing together",
+                  "selector": "[data-page-item=\"jubilee-photo-6\"]"
+                },
+                {
+                  "id": "jubilee-photo-7",
+                  "label": "Time with our church family",
+                  "selector": "[data-page-item=\"jubilee-photo-7\"]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "jubilee-recap-clips",
+          "label": "Preaching clips",
+          "parentGroup": "jubilee-main",
+          "parentLabel": "Page",
+          "selector": "[data-page-section=\"jubilee-recap-clips\"]",
+          "fields": [
+            {
+              "key": "jubilee_recap_clips_kick",
+              "label": "Text: From the week",
+              "type": "text",
+              "def": "From the week"
+            },
+            {
+              "key": "jubilee_recap_clips_heading",
+              "label": "Heading: Preaching from the Jubilee",
+              "type": "text",
+              "def": "Preaching from the Jubilee"
+            },
+            {
+              "key": "jubilee_reel_link_1",
+              "label": "Link: jubilee_reel_link_1",
+              "type": "url",
+              "def": "https://www.youtube.com/watch?v=oUPUqzrAibs"
+            },
+            {
+              "key": "photo_jubilee_reel_1",
+              "label": "Jubilee: clip 1",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/reel-1.webp"
+            },
+            {
+              "key": "photo_jubilee_reel_1_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "Don’t give away what can never be taken away."
+            },
+            {
+              "key": "jubilee_reel_title_1",
+              "label": "Jubilee: clip 1 title",
+              "type": "text",
+              "def": "Don’t give away what can never be taken away."
+            },
+            {
+              "key": "jubilee_reel_link_2",
+              "label": "Link: jubilee_reel_link_2",
+              "type": "url",
+              "def": "https://www.youtube.com/watch?v=EU5fEUeylSc"
+            },
+            {
+              "key": "photo_jubilee_reel_2",
+              "label": "Jubilee: clip 2",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/reel-2.webp"
+            },
+            {
+              "key": "photo_jubilee_reel_2_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "Circumstances do not dictate worship."
+            },
+            {
+              "key": "jubilee_reel_title_2",
+              "label": "Jubilee: clip 2 title",
+              "type": "text",
+              "def": "Circumstances do not dictate worship."
+            },
+            {
+              "key": "jubilee_reel_link_3",
+              "label": "Link: jubilee_reel_link_3",
+              "type": "url",
+              "def": "https://www.youtube.com/watch?v=Hp-mMchGfN0"
+            },
+            {
+              "key": "photo_jubilee_reel_3",
+              "label": "Jubilee: clip 3",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/reel-3.webp"
+            },
+            {
+              "key": "photo_jubilee_reel_3_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "Invest in people. It’s the Bible way."
+            },
+            {
+              "key": "jubilee_reel_title_3",
+              "label": "Jubilee: clip 3 title",
+              "type": "text",
+              "def": "Invest in people. It’s the Bible way."
+            }
+          ],
+          "collections": [
+            {
+              "id": "jubilee-recap-clip-items",
+              "label": "Preaching clips",
+              "selector": "[data-page-collection=\"jubilee-recap-clip-items\"]",
+              "items": [
+                {
+                  "id": "jubilee-clip-1",
+                  "label": "Don’t give away what can never be taken away.",
+                  "selector": "[data-page-item=\"jubilee-clip-1\"]"
+                },
+                {
+                  "id": "jubilee-clip-2",
+                  "label": "Circumstances do not dictate worship.",
+                  "selector": "[data-page-item=\"jubilee-clip-2\"]"
+                },
+                {
+                  "id": "jubilee-clip-3",
+                  "label": "Invest in people. It’s the Bible way.",
+                  "selector": "[data-page-item=\"jubilee-clip-3\"]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "jubilee-recap-services",
+          "label": "Service recordings and livestreams",
+          "parentGroup": "jubilee-main",
+          "parentLabel": "Page",
+          "selector": "[data-page-section=\"jubilee-recap-services\"]",
+          "fields": [
+            {
+              "key": "jubilee_recap_services_kick",
+              "label": "Text: The Overlook",
+              "type": "text",
+              "def": "The Overlook"
+            },
+            {
+              "key": "jubilee_recap_services_heading",
+              "label": "Heading: Watch the services",
+              "type": "text",
+              "def": "Watch the services"
+            },
+            {
+              "key": "jubilee_recap_services_copy",
+              "label": "Text: Watch a service from this week right here.",
+              "type": "text",
+              "def": "Watch a service from this week right here."
             }
           ],
           "collections": []
         },
         {
           "id": "jubilee-section-3",
-          "label": "Services, speakers & music",
+          "label": "2026 program archive",
           "parentGroup": "jubilee-main",
           "parentLabel": "Page",
           "selector": "[data-page-section=\"jubilee-section-3\"]",
@@ -5296,6 +5578,12 @@ window.FBT_PAGE_CATALOG = {
               "def": ""
             },
             {
+              "key": "jubilee_recap_program_toggle",
+              "label": "Question: The 2026 program & guest speakers",
+              "type": "text",
+              "def": "The 2026 program & guest speakers"
+            },
+            {
               "key": "jubilee_schedule_heading",
               "label": "Schedule Heading",
               "type": "text",
@@ -5305,7 +5593,7 @@ window.FBT_PAGE_CATALOG = {
               "key": "jubilee_schedule_sub",
               "label": "Schedule introduction",
               "type": "text",
-              "def": "Join us Saturday through Wednesday. All service times are Eastern."
+              "def": "The service schedule for November 14–18, 2026. All times Eastern."
             },
             {
               "key": "photo_jubilee_flyer",
@@ -5431,7 +5719,7 @@ window.FBT_PAGE_CATALOG = {
               "key": "jubilee_music_kick",
               "label": "Music section script line",
               "type": "text",
-              "def": "Come hear them sing"
+              "def": "Music at the Jubilee"
             },
             {
               "key": "jubilee_music_heading",
@@ -5473,7 +5761,7 @@ window.FBT_PAGE_CATALOG = {
               "key": "jubilee_watch_copy",
               "label": "Watch Copy",
               "type": "text",
-              "def": "Watch live on Facebook and YouTube."
+              "def": "More from Fairview on Facebook and YouTube."
             },
             {
               "key": "jubilee_section_3_text_4",
@@ -5530,278 +5818,6 @@ window.FBT_PAGE_CATALOG = {
                   "id": "jubilee-section-3-items-1-5",
                   "label": "Wednesday, November 18",
                   "selector": "[data-page-item=\"jubilee-section-3-items-1-5\"]"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "id": "jubilee-section-4",
-          "label": "Make plans to join us",
-          "parentGroup": "jubilee-main",
-          "parentLabel": "Page",
-          "selector": "[data-page-section=\"jubilee-section-4\"]",
-          "fields": [
-            {
-              "key": "hero_bg_jubilee_s2",
-              "label": "Jubilee: plan your visit and stay",
-              "type": "image",
-              "def": ""
-            },
-            {
-              "key": "jubilee_s1_kick",
-              "label": "Plan your visit Script line",
-              "type": "text",
-              "def": "Come be with us"
-            },
-            {
-              "key": "jubilee_s1_heading",
-              "label": "Plan your visit Heading",
-              "type": "rich",
-              "def": "Make plans to *join us*"
-            },
-            {
-              "key": "jubilee_s1_sub",
-              "label": "Plan your visit Paragraph",
-              "type": "text",
-              "def": "Spend the week with us or join us for a service. If you need help planning your visit or finding your way to Fairview, get in touch with the church."
-            },
-            {
-              "key": "jubilee_section_4_text_1",
-              "label": "Text: Fairview Baptist Temple",
-              "type": "text",
-              "def": "Fairview Baptist Temple"
-            },
-            {
-              "key": "contact_address",
-              "label": "Street address",
-              "type": "text",
-              "def": "2294 Main Street"
-            },
-            {
-              "key": "contact_city",
-              "label": "City, state ZIP",
-              "type": "text",
-              "def": "Clay, WV 25043"
-            },
-            {
-              "key": "jubilee_section_4_text_2",
-              "label": "Button label: Get directions",
-              "type": "text",
-              "def": "Get directions"
-            },
-            {
-              "key": "maps_url",
-              "label": "Church directions link",
-              "type": "url",
-              "def": ""
-            },
-            {
-              "key": "jubilee_section_4_text_4",
-              "label": "Button label: Contact the church",
-              "type": "text",
-              "def": "Contact the church"
-            },
-            {
-              "key": "jubilee_section_4_link_3",
-              "label": "Link: Contact the church",
-              "type": "url",
-              "def": "/contact"
-            },
-            {
-              "key": "jubilee_section_4_text_6",
-              "label": "Button label: Plan a visit",
-              "type": "text",
-              "def": "Plan a visit"
-            },
-            {
-              "key": "jubilee_section_4_link_5",
-              "label": "Link: Plan a visit",
-              "type": "url",
-              "def": "/visit"
-            },
-            {
-              "key": "photo_jubilee_fellowship",
-              "label": "Jubilee: church fellowship",
-              "type": "image",
-              "def": "/assets/photos/church-fellowship.jpg"
-            },
-            {
-              "key": "photo_jubilee_fellowship_alt",
-              "label": "Photo description",
-              "type": "text",
-              "def": "The Fairview church family sharing a meal together"
-            },
-            {
-              "key": "jubilee_s2_kick",
-              "label": "Lodging section Script line",
-              "type": "text",
-              "def": "Stay a little while"
-            },
-            {
-              "key": "jubilee_s2_heading",
-              "label": "Lodging section Heading",
-              "type": "rich",
-              "def": "Places to *stay*"
-            },
-            {
-              "key": "jubilee_s2_sub",
-              "label": "Lodging section Paragraph",
-              "type": "text",
-              "def": "Coming from out of town? Here are hotel options in Sutton, Elkview, and the Mink Shoals area, along with cabins at Walker Creek Farms in Nebo."
-            },
-            {
-              "key": "jubilee_lodging_sutton_area",
-              "label": "Lodging Sutton Area",
-              "type": "text",
-              "def": "Sutton"
-            },
-            {
-              "key": "jubilee_lodging_sutton_name",
-              "label": "Lodging Sutton Name",
-              "type": "text",
-              "def": "Days Inn & Suites by Wyndham Sutton Flatwoods"
-            },
-            {
-              "key": "jubilee_lodging_sutton_copy",
-              "label": "Lodging Sutton Copy",
-              "type": "text",
-              "def": "Hotel accommodations at 350 Days Drive in Sutton, with access to I-79."
-            },
-            {
-              "key": "jubilee_section_4_text_7",
-              "label": "Text: Visit hotel website →",
-              "type": "text",
-              "def": "Visit hotel website →"
-            },
-            {
-              "key": "jubilee_lodging_sutton_url",
-              "label": "Lodging Sutton URL",
-              "type": "url",
-              "def": "https://www.wyndhamhotels.com/days-inn/sutton-west-virginia/days-hotel-sutton-flatwoods/overview"
-            },
-            {
-              "key": "jubilee_lodging_elkview_area",
-              "label": "Lodging Elkview Area",
-              "type": "text",
-              "def": "Elkview"
-            },
-            {
-              "key": "jubilee_lodging_elkview_name",
-              "label": "Lodging Elkview Name",
-              "type": "text",
-              "def": "La Quinta Inn & Suites by Wyndham Elkview - Charleston NE"
-            },
-            {
-              "key": "jubilee_lodging_elkview_copy",
-              "label": "Lodging Elkview Copy",
-              "type": "text",
-              "def": "Hotel accommodations at 101 Crossings Mall Road in Elkview, off I-79."
-            },
-            {
-              "key": "jubilee_section_4_text_8",
-              "label": "Text: Visit hotel website →",
-              "type": "text",
-              "def": "Visit hotel website →"
-            },
-            {
-              "key": "jubilee_lodging_elkview_url",
-              "label": "Lodging Elkview URL",
-              "type": "url",
-              "def": "https://www.wyndhamhotels.com/laquinta/elkview-west-virginia/la-quinta-elkview-charleston-ne/overview"
-            },
-            {
-              "key": "jubilee_lodging_minkshoals_area",
-              "label": "Lodging Minkshoals Area",
-              "type": "text",
-              "def": "Mink Shoals area"
-            },
-            {
-              "key": "jubilee_lodging_minkshoals_name",
-              "label": "Lodging Minkshoals Name",
-              "type": "text",
-              "def": "Sleep Inn Charleston North"
-            },
-            {
-              "key": "jubilee_lodging_minkshoals_copy",
-              "label": "Lodging Minkshoals Copy",
-              "type": "text",
-              "def": "Hotel accommodations at 2772 Pennsylvania Avenue in the Charleston area, off I-79."
-            },
-            {
-              "key": "jubilee_section_4_text_9",
-              "label": "Text: Visit hotel website →",
-              "type": "text",
-              "def": "Visit hotel website →"
-            },
-            {
-              "key": "jubilee_lodging_minkshoals_url",
-              "label": "Lodging Minkshoals URL",
-              "type": "url",
-              "def": "https://www.choicehotels.com/west-virginia/charleston/sleep-inn-hotels/wv412"
-            },
-            {
-              "key": "jubilee_lodging_walker_area",
-              "label": "Lodging Walker Area",
-              "type": "text",
-              "def": "Nebo"
-            },
-            {
-              "key": "jubilee_lodging_walker_name",
-              "label": "Lodging Walker Name",
-              "type": "text",
-              "def": "Walker Creek Farms"
-            },
-            {
-              "key": "jubilee_lodging_walker_copy",
-              "label": "Lodging Walker Copy",
-              "type": "text",
-              "def": "Cabins and yurts at 230 Nebo Walker Road in Nebo, for visitors who would enjoy a stay in the country."
-            },
-            {
-              "key": "jubilee_section_4_text_10",
-              "label": "Text: Explore cabins & yurts →",
-              "type": "text",
-              "def": "Explore cabins & yurts →"
-            },
-            {
-              "key": "jubilee_lodging_walker_url",
-              "label": "Lodging Walker URL",
-              "type": "url",
-              "def": "https://www.walkercreekfarms.com/cabins-1"
-            },
-            {
-              "key": "jubilee_lodging_note",
-              "label": "Lodging Note",
-              "type": "text",
-              "def": "Contact each property directly for current availability, rates, and reservations."
-            }
-          ],
-          "collections": [
-            {
-              "id": "jubilee-section-4-items-1",
-              "label": "Items",
-              "selector": "[data-page-collection=\"jubilee-section-4-items-1\"]",
-              "items": [
-                {
-                  "id": "jubilee-section-4-items-1-1",
-                  "label": "Days Inn & Suites by Wyndham Sutton Flatwoods",
-                  "selector": "[data-page-item=\"jubilee-section-4-items-1-1\"]"
-                },
-                {
-                  "id": "jubilee-section-4-items-1-2",
-                  "label": "La Quinta Inn & Suites by Wyndham Elkview - Charleston NE",
-                  "selector": "[data-page-item=\"jubilee-section-4-items-1-2\"]"
-                },
-                {
-                  "id": "jubilee-section-4-items-1-3",
-                  "label": "Sleep Inn Charleston North",
-                  "selector": "[data-page-item=\"jubilee-section-4-items-1-3\"]"
-                },
-                {
-                  "id": "jubilee-section-4-items-1-4",
-                  "label": "Walker Creek Farms",
-                  "selector": "[data-page-item=\"jubilee-section-4-items-1-4\"]"
                 }
               ]
             }
@@ -5872,6 +5888,12 @@ window.FBT_PAGE_CATALOG = {
               "label": "YouTube channel URL",
               "type": "url",
               "def": "https://www.youtube.com/@FairviewBaptistTemple"
+            },
+            {
+              "key": "watch_upcoming_heading",
+              "label": "Heading: Upcoming services",
+              "type": "text",
+              "def": "Upcoming services"
             },
             {
               "key": "watch_s1_kick",

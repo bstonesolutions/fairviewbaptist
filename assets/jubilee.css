@@ -89,3 +89,58 @@
 .jubilee-family figcaption span{display:block;margin-top:4px;color:var(--mut);}
 @media(max-width:900px){.jubilee-introduction .split{grid-template-columns:1fr;gap:28px;}.jubilee-introduction .jubilee-flyer{grid-row:1;}.jubilee-introduction .split p{font-size:1.16rem;}.jubilee-music-lineup{gap:32px;grid-template-columns:1fr 1fr;}}
 @media(max-width:640px){.jubilee-music-lineup{grid-template-columns:1fr;}.jubilee-family{max-width:460px;width:100%;margin:0 auto;}}
+
+/* 2026 recap: photographs keep their full frames; the event masthead stays familiar. */
+.jubilee-page section[id]{scroll-margin-top:100px}
+.jubilee-recap-intro{background:var(--paper);padding-bottom:30px}
+.jubilee-recap-intro-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px;align-items:start}
+.jubilee-recap-intro h2{font-family:'DM Serif Display',Georgia,serif;font-size:clamp(2.6rem,4vw,4rem);font-weight:400;line-height:1.05;text-transform:none;letter-spacing:0;color:var(--jubilee-forest)}
+.jubilee-recap-intro h2 em{display:block;font-family:'Mrs Saint Delafield',cursive;font-weight:400;font-style:normal;font-size:1.6em;color:var(--brand)}
+.jubilee-recap-intro p{font-size:1.18rem;line-height:1.7;margin:0 0 18px}
+.jubilee-photo-section{background:var(--paper);padding-top:35px}
+.jubilee-section-heading{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:30px}
+.jubilee-section-heading h2{font-family:'DM Serif Display',Georgia,serif;font-weight:400;text-transform:none;letter-spacing:0;font-size:clamp(2rem,3.2vw,3.2rem);line-height:1.12;color:var(--jubilee-forest);margin:0}
+.jubilee-section-heading p{max-width:650px;font-size:1.12rem;line-height:1.65;margin:18px 0 0}
+.jubilee-memories{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:32px 22px}
+.jubilee-memory{margin:0;min-width:0;grid-column:span 3}
+.jubilee-memory-portrait{grid-column:span 2}
+.jubilee-memory-image{background:#e8e3d7;overflow:hidden;aspect-ratio:1024/683}
+.jubilee-memory-portrait .jubilee-memory-image{aspect-ratio:843/1266}
+.jubilee-memory-image img{width:100%;height:100%;display:block;object-fit:contain}
+.jubilee-clips-section{background:var(--jubilee-forest);color:var(--paper)}
+.jubilee-clips-section .kick{color:var(--jubilee-gold)}
+.jubilee-clips-section h2{color:var(--paper);max-width:680px}
+.jubilee-clips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px}
+.jubilee-clip{min-width:0}
+.jubilee-clip [hidden]{display:none!important}
+.jubilee-clip-play{position:absolute;inset:0;width:100%;height:100%;border:0;padding:0;background:transparent;cursor:pointer}
+.jubilee-clip-poster iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.jubilee-clip.is-playing .jubilee-clip-play{display:none}
+.jubilee-clip-close{border:1px solid currentColor;background:transparent;color:var(--paper);padding:8px 14px;font:inherit;cursor:pointer;margin-top:10px}
+.jubilee-clip-poster{position:relative;max-height:510px;aspect-ratio:9/16;margin-bottom:20px;background:var(--jubilee-deep);overflow:hidden}
+.jubilee-clip-poster [data-cms-img],.jubilee-clip-poster img{display:block;width:100%;height:100%;object-fit:contain}
+.jubilee-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:64px;height:64px;border-radius:50%;color:var(--jubilee-deep);background:var(--jubilee-gold);font-size:24px;padding-left:4px;box-shadow:0 3px 22px #0005;pointer-events:none}
+.jubilee-clip h3{font-family:'Source Sans 3',sans-serif;font-size:1.35rem;line-height:1.3;letter-spacing:0;text-transform:none;color:var(--paper);margin:0 0 10px}
+.jubilee-services-section{background:var(--paper)}
+.jubilee-services-section .btn{flex-shrink:0}
+.jubilee-replays{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.jubilee-replay-card{border-radius:0;border:1px solid #123f3d22;box-shadow:none;text-decoration:none;overflow:hidden}
+.jubilee-replay-card.is-playing{grid-column:1/-1}
+.jubilee-replay-card.is-playing .player{border-radius:0;border:0;box-shadow:none}
+.jubilee-service-play{display:block;width:100%;padding:0;border:0;cursor:pointer}
+.jubilee-service-action{background:none;border:0;padding:0;color:inherit;font:inherit;cursor:pointer;text-align:left}
+.jubilee-service-action:hover{text-decoration:underline;text-underline-offset:4px}
+.jubilee-service-play:focus-visible,.jubilee-service-action:focus-visible{outline:3px solid var(--brand);outline-offset:-3px}
+.jubilee-replay-card .th{aspect-ratio:16/9;height:auto;position:relative;overflow:hidden;background:var(--jubilee-deep)}
+.jubilee-replay-card .thumb-img{width:100%;height:100%;object-fit:cover;display:block}
+.jubilee-replay-card .s{color:#fff;background:var(--jubilee-forest);font-size:.75rem}
+.jubilee-replay-card h3{font-size:1.15rem;line-height:1.3}
+.jubilee-replay-card .dt{font-size:.8rem;letter-spacing:.08em}
+.jubilee-replay-card .me{color:var(--jubilee-forest);font-size:.95rem;font-weight:600}
+.jubilee-page #jubilee-details{padding-top:0;background:var(--paper)}
+.jubilee-program{border-top:1px solid #123f3d44;border-bottom:1px solid #123f3d44}
+.jubilee-program>summary{cursor:pointer;padding:24px 0;color:var(--jubilee-forest);font-size:1.15rem;font-weight:700}
+.jubilee-program-content{padding:10px 0 35px}
+.jubilee-clip-play:focus-visible,.jubilee-clip-close:focus-visible,.jubilee-program>summary:focus-visible{outline:3px solid var(--brand);outline-offset:5px}
+@media(max-width:900px){.jubilee-section-heading{align-items:start;flex-direction:column}.jubilee-recap-intro-grid{gap:32px}.jubilee-replays{grid-template-columns:repeat(2,minmax(0,1fr))}.jubilee-clips{gap:20px}.jubilee-clip h3{font-size:1.15rem}.jubilee-play{width:50px;height:50px;font-size:20px}}
+@media(max-width:640px){.jubilee-recap-intro-grid{grid-template-columns:1fr;gap:20px}.jubilee-recap-intro h2 em{display:inline;margin-left:8px;font-size:1.4em}.jubilee-recap-intro p{font-size:1.08rem}.jubilee-memories{grid-template-columns:1fr;gap:28px}.jubilee-memory,.jubilee-memory-portrait{grid-column:auto}.jubilee-memory-portrait .jubilee-memory-image{max-height:560px;background:transparent}.jubilee-clips{grid-template-columns:1fr;gap:34px}.jubilee-clip{max-width:390px;width:100%;margin-inline:auto}.jubilee-clip-poster{max-height:none;aspect-ratio:9/16}.jubilee-clip h3{font-size:1.3rem}.jubilee-replays{grid-template-columns:1fr}.jubilee-recap-intro{padding-bottom:20px}.jubilee-photo-section{padding-top:20px}}

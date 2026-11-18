@@ -1,7 +1,12 @@
-/* Keep event discovery metadata aligned with the content saved in Studio. */
+/* Keep the Jubilee recap metadata aligned with the content saved in Studio. */
 (function () {
   'use strict';
   var ORIGIN = 'https://www.fairviewbaptisttemple.com';
+  // Keep the archived program visible while editing its text and photos.
+  if (typeof location !== 'undefined' && new URLSearchParams(location.search).get('studio_preview') === '1') {
+    var program = document.querySelector('.jubilee-program');
+    if (program) program.open = true;
+  }
   function value(map, key, fallback) {
     return Object.prototype.hasOwnProperty.call(map, key) ? String(map[key] == null ? '' : map[key]).trim() : fallback;
   }
@@ -14,43 +19,38 @@
     var el = document.querySelector('[data-cms-text="' + key + '"], [data-cms-rich="' + key + '"]');
     return el ? el.textContent.trim() : '';
   }
-  function image(key) {
-    var el = document.querySelector('[data-cms-img="' + key + '"] img');
-    if (!el) return '';
+  function image(map) {
+    var el = document.querySelector('[data-cms-bg="hero_bg_jubilee"] img');
+    var source = value(map, 'hero_bg_jubilee', el ? el.getAttribute('src') : '');
+    if (!source) return '';
     try {
-      var url = new URL(el.getAttribute('src'), ORIGIN);
+      var url = new URL(source, ORIGIN);
       return /^https?:$/.test(url.protocol) ? url.href : '';
     } catch (e) { return ''; }
   }
   function update(map) {
-    if (!map || typeof map !== 'object') return;
-    var node = document.getElementById('jubilee-event-schema');
+    if (!map || typeof map !== 'object' || Array.isArray(map)) return;
+    var legacy = document.getElementById('jubilee-event-schema');
+    if (legacy) legacy.remove();
+    var node = document.getElementById('jubilee-recap-schema');
     var start = date(value(map, 'jubilee_start_date', '2026-11-14'));
     var end = date(value(map, 'jubilee_end_date', '2026-11-18'));
-    // A cleared or invalid event date should not leave an old event in search.
-    if (!start || !end || end < start) { if (node) node.remove(); return; }
-    var descriptions = [text('jubilee_hero_sub'), text('jubilee_dates'), text('jubilee_intro_copy'), text('jubilee_schedule_sub')];
-    ['sat', 'sun', 'mon', 'tue', 'wed'].forEach(function (day) {
-      var parts = [text('jubilee_' + day + '_day'), text('jubilee_' + day + '_time'), text('jubilee_' + day + '_speakers')].filter(Boolean);
-      if (parts.length) descriptions.push(parts.join(': ') + '.');
-    });
-    descriptions.push(text('jubilee_host'), text('jubilee_music_heading'), text('jubilee_matthews_name'), text('jubilee_matthews_dates'), text('jubilee_music_copy'));
+    var descriptions = [text('jubilee_hero_sub'), text('jubilee_dates'), text('jubilee_intro_copy')];
     var schema = {
-      '@context': 'https://schema.org', '@type': 'Event',
+      '@context': 'https://schema.org', '@type': 'CollectionPage',
+      '@id': ORIGIN + '/jubilee#page',
       name: text('jubilee_hero_heading') || 'The Appalachian Jubilee',
-      startDate: start, endDate: end,
-      eventStatus: 'https://schema.org/EventScheduled',
-      eventAttendanceMode: 'https://schema.org/MixedEventAttendanceMode',
       url: ORIGIN + '/jubilee',
       description: descriptions.filter(Boolean).join(' '),
-      image: [image('photo_jubilee_music_flyer'), image('photo_jubilee_flyer')].filter(Boolean),
-      location: [
-        { '@type': 'Place', name: 'Fairview Baptist Temple', address: [text('contact_address'), text('contact_city')].filter(Boolean).join(', ') },
-        { '@type': 'VirtualLocation', url: ORIGIN + '/watch' }
-      ],
-      organizer: { '@type': 'Organization', name: 'Fairview Baptist Temple', url: ORIGIN + '/' }
+      isPartOf: { '@id': ORIGIN + '/#website' },
+      about: { '@id': ORIGIN + '/#church' },
+      relatedLink: ORIGIN + '/watch'
     };
-    if (!node) { node = document.createElement('script'); node.id = 'jubilee-event-schema'; node.type = 'application/ld+json'; document.head.appendChild(node); }
+    // This describes the collection's coverage, never a service's live status.
+    if (start && end && end >= start) schema.temporalCoverage = start + '/' + end;
+    var hero = image(map);
+    if (hero) schema.primaryImageOfPage = { '@type': 'ImageObject', url: hero };
+    if (!node) { node = document.createElement('script'); node.id = 'jubilee-recap-schema'; node.type = 'application/ld+json'; document.head.appendChild(node); }
     node.textContent = JSON.stringify(schema);
   }
   document.addEventListener('fbt:content', function (event) { update(event.detail); });

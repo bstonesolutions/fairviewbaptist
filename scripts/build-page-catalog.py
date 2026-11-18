@@ -33,7 +33,7 @@ DYNAMIC_ATTRS = {
 DYNAMIC_IDS = {
     'missions-map', 'miss-grid', 'miss-modal', 'miss-stats', 'miss-search-results',
     'miss-filters', 'home-missions-map', 'give-now', 'live-player', 'media-player',
-    'give-other-title',
+    'give-other-title', 'jubilee-replays',
 }
 RUNTIME_VISIBILITY_ATTRS = {
     'data-blog-empty', 'data-events-upcoming-empty', 'data-prayer-empty',
