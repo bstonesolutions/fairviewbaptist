@@ -149,8 +149,8 @@ The existing three selected clips and the alternate longer â€œInvest in peopleâ€
 
 ### Authentic poster preparation
 
-- Poster URLs were read directly from each native `shortsLockupViewModel.thumbnailViewModel` entry. The selected `oar2.jpg` assets are original 405 x 720 portrait posters. No URL paths were guessed.
-- Native `frame0.jpg` URLs were also inspected; although their metadata advertised larger dimensions, the actual responses were only 268 x 480. Those original responses remain archived, but the larger observed 405 x 720 `oar2.jpg` assets were used for the site.
+- Poster URLs were read directly from each native `shortsLockupViewModel.thumbnailViewModel` entry. The selected native portrait JPEG assets are original 405 x 720 posters. No URL paths were guessed.
+- Native `frame0.jpg` URLs were also inspected; although their metadata advertised larger dimensions, the actual responses were only 268 x 480. Those original responses remain archived, but the larger observed 405 x 720 native portrait JPEG assets were used for the site.
 - Output WebPs use quality 86 and preserve each full 405 x 720 frame. There was no cropping, enlargement, retouching, sharpening, face editing, or generative processing. Captions already present within the native poster pixels remain unchanged.
 - Original JPEGs, the native Shorts source mapping, per-video verification metadata, and the full source/output SHA-256 manifest are archived at `/Users/spsmac/Documents/GitHub/fairviewbaptist-source-assets/jubilee-2026-youtube/`.
 - Integration mapping was delivered at `/tmp/fbt-more-reels.json`. Durable provenance is `selected-reel-posters-provenance.json` in the archive above.
