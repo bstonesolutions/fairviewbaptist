@@ -168,10 +168,8 @@
     // ctrl/cmd + scroll. A hint shows when someone tries the "wrong" gesture, so
     // nobody has to figure out how to scroll past the map. Off in kiosk mode
     // (the full-screen display, where the map should own every gesture).
-    map = L.map(host, { worldCopyJump: true, scrollWheelZoom: !kiosk, gestureHandling: !kiosk, zoomControl: true, minZoom: 1, attributionControl: true }).setView([20, 0], 2);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    map = L.map(host, { worldCopyJump: true, scrollWheelZoom: !kiosk, gestureHandling: !kiosk, zoomControl: true, minZoom: 1, maxZoom: 19, maxBounds: [[-85.0511, -Infinity], [85.0511, Infinity]], maxBoundsViscosity: 1, gestureHandlingOptions: { text: { touch: "Use two fingers to move the map", scroll: "Use Ctrl + scroll to zoom the map", scrollMac: "Use Command + scroll to zoom the map" } }, attributionControl: true }).setView([20, 0], 2);
+    window.FBTMissionMap.addTo(map);
     if (map.zoomControl) map.zoomControl.setPosition('bottomright');
     refreshMarkers();
     // make sure tiles fill the container once layout settles / on resize

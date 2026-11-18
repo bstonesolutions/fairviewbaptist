@@ -4742,8 +4742,8 @@
   function ensureMiMap() {
     if (!window.L) return;
     if (miMap) { setTimeout(function () { miMap.invalidateSize(); }, 60); return; }
-    miMap = L.map('mi-map', { worldCopyJump: true, minZoom: 1, scrollWheelZoom: false, attributionControl: true }).setView([20, 0], 1);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' }).addTo(miMap);
+    miMap = L.map('mi-map', { worldCopyJump: true, minZoom: 1, maxZoom: 19, maxBounds: [[-85.0511, -Infinity], [85.0511, Infinity]], maxBoundsViscosity: 1, scrollWheelZoom: false, attributionControl: true }).setView([20, 0], 1);
+    window.FBTMissionMap.addTo(miMap);
     miMap.on('click', function (e) {
       var point = e.latlng.wrap();
       setMiCoords(point.lat, point.lng);
