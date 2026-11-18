@@ -252,13 +252,19 @@
   });
 
   // ---------- edit form ----------
+  var eventImageVersions = { cover: 0, hero: 0 };
+  var eventImagePending = { cover: false, hero: false };
+  function resetEventImageUploads() {
+    ['cover', 'hero'].forEach(function (kind) { eventImageVersions[kind]++; eventImagePending[kind] = false; });
+  }
   function v(id) { return $(id).value; }
   function setV(id, val) { $(id).value = (val == null ? '' : val); }
-  function setCoverPrev(url) { var p = $('f-cover-prev'); if (url) { p.style.backgroundImage = 'url("' + url + '")'; p.classList.add('has'); } else { p.style.backgroundImage = ''; p.classList.remove('has'); } }
-  function setHeroPrev(url) { var p = $('f-hero-prev'); if (url) { p.style.backgroundImage = 'url("' + url + '")'; p.classList.add('has'); } else { p.style.backgroundImage = ''; p.classList.remove('has'); } }
+  function setCoverPrev(url) { var p = $('f-cover-prev'); if (url) { p.style.backgroundImage = 'url("' + url + '")'; p.classList.add('has'); } else { p.style.backgroundImage = ''; p.classList.remove('has'); } $('f-cover-remove').disabled = !String(url || '').trim() && !eventImagePending.cover; }
+  function setHeroPrev(url) { var p = $('f-hero-prev'); if (url) { p.style.backgroundImage = 'url("' + url + '")'; p.classList.add('has'); } else { p.style.backgroundImage = ''; p.classList.remove('has'); } $('f-hero-remove').disabled = !String(url || '').trim() && !eventImagePending.hero; }
   function toggleRegUrl() { $('f-reg-url-row').hidden = v('f-reg-mode') !== 'link'; }
 
   function openEdit(ev) {
+    resetEventImageUploads();
     editing = ev || null;
     $('ev-edit-title').textContent = ev ? 'Edit event' : 'New event';
     setV('f-title', ev && ev.title); setV('f-slug', ev && ev.slug); setV('f-category', ev && ev.category);
@@ -279,13 +285,11 @@
     $('f-hero-file').value = '';
     $('ev-list').hidden = true; $('ev-edit').hidden = false; window.scrollTo(0, 0);
   }
-  function closeEdit() { $('ev-edit').hidden = true; $('ev-list').hidden = false; window.scrollTo(0, 0); }
+  function closeEdit() { resetEventImageUploads(); $('ev-edit').hidden = true; $('ev-list').hidden = false; window.scrollTo(0, 0); }
   $('ev-new').addEventListener('click', function () { openEdit(null); });
   $('ev-back').addEventListener('click', closeEdit);
   $('ev-cancel').addEventListener('click', closeEdit);
   $('f-reg-mode').addEventListener('change', toggleRegUrl);
-  $('f-cover').addEventListener('input', function () { setCoverPrev(v('f-cover')); });
-  $('f-hero').addEventListener('input', function () { setHeroPrev(v('f-hero')); });
 
   function uploadStudioImage(path, file, options) {
     var prepare = window.FBTImageUpload ? window.FBTImageUpload.prepare(file) : Promise.resolve(file);
@@ -307,22 +311,33 @@
       done(r.publicUrl);
     }).catch(function (error) { done(null, error.message || 'The connection was interrupted.'); });
   }
-  $('f-cover-file').addEventListener('change', function () {
-    var file = this.files && this.files[0]; if (!file) return;
-    var msg = $('f-cover-msg'); msg.textContent = 'Uploading…';
-    uploadImg(file, 'cover', function (url, errMsg) {
-      if (!url) { msg.textContent = 'Upload failed: ' + errMsg; return; }
-      setV('f-cover', url); setCoverPrev(url); msg.textContent = 'Uploaded ✓';
+  function bindEventImage(kind, preview, label) {
+    var field = 'f-' + kind;
+    $(field).addEventListener('input', function () {
+      eventImageVersions[kind]++; eventImagePending[kind] = false;
+      $(field + '-file').value = ''; $(field + '-msg').textContent = '';
+      preview(v(field));
     });
-  });
-  $('f-hero-file').addEventListener('change', function () {
-    var file = this.files && this.files[0]; if (!file) return;
-    var msg = $('f-hero-msg'); msg.textContent = 'Uploading…';
-    uploadImg(file, 'hero', function (url, errMsg) {
-      if (!url) { msg.textContent = 'Upload failed: ' + errMsg; return; }
-      setV('f-hero', url); setHeroPrev(url); msg.textContent = 'Uploaded ✓';
+    $(field + '-remove').addEventListener('click', function () {
+      eventImageVersions[kind]++; eventImagePending[kind] = false;
+      setV(field, ''); $(field + '-file').value = ''; preview('');
+      $(field + '-msg').textContent = label + ' removed. Save event to keep this change.';
     });
-  });
+    $(field + '-file').addEventListener('change', function () {
+      var file = this.files && this.files[0]; if (!file) return;
+      var version = ++eventImageVersions[kind]; eventImagePending[kind] = true;
+      var msg = $(field + '-msg'); msg.textContent = 'Uploading…'; preview(v(field));
+      uploadImg(file, kind, function (url, errMsg) {
+        // Removing an image, editing its URL, or leaving this event supersedes an upload.
+        if (version !== eventImageVersions[kind]) return;
+        eventImagePending[kind] = false; $(field + '-file').value = '';
+        if (!url) { preview(v(field)); msg.textContent = 'Upload failed: ' + errMsg; return; }
+        setV(field, url); preview(url); msg.textContent = 'Uploaded ✓';
+      });
+    });
+  }
+  bindEventImage('cover', setCoverPrev, 'Cover');
+  bindEventImage('hero', setHeroPrev, 'Background');
 
   $('ev-save').addEventListener('click', saveEvent);
   function saveEvent() {

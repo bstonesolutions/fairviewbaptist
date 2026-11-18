@@ -901,14 +901,14 @@
         <div class="frow"><label>Event picture (cover)</label>
           <div class="studio-upload">
             <div class="studio-cover" id="f-cover-prev"></div>
-            <div><input type="file" id="f-cover-file" accept="image/*"><input id="f-cover" placeholder="…or paste an image URL"><span id="f-cover-msg" class="muted" style="font-size:.85rem;"></span></div>
+            <div><input type="file" id="f-cover-file" accept="image/*"><input id="f-cover" placeholder="…or paste an image URL"><button type="button" class="btn btn-o" id="f-cover-remove" disabled>Remove cover</button><span id="f-cover-msg" class="muted" style="font-size:.85rem;" role="status"></span></div>
           </div>
           <p class="studio-hint">This is the event's picture: your flyer or photo. It shows <b>in full</b> on the event page (nothing cropped) and as the thumbnail on the events list. Any shape works; a flyer is fine here.</p>
         </div>
         <div class="frow"><label>Hero background <span class="muted" style="font-weight:400;">(optional)</span></label>
           <div class="studio-upload">
             <div class="studio-cover is-banner" id="f-hero-prev"></div>
-            <div><input type="file" id="f-hero-file" accept="image/*"><input id="f-hero" placeholder="…or paste an image URL"><span id="f-hero-msg" class="muted" style="font-size:.85rem;"></span></div>
+            <div><input type="file" id="f-hero-file" accept="image/*"><input id="f-hero" placeholder="…or paste an image URL"><button type="button" class="btn btn-o" id="f-hero-remove" disabled>Remove background</button><span id="f-hero-msg" class="muted" style="font-size:.85rem;" role="status"></span></div>
           </div>
           <p class="studio-hint">Optional wide photo shown <b>behind the title</b> at the top of the event page. Keep faces between the dashed guide lines; the top and bottom get cropped. <b>Leave this empty</b> to use the standard teal banner (recommended if your picture is a flyer).</p>
         </div>
@@ -1494,5 +1494,5 @@
 <script src="/assets/image-upload.js?v=1"></script>
 <script src="/assets/studio-page-editor.js?v=4"></script>
 <script src="/assets/media-page-preview.js?v=2"></script>
-<script src="assets/studio.js?v=48"></script>
+<script src="assets/studio.js?v=49"></script>
 </body></html>
