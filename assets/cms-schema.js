@@ -1248,12 +1248,47 @@ window.FBT_SCHEMA.mediaSlots = window.FBT_SCHEMA.mediaSlots.concat([
     { caption: 'Opening the Word', ratio: 'portrait' },
     { caption: 'A week of Bible preaching', ratio: 'portrait' },
     { caption: 'Singing together', ratio: 'landscape' },
-    { caption: 'Time with our church family', ratio: 'landscape' }
+    { caption: 'Time with our church family', ratio: 'landscape' },
+    {"caption": "Preaching at Jubilee", "ratio": "portrait"},
+    {"caption": "A time in the Word", "ratio": "portrait"},
+    {"caption": "Gathered together", "ratio": "landscape"},
+    {"caption": "Breakfast together", "ratio": "portrait"},
+    {"caption": "Around the breakfast table", "ratio": "landscape"},
+    {"caption": "Something for everyone", "ratio": "landscape"},
+    {"caption": "Fellowship at Jubilee", "ratio": "portrait"},
+    {"caption": "Time together", "ratio": "landscape"},
+    {"caption": "Around the table", "ratio": "landscape"},
+    {"caption": "Good fellowship", "ratio": "landscape"},
+    {"caption": "At the pulpit", "ratio": "portrait"},
+    {"caption": "Preaching the Word", "ratio": "portrait"},
+    {"caption": "Songs of worship", "ratio": "landscape"},
+    {"caption": "Singing and playing", "ratio": "portrait"},
+    {"caption": "A special song", "ratio": "landscape"},
+    {"caption": "A message from Scripture", "ratio": "portrait"},
+    {"caption": "Jubilee preaching", "ratio": "portrait"},
+    {"caption": "Together at the pulpit", "ratio": "portrait"},
+    {"caption": "Catching up at church", "ratio": "landscape"},
+    {"caption": "Smiles and conversation", "ratio": "landscape"},
+    {"caption": "Worshipping together", "ratio": "landscape"},
+    {"caption": "A church gathered", "ratio": "landscape"},
+    {"caption": "The choir together", "ratio": "landscape"},
+    {"caption": "Fellowship around the table", "ratio": "landscape"},
+    {"caption": "Sharing a meal", "ratio": "landscape"},
+    {"caption": "A time to visit", "ratio": "landscape"},
+    {"caption": "Standing together in worship", "ratio": "landscape"}
   ];
   var reels = [
     'Don’t give away what can never be taken away.',
     'Circumstances do not dictate worship.',
-    'Invest in people. It’s the Bible way.'
+    'Invest in people. It’s the Bible way.',
+    "The life you live preaches loudly.",
+    "God can do anything.",
+    "If God did it then, He can still do it now.",
+    "Beware of following Jesus afar off.",
+    "God is the one who should get the glory.",
+    "Be the difference maker in your church.",
+    "Determine today to live for the Lord!",
+    "Before we serve, we must be clean."
   ];
   function addPhoto(key, textKey, label, copy, file, ratio, section, anchor) {
     group.fields.push({ key: key, type: 'image', label: label, def: '/assets/photos/jubilee-2026/' + file + '.webp', studioSection: section });

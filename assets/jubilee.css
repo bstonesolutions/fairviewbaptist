@@ -101,7 +101,7 @@
 .jubilee-section-heading{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:30px}
 .jubilee-section-heading h2{font-family:'DM Serif Display',Georgia,serif;font-weight:400;text-transform:none;letter-spacing:0;font-size:clamp(2rem,3.2vw,3.2rem);line-height:1.12;color:var(--jubilee-forest);margin:0}
 .jubilee-section-heading p{max-width:650px;font-size:1.12rem;line-height:1.65;margin:18px 0 0}
-.jubilee-memories{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:32px 22px}
+.jubilee-memories{display:grid;grid-auto-flow:dense;grid-template-columns:repeat(6,minmax(0,1fr));gap:32px 22px}
 .jubilee-memory{margin:0;min-width:0;grid-column:span 3}
 .jubilee-memory-portrait{grid-column:span 2}
 .jubilee-memory-image{background:#e8e3d7;overflow:hidden;aspect-ratio:1024/683}

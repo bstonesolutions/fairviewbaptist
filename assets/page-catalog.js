@@ -5372,6 +5372,330 @@ window.FBT_PAGE_CATALOG = {
               "label": "Photo description",
               "type": "text",
               "def": "Church members visiting together after a Jubilee service"
+            },
+            {
+              "key": "photo_jubilee_recap_8",
+              "label": "Jubilee: photo 8",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-8.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_8_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A smiling preacher stands behind the white church pulpit."
+            },
+            {
+              "key": "photo_jubilee_recap_9",
+              "label": "Jubilee: photo 9",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-9.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_9_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A speaker in a navy pullover gestures at a wooden lectern."
+            },
+            {
+              "key": "photo_jubilee_recap_10",
+              "label": "Jubilee: photo 10",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-10.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_10_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "Adults and a child gather and smile inside the church."
+            },
+            {
+              "key": "photo_jubilee_recap_11",
+              "label": "Jubilee: photo 11",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-11.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_11_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "Pancakes, strawberry topping, and blueberries are arranged on the serving counter."
+            },
+            {
+              "key": "photo_jubilee_recap_12",
+              "label": "Jubilee: photo 12",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-12.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_12_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A glass bowl of biscuits sits on the breakfast table."
+            },
+            {
+              "key": "photo_jubilee_recap_13",
+              "label": "Jubilee: photo 13",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-13.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_13_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "Platters of pastries and small cakes fill a serving table."
+            },
+            {
+              "key": "photo_jubilee_recap_14",
+              "label": "Jubilee: photo 14",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-14.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_14_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "Three people pose together in the fellowship hall."
+            },
+            {
+              "key": "photo_jubilee_recap_15",
+              "label": "Jubilee: photo 15",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-15.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_15_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "Adults and children gather around a table in the fellowship hall."
+            },
+            {
+              "key": "photo_jubilee_recap_16",
+              "label": "Jubilee: photo 16",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-16.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_16_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A group sits around a long table during fellowship."
+            },
+            {
+              "key": "photo_jubilee_recap_17",
+              "label": "Jubilee: photo 17",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-17.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_17_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "Three people smile from their seats at a table with Bibles and drink cups."
+            },
+            {
+              "key": "photo_jubilee_recap_18",
+              "label": "Jubilee: photo 18",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-18.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_18_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A preacher in a tan suit gestures while speaking at the white church pulpit."
+            },
+            {
+              "key": "photo_jubilee_recap_19",
+              "label": "Jubilee: photo 19",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-19.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_19_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A preacher in a light-colored suit speaks from the pulpit."
+            },
+            {
+              "key": "photo_jubilee_recap_20",
+              "label": "Jubilee: photo 20",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-20.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_20_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "Musicians sing and play guitar and bass at the front of the church."
+            },
+            {
+              "key": "photo_jubilee_recap_21",
+              "label": "Jubilee: photo 21",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-21.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_21_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A musician sings into a microphone while playing a bass guitar."
+            },
+            {
+              "key": "photo_jubilee_recap_22",
+              "label": "Jubilee: photo 22",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-22.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_22_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A young singer stands at a microphone behind the pulpit."
+            },
+            {
+              "key": "photo_jubilee_recap_23",
+              "label": "Jubilee: photo 23",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-23.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_23_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A preacher gestures with both hands above the pulpit."
+            },
+            {
+              "key": "photo_jubilee_recap_24",
+              "label": "Jubilee: photo 24",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-24.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_24_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A preacher stands at the pulpit beneath an autumn wreath."
+            },
+            {
+              "key": "photo_jubilee_recap_25",
+              "label": "Jubilee: photo 25",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-25.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_25_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "Two men greet one another at the front of the church."
+            },
+            {
+              "key": "photo_jubilee_recap_26",
+              "label": "Jubilee: photo 26",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-26.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_26_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "People smile and talk together among the church pews."
+            },
+            {
+              "key": "photo_jubilee_recap_27",
+              "label": "Jubilee: photo 27",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-27.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_27_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A group chats together beside the church pews."
+            },
+            {
+              "key": "photo_jubilee_recap_28",
+              "label": "Jubilee: photo 28",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-28.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_28_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "Members of the congregation stand together beside their pews."
+            },
+            {
+              "key": "photo_jubilee_recap_29",
+              "label": "Jubilee: photo 29",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-29.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_29_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A wide view from the rear shows the congregation seated throughout the sanctuary."
+            },
+            {
+              "key": "photo_jubilee_recap_30",
+              "label": "Jubilee: photo 30",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-30.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_30_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "The choir fills the platform at the front of the church."
+            },
+            {
+              "key": "photo_jubilee_recap_31",
+              "label": "Jubilee: photo 31",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-31.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_31_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "People gather around a long table for a meal in the fellowship hall."
+            },
+            {
+              "key": "photo_jubilee_recap_32",
+              "label": "Jubilee: photo 32",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-32.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_32_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "People share food and conversation around a long table."
+            },
+            {
+              "key": "photo_jubilee_recap_33",
+              "label": "Jubilee: photo 33",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-33.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_33_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A group visits together in a row of chairs along the fellowship hall wall."
+            },
+            {
+              "key": "photo_jubilee_recap_34",
+              "label": "Jubilee: photo 34",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/photo-34.webp"
+            },
+            {
+              "key": "photo_jubilee_recap_34_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A wide view shows the congregation standing in the sanctuary."
             }
           ],
           "collections": [
@@ -5414,6 +5738,141 @@ window.FBT_PAGE_CATALOG = {
                   "id": "jubilee-photo-7",
                   "label": "Time with our church family",
                   "selector": "[data-page-item=\"jubilee-photo-7\"]"
+                },
+                {
+                  "id": "jubilee-photo-8",
+                  "label": "Preaching at Jubilee",
+                  "selector": "[data-page-item=\"jubilee-photo-8\"]"
+                },
+                {
+                  "id": "jubilee-photo-9",
+                  "label": "A time in the Word",
+                  "selector": "[data-page-item=\"jubilee-photo-9\"]"
+                },
+                {
+                  "id": "jubilee-photo-10",
+                  "label": "Gathered together",
+                  "selector": "[data-page-item=\"jubilee-photo-10\"]"
+                },
+                {
+                  "id": "jubilee-photo-11",
+                  "label": "Breakfast together",
+                  "selector": "[data-page-item=\"jubilee-photo-11\"]"
+                },
+                {
+                  "id": "jubilee-photo-12",
+                  "label": "Around the breakfast table",
+                  "selector": "[data-page-item=\"jubilee-photo-12\"]"
+                },
+                {
+                  "id": "jubilee-photo-13",
+                  "label": "Something for everyone",
+                  "selector": "[data-page-item=\"jubilee-photo-13\"]"
+                },
+                {
+                  "id": "jubilee-photo-14",
+                  "label": "Fellowship at Jubilee",
+                  "selector": "[data-page-item=\"jubilee-photo-14\"]"
+                },
+                {
+                  "id": "jubilee-photo-15",
+                  "label": "Time together",
+                  "selector": "[data-page-item=\"jubilee-photo-15\"]"
+                },
+                {
+                  "id": "jubilee-photo-16",
+                  "label": "Around the table",
+                  "selector": "[data-page-item=\"jubilee-photo-16\"]"
+                },
+                {
+                  "id": "jubilee-photo-17",
+                  "label": "Good fellowship",
+                  "selector": "[data-page-item=\"jubilee-photo-17\"]"
+                },
+                {
+                  "id": "jubilee-photo-18",
+                  "label": "At the pulpit",
+                  "selector": "[data-page-item=\"jubilee-photo-18\"]"
+                },
+                {
+                  "id": "jubilee-photo-19",
+                  "label": "Preaching the Word",
+                  "selector": "[data-page-item=\"jubilee-photo-19\"]"
+                },
+                {
+                  "id": "jubilee-photo-20",
+                  "label": "Songs of worship",
+                  "selector": "[data-page-item=\"jubilee-photo-20\"]"
+                },
+                {
+                  "id": "jubilee-photo-21",
+                  "label": "Singing and playing",
+                  "selector": "[data-page-item=\"jubilee-photo-21\"]"
+                },
+                {
+                  "id": "jubilee-photo-22",
+                  "label": "A special song",
+                  "selector": "[data-page-item=\"jubilee-photo-22\"]"
+                },
+                {
+                  "id": "jubilee-photo-23",
+                  "label": "A message from Scripture",
+                  "selector": "[data-page-item=\"jubilee-photo-23\"]"
+                },
+                {
+                  "id": "jubilee-photo-24",
+                  "label": "Jubilee preaching",
+                  "selector": "[data-page-item=\"jubilee-photo-24\"]"
+                },
+                {
+                  "id": "jubilee-photo-25",
+                  "label": "Together at the pulpit",
+                  "selector": "[data-page-item=\"jubilee-photo-25\"]"
+                },
+                {
+                  "id": "jubilee-photo-26",
+                  "label": "Catching up at church",
+                  "selector": "[data-page-item=\"jubilee-photo-26\"]"
+                },
+                {
+                  "id": "jubilee-photo-27",
+                  "label": "Smiles and conversation",
+                  "selector": "[data-page-item=\"jubilee-photo-27\"]"
+                },
+                {
+                  "id": "jubilee-photo-28",
+                  "label": "Worshipping together",
+                  "selector": "[data-page-item=\"jubilee-photo-28\"]"
+                },
+                {
+                  "id": "jubilee-photo-29",
+                  "label": "A church gathered",
+                  "selector": "[data-page-item=\"jubilee-photo-29\"]"
+                },
+                {
+                  "id": "jubilee-photo-30",
+                  "label": "The choir together",
+                  "selector": "[data-page-item=\"jubilee-photo-30\"]"
+                },
+                {
+                  "id": "jubilee-photo-31",
+                  "label": "Fellowship around the table",
+                  "selector": "[data-page-item=\"jubilee-photo-31\"]"
+                },
+                {
+                  "id": "jubilee-photo-32",
+                  "label": "Sharing a meal",
+                  "selector": "[data-page-item=\"jubilee-photo-32\"]"
+                },
+                {
+                  "id": "jubilee-photo-33",
+                  "label": "A time to visit",
+                  "selector": "[data-page-item=\"jubilee-photo-33\"]"
+                },
+                {
+                  "id": "jubilee-photo-34",
+                  "label": "Standing together in worship",
+                  "selector": "[data-page-item=\"jubilee-photo-34\"]"
                 }
               ]
             }
@@ -5509,6 +5968,198 @@ window.FBT_PAGE_CATALOG = {
               "label": "Jubilee: clip 3 title",
               "type": "text",
               "def": "Invest in people. It’s the Bible way."
+            },
+            {
+              "key": "jubilee_reel_link_4",
+              "label": "Link: jubilee_reel_link_4",
+              "type": "url",
+              "def": "https://www.youtube.com/watch?v=SeQL3W4ebB0"
+            },
+            {
+              "key": "photo_jubilee_reel_4",
+              "label": "Jubilee: clip 4",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/reel-4.webp"
+            },
+            {
+              "key": "photo_jubilee_reel_4_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A preacher speaking during a service at Fairview’s white pulpit."
+            },
+            {
+              "key": "jubilee_reel_title_4",
+              "label": "Jubilee: clip 4 title",
+              "type": "text",
+              "def": "The life you live preaches loudly."
+            },
+            {
+              "key": "jubilee_reel_link_5",
+              "label": "Link: jubilee_reel_link_5",
+              "type": "url",
+              "def": "https://www.youtube.com/watch?v=WKaesqq5DWA"
+            },
+            {
+              "key": "photo_jubilee_reel_5",
+              "label": "Jubilee: clip 5",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/reel-5.webp"
+            },
+            {
+              "key": "photo_jubilee_reel_5_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A preacher speaking during a service at Fairview’s white pulpit."
+            },
+            {
+              "key": "jubilee_reel_title_5",
+              "label": "Jubilee: clip 5 title",
+              "type": "text",
+              "def": "God can do anything."
+            },
+            {
+              "key": "jubilee_reel_link_6",
+              "label": "Link: jubilee_reel_link_6",
+              "type": "url",
+              "def": "https://www.youtube.com/watch?v=tJ9yydfgpc8"
+            },
+            {
+              "key": "photo_jubilee_reel_6",
+              "label": "Jubilee: clip 6",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/reel-6.webp"
+            },
+            {
+              "key": "photo_jubilee_reel_6_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A preacher speaking during a service at Fairview’s white pulpit."
+            },
+            {
+              "key": "jubilee_reel_title_6",
+              "label": "Jubilee: clip 6 title",
+              "type": "text",
+              "def": "If God did it then, He can still do it now."
+            },
+            {
+              "key": "jubilee_reel_link_7",
+              "label": "Link: jubilee_reel_link_7",
+              "type": "url",
+              "def": "https://www.youtube.com/watch?v=syImVVgc1ts"
+            },
+            {
+              "key": "photo_jubilee_reel_7",
+              "label": "Jubilee: clip 7",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/reel-7.webp"
+            },
+            {
+              "key": "photo_jubilee_reel_7_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A preacher speaking during a service at Fairview’s white pulpit."
+            },
+            {
+              "key": "jubilee_reel_title_7",
+              "label": "Jubilee: clip 7 title",
+              "type": "text",
+              "def": "Beware of following Jesus afar off."
+            },
+            {
+              "key": "jubilee_reel_link_8",
+              "label": "Link: jubilee_reel_link_8",
+              "type": "url",
+              "def": "https://www.youtube.com/watch?v=nhAHH-53fio"
+            },
+            {
+              "key": "photo_jubilee_reel_8",
+              "label": "Jubilee: clip 8",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/reel-8.webp"
+            },
+            {
+              "key": "photo_jubilee_reel_8_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A preacher speaking during a service at Fairview’s white pulpit."
+            },
+            {
+              "key": "jubilee_reel_title_8",
+              "label": "Jubilee: clip 8 title",
+              "type": "text",
+              "def": "God is the one who should get the glory."
+            },
+            {
+              "key": "jubilee_reel_link_9",
+              "label": "Link: jubilee_reel_link_9",
+              "type": "url",
+              "def": "https://www.youtube.com/watch?v=qP66HmXzT5c"
+            },
+            {
+              "key": "photo_jubilee_reel_9",
+              "label": "Jubilee: clip 9",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/reel-9.webp"
+            },
+            {
+              "key": "photo_jubilee_reel_9_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A preacher speaking during a service at Fairview’s white pulpit."
+            },
+            {
+              "key": "jubilee_reel_title_9",
+              "label": "Jubilee: clip 9 title",
+              "type": "text",
+              "def": "Be the difference maker in your church."
+            },
+            {
+              "key": "jubilee_reel_link_10",
+              "label": "Link: jubilee_reel_link_10",
+              "type": "url",
+              "def": "https://www.youtube.com/watch?v=ZnQmZLMLb0o"
+            },
+            {
+              "key": "photo_jubilee_reel_10",
+              "label": "Jubilee: clip 10",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/reel-10.webp"
+            },
+            {
+              "key": "photo_jubilee_reel_10_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A preacher speaking during a service at Fairview’s white pulpit."
+            },
+            {
+              "key": "jubilee_reel_title_10",
+              "label": "Jubilee: clip 10 title",
+              "type": "text",
+              "def": "Determine today to live for the Lord!"
+            },
+            {
+              "key": "jubilee_reel_link_11",
+              "label": "Link: jubilee_reel_link_11",
+              "type": "url",
+              "def": "https://www.youtube.com/watch?v=cHXUEgEScO0"
+            },
+            {
+              "key": "photo_jubilee_reel_11",
+              "label": "Jubilee: clip 11",
+              "type": "image",
+              "def": "/assets/photos/jubilee-2026/reel-11.webp"
+            },
+            {
+              "key": "photo_jubilee_reel_11_alt",
+              "label": "Photo description",
+              "type": "text",
+              "def": "A preacher with an open Bible standing beside Fairview’s white pulpit."
+            },
+            {
+              "key": "jubilee_reel_title_11",
+              "label": "Jubilee: clip 11 title",
+              "type": "text",
+              "def": "Before we serve, we must be clean."
             }
           ],
           "collections": [
@@ -5531,6 +6182,46 @@ window.FBT_PAGE_CATALOG = {
                   "id": "jubilee-clip-3",
                   "label": "Invest in people. It’s the Bible way.",
                   "selector": "[data-page-item=\"jubilee-clip-3\"]"
+                },
+                {
+                  "id": "jubilee-clip-4",
+                  "label": "The life you live preaches loudly.",
+                  "selector": "[data-page-item=\"jubilee-clip-4\"]"
+                },
+                {
+                  "id": "jubilee-clip-5",
+                  "label": "God can do anything.",
+                  "selector": "[data-page-item=\"jubilee-clip-5\"]"
+                },
+                {
+                  "id": "jubilee-clip-6",
+                  "label": "If God did it then, He can still do it now.",
+                  "selector": "[data-page-item=\"jubilee-clip-6\"]"
+                },
+                {
+                  "id": "jubilee-clip-7",
+                  "label": "Beware of following Jesus afar off.",
+                  "selector": "[data-page-item=\"jubilee-clip-7\"]"
+                },
+                {
+                  "id": "jubilee-clip-8",
+                  "label": "God is the one who should get the glory.",
+                  "selector": "[data-page-item=\"jubilee-clip-8\"]"
+                },
+                {
+                  "id": "jubilee-clip-9",
+                  "label": "Be the difference maker in your church.",
+                  "selector": "[data-page-item=\"jubilee-clip-9\"]"
+                },
+                {
+                  "id": "jubilee-clip-10",
+                  "label": "Determine today to live for the Lord!",
+                  "selector": "[data-page-item=\"jubilee-clip-10\"]"
+                },
+                {
+                  "id": "jubilee-clip-11",
+                  "label": "Before we serve, we must be clean.",
+                  "selector": "[data-page-item=\"jubilee-clip-11\"]"
                 }
               ]
             }
