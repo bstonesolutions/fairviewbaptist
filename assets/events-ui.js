@@ -10,33 +10,36 @@
   var EVENTS = (window.FBT_EVENTS || []).slice();
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
-  // Parse a date. IMPORTANT: return null for a missing value — new Date(null)
-  // and new Date(0) yield Jan 1 1970 (a valid date!), which made events with no
-  // end time look ancient and sort into "past". Guard against falsy input.
-  function D(s) { if (!s) return null; var d = new Date(s); return isNaN(d) ? null : d; }
-  function sameDay(a, b) { return a && b && a.toDateString() === b.toDateString(); }
+  var timing = window.FBTEventTime;
+  function churchDate(value) {
+    var ms = timing.instant(value);
+    return Number.isFinite(ms) ? new Date(timing.localISO(ms) + 'Z') : null;
+  }
+  function sameDay(a, b) { return a && b && a.toISOString().slice(0, 10) === b.toISOString().slice(0, 10); }
   var MON = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   var WD = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  function fmtTime(d) { var h = d.getHours(), m = d.getMinutes(), ap = h < 12 ? 'am' : 'pm'; h = h % 12 || 12; return h + (m ? ':' + pad(m) : '') + ap; }
+  function fmtTime(d) { var h = d.getUTCHours(), m = d.getUTCMinutes(), ap = h < 12 ? 'am' : 'pm'; h = h % 12 || 12; return h + (m ? ':' + pad(m) : '') + ap; }
   function fmtWhen(ev) {
-    var s = D(ev.start), e = ev.end ? D(ev.end) : null;
+    var s = churchDate(ev.start);
+    var e = timing.validEnd(ev.start, ev.end, ev.allDay) === null ? null : churchDate(ev.end);
     if (ev.recurring) return ev.recurring + (s && !ev.allDay ? ' · ' + fmtTime(s) : '');
     if (!s) return '';
     if (e && !sameDay(s, e)) {
-      var sameMonth = s.getMonth() === e.getMonth() && s.getFullYear() === e.getFullYear();
-      return MON[s.getMonth()] + ' ' + s.getDate() + (sameMonth ? '' : ', ' + s.getFullYear()) + ' to ' + (sameMonth ? '' : MON[e.getMonth()] + ' ') + e.getDate() + ', ' + e.getFullYear();
+      var sameMonth = s.getUTCMonth() === e.getUTCMonth() && s.getUTCFullYear() === e.getUTCFullYear();
+      return MON[s.getUTCMonth()] + ' ' + s.getUTCDate() + (sameMonth ? '' : ', ' + s.getUTCFullYear()) + ' to ' + (sameMonth ? '' : MON[e.getUTCMonth()] + ' ') + e.getUTCDate() + ', ' + e.getUTCFullYear();
     }
-    var base = WD[s.getDay()] + ', ' + MON[s.getMonth()] + ' ' + s.getDate() + ', ' + s.getFullYear();
+    var base = WD[s.getUTCDay()] + ', ' + MON[s.getUTCMonth()] + ' ' + s.getUTCDate() + ', ' + s.getUTCFullYear();
     if (ev.allDay) return base;
     return base + ' · ' + fmtTime(s) + (e ? ' to ' + fmtTime(e) : '');
   }
-  function endOf(ev) { return D(ev.end) || D(ev.start); }
   function gcal(ev) {
-    var s = D(ev.start); if (!s) return '';
-    var e = D(ev.end) || new Date(s.getTime() + 90 * 60000);
-    function z(d) { return d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + '00Z'; }
-    function ymd(d) { return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()); }
-    var dates = ev.allDay ? (ymd(s) + '/' + ymd(e)) : (z(s) + '/' + z(e));
+    var start = timing.instant(ev.start);
+    if (!Number.isFinite(start)) return '';
+    var end = timing.validEnd(ev.start, ev.end, ev.allDay);
+    function stamp(ms) { return new Date(ms).toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z'; }
+    function ymd(ms) { return timing.localISO(ms).slice(0, 10).replace(/-/g, ''); }
+    var dates = ev.allDay ? ymd(start) + '/' + ymd(end || timing.validEnd(ev.start, ev.start, true))
+      : stamp(start) + '/' + stamp(end || start + 90 * 60000);
     return 'https://www.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(ev.title) +
       '&dates=' + dates + '&location=' + encodeURIComponent(ev.address || ev.location || '') +
       '&details=' + encodeURIComponent(ev.summary || '');
@@ -48,29 +51,26 @@
     return '<div class="ev-cover">' + img + (ev.category ? '<span class="s">' + esc(ev.category) + '</span>' : '') + '</div>';
   }
   function dateChip(ev) {
-    var s = D(ev.start); if (!s) return '<div class="ev-chip"><span class="m">TBA</span></div>';
-    return '<div class="ev-chip"><span class="m">' + MON[s.getMonth()].slice(0, 3) + '</span><span class="d">' + s.getDate() + '</span></div>';
+    var s = churchDate(ev.start); if (!s) return '<div class="ev-chip"><span class="m">TBA</span></div>';
+    return '<div class="ev-chip"><span class="m">' + MON[s.getUTCMonth()].slice(0, 3) + '</span><span class="d">' + s.getUTCDate() + '</span></div>';
   }
 
   // ---------- hub (events.html) ----------
   function renderHub() {
     var host = document.querySelector('[data-events]');
     if (!host) return;
-    // Compare by DAY, not exact timestamp: an event stays "upcoming" through the
-    // whole day it happens (so a Sunday service doesn't drop off at 10:31am), and
-    // this absorbs timezone shifts in how the start time was stored. An event is
-    // only "past" once its day is fully behind us.
-    var startOfToday = new Date(); startOfToday.setHours(0, 0, 0, 0);
-    var upcoming = EVENTS.filter(function (e) { return e.recurring || (endOf(e) && endOf(e) >= startOfToday); })
+    var now = Date.now();
+    var upcoming = EVENTS.filter(function (event) { return timing.endsAt(event) > now; })
       .sort(function (a, b) { return String(a.start).localeCompare(b.start); });
-    var past = EVENTS.filter(function (e) { return !e.recurring && endOf(e) && endOf(e) < startOfToday; })
+    var past = EVENTS.filter(function (event) { return timing.endsAt(event) <= now; })
       .sort(function (a, b) { return String(b.start).localeCompare(a.start); });
     var featured = upcoming.filter(function (e) { return e.featured; })[0] || upcoming[0];
 
     // featured
     var fEl = document.querySelector('[data-event-featured]');
+    host.hidden = !featured;
+    if (fEl) fEl.hidden = !featured;
     if (fEl && featured) {
-      fEl.hidden = false;
       fEl.innerHTML =
         '<a class="ev-feature-media" href="/event?e=' + encodeURIComponent(featured.slug) + '">' + coverHtml(featured) + '</a>' +
         '<div class="ev-feature-body"><span class="kick">Next up</span>' +
@@ -178,9 +178,14 @@
       if (photo) { photo.hidden = false; photo.innerHTML = '<img loading="lazy" alt="' + esc(ev.title) + '" src="' + esc(ev.cover) + '">'; }
     }
 
+    var past = timing.endsAt(ev) <= Date.now();
+    if (past) setText('[data-event-when]', 'Past event · ' + fmtWhen(ev));
+    var formSection = document.querySelector('[data-event-register-section]');
+    if (past && formSection) formSection.hidden = true;
     var reg = document.querySelector('[data-event-register]');
     var rc = ev.register || {};
-    if (reg) {
+    if (reg) reg.hidden = past;
+    if (reg && !past) {
       if (rc.mode === 'form') { reg.innerHTML = '<a class="btn btn-b" href="#register">' + esc(rc.label || 'Register') + '</a>'; renderRegForm(ev); }
       else if (rc.url) { reg.innerHTML = '<a class="btn btn-b" href="' + esc(rc.url) + '"' + (/^https?:/.test(rc.url) ? ' target="_blank" rel="noopener"' : '') + '>' + esc(rc.label || 'Register') + '</a>'; }
     }
@@ -188,7 +193,7 @@
     // add to calendar + map
     var cal = document.querySelector('[data-event-cal]');
     if (cal) {
-      var g = gcal(ev);
+      var g = past ? '' : gcal(ev);
       var bits = [];
       if (g) bits.push('<a class="btn btn-o" href="' + g + '" target="_blank" rel="noopener">Add to calendar</a>');
       if (ev.address) bits.push('<a class="btn btn-o" href="https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(ev.address) + '" target="_blank" rel="noopener">Get directions</a>');
@@ -277,6 +282,7 @@
     form.addEventListener('submit', function (e) { e.preventDefault(); submitReg(ev, form); });
   }
   function submitReg(ev, form) {
+    if (timing.endsAt(ev) <= Date.now()) { renderEvent(); return; }
     if (!form.checkValidity()) { form.reportValidity(); return; }
     var cfg = window.FBT_EVENTS_CONFIG || {};
     var msg = form.querySelector('.ev-form-msg');
@@ -315,7 +321,8 @@
   // ---------- load events: Supabase first (live edits), static file as fallback ----------
   function fromDb(r) {
     return {
-      slug: r.slug, title: r.title, start: r.start_at, end: r.end_at, recurring: r.recurring,
+      slug: r.slug, title: r.title, start: r.start_at, end: timing.validEnd(r.start_at, r.end_at) === null ? null : r.end_at,
+      allDay: !!r.start_at && r.start_at.length === 10 && (!r.end_at || r.end_at.length === 10), recurring: r.recurring,
       location: r.location, address: r.address, category: r.category, cover: r.cover,
       hero: r.hero || null,
       summary: r.summary, body: r.body, register: r.register || {}, links: r.links || [],
@@ -343,7 +350,8 @@
                 '\nrows returned: ' + n +
                 (n ? '\npublished (shown): ' + res.data.filter(function (r) { return r.status !== 'draft'; }).length : ''));
         }
-        fin();
+        if (done && res && !res.error && n) cb();
+        else fin();
       }, function (err) {
         if (/[?&]debug/.test(location.search)) alert('Events load failed:\n' + (err && err.message ? err.message : err));
         fin();
@@ -351,7 +359,15 @@
       setTimeout(fin, 4000); // never block the page on a slow network
     } catch (e) { fin(); }
   }
-  function render() { try { renderHub(); } catch (e) {} try { renderEvent(); } catch (e) {} }
+  var cancelEventRefresh;
+  function render() {
+    if (cancelEventRefresh) cancelEventRefresh();
+    renderHub();
+    renderEvent();
+    var slug = new URLSearchParams(location.search).get('e');
+    var watched = slug ? EVENTS.filter(function (ev) { return ev.slug === slug; }) : EVENTS;
+    cancelEventRefresh = timing.onNextEnd(watched, render);
+  }
   function run() { loadEvents(render); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
 

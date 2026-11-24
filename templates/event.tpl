@@ -91,11 +91,12 @@
 <script src="/assets/page-editor.js?v=2"></script>
 <script src="/assets/inline-page-editor.js?v=1"></script>
 <script src="assets/content.js?v=19"></script>
+<script src="/assets/event-time.js?v=1"></script>
 <script src="assets/events.js?v=7"></script>
 <script src="assets/fbt.feeds.js"></script>
 <script src="assets/videos.js?v=8"></script>
 <script src="assets/forms.js?v=3"></script>
 <script src="assets/seo-item.js?v=4"></script>
-<script src="assets/events-ui.js?v=12"></script>
+<script src="assets/events-ui.js?v=13"></script>
 <script src="assets/site.js"></script>
 </body></html>

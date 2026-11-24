@@ -3,6 +3,7 @@
    receive the correct item metadata and visible content in the first response. */
 const fs = require('fs');
 const path = require('path');
+const eventTime = require('../assets/event-time');
 
 const DOMAIN = 'https://www.fairviewbaptisttemple.com';
 const SHARE_CARDS = {
@@ -89,7 +90,7 @@ function fmtDate(value) {
 }
 function fmtEventDate(value) {
   if (!value) return '';
-  const d = new Date(value);
+  const d = new Date(eventTime.instant(value));
   if (isNaN(d)) return '';
   const hasTime = /T\d{2}:\d{2}/.test(String(value));
   const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York' };
@@ -171,7 +172,7 @@ function eventPage(html, row) {
     '@context': 'https://schema.org', '@graph': [
       {
         '@type': 'Event', '@id': url + '#event', name: row.title, description: desc,
-        startDate: row.start_at || undefined, endDate: row.end_at || undefined,
+        startDate: row.start_at || undefined, endDate: eventTime.validEnd(row.start_at, row.end_at) === null ? undefined : row.end_at,
         eventStatus: 'https://schema.org/EventScheduled',
         eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
         location: { '@type': 'Place', name: placeName, address: churchAddress(row.address, placeName) },
@@ -190,7 +191,7 @@ function eventPage(html, row) {
   html = applyHead(html, { title: title, description: desc, image: image, imageAlt: image === card.image ? card.alt : row.title, url: url, ogType: 'website', schema: schema });
   html = html.replace('<span class="post-tag" data-event-cat></span>', '<span class="post-tag" data-event-cat>' + esc(row.category || '') + '</span>');
   html = html.replace('<h1 data-event-title>&nbsp;</h1>', '<h1 data-event-title>' + esc(row.title) + '</h1>');
-  html = html.replace('<div class="ev-when-hero" data-event-when></div>', '<div class="ev-when-hero" data-event-when>' + esc(row.recurring || fmtEventDate(row.start_at)) + '</div>');
+  html = html.replace('<div class="ev-when-hero" data-event-when></div>', '<div class="ev-when-hero" data-event-when>' + esc((eventTime.endsAt(row) <= Date.now() ? 'Past event · ' : '') + (row.recurring || fmtEventDate(row.start_at))) + '</div>');
   html = html.replace('<div class="ev-where-hero" data-event-where></div>', '<div class="ev-where-hero" data-event-where>' + esc(row.address || row.location || '') + '</div>');
   const body = String(row.body || '').trim() || fragment('event', row.slug) || '<p>' + esc(desc) + '</p>';
   return html.replace('<article class="prose post-body rv" data-event-body></article>', '<article class="prose post-body rv" data-event-body>' + body + '</article>');

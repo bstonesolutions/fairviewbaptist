@@ -2,12 +2,10 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
-const jubilee = require('../assets/jubilee-replays');
 
 function mountRenderer() {
-  let markup = '', writes = 0, onClick, poll;
+  let markup = '', onClick;
   let cards = new Map();
-  let feeds = { '/api/streams': { items: [] }, '/api/live': { live: null, upcoming: null } };
   const listeners = new Map(), events = [];
   const count = { textContent: '' };
   const grid = {
@@ -17,7 +15,6 @@ function mountRenderer() {
     },
     set innerHTML(value) {
       markup = value;
-      writes++;
       cards = new Map([...value.matchAll(/data-jubilee-service="([\w-]+)"/g)].map(match => {
         const card = {
           media: { innerHTML: '', querySelector: () => ({ focus() {} }) },
@@ -51,82 +48,30 @@ function mountRenderer() {
   };
   vm.runInNewContext(fs.readFileSync(require.resolve('../assets/jubilee-replays'), 'utf8'), {
     document,
-    CustomEvent: class { constructor(type, options) { this.type = type; this.detail = options.detail; } },
-    fetch: url => Promise.resolve({ ok: true, json: () => Promise.resolve(feeds[url]) }),
-    setInterval(callback) { poll = callback; }
+    CustomEvent: class { constructor(type, options) { this.type = type; this.detail = options.detail; } }
   });
   return {
     grid, count, events,
-    get writes() { return writes; },
     card(id) { return cards.get(id); },
     click(id, close = false) {
       const control = { getAttribute: () => id };
       onClick({ target: { closest: selector => selector === (close ? '[data-jubilee-close]' : '[data-jubilee-play]') ? control : null } });
     },
-    refresh(nextFeeds) { feeds = nextFeeds; poll(); },
-    playClip() { document.dispatchEvent({ type: 'fbt:jubilee-play', detail: { source: 'clips' } }); },
-    flush: () => new Promise(resolve => setImmediate(resolve))
+    playClip() { document.dispatchEvent({ type: 'fbt:jubilee-play', detail: { source: 'clips' } }); }
   };
 }
 
-test('verified completed services remain available when feeds fail or age out', () => {
-  const rows = jubilee.select([], {});
-  assert.deepEqual(rows.filter(row => row.status === 'replay').map(row => row.id), ['aIf9VFENyuw', 'r7KDaDpHNPU', 'hH5FXxjj6bY', 'KU4VbX_ClTM', '_YJ_iAbvlfc']);
-  assert.equal(rows.length, 6);
-  assert.equal(rows.at(-1).id, 'Io5HCX-cNXU');
-  assert.equal(rows.at(-1).status, 'unknown');
-  assert.equal(rows[0].date, '2026-11-17');
-});
-
-test('Wednesday is scheduled, live, or completed only as the feeds report it', () => {
-  const item = { id: 'Io5HCX-cNXU', t: 'Appalachian Jubilee- Wednesday Night', startTime: '2026-11-19T00:00:00Z' };
-  const upcoming = jubilee.select([{ ...item, upcoming: true }], {});
-  assert.equal(upcoming.length, 6);
-  assert.equal(upcoming[0].id, item.id);
-  assert.equal(upcoming[0].status, 'upcoming');
-  assert.equal(upcoming[0].date, '2026-11-18');
-  assert.deepEqual(upcoming.slice(1).map(row => row.id), ['aIf9VFENyuw', 'r7KDaDpHNPU', 'hH5FXxjj6bY', 'KU4VbX_ClTM', '_YJ_iAbvlfc']);
-  const live = jubilee.select([{ ...item, live: true }], {});
-  assert.equal(live[0].status, 'live');
-  const finished = jubilee.select([{ ...item, endTime: '2026-11-19T02:00:00Z' }], { upcoming: { ...item, videoId: item.id } });
-  assert.equal(finished[0].id, item.id);
-  assert.equal(finished[0].status, 'replay');
-});
-
-test('unrelated services, tests, undated matches, and another year stay out', () => {
-  const rows = jubilee.select([
-    { id: 'aaaaaaaaaaa', t: 'Sunday Morning', startTime: '2026-11-15T16:00:00Z' },
-    { id: 'bbbbbbbbbbb', t: 'Appalachian Jubilee test stream', startTime: '2026-11-15T16:00:00Z' },
-    { id: 'ccccccccccc', t: 'Appalachian Jubilee- Monday Night', startTime: '2027-11-16T00:00:00Z' },
-    { id: 'ddddddddddd', t: 'Appalachian Jubilee- Saturday' },
-    { id: 'eeeeeeeeeee', t: 'Appalachian Jubilee preaching reel', startTime: '2026-11-15T16:00:00Z' }
-  ], {});
-  assert.equal(rows.length, 6);
-});
-
-test('a newly discovered event stream uses its Eastern service date and deduplicates', () => {
-  const row = { id: 'fffffffffff', t: 'Appalachian Jubilee- Saturday', startTime: '2026-11-14T15:00:00Z', endTime: '2026-11-14T17:00:00Z' };
-  const rows = jubilee.select([row, row], {});
-  assert.equal(rows.length, 7);
-  assert.equal(rows.find(item => item.id === row.id).date, '2026-11-14');
-  assert.equal(rows.filter(item => item.status === 'replay').at(-1).id, row.id);
-  assert.equal(jubilee.eventDate('2026-11-19T00:00:00Z'), '2026-11-18');
-});
-
-test('the durable Wednesday fallback has neutral copy and is not counted as a replay', () => {
+test('the 2026 archive renders all six completed broadcasts without a live feed', () => {
   const { grid, count } = mountRenderer();
-  assert.equal(count.textContent, '5 service replays');
-  const wednesday = grid.innerHTML.slice(grid.innerHTML.lastIndexOf('<article '));
-  assert.match(wednesday, /data-jubilee-play="Io5HCX-cNXU"/);
-  assert.match(wednesday, />Jubilee service</);
-  assert.match(wednesday, />Open service player</);
-  assert.doesNotMatch(wednesday, /Service replay|Scheduled|Live now/);
-  assert.doesNotMatch(grid.innerHTML, /<a\b|<iframe\b/);
+  assert.equal(count.textContent, '6 service replays');
+  assert.deepEqual([...grid.innerHTML.matchAll(/data-jubilee-service="([\w-]+)"/g)].map(match => match[1]),
+    ['Io5HCX-cNXU', 'aIf9VFENyuw', 'r7KDaDpHNPU', 'hH5FXxjj6bY', 'KU4VbX_ClTM', '_YJ_iAbvlfc']);
+  assert.match(grid.innerHTML, /<time datetime="2026-11-18">November 18, 2026<\/time>/);
+  assert.doesNotMatch(grid.innerHTML, /<iframe\b|Live now|Scheduled/);
 });
 
-test('clicking a service loads its accessible inline player without leaving the page', async () => {
+test('clicking a service loads its accessible inline player without leaving the page', () => {
   const view = mountRenderer();
-  await view.flush();
   view.click('aIf9VFENyuw');
   const active = view.card('aIf9VFENyuw');
   assert.ok(active.classes.has('is-playing'));
@@ -139,39 +84,24 @@ test('clicking a service loads its accessible inline player without leaving the 
   assert.equal(view.events[0].detail.source, 'services');
 });
 
-test('feed refreshes preserve playback and closing applies the newest service status', async () => {
+test('closing a recording returns to the archived service cards', () => {
   const view = mountRenderer();
-  await view.flush();
-  view.click('aIf9VFENyuw');
-  const active = view.card('aIf9VFENyuw');
-  const frame = active.media.innerHTML;
-  const beforeRefresh = view.writes;
-  view.refresh({
-    '/api/streams': { items: [{ id: 'Io5HCX-cNXU', t: 'Appalachian Jubilee- Wednesday Night', live: true }] },
-    '/api/live': { live: { videoId: 'Io5HCX-cNXU', title: 'Appalachian Jubilee- Wednesday Night' }, upcoming: null }
-  });
-  await view.flush();
-  assert.equal(view.writes, beforeRefresh);
-  assert.equal(view.card('aIf9VFENyuw'), active);
-  assert.equal(active.media.innerHTML, frame);
-  view.click('aIf9VFENyuw', true);
-  assert.equal(view.card('aIf9VFENyuw').media.innerHTML, '');
-  assert.match(view.grid.innerHTML, /^<article[^>]+data-jubilee-service="Io5HCX-cNXU"/);
-  assert.match(view.grid.innerHTML, />Live now</);
+  view.click('Io5HCX-cNXU');
+  view.click('Io5HCX-cNXU', true);
+  assert.equal(view.card('Io5HCX-cNXU').media.innerHTML, '');
+  assert.match(view.grid.innerHTML, /data-jubilee-play="Io5HCX-cNXU"/);
 });
 
-test('switching services stops the previous player', async () => {
+test('switching services stops the previous player', () => {
   const view = mountRenderer();
-  await view.flush();
   view.click('aIf9VFENyuw');
   view.click('r7KDaDpHNPU');
   assert.equal(view.card('aIf9VFENyuw').media.innerHTML, '');
   assert.match(view.card('r7KDaDpHNPU').media.innerHTML, /youtube-nocookie\.com\/embed\/r7KDaDpHNPU/);
 });
 
-test('starting a clip stops the active service without starting another player', async () => {
+test('starting a clip stops the active service without starting another player', () => {
   const view = mountRenderer();
-  await view.flush();
   view.click('aIf9VFENyuw');
   view.playClip();
   assert.equal(view.card('aIf9VFENyuw').media.innerHTML, '');

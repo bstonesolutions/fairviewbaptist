@@ -35,19 +35,28 @@
     var node = document.getElementById('jubilee-recap-schema');
     var start = date(value(map, 'jubilee_start_date', '2026-11-14'));
     var end = date(value(map, 'jubilee_end_date', '2026-11-18'));
-    var descriptions = [text('jubilee_hero_sub'), text('jubilee_dates'), text('jubilee_intro_copy')];
+    var recap = {
+      '@type': 'WebPageElement', '@id': ORIGIN + '/jubilee#2026',
+      name: text('jubilee_2026_heading') || '2026 highlights',
+      description: [text('jubilee_dates'), text('jubilee_intro_copy')].filter(Boolean).join(' ')
+    };
+    if (start.startsWith('2026-') && end.startsWith('2026-') && end >= start) {
+      recap.temporalCoverage = start + '/' + end;
+    }
     var schema = {
       '@context': 'https://schema.org', '@type': 'CollectionPage',
       '@id': ORIGIN + '/jubilee#page',
       name: text('jubilee_hero_heading') || 'The Appalachian Jubilee',
       url: ORIGIN + '/jubilee',
-      description: descriptions.filter(Boolean).join(' '),
+      hasPart: [{
+        '@type': 'WebPageElement', '@id': ORIGIN + '/jubilee#2027',
+        name: text('jubilee_2027_heading') || '2027 Appalachian Jubilee',
+        description: text('jubilee_2027_announcement')
+      }, recap],
       isPartOf: { '@id': ORIGIN + '/#website' },
       about: { '@id': ORIGIN + '/#church' },
       relatedLink: ORIGIN + '/watch'
     };
-    // This describes the collection's coverage, never a service's live status.
-    if (start && end && end >= start) schema.temporalCoverage = start + '/' + end;
     var hero = image(map);
     if (hero) schema.primaryImageOfPage = { '@type': 'ImageObject', url: hero };
     if (!node) { node = document.createElement('script'); node.id = 'jubilee-recap-schema'; node.type = 'application/ld+json'; document.head.appendChild(node); }

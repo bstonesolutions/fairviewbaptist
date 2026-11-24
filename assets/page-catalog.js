@@ -223,52 +223,6 @@ window.FBT_PAGE_CATALOG = {
           ]
         },
         {
-          "id": "index-section-4",
-          "label": "The Appalachian Jubilee",
-          "parentGroup": "index-body",
-          "parentLabel": "Page",
-          "selector": "[data-page-section=\"index-section-4\"]",
-          "fields": [
-            {
-              "key": "hero_bg_jubilee_promo",
-              "label": "Home and Events: Jubilee promotion",
-              "type": "image",
-              "def": ""
-            },
-            {
-              "key": "jubilee_promo_date",
-              "label": "Event date and location",
-              "type": "text",
-              "def": "November 14–18, 2026 · Clay, West Virginia"
-            },
-            {
-              "key": "jubilee_promo_heading",
-              "label": "Promotion heading",
-              "type": "text",
-              "def": "The Appalachian Jubilee"
-            },
-            {
-              "key": "jubilee_promo_sub",
-              "label": "Promotion paragraph",
-              "type": "text",
-              "def": "Watch the services and see photos and clips from this year’s Jubilee."
-            },
-            {
-              "key": "jubilee_promo_cta",
-              "label": "Button label",
-              "type": "text",
-              "def": "See Jubilee highlights"
-            },
-            {
-              "key": "index_section_4_link_1",
-              "label": "Link: See Jubilee highlights",
-              "type": "url",
-              "def": "/jubilee"
-            }
-          ],
-          "collections": []
-        },
-        {
           "id": "index-section-5",
           "label": "A church family in the hills",
           "parentGroup": "index-body",
@@ -3831,7 +3785,7 @@ window.FBT_PAGE_CATALOG = {
           "fields": [
             {
               "key": "hero_bg_jubilee_promo",
-              "label": "Home and Events: Jubilee promotion",
+              "label": "Events: Jubilee promotion",
               "type": "image",
               "def": ""
             },
@@ -3851,7 +3805,7 @@ window.FBT_PAGE_CATALOG = {
               "key": "jubilee_promo_sub",
               "label": "Promotion paragraph",
               "type": "text",
-              "def": "Watch the services and see photos and clips from this year’s Jubilee."
+              "def": "Watch the services and see photos from the 2026 Jubilee."
             },
             {
               "key": "jubilee_promo_cta",
@@ -3863,7 +3817,7 @@ window.FBT_PAGE_CATALOG = {
               "key": "events_section_2_link_1",
               "label": "Link: See Jubilee highlights",
               "type": "url",
-              "def": "/jubilee"
+              "def": "/jubilee#2026"
             }
           ],
           "collections": []
@@ -5198,74 +5152,66 @@ window.FBT_PAGE_CATALOG = {
               "def": "/assets/photos/wv-appalachian-mountains.jpg"
             },
             {
-              "key": "jubilee_recap_kick",
-              "label": "Text: 2026 highlights",
+              "key": "jubilee_archive_location",
+              "label": "Location above page title",
               "type": "text",
-              "def": "2026 highlights"
+              "def": "Clay, West Virginia"
             },
             {
               "key": "jubilee_hero_heading",
               "label": "Hero Heading",
               "type": "rich",
               "def": "The Appalachian *Jubilee*"
-            },
+            }
+          ],
+          "collections": []
+        },
+        {
+          "id": "jubilee-2027",
+          "label": "2027 Appalachian Jubilee",
+          "parentGroup": "jubilee-main",
+          "parentLabel": "Page",
+          "selector": "[data-page-section=\"jubilee-2027\"]",
+          "fields": [
             {
-              "key": "jubilee_dates",
-              "label": "Dates",
+              "key": "jubilee_2027_heading",
+              "label": "2027 heading",
               "type": "text",
-              "def": "November 14-18, 2026"
+              "def": "2027 Appalachian Jubilee"
             },
             {
-              "key": "jubilee_hero_sub",
-              "label": "Hero Paragraph",
+              "key": "jubilee_2027_announcement",
+              "label": "2027 announcement",
               "type": "text",
-              "def": "Preaching, singing, and moments from our week together at Fairview."
-            },
-            {
-              "key": "jubilee_section_1_text_2",
-              "label": "Button label: Watch the services",
-              "type": "text",
-              "def": "Watch the services"
-            },
-            {
-              "key": "jubilee_section_1_link_1",
-              "label": "Link: Watch the services",
-              "type": "url",
-              "def": "#jubilee-services"
-            },
-            {
-              "key": "jubilee_section_1_text_4",
-              "label": "Button label: See the photos",
-              "type": "text",
-              "def": "See the photos"
-            },
-            {
-              "key": "jubilee_section_1_link_3",
-              "label": "Link: See the photos",
-              "type": "url",
-              "def": "#jubilee-photos"
+              "def": "Dates and guest preachers will be announced here."
             }
           ],
           "collections": []
         },
         {
           "id": "jubilee-recap-intro",
-          "label": "Remembering the week",
-          "parentGroup": "jubilee-main",
-          "parentLabel": "Page",
+          "label": "2026 highlights",
+          "parentGroup": "jubilee-parent-jubilee-recap-intro",
+          "parentLabel": "Page section group",
           "selector": "[data-page-section=\"jubilee-recap-intro\"]",
           "fields": [
             {
-              "key": "jubilee_recap_intro_heading",
-              "label": "Heading: A week at *Fairview*",
-              "type": "rich",
-              "def": "A week at *Fairview*"
+              "key": "jubilee_2026_heading",
+              "label": "Heading: 2026 highlights",
+              "type": "text",
+              "def": "2026 highlights"
+            },
+            {
+              "key": "jubilee_dates",
+              "label": "2026 dates",
+              "type": "text",
+              "def": "November 14–18, 2026"
             },
             {
               "key": "jubilee_intro_copy",
               "label": "Introduction paragraph",
               "type": "text",
-              "def": "We are thankful for everyone who has joined us for the 2026 Appalachian Jubilee. Here are the services, songs, and moments we want to remember."
+              "def": "Thank you to everyone who joined us in Clay for five days of preaching, singing, and fellowship."
             },
             {
               "key": "jubilee_host",
@@ -5278,20 +5224,20 @@ window.FBT_PAGE_CATALOG = {
         },
         {
           "id": "jubilee-recap-photos",
-          "label": "Jubilee photo gallery",
-          "parentGroup": "jubilee-main",
-          "parentLabel": "Page",
+          "label": "2026 photo gallery",
+          "parentGroup": "jubilee-parent-jubilee-recap-intro",
+          "parentLabel": "Page section group",
           "selector": "[data-page-section=\"jubilee-recap-photos\"]",
           "fields": [
             {
               "key": "jubilee_recap_photos_heading",
-              "label": "Heading: From this year’s Jubilee",
+              "label": "Heading: Photos from 2026",
               "type": "text",
-              "def": "From this year’s Jubilee"
+              "def": "Photos from 2026"
             },
             {
               "key": "photo_jubilee_recap_1",
-              "label": "Jubilee: photo 1",
+              "label": "2026 Jubilee: photo 1",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-1.webp"
             },
@@ -5303,7 +5249,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_2",
-              "label": "Jubilee: photo 2",
+              "label": "2026 Jubilee: photo 2",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-2.webp"
             },
@@ -5315,7 +5261,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_3",
-              "label": "Jubilee: photo 3",
+              "label": "2026 Jubilee: photo 3",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-3.webp"
             },
@@ -5327,7 +5273,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_4",
-              "label": "Jubilee: photo 4",
+              "label": "2026 Jubilee: photo 4",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-4.webp"
             },
@@ -5339,7 +5285,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_5",
-              "label": "Jubilee: photo 5",
+              "label": "2026 Jubilee: photo 5",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-5.webp"
             },
@@ -5351,7 +5297,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_6",
-              "label": "Jubilee: photo 6",
+              "label": "2026 Jubilee: photo 6",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-6.webp"
             },
@@ -5363,7 +5309,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_7",
-              "label": "Jubilee: photo 7",
+              "label": "2026 Jubilee: photo 7",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-7.webp"
             },
@@ -5375,7 +5321,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_8",
-              "label": "Jubilee: photo 8",
+              "label": "2026 Jubilee: photo 8",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-8.webp"
             },
@@ -5387,7 +5333,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_9",
-              "label": "Jubilee: photo 9",
+              "label": "2026 Jubilee: photo 9",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-9.webp"
             },
@@ -5399,7 +5345,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_10",
-              "label": "Jubilee: photo 10",
+              "label": "2026 Jubilee: photo 10",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-10.webp"
             },
@@ -5411,7 +5357,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_11",
-              "label": "Jubilee: photo 11",
+              "label": "2026 Jubilee: photo 11",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-11.webp"
             },
@@ -5423,7 +5369,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_12",
-              "label": "Jubilee: photo 12",
+              "label": "2026 Jubilee: photo 12",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-12.webp"
             },
@@ -5435,7 +5381,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_13",
-              "label": "Jubilee: photo 13",
+              "label": "2026 Jubilee: photo 13",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-13.webp"
             },
@@ -5447,7 +5393,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_14",
-              "label": "Jubilee: photo 14",
+              "label": "2026 Jubilee: photo 14",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-14.webp"
             },
@@ -5459,7 +5405,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_15",
-              "label": "Jubilee: photo 15",
+              "label": "2026 Jubilee: photo 15",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-15.webp"
             },
@@ -5471,7 +5417,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_16",
-              "label": "Jubilee: photo 16",
+              "label": "2026 Jubilee: photo 16",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-16.webp"
             },
@@ -5483,7 +5429,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_17",
-              "label": "Jubilee: photo 17",
+              "label": "2026 Jubilee: photo 17",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-17.webp"
             },
@@ -5495,7 +5441,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_18",
-              "label": "Jubilee: photo 18",
+              "label": "2026 Jubilee: photo 18",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-18.webp"
             },
@@ -5507,7 +5453,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_19",
-              "label": "Jubilee: photo 19",
+              "label": "2026 Jubilee: photo 19",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-19.webp"
             },
@@ -5519,7 +5465,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_20",
-              "label": "Jubilee: photo 20",
+              "label": "2026 Jubilee: photo 20",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-20.webp"
             },
@@ -5531,7 +5477,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_21",
-              "label": "Jubilee: photo 21",
+              "label": "2026 Jubilee: photo 21",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-21.webp"
             },
@@ -5543,7 +5489,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_22",
-              "label": "Jubilee: photo 22",
+              "label": "2026 Jubilee: photo 22",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-22.webp"
             },
@@ -5555,7 +5501,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_23",
-              "label": "Jubilee: photo 23",
+              "label": "2026 Jubilee: photo 23",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-23.webp"
             },
@@ -5567,7 +5513,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_24",
-              "label": "Jubilee: photo 24",
+              "label": "2026 Jubilee: photo 24",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-24.webp"
             },
@@ -5579,7 +5525,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_25",
-              "label": "Jubilee: photo 25",
+              "label": "2026 Jubilee: photo 25",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-25.webp"
             },
@@ -5591,7 +5537,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_26",
-              "label": "Jubilee: photo 26",
+              "label": "2026 Jubilee: photo 26",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-26.webp"
             },
@@ -5603,7 +5549,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_27",
-              "label": "Jubilee: photo 27",
+              "label": "2026 Jubilee: photo 27",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-27.webp"
             },
@@ -5615,7 +5561,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_28",
-              "label": "Jubilee: photo 28",
+              "label": "2026 Jubilee: photo 28",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-28.webp"
             },
@@ -5627,7 +5573,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_29",
-              "label": "Jubilee: photo 29",
+              "label": "2026 Jubilee: photo 29",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-29.webp"
             },
@@ -5639,7 +5585,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_30",
-              "label": "Jubilee: photo 30",
+              "label": "2026 Jubilee: photo 30",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-30.webp"
             },
@@ -5651,7 +5597,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_31",
-              "label": "Jubilee: photo 31",
+              "label": "2026 Jubilee: photo 31",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-31.webp"
             },
@@ -5663,7 +5609,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_32",
-              "label": "Jubilee: photo 32",
+              "label": "2026 Jubilee: photo 32",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-32.webp"
             },
@@ -5675,7 +5621,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_33",
-              "label": "Jubilee: photo 33",
+              "label": "2026 Jubilee: photo 33",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-33.webp"
             },
@@ -5687,7 +5633,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_recap_34",
-              "label": "Jubilee: photo 34",
+              "label": "2026 Jubilee: photo 34",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/photo-34.webp"
             },
@@ -5880,9 +5826,9 @@ window.FBT_PAGE_CATALOG = {
         },
         {
           "id": "jubilee-recap-clips",
-          "label": "Preaching clips",
-          "parentGroup": "jubilee-main",
-          "parentLabel": "Page",
+          "label": "2026 preaching clips",
+          "parentGroup": "jubilee-parent-jubilee-recap-intro",
+          "parentLabel": "Page section group",
           "selector": "[data-page-section=\"jubilee-recap-clips\"]",
           "fields": [
             {
@@ -5905,7 +5851,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_reel_1",
-              "label": "Jubilee: clip 1",
+              "label": "2026 Jubilee: clip 1",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/reel-1.webp"
             },
@@ -5917,7 +5863,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "jubilee_reel_title_1",
-              "label": "Jubilee: clip 1 title",
+              "label": "2026 Jubilee: clip 1 title",
               "type": "text",
               "def": "Don’t give away what can never be taken away."
             },
@@ -5929,7 +5875,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_reel_2",
-              "label": "Jubilee: clip 2",
+              "label": "2026 Jubilee: clip 2",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/reel-2.webp"
             },
@@ -5941,7 +5887,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "jubilee_reel_title_2",
-              "label": "Jubilee: clip 2 title",
+              "label": "2026 Jubilee: clip 2 title",
               "type": "text",
               "def": "Circumstances do not dictate worship."
             },
@@ -5953,7 +5899,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_reel_3",
-              "label": "Jubilee: clip 3",
+              "label": "2026 Jubilee: clip 3",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/reel-3.webp"
             },
@@ -5965,7 +5911,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "jubilee_reel_title_3",
-              "label": "Jubilee: clip 3 title",
+              "label": "2026 Jubilee: clip 3 title",
               "type": "text",
               "def": "Invest in people. It’s the Bible way."
             },
@@ -5977,7 +5923,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_reel_4",
-              "label": "Jubilee: clip 4",
+              "label": "2026 Jubilee: clip 4",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/reel-4.webp"
             },
@@ -5989,7 +5935,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "jubilee_reel_title_4",
-              "label": "Jubilee: clip 4 title",
+              "label": "2026 Jubilee: clip 4 title",
               "type": "text",
               "def": "The life you live preaches loudly."
             },
@@ -6001,7 +5947,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_reel_5",
-              "label": "Jubilee: clip 5",
+              "label": "2026 Jubilee: clip 5",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/reel-5.webp"
             },
@@ -6013,7 +5959,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "jubilee_reel_title_5",
-              "label": "Jubilee: clip 5 title",
+              "label": "2026 Jubilee: clip 5 title",
               "type": "text",
               "def": "God can do anything."
             },
@@ -6025,7 +5971,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_reel_6",
-              "label": "Jubilee: clip 6",
+              "label": "2026 Jubilee: clip 6",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/reel-6.webp"
             },
@@ -6037,7 +5983,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "jubilee_reel_title_6",
-              "label": "Jubilee: clip 6 title",
+              "label": "2026 Jubilee: clip 6 title",
               "type": "text",
               "def": "If God did it then, He can still do it now."
             },
@@ -6049,7 +5995,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_reel_7",
-              "label": "Jubilee: clip 7",
+              "label": "2026 Jubilee: clip 7",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/reel-7.webp"
             },
@@ -6061,7 +6007,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "jubilee_reel_title_7",
-              "label": "Jubilee: clip 7 title",
+              "label": "2026 Jubilee: clip 7 title",
               "type": "text",
               "def": "Beware of following Jesus afar off."
             },
@@ -6073,7 +6019,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_reel_8",
-              "label": "Jubilee: clip 8",
+              "label": "2026 Jubilee: clip 8",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/reel-8.webp"
             },
@@ -6085,7 +6031,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "jubilee_reel_title_8",
-              "label": "Jubilee: clip 8 title",
+              "label": "2026 Jubilee: clip 8 title",
               "type": "text",
               "def": "God is the one who should get the glory."
             },
@@ -6097,7 +6043,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_reel_9",
-              "label": "Jubilee: clip 9",
+              "label": "2026 Jubilee: clip 9",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/reel-9.webp"
             },
@@ -6109,7 +6055,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "jubilee_reel_title_9",
-              "label": "Jubilee: clip 9 title",
+              "label": "2026 Jubilee: clip 9 title",
               "type": "text",
               "def": "Be the difference maker in your church."
             },
@@ -6121,7 +6067,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_reel_10",
-              "label": "Jubilee: clip 10",
+              "label": "2026 Jubilee: clip 10",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/reel-10.webp"
             },
@@ -6133,7 +6079,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "jubilee_reel_title_10",
-              "label": "Jubilee: clip 10 title",
+              "label": "2026 Jubilee: clip 10 title",
               "type": "text",
               "def": "Determine today to live for the Lord!"
             },
@@ -6145,7 +6091,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "photo_jubilee_reel_11",
-              "label": "Jubilee: clip 11",
+              "label": "2026 Jubilee: clip 11",
               "type": "image",
               "def": "/assets/photos/jubilee-2026/reel-11.webp"
             },
@@ -6157,7 +6103,7 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "jubilee_reel_title_11",
-              "label": "Jubilee: clip 11 title",
+              "label": "2026 Jubilee: clip 11 title",
               "type": "text",
               "def": "Before we serve, we must be clean."
             }
@@ -6229,9 +6175,9 @@ window.FBT_PAGE_CATALOG = {
         },
         {
           "id": "jubilee-recap-services",
-          "label": "Service recordings and livestreams",
-          "parentGroup": "jubilee-main",
-          "parentLabel": "Page",
+          "label": "2026 service recordings",
+          "parentGroup": "jubilee-parent-jubilee-recap-intro",
+          "parentLabel": "Page section group",
           "selector": "[data-page-section=\"jubilee-recap-services\"]",
           "fields": [
             {
@@ -6248,9 +6194,9 @@ window.FBT_PAGE_CATALOG = {
             },
             {
               "key": "jubilee_recap_services_copy",
-              "label": "Text: Watch a service from this week right here.",
+              "label": "Text: Recordings from November 15–18, 2026.",
               "type": "text",
-              "def": "Watch a service from this week right here."
+              "def": "Recordings from November 15–18, 2026."
             }
           ],
           "collections": []
@@ -6258,8 +6204,8 @@ window.FBT_PAGE_CATALOG = {
         {
           "id": "jubilee-section-3",
           "label": "2026 program archive",
-          "parentGroup": "jubilee-main",
-          "parentLabel": "Page",
+          "parentGroup": "jubilee-parent-jubilee-recap-intro",
+          "parentLabel": "Page section group",
           "selector": "[data-page-section=\"jubilee-section-3\"]",
           "fields": [
             {

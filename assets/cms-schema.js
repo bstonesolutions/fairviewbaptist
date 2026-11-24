@@ -500,6 +500,27 @@ window.FBT_SCHEMA.groups.push({
   "title": "Appalachian Jubilee",
   "fields": [
     {
+      "key": "jubilee_archive_location",
+      "type": "text",
+      "label": "Location above page title",
+      "def": "Clay, West Virginia",
+      "studioSection": "Mountain hero"
+    },
+    {
+      "key": "jubilee_2027_heading",
+      "type": "text",
+      "label": "2027 heading",
+      "def": "2027 Appalachian Jubilee",
+      "studioSection": "2027 Jubilee"
+    },
+    {
+      "key": "jubilee_2027_announcement",
+      "type": "multiline",
+      "label": "2027 announcement",
+      "def": "Dates and guest preachers will be announced here.",
+      "studioSection": "2027 Jubilee"
+    },
+    {
       "key": "jubilee_hero_heading",
       "type": "rich",
       "label": "Hero Heading",
@@ -511,14 +532,15 @@ window.FBT_SCHEMA.groups.push({
       "type": "multiline",
       "label": "Hero Paragraph",
       "def": "Preaching, singing, and moments from our week together at Fairview.",
+      "retired": true,
       "studioSection": "Mountain hero"
     },
     {
       "key": "jubilee_dates",
       "type": "text",
-      "label": "Dates",
-      "def": "November 14-18, 2026",
-      "studioSection": "Mountain hero"
+      "label": "2026 dates",
+      "def": "November 14–18, 2026",
+      "studioSection": "2026 Jubilee"
     },
     {
       "key": "jubilee_start_date",
@@ -545,7 +567,7 @@ window.FBT_SCHEMA.groups.push({
       "key": "jubilee_intro_copy",
       "type": "multiline",
       "label": "Introduction paragraph",
-      "def": "We are thankful for everyone who has joined us for the 2026 Appalachian Jubilee. Here are the services, songs, and moments we want to remember.",
+      "def": "Thank you to everyone who joined us in Clay for five days of preaching, singing, and fellowship.",
       "studioSection": "Event introduction"
     },
     {
@@ -873,9 +895,9 @@ window.FBT_SCHEMA.groups.push({
     {
       "key": "jubilee_promo_visible",
       "type": "select",
-      "label": "Show the promotion",
+      "label": "Show the promotion on Events",
       "def": "show",
-      "studioSection": "Home and Events promotion",
+      "studioSection": "Events promotion",
       "options": [
         {
           "value": "show",
@@ -892,28 +914,28 @@ window.FBT_SCHEMA.groups.push({
       "type": "text",
       "label": "Event date and location",
       "def": "November 14–18, 2026 · Clay, West Virginia",
-      "studioSection": "Home and Events promotion"
+      "studioSection": "Events promotion"
     },
     {
       "key": "jubilee_promo_heading",
       "type": "text",
       "label": "Promotion heading",
       "def": "The Appalachian Jubilee",
-      "studioSection": "Home and Events promotion"
+      "studioSection": "Events promotion"
     },
     {
       "key": "jubilee_promo_sub",
       "type": "multiline",
       "label": "Promotion paragraph",
-      "def": "Watch the services and see photos and clips from this year’s Jubilee.",
-      "studioSection": "Home and Events promotion"
+      "def": "Watch the services and see photos from the 2026 Jubilee.",
+      "studioSection": "Events promotion"
     },
     {
       "key": "jubilee_promo_cta",
       "type": "text",
       "label": "Button label",
       "def": "See Jubilee highlights",
-      "studioSection": "Home and Events promotion"
+      "studioSection": "Events promotion"
     },
     {
       "key": "hero_bg_jubilee",
@@ -954,7 +976,7 @@ window.FBT_SCHEMA.groups.push({
     {
       "key": "hero_bg_jubilee_promo",
       "type": "bg",
-      "label": "Home and Events: Jubilee promotion",
+      "label": "Events: Jubilee promotion",
       "def": ""
     },
     {
@@ -1077,9 +1099,8 @@ window.FBT_SCHEMA.mediaSlots = window.FBT_SCHEMA.mediaSlots.concat([
     "page": "/jubilee",
     "pageLabel": "Jubilee page",
     "textKeys": [
-      "jubilee_hero_heading",
-      "jubilee_dates",
-      "jubilee_hero_sub"
+      "jubilee_archive_location",
+      "jubilee_hero_heading"
     ],
     "defaultBackground": "#123F3D",
     "defaultTextColors": {
@@ -1223,9 +1244,9 @@ window.FBT_SCHEMA.mediaSlots = window.FBT_SCHEMA.mediaSlots.concat([
   },
   {
     "key": "hero_bg_jubilee_promo",
-    "label": "Home and Events: Jubilee promotion",
-    "page": "/",
-    "pageLabel": "Home page",
+    "label": "Events: Jubilee promotion",
+    "page": "/events",
+    "pageLabel": "Events page",
     "kind": "background",
     "ratio": "hero-page",
     "backdrop": "#123F3C",
@@ -1302,12 +1323,12 @@ window.FBT_SCHEMA.mediaSlots = window.FBT_SCHEMA.mediaSlots.concat([
   photos.forEach(function (photo, index) {
     var number = index + 1;
     addPhoto('photo_jubilee_recap_' + number, null,
-      'Jubilee: photo ' + number, photo.caption, 'photo-' + number, photo.ratio, 'Jubilee photos', 'jubilee-photos');
+      '2026 Jubilee: photo ' + number, photo.caption, 'photo-' + number, photo.ratio, '2026 Jubilee photos', 'jubilee-photos');
   });
   reels.forEach(function (title, index) {
     var number = index + 1;
     addPhoto('photo_jubilee_reel_' + number, 'jubilee_reel_title_' + number,
-      'Jubilee: clip ' + number, title, 'reel-' + number, 'portrait', 'Jubilee clips', 'jubilee-clips');
+      '2026 Jubilee: clip ' + number, title, 'reel-' + number, 'portrait', '2026 Jubilee clips', 'jubilee-clips');
   });
 })();
 // Original church assets and the ministry contacts shown on the public pages.

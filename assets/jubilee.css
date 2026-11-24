@@ -144,3 +144,28 @@
 .jubilee-clip-play:focus-visible,.jubilee-clip-close:focus-visible,.jubilee-program>summary:focus-visible{outline:3px solid var(--brand);outline-offset:5px}
 @media(max-width:900px){.jubilee-section-heading{align-items:start;flex-direction:column}.jubilee-recap-intro-grid{gap:32px}.jubilee-replays{grid-template-columns:repeat(2,minmax(0,1fr))}.jubilee-clips{gap:20px}.jubilee-clip h3{font-size:1.15rem}.jubilee-play{width:50px;height:50px;font-size:20px}}
 @media(max-width:640px){.jubilee-recap-intro-grid{grid-template-columns:1fr;gap:20px}.jubilee-recap-intro h2 em{display:inline;margin-left:8px;font-size:1.4em}.jubilee-recap-intro p{font-size:1.08rem}.jubilee-memories{grid-template-columns:1fr;gap:28px}.jubilee-memory,.jubilee-memory-portrait{grid-column:auto}.jubilee-memory-portrait .jubilee-memory-image{max-height:560px;background:transparent}.jubilee-clips{grid-template-columns:1fr;gap:34px}.jubilee-clip{max-width:390px;width:100%;margin-inline:auto}.jubilee-clip-poster{max-height:none;aspect-ratio:9/16}.jubilee-clip h3{font-size:1.3rem}.jubilee-replays{grid-template-columns:1fr}.jubilee-recap-intro{padding-bottom:20px}.jubilee-photo-section{padding-top:20px}}
+
+.jubilee-next-year {
+  padding: clamp(32px, 5vw, 62px) 0;
+  background: var(--jubilee-forest);
+  border-top: 3px solid var(--jubilee-gold);
+  color: var(--paper);
+}
+.jubilee-next-year > .wrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 40px;
+}
+.jubilee-next-year h2 {
+  margin: 0;
+  font: 400 clamp(2rem, 4vw, 3.5rem)/1.1 'DM Serif Display', Georgia, serif;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--paper);
+}
+.jubilee-next-year p { margin: 0; font-size: 1.15rem; color: var(--paper); }
+.jubilee-recap-intro .jubilee-archive-date { margin: 12px 0 0; font-weight: 600; }
+.jubilee-archive-links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.jubilee-archive-links a { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; font-weight: 700; }

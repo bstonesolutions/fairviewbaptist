@@ -53,6 +53,7 @@ function browser(kind, row) {
     URLSearchParams, setTimeout, clearTimeout
   };
   vm.runInNewContext(fs.readFileSync(require.resolve('../assets/seo-item.js'), 'utf8'), context);
+  vm.runInNewContext(fs.readFileSync(require.resolve('../assets/event-time.js'), 'utf8'), context);
   vm.runInNewContext(fs.readFileSync(require.resolve(kind === 'post' ? '../assets/blog.js' : '../assets/events-ui.js'), 'utf8'), context);
   return {
     get(key) { const node = nodes.find(n => n.attrs.property === key || n.attrs.name === key); return node ? node.attrs.content : null; },

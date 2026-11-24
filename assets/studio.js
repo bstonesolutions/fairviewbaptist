@@ -212,7 +212,15 @@
   $('signout').addEventListener('click', function () { setStudioMenu(false, studioNavToggle); sb.auth.signOut().then(function () { route(null); }); });
 
   // ---------- events list ----------
-  var events = [], editing = null;
+  var events = [], editing = null, cancelEventRefresh;
+  var eventTime = window.FBTEventTime;
+  function refreshEventDates() {
+    if (cancelEventRefresh) cancelEventRefresh();
+    cancelEventRefresh = eventTime.onNextEnd(events, function () {
+      renderRows();
+      if (dashData.results.events) { dashRenderFocus(); dashRenderHealth(); }
+    });
+  }
   function byId(id) { return events.filter(function (e) { return String(e.id) === String(id); })[0]; }
 
   function loadEvents() {
@@ -225,14 +233,15 @@
   }
   function renderRows() {
     var rows = $('ev-rows');
+    refreshEventDates();
     if (!events.length) { rows.innerHTML = '<div class="studio-empty">No events yet. Click <b>+ New event</b> to add your first.</div>'; return; }
     var now = Date.now();
     rows.innerHTML = events.map(function (e) {
-      var when = e.recurring || fmtDate(e.start_at);
-      var past = !e.recurring && e.end_at && new Date(e.end_at).getTime() < now;
+      var when = e.recurring || (e.start_at ? dashEventDate(e.start_at) : 'No date');
+      var past = eventTime.endsAt(e) <= now;
       var pill = e.status === 'draft' ? '<span class="spill draft">Draft</span>'
-        : e.featured ? '<span class="spill feat">Featured</span>'
-          : past ? '<span class="spill past">Past</span>'
+        : past ? '<span class="spill past">Past</span>'
+          : e.featured ? '<span class="spill feat">Featured</span>'
             : '<span class="spill live">Published</span>';
       var thumb = e.cover
         ? '<div class="srow-thumb" style="background-image:url(&quot;' + esc(e.cover) + '&quot;)"></div>'
@@ -263,13 +272,21 @@
   function setHeroPrev(url) { var p = $('f-hero-prev'); if (url) { p.style.backgroundImage = 'url("' + url + '")'; p.classList.add('has'); } else { p.style.backgroundImage = ''; p.classList.remove('has'); } $('f-hero-remove').disabled = !String(url || '').trim() && !eventImagePending.hero; }
   function toggleRegUrl() { $('f-reg-url-row').hidden = v('f-reg-mode') !== 'link'; }
 
+  function eventInputDate(value) {
+    var ms = eventTime.instant(value);
+    return Number.isFinite(ms) ? eventTime.localISO(ms).replace(/:00$/, '') : '';
+  }
+  function storedEventDate(field, original) {
+    var value = v(field);
+    return value && original && value === eventInputDate(original) ? original : value || null;
+  }
   function openEdit(ev) {
     resetEventImageUploads();
     editing = ev || null;
     $('ev-edit-title').textContent = ev ? 'Edit event' : 'New event';
     setV('f-title', ev && ev.title); setV('f-slug', ev && ev.slug); setV('f-category', ev && ev.category);
     setV('f-status', (ev && ev.status) || 'published');
-    setV('f-start', ev && ev.start_at); setV('f-end', ev && ev.end_at);
+    setV('f-start', eventInputDate(ev && ev.start_at)); setV('f-end', eventInputDate(ev && ev.end_at));
     setV('f-location', ev && ev.location); setV('f-recurring', ev && ev.recurring);
     setV('f-address', ev && ev.address); setV('f-summary', ev && ev.summary); setV('f-body', ev && ev.body);
     var reg = (ev && ev.register) || {};
@@ -343,6 +360,11 @@
   function saveEvent() {
     var title = v('f-title').trim();
     if (!title) { $('f-title').focus(); $('f-cover-msg'); alert('Please add a title.'); return; }
+    var start = storedEventDate('f-start', editing && editing.start_at);
+    var end = storedEventDate('f-end', editing && editing.end_at);
+    if (end && eventTime.validEnd(start, end) === null) {
+      $('f-end').focus(); alert('Choose an end date and time on or after the start.'); return;
+    }
     var slug = v('f-slug').trim() || slugify(title);
     var regMode = v('f-reg-mode'); var register = {};
     if (regMode === 'form') register = { mode: 'form', label: v('f-reg-label').trim() || 'Register' };
@@ -354,7 +376,7 @@
     var videos = v('f-videos').split('\n').map(function (li) { return ytid(li.trim()); }).filter(Boolean);
     var row = {
       slug: slug, title: title,
-      start_at: v('f-start') || null, end_at: v('f-end') || null,
+      start_at: start, end_at: end,
       recurring: v('f-recurring').trim() || null, location: v('f-location').trim() || null,
       address: v('f-address').trim() || null, category: v('f-category').trim() || null,
       cover: v('f-cover').trim() || null, hero: v('f-hero').trim() || null,
@@ -586,9 +608,11 @@
     return date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
   }
   function dashEventDate(value) {
-    var date = new Date(value);
-    if (isNaN(date)) return 'Date unavailable';
-    return date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) + ' at ' + date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+    var ms = eventTime.instant(value);
+    if (!Number.isFinite(ms)) return 'Date unavailable';
+    var options = { timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+    if (value.length > 10) { options.hour = 'numeric'; options.minute = '2-digit'; }
+    return new Intl.DateTimeFormat('en-US', options).format(ms);
   }
   function dashRelativeTime(value) {
     var date = new Date(value), now = Date.now();
@@ -607,10 +631,8 @@
   function dashNextEvent() {
     var now = Date.now();
     var dated = dashData.events.filter(function (item) {
-      if (!item || item.status === 'draft' || !item.start_at) return false;
-      var end = new Date(item.end_at || item.start_at).getTime();
-      return !isNaN(end) && end >= now;
-    }).sort(function (a, b) { return new Date(a.start_at).getTime() - new Date(b.start_at).getTime(); });
+      return item && item.status !== 'draft' && !item.recurring && item.start_at && eventTime.endsAt(item) > now;
+    }).sort(function (a, b) { return eventTime.instant(a.start_at) - eventTime.instant(b.start_at); });
     if (dated[0]) return dated[0];
     return dashData.events.filter(function (item) { return item && item.status !== 'draft' && item.recurring; })[0] || null;
   }
@@ -703,11 +725,9 @@
     if (result.events) {
       var now = Date.now();
       var past = dashData.events.filter(function (item) {
-        if (!item || item.status === 'draft' || item.recurring) return false;
-        var date = new Date(item.end_at || item.start_at).getTime();
-        return !isNaN(date) && date < now;
+        return item && item.status !== 'draft' && eventTime.endsAt(item) <= now;
       });
-      html += dashHealthRow('events', past.length ? 'Past events ready to review' : 'Event list is current', past.length ? 'Archive, update, or leave them published as needed.' : 'No past published events need attention.', past.length || '✓', past.length > 0);
+      html += dashHealthRow('events', 'Events', past.length ? 'Past events appear automatically in recent highlights.' : 'Published event dates are current.', past.length || '✓', false);
     } else html += dashHealthRow('events', 'Events could not be checked', 'Refresh the dashboard to try again.', '?', true);
     if (result.events || result.posts) {
       var eventDrafts = result.events ? dashData.events.filter(function (item) { return item.status === 'draft'; }).length : 0;
@@ -781,7 +801,7 @@
       results.forEach(function (result, index) { dashData.results[keys[index]] = result.ok; });
       if (results[0].ok) { dashData.submissions = results[0].data; inbox = results[0].data.slice(); inboxBadge(); }
       if (results[1].ok) { dashData.prayers = results[1].data; prayers = results[1].data.slice(); prayersBadge(); }
-      if (results[2].ok) { dashData.events = results[2].data; events = results[2].data.slice(); }
+      if (results[2].ok) { dashData.events = results[2].data; events = results[2].data.slice(); refreshEventDates(); }
       if (results[3].ok) {
         dashData.content = results[3].data;
         var info = dashBulletinInfo(); bulletins = info.list.slice();
