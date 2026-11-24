@@ -154,7 +154,7 @@
       event.preventDefault();
       if (busy || !this.reportValidity()) return;
       var year = Number(find('number').value);
-      if (years.has(year) || records.has(year)) { find('add-error').textContent = year + ' already exists.'; return; }
+      if (current.year === year || years.has(year) || records.has(year)) { find('add-error').textContent = year + ' already exists.'; return; }
       if (!discardOK()) return;
       choose(yearsApi.blank(year), true);
       host.querySelector('[data-year-field="title"]').focus();
@@ -237,6 +237,7 @@
         if (session !== token) return;
         busy = false; sync();
         status('Could not save ' + year + '. ' + (reason.message || 'Try again.'),true);
+        find('status').scrollIntoView({block:'center'});
       }
     });
     find('design').addEventListener('click', function () { options.openPageEditor(); });
