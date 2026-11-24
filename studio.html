@@ -660,6 +660,7 @@
 </style>
 <link rel="stylesheet" href="/assets/page-editor.css?v=3">
 <link rel="stylesheet" href="/assets/media-page-preview.css?v=1">
+<link rel="stylesheet" href="/assets/studio-jubilee-years.css?v=1">
 </head><body>
 <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;overflow:hidden;pointer-events:none"><defs><filter id="fbt-white-mark" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 2 0 0 1 -2"/></filter></defs></svg>
 
@@ -1178,15 +1179,7 @@
     </div>
 
     <div id="view-jubilee" data-view-pane hidden>
-      <section>
-        <div class="studio-head">
-          <div><h1>Appalachian Jubilee</h1><p class="muted">Edit the 2027 announcement and the 2026 Jubilee archive.</p></div>
-          <div class="studio-head-acts"><button class="btn btn-o" id="jubilee-media" type="button">Manage photos</button><button class="btn btn-b" id="jubilee-save" type="button" disabled>Save Jubilee</button></div>
-        </div>
-        <div class="studio-import"><div><b>Jubilee by year</b><p class="muted">Open the Jubilee page to see the published years.</p></div><a class="btn btn-o" href="/jubilee" target="_blank" rel="noopener">View Jubilee page</a></div>
-        <form id="jubilee-form" class="form studio-form" onsubmit="return false"><div id="jubilee-fields"></div></form>
-        <div class="people-save-foot"><p id="jubilee-msg" class="studio-msg" role="status" aria-live="polite"></p><button class="btn btn-b" id="jubilee-save-bottom" type="button" disabled>Save Jubilee</button></div>
-      </section>
+      <section id="jubilee-years-root" aria-label="Appalachian Jubilee years"></section>
     </div>
 
     <div id="view-page-editor" data-view-pane hidden>
@@ -1492,10 +1485,12 @@
 <script src="/assets/page-catalog.js?v=9"></script>
 <script src="/assets/page-editor.js?v=2"></script>
 <script src="/assets/image-upload.js?v=1"></script>
-<script src="/assets/studio-page-editor.js?v=4"></script>
+<script src="/assets/studio-page-editor.js?v=5"></script>
 <script src="/assets/media-page-preview.js?v=2"></script>
 <script src="/assets/missionary-timezone.js?v=1"></script>
 <script src="/assets/mission-map.js?v=1"></script>
 <script src="/assets/event-time.js?v=1"></script>
-<script src="assets/studio.js?v=52"></script>
+<script src="/assets/jubilee-years.js?v=1"></script>
+<script src="/assets/studio-jubilee-years.js?v=1"></script>
+<script src="assets/studio.js?v=53"></script>
 </body></html>

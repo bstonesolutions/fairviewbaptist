@@ -169,3 +169,18 @@
 .jubilee-recap-intro .jubilee-archive-date { margin: 12px 0 0; font-weight: 600; }
 .jubilee-archive-links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
 .jubilee-archive-links a { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; font-weight: 700; }
+
+#jubilee-years { flex-wrap: wrap; scroll-margin-top: 110px; }
+.jubilee-page [data-jubilee-nav-year][hidden], .jubilee-page .jubilee-memories[hidden] { display: none; }
+.jubilee-year-details { flex-basis: 100%; }
+.jubilee-year-details p + p { margin-top: .5em; }
+.jubilee-year-lineup { color: inherit; }
+.jubilee-year-photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: clamp(14px, 2.5vw, 30px);
+  margin-top: 24px;
+  align-items: start;
+}
+.jubilee-year-photos img { width: 100%; height: auto; max-height: 560px; object-fit: contain; }
+.jubilee-year-photos figure { margin: 0; }

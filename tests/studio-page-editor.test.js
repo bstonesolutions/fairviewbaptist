@@ -388,3 +388,31 @@ test('reverting staged auxiliary values is a no-op and manually injected unrelat
   assert.deepEqual(await editor.saveSession(session, client), { changed: false, rows: [] });
   assert.equal(client.calls.length, 0);
 });
+
+test('saving a Jubilee year moves only its annual fields out of the shared page designer', () => {
+  const years = require('../assets/jubilee-years');
+  const page = {id:'jubilee', sections: [
+    {id:'jubilee-2027', fields:[{key:'jubilee_2027_heading',type:'text'}, {key:'jubilee_2027_announcement',type:'text'}]},
+    {id:'jubilee-recap-intro', fields:[{key:'jubilee_2026_heading',type:'text'}, {key:'jubilee_intro_copy',type:'text'}, {key:'jubilee_host',type:'text'}]},
+    {id:'jubilee-recap-photos',fields:[{key:'photo_jubilee_recap_1',type:'image'}, {key:'photo_jubilee_recap_1_alt',type:'text'}],
+      collections:[{id:'jubilee-recap-photo-items',items:[{id:'jubilee-photo-1'}]}]},
+    {id:'jubilee-section-3',fields:[{key:'jubilee_sat_speakers',type:'text'}]}
+  ]};
+  const layout = {collections:{'jubilee-recap-photo-items':{hidden:['jubilee-photo-1']}}};
+  const archive = editor.createSession(page, [
+    {key:'jubilee_year_2026',value:JSON.stringify(years.blank(2026))},
+    {key:'page_layout_jubilee',value:JSON.stringify(layout)}
+  ]);
+  assert.equal(editor.applyInlineEdit(archive,'jubilee_2026_heading','Shadowed'),false);
+  assert.equal(editor.applyInlineEdit(archive,'photo_jubilee_recap_1_alt','Shadowed'),false);
+  assert.equal(editor.stageDesign(archive,{photo_jubilee_recap_1:'/replacement.jpg'}),0);
+  assert.equal(editor.applyInlineEdit(archive,'jubilee_host','Host Pastor'),true);
+  assert.equal(editor.applyInlineEdit(archive,'jubilee_sat_speakers','Archived schedule row'),true);
+  assert.equal(editor.applyInlineEdit(archive,'jubilee_2027_heading','Upcoming year'),true);
+  assert.equal(archive.page.sections[2].yearManagedPhotos,true);
+  assert.deepEqual(archive.layout.collections['jubilee-recap-photo-items'].hidden,['jubilee-photo-1']);
+  assert.deepEqual(editor.dirtyRows(archive).map(row=>row.key).sort(), ['jubilee_2027_heading','jubilee_host','jubilee_sat_speakers']);
+  const upcoming = editor.createSession(page, [{key:'jubilee_year_2027',value:JSON.stringify(years.blank(2027))}]);
+  assert.equal(editor.applyInlineEdit(upcoming,'jubilee_2027_heading','Shadowed'),false);
+  assert.equal(editor.applyInlineEdit(upcoming,'jubilee_2026_heading','A week at Fairview'),true);
+});

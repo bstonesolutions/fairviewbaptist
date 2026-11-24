@@ -3,6 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 
+const years = require('../assets/jubilee-years');
 const ORIGIN = 'https://www.fairviewbaptisttemple.com';
 const source = fs.readFileSync(require.resolve('../assets/jubilee.js'), 'utf8');
 
@@ -25,17 +26,17 @@ function browser() {
     getElementById(id) { return nodes.find(node => node.id === id); },
     querySelector(selector) {
       if (selector === '[data-cms-bg="hero_bg_jubilee"] img') return { getAttribute() { return '/assets/photos/wv-appalachian-mountains.jpg'; } };
-      const key = selector.match(/data-cms-text="([^"]+)"/)[1];
+      const key = selector.match(/data-cms-(?:text|rich)="([^"]+)"/)[1];
       return Object.hasOwn(copy, key) ? { textContent: copy[key] } : null;
     },
     createElement() { return { textContent: '' }; },
     head: { appendChild(node) { nodes.push(node); } },
     addEventListener(name, handler) { assert.equal(name, 'fbt:content'); listener = handler; }
   };
-  vm.runInNewContext(source, { document, URL });
+  vm.runInNewContext(source, { document, URL, URLSearchParams, location:{search:'',hash:''}, window:{FBTJubileeYears:years} });
   return {
     copy, nodes,
-    update(map) { listener({ detail: map }); },
+    update(map) { listener({ detail: {...copy, ...map} }); },
     schema() { return JSON.parse(document.getElementById('jubilee-recap-schema').textContent); }
   };
 }

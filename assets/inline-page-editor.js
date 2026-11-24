@@ -7,7 +7,7 @@
   'use strict';
   var controller = null;
   var blocked = 'form,button,input,textarea,select,nav,header,footer,[data-fbt-inline-ui],' +
-    '[data-cms-no-reveal],[data-live-stage],[data-cms-sermons-grid],[data-cms-sermons-featured],' +
+    '[data-jubilee-year-managed],[data-cms-no-reveal],[data-live-stage],[data-cms-sermons-grid],[data-cms-sermons-featured],' +
     '[data-fbt-services-grid],[data-fbt-music-grid],[data-fbt-music-featured],' +
     '[data-events-upcoming],[data-events-list],[data-events-past-grid],[data-event-featured],' +
     '[data-blog-grid],[data-prayer-wall],[data-mf],[data-sf],[data-lib],[data-svc],' +
@@ -226,7 +226,18 @@
         send('fbt:page-committed', { requestId: data.requestId });
       }
     }
+    function unmark(item) {
+      item.node.removeAttribute('data-fbt-inline-field');
+      item.node.removeAttribute('data-fbt-inline-media');
+      restore(item.node, 'tabindex', item.tabindex);
+      restore(item.node, 'title', item.title);
+    }
     function decorate() {
+      marked = marked.filter(function (item) {
+        if (!item.node.closest('[data-jubilee-year-managed]')) return true;
+        unmark(item);
+        return false;
+      });
       page.sections.forEach(function (definition) {
         var element = document.querySelector(definition.selector);
         if (!element) return;
@@ -276,7 +287,7 @@
         document.removeEventListener('blur', blur, true);
         document.removeEventListener('fbt:content', decorate);
         imageButton.removeEventListener('click', imageClick); win.removeEventListener('message', message);
-        marked.forEach(function (item) { item.node.removeAttribute('data-fbt-inline-field'); item.node.removeAttribute('data-fbt-inline-media'); restore(item.node, 'tabindex', item.tabindex); restore(item.node, 'title', item.title); });
+        marked.forEach(unmark);
         document.querySelectorAll('.fbt-inline-selected,.fbt-inline-field-selected').forEach(function (node) { node.classList.remove('fbt-inline-selected', 'fbt-inline-field-selected'); });
         document.documentElement.classList.remove('fbt-inline-enabled'); ui.remove();
       }

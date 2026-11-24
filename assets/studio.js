@@ -148,7 +148,11 @@
         studioStarted = true;
         showView(initialStudioView());
       }
-    } else { studioStarted = false; show('login'); }
+    } else {
+      studioStarted = false;
+      if (jubileeYears) jubileeYears.reset();
+      show('login');
+    }
   }
   sb.auth.getSession().then(function (r) { if (recovering) { show('setpw'); return; } route(r.data.session); });
   document.addEventListener('visibilitychange', function () {
@@ -209,7 +213,11 @@
       sb.auth.getSession().then(function (res) { route(res.data.session); });
     });
   });
-  $('signout').addEventListener('click', function () { setStudioMenu(false, studioNavToggle); sb.auth.signOut().then(function () { route(null); }); });
+  $('signout').addEventListener('click', function () {
+    if (!$('view-jubilee').hidden && jubileeYears && !jubileeYears.canLeave()) return;
+    setStudioMenu(false, studioNavToggle);
+    sb.auth.signOut().then(function () { route(null); });
+  });
 
   // ---------- events list ----------
   var events = [], editing = null, cancelEventRefresh;
@@ -459,24 +467,24 @@
   var pageEditorController = null, pendingPageMediaDesign = null;
   function pageEditorLocation(page) {
     if ($('view-page-editor').hidden) return;
-    var view = page.id === 'jubilee' ? 'jubilee' : 'page-editor';
+    var view = 'page-editor';
     Array.prototype.forEach.call(document.querySelectorAll('.studio-side .snav[data-view]'), function (button) {
       var active = button.getAttribute('data-view') === view;
       button.classList.toggle('active', active);
       if (active) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current');
       if (active && studioViewName) studioViewName.textContent = button.getAttribute('data-view-label') || view;
     });
-    try { window.history.replaceState(null, '', view === 'jubilee' ? '#jubilee' : '#page-editor/' + page.id); } catch (err) { /* ignore */ }
+    try { window.history.replaceState(null, '', '#page-editor/' + page.id); } catch (err) { /* ignore */ }
   }
   function showView(view) {
-    var requestedView = view;
-    var requestedPage = view === 'jubilee' ? 'jubilee' : view === 'page-editor' ? pendingEditorPage : '';
-    if (requestedPage) { view = 'page-editor'; pendingEditorPage = ''; }
+    if (view !== 'jubilee' && !$('view-jubilee').hidden && jubileeYears && !jubileeYears.canLeave()) return;
+    var requestedPage = view === 'page-editor' ? pendingEditorPage : '';
+    pendingEditorPage = '';
     if (studioMain) studioMain.classList.toggle('with-page-editor', view === 'page-editor');
     Array.prototype.forEach.call(document.querySelectorAll('[data-view-pane]'), function (p) { p.hidden = (p.id !== 'view-' + view); });
     var activeButton = null;
     Array.prototype.forEach.call(document.querySelectorAll('.studio-side .snav[data-view]'), function (b) {
-      var active = b.getAttribute('data-view') === requestedView;
+      var active = b.getAttribute('data-view') === view;
       b.classList.toggle('active', active);
       if (active) { b.setAttribute('aria-current', 'page'); activeButton = b; }
       else b.removeAttribute('aria-current');
@@ -489,14 +497,14 @@
     if (view === 'blog') loadPosts();
     if (view === 'settings') loadSettings();
     if (view === 'people') loadPeople();
-    if (view === 'jubilee') loadJubilee();
+    if (view === 'jubilee') openJubileeYears();
     if (view === 'sermons') loadSermons();
     if (view === 'media') loadMedia();
     if (view === 'pages') loadPages();
     if (view === 'page-editor' && pageEditorController && !requestedPage) pageEditorController.refresh();
     if (view === 'page-editor' && window.FBT_PAGE_EDITOR && !pageEditorController) {
       pageEditorController = window.FBT_PAGE_EDITOR.mount({ element: $('page-editor-root'), client: sb, initialPage: requestedPage, onPageChange: pageEditorLocation, onDesign: openPageMediaDesigner, onSaved: function () {
-        settingsLoaded = false; peopleLoaded = false; mediaReady = false; jubileeLoaded = false;
+        settingsLoaded = false; peopleLoaded = false; mediaReady = false;
       } });
     }
     if (requestedPage && pageEditorController) pageEditorController.ready.then(function () { pageEditorController.selectPage(requestedPage); });
@@ -509,7 +517,7 @@
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     // Keep the place on refresh: /studio#media reopens on Photos & media.
     if (view !== 'page-editor') {
-      try { window.history.replaceState(null, '', '#' + requestedView); } catch (err) { /* ignore */ }
+      try { window.history.replaceState(null, '', '#' + view); } catch (err) { /* ignore */ }
     }
     if (view !== restoreScrollFor) restoreScrollFor = '';
   }
@@ -1747,81 +1755,21 @@
   if ($('people-media')) $('people-media').addEventListener('click', function () { showView('media'); });
 
   // ---------- Appalachian Jubilee ----------
-  var jubileeBuilt = false, jubileeLoaded = false, jubileeLoading = false, jubileeSaving = false;
-  function jubileeFields() {
-    var group = (contentSchema.groups || []).filter(function (item) { return item.id === 'jubilee'; })[0];
-    return group ? group.fields.filter(function (field) { return !field.retired && field.type !== 'bg' && field.type !== 'image' && field.type !== 'style'; }) : [];
-  }
-  function buildJubileeForm() {
-    if (jubileeBuilt) return;
-    var groups = [], byName = {};
-    jubileeFields().forEach(function (field) {
-      var name = field.studioSection || 'Event details';
-      if (!byName[name]) { byName[name] = []; groups.push(name); }
-      byName[name].push(field);
-    });
-    $('jubilee-fields').innerHTML = groups.map(function (name) {
-      return '<div class="studio-fieldset"><h3>' + esc(name) + '</h3>' + byName[name].map(function (field) {
-        var id = 'jubilee-field-' + field.key;
-        var value = esc(field.def || '');
-        var control;
-        if (field.type === 'select') {
-          control = '<select id="' + id + '" data-key="' + esc(field.key) + '">' + (field.options || []).map(function (option) {
-            return '<option value="' + esc(option.value) + '"' + (option.value === field.def ? ' selected' : '') + '>' + esc(option.label) + '</option>';
-          }).join('') + '</select>';
-        } else if (field.type === 'multiline') {
-          control = '<textarea id="' + id + '" data-key="' + esc(field.key) + '" rows="3">' + value + '</textarea>';
-        } else {
-          control = '<input id="' + id + '" data-key="' + esc(field.key) + '" type="' + (field.type === 'link' ? 'url' : field.type === 'date' ? 'date' : 'text') + '" value="' + value + '">';
+  var jubileeYears;
+  function openJubileeYears() {
+    if (!jubileeYears) {
+      jubileeYears = window.FBTJubileeStudio.create({
+        host: $('jubilee-years-root'),
+        sb: sb,
+        uploadImage: uploadStudioImage,
+        openPageEditor: function () {
+          pendingEditorPage = 'jubilee';
+          showView('page-editor');
         }
-        return '<div class="frow"><label for="' + id + '">' + esc(field.label) + (field.type === 'rich' ? ' (wrap accent words in *asterisks*)' : '') + '</label>' + control + (field.hint ? '<small class="field-help">' + esc(field.hint) + '</small>' : '') + '</div>';
-      }).join('') + '</div>';
-    }).join('');
-    jubileeBuilt = true;
+      });
+    }
+    jubileeYears.open();
   }
-  function setJubileeSaving(saving) {
-    jubileeSaving = saving;
-    ['jubilee-save', 'jubilee-save-bottom'].forEach(function (id) {
-      $(id).disabled = saving || !jubileeLoaded;
-      $(id).textContent = saving ? 'Saving…' : 'Save Jubilee';
-    });
-    Array.prototype.forEach.call($('jubilee-form').querySelectorAll('[data-key]'), function (field) { field.disabled = saving; });
-  }
-  function loadJubilee() {
-    buildJubileeForm();
-    if (jubileeLoaded || jubileeLoading) return;
-    jubileeLoading = true;
-    var msg = $('jubilee-msg'); msg.className = 'studio-msg'; msg.textContent = 'Loading Jubilee content…';
-    sb.from('site_content').select('key,value').then(function (result) {
-      jubileeLoading = false;
-      if (result.error) { msg.className = 'studio-msg err'; msg.textContent = 'Could not load: ' + result.error.message; return; }
-      fillContentFields('#view-jubilee', studioContentMap(result.data));
-      jubileeLoaded = true;
-      setJubileeSaving(false);
-      msg.textContent = '';
-    }, function () { jubileeLoading = false; msg.className = 'studio-msg err'; msg.textContent = 'Could not load Jubilee. Open this section again to retry.'; });
-  }
-  function saveJubilee() {
-    if (!jubileeLoaded || jubileeSaving || !$('jubilee-form').reportValidity()) return;
-    var rows = [], now = new Date().toISOString();
-    Array.prototype.forEach.call($('jubilee-form').querySelectorAll('[data-key]'), function (input) {
-      rows.push({ key: input.getAttribute('data-key'), value: String(input.value || '').trim(), updated_at: now });
-    });
-    setJubileeSaving(true);
-    var msg = $('jubilee-msg'); msg.className = 'studio-msg'; msg.textContent = 'Saving Jubilee…';
-    sb.from('site_content').upsert(rows, { onConflict: 'key' }).then(function (result) {
-      setJubileeSaving(false);
-      if (result.error) { msg.className = 'studio-msg err'; msg.textContent = 'Could not save: ' + result.error.message; return; }
-      mediaReady = false;
-      msg.className = 'studio-msg ok'; msg.textContent = 'Saved. The Jubilee page and its promotion are updated.';
-    }, function () { setJubileeSaving(false); msg.className = 'studio-msg err'; msg.textContent = 'The connection was interrupted. Your edits are still here; try saving again.'; });
-  }
-  ['jubilee-save', 'jubilee-save-bottom'].forEach(function (id) { $(id).addEventListener('click', saveJubilee); });
-  $('jubilee-media').addEventListener('click', function () {
-    pendingMediaSlot = 'hero_bg_jubilee';
-    showView('media');
-    if (mediaReady) { pendingMediaSlot = ''; openMediaEditor('hero_bg_jubilee'); }
-  });
 
   // ---------- sermons (sermon_tags overrides on the YouTube library) ----------
   var vids = [], smTags = {}, smReady = false, editingVid = null, hubFilter = '';
@@ -4113,7 +4061,7 @@
         return;
       }
       rows.forEach(function (row) { mediaVals[row.key] = row.value; mediaSavedKeys[row.key] = true; });
-      settingsLoaded = false; peopleLoaded = false; jubileeLoaded = false;
+      settingsLoaded = false; peopleLoaded = false;
       clearMediaDraft();
       edit.pendingValues = {};
       edit.dirty = false;

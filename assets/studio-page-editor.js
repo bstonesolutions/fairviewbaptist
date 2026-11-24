@@ -34,9 +34,32 @@
     });
     return keys.filter(function (key, at) { return keys.indexOf(key) === at; });
   }
+  // After an edition is saved in the Jubilee tab, its annual fields are
+  // owned by that record. Keep all other page content and layout editable.
+  function yearManagedPage(page, stored) {
+    if (page.id !== 'jubilee') return page;
+    var years = root && root.FBTJubileeYears;
+    if (!years && typeof module === 'object' && module.exports) years = require('./jubilee-years.js');
+    if (!years) return page;
+    var archive = years.parseRecord(2026, stored.jubilee_year_2026);
+    var next = years.parseRecord(2027, stored.jubilee_year_2027);
+    if (!archive && !next) return page;
+    var sections = page.sections.map(function (section) {
+      var fields = (section.fields || []).filter(function (field) {
+        if (next && /^(jubilee_2027_heading|jubilee_2027_announcement)$/.test(field.key)) return false;
+        if (archive && /^(jubilee_2026_heading|jubilee_dates|jubilee_intro_copy|photo_jubilee_recap_\d+(?:_alt)?)$/.test(field.key)) return false;
+        return true;
+      });
+      if (fields.length === (section.fields || []).length) return section;
+      return Object.assign({}, section, { fields: fields, yearManaged: true,
+        yearManagedPhotos: !!archive && section.id === 'jubilee-recap-photos' });
+    });
+    return Object.assign({}, page, { sections: sections });
+  }
   function createSession(page, rows, defaults) {
     var stored = Object.create(null), values = Object.create(null), mediaStyles = Object.create(null), auxValues = Object.create(null);
     (rows || []).forEach(function (row) { if (row && typeof row.key === 'string') stored[row.key] = string(row.value); });
+    page = yearManagedPage(page, stored);
     fieldsFor(page).forEach(function (field) {
       values[field.key] = own(stored, field.key) ? stored[field.key] :
         string(defaults && own(defaults, field.key) ? defaults[field.key] : field.def);
@@ -375,6 +398,7 @@
       function details(name, title, html) { return '<details data-pe-details="' + escape(name) + '" data-pe-section="' + escape(section.id) + '"' + (opened.indexOf(name) >= 0 ? ' open' : '') + '><summary>' + title + '</summary>' + html + '</details>'; }
       var fieldsList = fields.map(function (item) { return '<button type="button" class="pe-field-choice" data-pe-pick-field="' + escape(item.key) + '" aria-pressed="' + (item.key === selectedField ? 'true' : 'false') + '"><span>' + escape(item.label || item.key) + '</span><small>' + (item.type === 'image' ? 'Photo' : item.type === 'url' ? 'Link' : 'Text') + '</small></button>'; }).join('');
       var collections = (section.collections || []).map(function (collection) {
+        if (section.yearManagedPhotos && collection.id === 'jubilee-recap-photo-items') return '';
         var config = session.layout.collections[collection.id]; if (!config) return '';
         return details(collection.id, escape(collection.label || 'Items') + ' <span>' + config.order.length + '</span>', '<div class="pe-items">' + config.order.map(function (itemId, itemIndex) {
           var item = (collection.items || []).filter(function (candidate) { return candidate.id === itemId; })[0];
@@ -390,6 +414,7 @@
           select('align', 'Text alignment', [['original', 'Current design'], ['left', 'Left'], ['center', 'Centered']], setting.align, section.id) +
           select('width', 'Content width', [['original', 'Current design'], ['wide', 'Wide'], ['narrow', 'Narrow']], setting.width, section.id) +
           select('spacing', 'Vertical spacing', [['original', 'Current design'], ['compact', 'Compact'], ['roomy', 'Roomy']], setting.spacing, section.id) + '</div><p class="pe-hint">Photo position applies where a photo sits beside text. Phone layouts stay stacked.</p>') +
+        (section.yearManaged ? '<p class="pe-hint">Edit the annual details in Studio’s Appalachian Jubilee tab.</p>' : '') +
         (fields.length ? details('fields', 'More content in this section <span>' + fields.length + '</span>', '<div class="pe-field-list">' + fieldsList + '</div>') : '') + collections + '</article>';
       syncState();
     }
@@ -424,6 +449,7 @@
       setBusy(true); status('Loading page…');
       try {
         var keys = fieldsFor(page).map(function (field) { return field.key; }).concat(Layout.layoutKey(page), auxiliaryKeys(page));
+        if (page.id === 'jubilee') keys.push('jubilee_year_2026', 'jubilee_year_2027');
         var result = await client.from('site_content').select('key,value').in('key', keys);
         if (destroyed || current !== request) return false;
         if (result.error) throw new Error(result.error.message || 'The page could not be loaded.');
@@ -440,6 +466,7 @@
     async function selectPage(id) {
       var page = pages.filter(function (item) { return item.id === id; })[0];
       if (!page || busy) return false;
+      if (session && session.page.id === id && id === 'jubilee' && !dirty() && !inlineActive) return load(page);
       if (session && session.page.id === id) { sizePreview(); if (!frameLoading) notifyPageChange(); return true; }
       setBusy(true);
       try { await flushInline(); } catch (error) { status(error.message, 'error'); setBusy(false); if (session) picker.value = session.page.id; return false; }
@@ -589,7 +616,7 @@
     var controller = {
       refresh: async function () {
         if (!session) return false;
-        if (!dirty() && !inlineActive) return load(session.page);
+        if (!dirty() && !inlineActive) return load(pages.find(function (page) { return page.id === session.page.id; }) || session.page);
         await Promise.resolve();
         if (!frameLoading) notifyPageChange();
         return true;
