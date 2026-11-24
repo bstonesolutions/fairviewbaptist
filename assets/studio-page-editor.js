@@ -206,7 +206,7 @@
     if (!element || !client || !Layout) throw new Error('The page editor needs a container, Studio client, and page layout module.');
     if (element.__fbtPageEditor) return element.__fbtPageEditor;
     var catalog = options.catalog || root.FBT_PAGE_CATALOG || { pages: [] }, pages = catalog.pages || [];
-    var session = null, destroyed = false, busy = false, request = 0, previewTimer, previewSize = 'desktop';
+    var session = null, destroyed = false, busy = false, request = 0, previewTimer, previewSize = root.matchMedia && root.matchMedia('(max-width: 600px)').matches ? 'phone' : 'desktop';
     var selectedSection = '', selectedField = '', selectedMedia = '', history = [], lastHistoryToken = '', lastHistoryAt = 0;
     var inlineReady = false, inlineActive = false, frameLoading = false, previewUrl = '', commitSequence = 0, pendingCommit = null;
     var defaults = options.defaults || (root.FBT_SCHEMA && root.FBT_SCHEMA.defaults) || {};
@@ -214,12 +214,12 @@
     element.classList.add('fbt-page-editor');
     element.setAttribute('tabindex', '-1');
     element.innerHTML = '<div class="pe-toolbar"><label class="pe-page-label"><span>Page</span><select data-pe-page aria-label="Choose a page"></select></label>' +
-      '<div class="pe-view-tools" role="group" aria-label="Page width"><button type="button" data-pe-size="desktop" aria-pressed="true">Desktop</button><button type="button" data-pe-size="phone" aria-pressed="false">Phone</button></div>' +
+      '<div class="pe-view-tools" role="group" aria-label="Page width"><button type="button" data-pe-size="desktop" aria-pressed="' + (previewSize === 'desktop') + '">Desktop</button><button type="button" data-pe-size="phone" aria-pressed="' + (previewSize === 'phone') + '">Phone</button></div>' +
       '<div class="pe-save-tools"><button type="button" data-pe-undo disabled>Undo</button><button type="button" class="pe-primary" data-pe-save>Save page</button></div></div>' +
-      '<div class="pe-feedback"><p class="pe-status" data-pe-status role="status" aria-live="polite"></p><a data-pe-open target="_blank" rel="noopener">Open saved page ↗</a></div>' +
-      '<div class="pe-workspace"><section class="pe-preview" aria-label="Editable page"><p class="pe-canvas-hint">Click text to edit it. Select a photo or section to change its design.</p>' +
+      '<div class="pe-feedback"><p class="pe-status" data-pe-status role="status" aria-live="polite"></p><a data-pe-open target="_blank" rel="noopener">View live page ↗</a></div>' +
+      '<div class="pe-workspace"><section class="pe-preview" aria-label="Editable page"><p class="pe-canvas-hint">Select text or a photo on the page to edit it.</p>' +
       '<div class="pe-preview-status" data-pe-preview-state hidden><span data-pe-preview-status role="status" aria-live="polite"></span><button type="button" data-pe-preview-retry>Retry preview</button></div>' +
-      '<div class="pe-frame-shell"><iframe title="Edit this page" sandbox="allow-scripts allow-same-origin" data-pe-frame></iframe></div></section>' +
+      '<div class="pe-frame-shell' + (previewSize === 'phone' ? ' pe-phone' : '') + '"><iframe title="Edit this page" sandbox="allow-scripts allow-same-origin" data-pe-frame></iframe></div></section>' +
       '<aside class="pe-inspector" aria-label="Selected section settings"><details class="pe-outline" data-pe-outline><summary>Page sections <span data-pe-count></span></summary>' +
       '<div data-pe-sections></div><div class="pe-outline-actions"><button type="button" data-pe-reset>Reset layout</button><button type="button" data-pe-reload>Reload saved page</button></div></details>' +
       '<div data-pe-inspector></div></aside></div>';
@@ -264,7 +264,7 @@
       element.querySelector('[data-pe-reload]').disabled = busy || !pages.length;
       saveButton.textContent = busy ? 'Please wait…' : 'Save page';
       element.setAttribute('aria-busy', busy ? 'true' : 'false');
-      if (!busy && currentStatusKind !== 'error' && currentStatusKind !== 'saved') status(changed || inlineActive ? 'Unsaved changes' : 'Your saved page. Changes stay here until you save.', changed || inlineActive ? 'draft' : '');
+      if (!busy && currentStatusKind !== 'error' && currentStatusKind !== 'saved') status(changed || inlineActive ? 'Unsaved changes' : 'No unsaved changes', changed || inlineActive ? 'draft' : '');
     }
     function setBusy(value) {
       busy = value;
@@ -363,17 +363,18 @@
       var multiline = field.type === 'rich' || value.length > 100 || /paragraph|description|subtext|\bbody\b|\bcopy\b|\bbio\b|\banswer\b/i.test(field.label || '');
       var input = multiline ? '<textarea rows="' + (value.length > 200 ? '5' : '3') + '"' + attrs + '>' + escape(value) + '</textarea>' : '<input type="text"' + attrs + ' value="' + escape(value) + '">';
       var help = field.type === 'rich' ? '<small>Use *words* for emphasis. Add a blank line for a new paragraph.</small>' : '';
-      var media = '';
       if (field.type === 'image') {
         var library = (root.FBT_PHOTOS || []).filter(function (photo) { return photo && Layout.validateUrl(photo.url, 'image'); });
-        media = '<div class="pe-image-tools"><label>Library photo<select data-pe-library="' + escape(field.key) + '"><option value="">Choose a photo…</option>' + library.map(function (photo) {
-          return '<option value="' + escape(photo.url) + '">' + escape(photo.label || photo.url) + '</option>';
-        }).join('') + '</select></label><label class="pe-upload">Upload photo<input type="file" data-pe-upload="' + escape(field.key) + '" accept="image/jpeg,image/png,image/webp,image/avif"></label>' +
-          '<button type="button" data-pe-clear="' + escape(field.key) + '">Clear photo</button></div>';
-        if (typeof options.onDesign === 'function') media += '<button class="pe-design-button" type="button" data-pe-design="' + escape(field.key) + '">Edit photo &amp; design ↗</button>';
-        help = '<small>Photo address. Choose from the library, upload, or paste an HTTPS image address.</small>';
+        return '<div class="pe-field"><strong>' + escape(field.label || 'Photo') + '</strong><div class="pe-image-tools">' +
+          '<label class="pe-upload">Upload photo<input type="file" data-pe-upload="' + escape(field.key) + '" accept="image/jpeg,image/png,image/webp,image/avif"></label>' +
+          (library.length ? '<label>Church photos<select data-pe-library="' + escape(field.key) + '"><option value="">Choose a photo…</option>' + library.map(function (photo) {
+            return '<option value="' + escape(photo.url) + '">' + escape(photo.label || photo.url) + '</option>';
+          }).join('') + '</select></label>' : '') +
+          '<button type="button" data-pe-clear="' + escape(field.key) + '">Remove photo</button></div>' +
+          '<details><summary>Use a photo link</summary><label>Photo address' + input + '</label></details>' +
+          (typeof options.onDesign === 'function' ? '<button class="pe-design-button" type="button" data-pe-design="' + escape(field.key) + '">Adjust photo design</button>' : '') + '</div>';
       }
-      return '<div class="pe-field"><label><span>' + escape(field.label || field.key) + '</span>' + input + '</label>' + help + media + '</div>';
+      return '<div class="pe-field"><label><span>' + escape(field.label || field.key) + '</span>' + input + '</label>' + help + '</div>';
     }
     function renderOutline() {
       if (!session) return;
@@ -389,7 +390,7 @@
     }
     function renderInspector() {
       var section = sectionById(selectedSection);
-      if (!section) { inspector.innerHTML = '<div class="pe-empty"><h3>Select something on the page</h3><p>Click a section, a photo, or the words you want to change.</p></div>'; return; }
+      if (!section) { inspector.innerHTML = ''; return; }
       var setting = session.layout.sections[section.id], fields = sectionFields(section);
       var field = fields.filter(function (item) { return item.key === selectedField; })[0];
       var mediaField = fields.filter(function (item) { return item.key === selectedMedia; })[0] || fields.filter(function (item) { return item.type === 'image' && /^hero_bg_/.test(item.key); })[0];
@@ -405,17 +406,17 @@
           return '<div class="pe-item"><label class="pe-check"><input type="checkbox" data-pe-item="' + escape(itemId) + '" data-pe-collection="' + escape(collection.id) + '"' + (config.hidden.indexOf(itemId) < 0 ? ' checked' : '') + '><span>' + escape(item && item.label || itemId) + '</span></label>' + orderButtons(itemId, itemIndex, config.order.length, collection.id) + '</div>';
         }).join('') + '</div>');
       }).join('');
-      inspector.innerHTML = '<article class="pe-section' + (setting.visible ? '' : ' pe-section-muted') + '" data-pe-card="' + escape(section.id) + '"><p class="pe-eyebrow">Selected section</p><h3>' + escape(section.label) + '</h3>' +
-        '<label class="pe-check pe-visibility"><input type="checkbox" data-pe-visible="' + escape(section.id) + '"' + (setting.visible ? ' checked' : '') + '>Show this section</label>' +
-        (field ? '<div class="pe-selected-field">' + fieldHtml(field) + '</div>' : '<p class="pe-hint">Click the words you want to edit directly on the page.</p>') +
-        (mediaField && (!field || field.key !== mediaField.key) && typeof options.onDesign === 'function' ? '<button class="pe-design-button" type="button" data-pe-design="' + escape(mediaField.key) + '">Section photo &amp; design ↗</button>' : '') +
-        details('layout', 'Layout &amp; spacing', '<div class="pe-settings">' +
+      inspector.innerHTML = '<article class="pe-section' + (setting.visible ? '' : ' pe-section-muted') + '" data-pe-card="' + escape(section.id) + '"><h3>' + escape(section.label) + '</h3>' +
+        (field ? '<div class="pe-selected-field">' + fieldHtml(field) + '</div>' : '') +
+        (section.yearManaged ? '<p class="pe-hint">Edit annual details in the Appalachian Jubilee tab.</p>' : '') +
+        (fields.length ? details('fields', 'Edit text, links &amp; photos', '<div class="pe-field-list">' + fieldsList + '</div>') : '') +
+        (mediaField && (!field || field.key !== mediaField.key) && typeof options.onDesign === 'function' ? '<button class="pe-design-button" type="button" data-pe-design="' + escape(mediaField.key) + '">Change section photo</button>' : '') +
+        details('layout', 'Section layout', '<label class="pe-check pe-visibility"><input type="checkbox" data-pe-visible="' + escape(section.id) + '"' + (setting.visible ? ' checked' : '') + '>Show this section</label><div class="pe-settings">' +
           select('layout', 'Layout', [['original', 'Current design'], ['stacked', 'Stacked'], ['image-left', 'Photo on left'], ['image-right', 'Photo on right']], setting.layout, section.id) +
           select('align', 'Text alignment', [['original', 'Current design'], ['left', 'Left'], ['center', 'Centered']], setting.align, section.id) +
           select('width', 'Content width', [['original', 'Current design'], ['wide', 'Wide'], ['narrow', 'Narrow']], setting.width, section.id) +
-          select('spacing', 'Vertical spacing', [['original', 'Current design'], ['compact', 'Compact'], ['roomy', 'Roomy']], setting.spacing, section.id) + '</div><p class="pe-hint">Photo position applies where a photo sits beside text. Phone layouts stay stacked.</p>') +
-        (section.yearManaged ? '<p class="pe-hint">Edit the annual details in Studio’s Appalachian Jubilee tab.</p>' : '') +
-        (fields.length ? details('fields', 'More content in this section <span>' + fields.length + '</span>', '<div class="pe-field-list">' + fieldsList + '</div>') : '') + collections + '</article>';
+          select('spacing', 'Vertical spacing', [['original', 'Current design'], ['compact', 'Compact'], ['roomy', 'Roomy']], setting.spacing, section.id) + '</div>') +
+        collections + '</article>';
       syncState();
     }
     function setValue(key, value) {
@@ -455,7 +456,7 @@
         if (result.error) throw new Error(result.error.message || 'The page could not be loaded.');
         session = createSession(page, result.data, defaults); picker.value = page.id; history = []; lastHistoryToken = '';
         if (!sectionById(selectedSection)) { selectedSection = session.layout.order[0] || ''; selectedField = ''; selectedMedia = ''; }
-        renderOutline(); renderInspector(); status('Your saved page. Changes stay here until you save.');
+        renderOutline(); renderInspector(); status('No unsaved changes');
         element.querySelector('[data-pe-open]').href = page.path; navigateFrame(frameUrl(page));
         return true;
       } catch (error) {

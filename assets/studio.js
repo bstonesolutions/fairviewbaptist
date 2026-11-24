@@ -242,9 +242,10 @@
   function renderRows() {
     var rows = $('ev-rows');
     refreshEventDates();
-    if (!events.length) { rows.innerHTML = '<div class="studio-empty">No events yet. Click <b>+ New event</b> to add your first.</div>'; return; }
-    var now = Date.now();
-    rows.innerHTML = events.map(function (e) {
+    if (!events.length) { rows.innerHTML = '<div class="studio-empty">No events yet.</div>'; return; }
+    var now = Date.now(), currentRows = [], pastRows = [];
+    var archiveOpen = !!rows.querySelector('details[open]');
+    events.forEach(function (e) {
       var when = e.recurring || (e.start_at ? dashEventDate(e.start_at) : 'No date');
       var past = eventTime.endsAt(e) <= now;
       var pill = e.status === 'draft' ? '<span class="spill draft">Draft</span>'
@@ -254,13 +255,14 @@
       var thumb = e.cover
         ? '<div class="srow-thumb" style="background-image:url(&quot;' + esc(e.cover) + '&quot;)"></div>'
         : '<div class="srow-thumb">' + CAL_SVG + '</div>';
-      return '<div class="srow">' + thumb +
-        '<div class="srow-main"><div class="srow-title">' + esc(e.title) + '</div><div class="srow-meta">' + esc(when) + (e.category ? ' · ' + esc(e.category) : '') + '</div></div>' +
+      var items = past && e.status !== 'draft' ? pastRows : currentRows;
+      items.push('<div class="srow">' + thumb +
+        '<div class="srow-main"><button type="button" class="ev-edit-link" data-edit="' + esc(e.id) + '" aria-label="Edit ' + esc(e.title) + '">' + esc(e.title) + '</button><div class="srow-meta">' + esc(when) + (e.category ? ' · ' + esc(e.category) : '') + '</div></div>' +
         pill +
-        '<button class="sicon" data-edit="' + esc(e.id) + '" aria-label="Edit ' + esc(e.title) + '">' + EDIT_SVG + '</button>' +
-        '<button class="sicon" data-del="' + esc(e.id) + '" aria-label="Delete ' + esc(e.title) + '">' + TRASH_SVG + '</button>' +
-        '</div>';
-    }).join('');
+        '<button class="sicon" data-del="' + esc(e.id) + '" aria-label="Delete ' + esc(e.title) + '">' + TRASH_SVG + '</button></div>');
+    });
+    var archive = pastRows.length ? '<details' + (archiveOpen ? ' open' : '') + '><summary>Past events (' + pastRows.length + ')</summary>' + pastRows.reverse().join('') + '</details>' : '';
+    rows.innerHTML = currentRows.join('') + archive;
   }
   $('ev-rows').addEventListener('click', function (e) {
     var ed = e.target.closest('[data-edit]'), dl = e.target.closest('[data-del]');
@@ -278,7 +280,11 @@
   function setV(id, val) { $(id).value = (val == null ? '' : val); }
   function setCoverPrev(url) { var p = $('f-cover-prev'); if (url) { p.style.backgroundImage = 'url("' + url + '")'; p.classList.add('has'); } else { p.style.backgroundImage = ''; p.classList.remove('has'); } $('f-cover-remove').disabled = !String(url || '').trim() && !eventImagePending.cover; }
   function setHeroPrev(url) { var p = $('f-hero-prev'); if (url) { p.style.backgroundImage = 'url("' + url + '")'; p.classList.add('has'); } else { p.style.backgroundImage = ''; p.classList.remove('has'); } $('f-hero-remove').disabled = !String(url || '').trim() && !eventImagePending.hero; }
-  function toggleRegUrl() { $('f-reg-url-row').hidden = v('f-reg-mode') !== 'link'; }
+  function toggleRegUrl() {
+    var mode = v('f-reg-mode');
+    $('f-reg-url-row').hidden = mode !== 'link';
+    $('f-reg-label-row').hidden = !mode;
+  }
 
   function eventInputDate(value) {
     var ms = eventTime.instant(value);
@@ -291,6 +297,7 @@
   function openEdit(ev) {
     resetEventImageUploads();
     editing = ev || null;
+    $('ev-form').querySelectorAll('details').forEach(function (section) { section.open = false; });
     $('ev-edit-title').textContent = ev ? 'Edit event' : 'New event';
     setV('f-title', ev && ev.title); setV('f-slug', ev && ev.slug); setV('f-category', ev && ev.category);
     setV('f-status', (ev && ev.status) || 'published');
@@ -364,10 +371,14 @@
   bindEventImage('cover', setCoverPrev, 'Cover');
   bindEventImage('hero', setHeroPrev, 'Background');
 
-  $('ev-save').addEventListener('click', saveEvent);
+  $('ev-form').addEventListener('submit', function (event) {
+    event.preventDefault(); saveEvent();
+  });
   function saveEvent() {
+    if ($('ev-save').disabled) return;
+    if (eventImagePending.cover || eventImagePending.hero) { alert('Please wait for the photo upload to finish.'); return; }
     var title = v('f-title').trim();
-    if (!title) { $('f-title').focus(); $('f-cover-msg'); alert('Please add a title.'); return; }
+    if (!title) { $('f-title').focus(); alert('Please add an event name.'); return; }
     var start = storedEventDate('f-start', editing && editing.start_at);
     var end = storedEventDate('f-end', editing && editing.end_at);
     if (end && eventTime.validEnd(start, end) === null) {
@@ -489,7 +500,11 @@
       if (active) { b.setAttribute('aria-current', 'page'); activeButton = b; }
       else b.removeAttribute('aria-current');
     });
-    if (studioViewName && activeButton) studioViewName.textContent = activeButton.getAttribute('data-view-label') || view;
+    if (activeButton) {
+      var moreTools = activeButton.closest('details');
+      if (moreTools) moreTools.open = true;
+      if (studioViewName) studioViewName.textContent = activeButton.getAttribute('data-view-label') || view;
+    }
     if (studioIsMobile()) setStudioMenu(false, studioMain);
     $('ev-edit').hidden = true; $('ev-list').hidden = false;
     $('bl-edit').hidden = true; $('bl-list').hidden = false;
@@ -549,7 +564,7 @@
     if (button) { button.disabled = true; button.classList.add('loading'); button.querySelector('span').textContent = 'Refreshing...'; }
     var sync = $('dash-sync'); if (sync) { sync.className = 'dash-sync'; sync.textContent = dashLoaded ? 'Refreshing the latest activity...' : 'Loading the latest Studio activity...'; }
     if (dashLoaded) return;
-    $('dash-focus-grid').innerHTML = '<div class="dash-focus-card dash-skeleton">Loading</div><div class="dash-focus-card dash-skeleton">Loading</div><div class="dash-focus-card dash-skeleton">Loading</div><div class="dash-focus-card dash-skeleton">Loading</div>';
+    $('dash-focus-grid').innerHTML = '<div class="dash-focus-card dash-skeleton">Loading inbox</div><div class="dash-focus-card dash-skeleton">Loading events</div>';
     $('dash-giving').innerHTML = '<div class="dash-empty dash-skeleton">Loading giving activity</div>';
     $('dash-health').innerHTML = '<div class="dash-empty dash-skeleton">Checking your content</div>';
     $('dash-activity').innerHTML = '<div class="dash-empty dash-skeleton">Loading recent activity</div>';
@@ -658,7 +673,8 @@
   function dashFocusCard(view, icon, label, value, meta, tone) {
     return '<button class="dash-focus-card' + (tone ? ' ' + tone : '') + '" type="button" data-dash-view="' + esc(view) + '">' +
       '<span class="dash-focus-icon">' + icon + '</span><span class="dash-focus-label">' + esc(label) + '</span>' +
-      '<strong class="dash-focus-value">' + esc(value) + '</strong><span class="dash-focus-meta">' + esc(meta) + '</span></button>';
+      '<strong class="dash-focus-value">' + esc(value) + '</strong>' +
+      (meta ? '<span class="dash-focus-meta">' + esc(meta) + '</span>' : '') + '</button>';
   }
   function dashFocusError(icon, label) {
     return '<div class="dash-focus-card dash-focus-error warn"><span class="dash-focus-icon">' + icon + '</span><span class="dash-focus-label">' + esc(label) + '</span><strong class="dash-focus-value">Could not load</strong><span class="dash-focus-meta">Refresh to try this section again.</span></div>';
@@ -672,7 +688,7 @@
     var html = '', result = dashData.results;
     var newInbox = dashData.submissions.filter(function (item) { return !item.handled; }).length;
     var pendingPrayers = dashData.prayers.filter(function (item) { return !item.approved; }).length;
-    if (result.submissions) html += dashFocusCard('inbox', DASH_ICONS.inbox, 'Inbox', newInbox ? (newInbox + (newInbox === 1 ? ' new message' : ' new messages')) : 'Inbox is clear', newInbox ? 'Open and mark each one handled.' : 'You are caught up.', newInbox ? 'warn' : 'good');
+    if (result.submissions) html += dashFocusCard('inbox', DASH_ICONS.inbox, 'Inbox', newInbox ? (newInbox + (newInbox === 1 ? ' new message' : ' new messages')) : 'No new messages', '', newInbox ? 'warn' : 'good');
     else html += dashFocusError(DASH_ICONS.inbox, 'Inbox');
     if (!DASH_RETIRED.prayers) {
       if (result.prayers) html += dashFocusCard('prayers', DASH_ICONS.prayer, 'Prayer wall', pendingPrayers ? (pendingPrayers + ' awaiting review') : 'Nothing pending', pendingPrayers ? 'Approve, edit, or keep private.' : 'Every public request has been reviewed.', pendingPrayers ? 'warn' : 'good');
@@ -682,7 +698,7 @@
       var next = dashNextEvent();
       html += next
         ? dashFocusCard('events', DASH_ICONS.event, 'Next event', next.title || 'Untitled event', next.recurring && !next.start_at ? next.recurring : dashEventDate(next.start_at), 'good')
-        : dashFocusCard('events', DASH_ICONS.event, 'Next event', 'No dated event', 'Add the next event when the details are ready.', 'warn');
+        : dashFocusCard('events', DASH_ICONS.event, 'Next event', 'No upcoming events', '', '');
     } else html += dashFocusError(DASH_ICONS.event, 'Next event');
     var bulletin = (!DASH_RETIRED.bulletin && result.content) ? dashBulletinInfo() : null;
     if (!DASH_RETIRED.bulletin) {
@@ -779,10 +795,10 @@
     var sync = $('dash-sync');
     if (sync) {
       sync.className = 'dash-sync' + (failures ? ' partial' : '');
-      sync.textContent = failures ? 'Updated with ' + failures + (failures === 1 ? ' section unavailable. Tap Refresh dashboard to retry.' : ' sections unavailable. Tap Refresh dashboard to retry.') : 'Everything updated at ' + new Date(dashLoadedAt).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }) + '.';
+      sync.textContent = failures ? 'Updated with ' + failures + (failures === 1 ? ' section unavailable. Select Refresh to try again.' : ' sections unavailable. Select Refresh to try again.') : 'Updated at ' + new Date(dashLoadedAt).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }) + '.';
     }
     var button = $('dash-refresh');
-    if (button) { button.disabled = false; button.classList.remove('loading'); button.querySelector('span').textContent = 'Refresh dashboard'; }
+    if (button) { button.disabled = false; button.classList.remove('loading'); button.querySelector('span').textContent = 'Refresh'; }
   }
   function loadDashboard(force) {
     if (dashLoading) return;
@@ -829,7 +845,7 @@
       dashLoaded = true; dashLoadedAt = Date.now(); dashLoading = false; dashRender();
     }, function () {
       dashLoading = false;
-      var button = $('dash-refresh'); if (button) { button.disabled = false; button.classList.remove('loading'); button.querySelector('span').textContent = 'Refresh dashboard'; }
+      var button = $('dash-refresh'); if (button) { button.disabled = false; button.classList.remove('loading'); button.querySelector('span').textContent = 'Refresh'; }
       var sync = $('dash-sync'); if (sync) { sync.className = 'dash-sync partial'; sync.textContent = 'The dashboard could not refresh. The rest of Studio is still available.'; }
     });
   }
@@ -839,8 +855,6 @@
     var action = event.target.closest('[data-dash-action]');
     if (!action) return;
     var name = action.getAttribute('data-dash-action');
-    if (name === 'site-text') { showView('settings'); var sm = $('studio-main'); if (sm) sm.scrollTo ? sm.scrollTo(0, 0) : null; window.scrollTo(0, 0); }
-    if (name === 'design') { showView('settings'); var fd = document.getElementById('fs-design'); if (fd) fd.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     if (name === 'new-event') { showView('events'); openEdit(null); }
     if (name === 'bulletin') { showView('bulletin'); if ($('blt-date')) $('blt-date').focus(); }
     if (name === 'new-post') { showView('blog'); openPostEdit(null); }
@@ -1658,16 +1672,63 @@
 
   // ---------- settings (site_content key/value, read by content.js across the site) ----------
   var settingsLoaded = false;
-  function loadSettings() {
-    if (settingsLoaded) return;
-    sb.from('site_content').select('key,value').then(function (r) {
-      if (r.error) return;
-      var map = studioContentMap(r.data);
-      Object.keys(map).forEach(function (key) { map[key] = normalizeSetting(key, map[key]); });
-      fillContentFields('#view-settings', map);
-      settingsLoaded = true;
+  async function loadContentForm(view, msg, retry, saveButtons, prepareValues) {
+    var form = view.querySelector('form');
+    form.dataset.loading = 'true';
+    form.inert = true;
+    saveButtons.forEach(function (button) { button.disabled = true; });
+    retry.hidden = true;
+    msg.className = 'studio-msg'; msg.textContent = 'Loading…';
+    try {
+      var result = await sb.from('site_content').select('key,value');
+      if (result.error) throw result.error;
+      var values = studioContentMap(result.data);
+      if (prepareValues) prepareValues(values);
+      fillContentFields('#' + view.id, values);
+      form.querySelectorAll('[data-key]').forEach(function (field) { field.dataset.savedValue = field.value; });
+      msg.textContent = '';
+      form.inert = false;
+      saveButtons.forEach(function (button) { button.disabled = false; });
+      return true;
+    } catch (error) {
+      msg.className = 'studio-msg err'; msg.textContent = 'Could not load. ' + error.message;
+      retry.hidden = false;
+      return false;
+    } finally {
+      delete form.dataset.loading;
+    }
+  }
+  async function saveContentChanges(form, msg, saveButtons, normalize, successText) {
+    var changed = Array.from(form.querySelectorAll('[data-key]')).filter(function (field) {
+      return field.value !== field.dataset.savedValue;
+    });
+    if (!changed.length) { msg.className = 'studio-msg'; msg.textContent = 'No changes to save.'; return; }
+    var rows = changed.map(function (field) {
+      field.value = normalize(field.dataset.key, field.value);
+      return { key: field.dataset.key, value: field.value };
+    });
+    var labels = saveButtons.map(function (button) { return button.textContent; });
+    saveButtons.forEach(function (button) { button.disabled = true; button.textContent = 'Saving…'; });
+    msg.className = 'studio-msg'; msg.textContent = '';
+    try {
+      var result = await sb.from('site_content').upsert(rows, { onConflict: 'key' });
+      if (result.error) throw result.error;
+      changed.forEach(function (field, i) { field.dataset.savedValue = rows[i].value; });
+      mediaReady = false;
+      msg.className = 'studio-msg ok'; msg.textContent = successText;
+    } catch (error) {
+      msg.className = 'studio-msg err'; msg.textContent = 'Could not save. ' + error.message;
+    } finally {
+      saveButtons.forEach(function (button, i) { button.disabled = false; button.textContent = labels[i]; });
+    }
+  }
+  async function loadSettings() {
+    if (settingsLoaded || $('view-settings').querySelector('form').dataset.loading) return;
+    settingsLoaded = await loadContentForm($('view-settings'), $('set-msg'), $('set-retry'), [$('set-save')], function (values) {
+      Object.keys(values).forEach(function (key) { values[key] = normalizeSetting(key, values[key]); });
     });
   }
+  $('set-retry').addEventListener('click', loadSettings);
   function normalizeSetting(key, value) {
     var s = String(value == null ? '' : value).trim();
     if (key === 'contact_city' && /^clay$/i.test(s)) return 'Clay, WV 25043';
@@ -1687,70 +1748,57 @@
     return s;
   }
   $('set-save').addEventListener('click', function () {
-    var btn = $('set-save'), msg = $('set-msg'); btn.disabled = true; btn.textContent = 'Saving…'; msg.textContent = ''; msg.className = 'studio-msg';
+    var btn = $('set-save'), msg = $('set-msg');
+    if (!settingsLoaded || btn.disabled) return;
     var mapEmbed = document.querySelector('#view-settings [data-key="maps_embed_url"]');
     var mapDirections = document.querySelector('#view-settings [data-key="maps_url"]');
-    if ((mapEmbed && mapEmbed.value.trim() && !window.FBTMapSettings.embedURL(mapEmbed.value)) ||
-        (mapDirections && mapDirections.value.trim() && !window.FBTMapSettings.directionsURL(mapDirections.value))) {
-      btn.disabled = false; btn.textContent = 'Save settings'; msg.className = 'studio-msg err';
-      msg.textContent = 'Use a Google Maps embed URL for the map and a Google Maps link for directions.'; return;
+    var invalidMapField = [mapEmbed, mapDirections].find(function (field) {
+      if (!field || !field.value.trim() || field.value === field.dataset.savedValue) return false;
+      return !(field === mapEmbed ? window.FBTMapSettings.embedURL(field.value) : window.FBTMapSettings.directionsURL(field.value));
+    });
+    if (invalidMapField) {
+      invalidMapField.closest('details').open = true;
+      invalidMapField.focus();
+      msg.className = 'studio-msg err';
+      msg.textContent = 'Enter a valid Google Maps link.';
+      invalidMapField.setCustomValidity(msg.textContent);
+      invalidMapField.reportValidity();
+      invalidMapField.setCustomValidity('');
+      return;
     }
-    var rows = [];
-    Array.prototype.forEach.call(document.querySelectorAll('#view-settings [data-key]'), function (inp) {
-      var key = inp.getAttribute('data-key'), value = normalizeSetting(key, inp.value);
-      inp.value = value;
-      rows.push({ key: key, value: value });
-    });
-    sb.from('site_content').upsert(rows, { onConflict: 'key' }).then(function (r) {
-      btn.disabled = false; btn.textContent = 'Save settings';
-      if (r.error) { msg.className = 'studio-msg err'; msg.textContent = 'Couldn\'t save: ' + r.error.message + (/row-level|policy/i.test(r.error.message) ? ' (not on the editor allow-list?)' : ''); return; }
-      mediaReady = false;
-      msg.className = 'studio-msg ok'; msg.textContent = 'Saved ✓ Your changes are live across the site.';
-    });
+    saveContentChanges($('view-settings').querySelector('form'), msg, [btn], normalizeSetting, 'Saved settings.');
   });
 
   // ---------- people & ministries (site_content, shown on Staff + Get Involved) ----------
+  function updateProfileLabel(card) {
+    var field = card.querySelector('[data-key$="_name"], [data-key$="_title"]');
+    card.querySelector('summary').textContent = field.value.trim() || field.defaultValue;
+  }
   var peopleLoaded = false;
-  function loadPeople() {
-    if (peopleLoaded) return;
-    var msg = $('people-msg');
-    if (msg) { msg.className = 'studio-msg'; msg.textContent = 'Loading current public content…'; }
-    sb.from('site_content').select('key,value').then(function (r) {
-      if (r.error) {
-        if (msg) { msg.className = 'studio-msg err'; msg.textContent = 'Couldn\'t load: ' + r.error.message; }
-        return;
-      }
-      fillContentFields('#view-people', studioContentMap(r.data));
-      peopleLoaded = true;
-      if (msg) { msg.className = 'studio-msg'; msg.textContent = ''; }
-    });
+  var peopleSaveButtons = [$('people-save'), $('people-save-bottom')];
+  async function loadPeople() {
+    if (peopleLoaded || $('people-form').dataset.loading) return;
+    peopleLoaded = await loadContentForm($('view-people'), $('people-msg'), $('people-retry'), peopleSaveButtons);
+    if (peopleLoaded) $('people-form').querySelectorAll('.people-card').forEach(updateProfileLabel);
   }
-  function setPeopleSaving(saving) {
-    ['people-save', 'people-save-bottom'].forEach(function (id) {
-      var btn = $(id); if (!btn) return;
-      btn.disabled = saving; btn.textContent = saving ? 'Saving…' : 'Save changes';
-    });
-  }
+  $('people-retry').addEventListener('click', loadPeople);
   function savePeople() {
+    if (!peopleLoaded || peopleSaveButtons[0].disabled) return;
     var form = $('people-form'), msg = $('people-msg');
-    if (!form || !form.reportValidity()) return;
-    setPeopleSaving(true);
-    if (msg) { msg.className = 'studio-msg'; msg.textContent = ''; }
-    var rows = [];
-    Array.prototype.forEach.call(document.querySelectorAll('#view-people [data-key]'), function (inp) {
-      rows.push({ key: inp.getAttribute('data-key'), value: String(inp.value || '').trim() });
+    var invalid = Array.from(form.querySelectorAll(':invalid')).find(function (field) {
+      return field.value !== field.dataset.savedValue;
     });
-    sb.from('site_content').upsert(rows, { onConflict: 'key' }).then(function (r) {
-      setPeopleSaving(false);
-      if (r.error) {
-        if (msg) { msg.className = 'studio-msg err'; msg.textContent = 'Couldn\'t save: ' + r.error.message + (/row-level|policy/i.test(r.error.message) ? ' (not on the editor allow-list?)' : ''); }
-        return;
-      }
-      peopleLoaded = true;
-      mediaReady = false;
-      if (msg) { msg.className = 'studio-msg ok'; msg.textContent = 'Saved ✓ Get Involved and Our Staff are updated.'; }
-    });
+    if (invalid) {
+      invalid.closest('.people-card').open = true;
+      invalid.reportValidity();
+      invalid.focus();
+      return;
+    }
+    saveContentChanges(form, msg, peopleSaveButtons, function (_, value) { return value.trim(); }, 'Saved changes.');
   }
+  $('people-form').addEventListener('input', function (event) {
+    if (event.target.matches('[data-key$="_name"], [data-key$="_title"]')) updateProfileLabel(event.target.closest('.people-card'));
+  });
   ['people-save', 'people-save-bottom'].forEach(function (id) { var btn = $(id); if (btn) btn.addEventListener('click', savePeople); });
   if ($('people-media')) $('people-media').addEventListener('click', function () { showView('media'); });
 
@@ -1830,6 +1878,7 @@
   });
   function openVidEdit(vv) {
     editingVid = vv; var t = smTags[vv.id] || {};
+    $('sm-edit').querySelector('.video-notes').open = false;
     $('sm-vid-thumb').style.backgroundImage = vv.thumb ? 'url("' + vv.thumb + '")' : '';
     var dateLabel = vv.dateKind === 'published' ? 'YouTube published ' : 'Service date ';
     $('sm-vid-meta').innerHTML = '<b>' + esc(vv.rawTitle || vv.title) + '</b><br>' + esc(dateLabel + fmtSmDate(vv.date)) + ' · youtube.com/watch?v=' + esc(vv.id);
@@ -3652,7 +3701,7 @@
     }).join('');
     var roles = mediaColorRoles(meta);
     if (roles.length) {
-      html += '<div class="media-text-colors">' + roles.map(function (r) {
+      html += '<details><summary>Text colors &amp; style</summary><div class="media-text-colors">' + roles.map(function (r) {
         var saved = mediaColorValue(r.key);
         var dots = MEDIA_PALETTE.map(function (hex) {
           return '<button type="button" class="media-color-dot" data-mcolor-dot="' + esc(r.key) + '" data-hex="' + hex + '" style="--dot:' + hex + '" aria-label="Use ' + hex + '"></button>';
@@ -3672,10 +3721,10 @@
           : '') +
         '<div class="media-text-field media-shadow-field"><label for="mshadow-' + esc(meta.key) + '">Text shadow over the photo</label>' +
         '<select id="mshadow-' + esc(meta.key) + '" data-mshadow="' + esc(meta.key + '_shadow') + '">' +
-        '<option value=""' + (mediaShadowNone(meta) ? '' : ' selected') + '>Soft: helps reading on busy photos</option>' +
-        '<option value="none"' + (mediaShadowNone(meta) ? ' selected' : '') + '>None: clean flat text</option>' +
+        '<option value=""' + (mediaShadowNone(meta) ? '' : ' selected') + '>Soft shadow</option>' +
+        '<option value="none"' + (mediaShadowNone(meta) ? ' selected' : '') + '>No shadow</option>' +
         '</select></div>' +
-        '<p class="media-color-note">Auto follows the page: light text over a photo, navy on the plain background.</p>';
+        '</details>';
     }
     wrap.innerHTML = html;
   }
@@ -3687,12 +3736,12 @@
   }
   function mediaTile(meta) {
     var isBg = meta.kind === 'background';
-    var vidUp = isBg ? mediaFileControl(mediaVideoKey(meta), 'Video', 'video/mp4', true) : '';
+    var vidUp = isBg ? mediaFileControl(mediaVideoKey(meta), 'Upload video', 'video/mp4', true) : '';
     return '<article class="media-tile" data-media-card="' + esc(meta.key) + '" data-media-label="' + esc((meta.label + ' ' + (meta.pageLabel || '')).toLowerCase()) + '">' +
       '<button class="media-prev" id="mprev-' + esc(meta.key) + '" type="button" data-media-edit="' + esc(meta.key) + '" aria-label="Design ' + esc(meta.label) + '"></button>' +
       '<div class="media-tile-foot"><div class="media-tile-copy"><strong>' + esc(meta.label) + '</strong><div class="media-tile-meta"><small id="mstatus-' + esc(meta.key) + '">Loading media...</small><a class="media-page-link" href="' + esc(meta.page) + '" target="_blank" rel="noopener">View page</a></div></div>' +
       '<div class="media-acts"><button class="media-edit-btn" type="button" data-media-edit="' + esc(meta.key) + '">Design</button>' +
-      mediaFileControl(meta.key, 'Image', 'image/jpeg,image/png,image/webp,image/avif', false) + vidUp + '</div></div></article>';
+      mediaFileControl(meta.key, 'Upload photo', 'image/jpeg,image/png,image/webp,image/avif', false) + vidUp + '</div></div></article>';
   }
   var mediaPrevRendered = {};
   var mediaPrevObserver = null;
@@ -3886,7 +3935,8 @@
     $('media-editor-image-pick').disabled = busy;
     $('media-editor-video-pick').disabled = busy;
     $('media-remove-video').disabled = busy || !nn(mediaValue(mediaVideoKey(mediaEdit.meta), true));
-    $('media-remove-image').disabled = busy || !mediaHasImage(mediaEdit.meta, true);
+    $('media-remove-image').hidden = !mediaHasImage(mediaEdit.meta, true);
+    $('media-remove-image').disabled = busy || $('media-remove-image').hidden;
     if (document.activeElement !== $('media-image-url')) $('media-image-url').value = mediaImage(mediaEdit.meta, true);
     $('media-image-url').disabled = busy;
     $('media-image-url-apply').disabled = busy;
@@ -3952,7 +4002,7 @@
       pageDraft: pageDraft || null,
       meta: meta,
       style: stored || mediaDefaultStyle(meta),
-      viewport: 'desktop',
+      viewport: window.matchMedia && window.matchMedia('(max-width: 600px)').matches ? 'mobile' : 'desktop',
       dirty: false,
       restoreOriginal: !stored,
       stored: mediaHasCustomStyle(meta),
@@ -3960,8 +4010,9 @@
       busy: false
     };
     $('media-editor-title').textContent = meta.label;
-    $('media-editor-subtitle').textContent = pageDraft ? 'Adjust this part of your page. Apply returns to your page draft; Save page publishes everything together.' : 'Edit the design and review your changes on the actual page before saving.';
-    if ($('media-framing-detail')) $('media-framing-detail').open = false;
+    $('media-editor-subtitle').hidden = !pageDraft;
+    $('media-editor-subtitle').textContent = pageDraft ? 'Apply your changes here, then select Save page.' : '';
+    $('media-editor').querySelectorAll('details[open]').forEach(function (panel) { panel.open = false; });
     $('media-editor').hidden = false;
     document.body.classList.add('media-editor-open');
     try { window.history.replaceState(null, '', '#media/' + meta.key); } catch (err) { /* ignore */ }
@@ -4182,6 +4233,24 @@
       return '<button class="media-library-photo" type="button" data-library-photo="' + esc(photo.url) + '"><img loading="lazy" src="' + esc(window.FBTImages ? window.FBTImages.source(photo.url, true) : photo.url) + '" alt=""><span>' + esc(photo.label || 'Church photo') + '</span></button>';
     }).join('');
   }
+  function filterMediaCards() {
+    var page = $('media-page-filter').value;
+    var query = $('media-search').value.trim().toLowerCase();
+    var plain = query.replace(/[^a-z0-9]/g, '');
+    var found = false;
+    $('media-bg').querySelectorAll('[data-media-group]').forEach(function (group) {
+      var any = false;
+      group.querySelectorAll('[data-media-label]').forEach(function (card) {
+        var label = card.dataset.mediaLabel;
+        var match = !query || label.includes(query) || (plain && label.replace(/[^a-z0-9]/g, '').includes(plain));
+        card.hidden = !match;
+        if (match) any = true;
+      });
+      group.hidden = !any || (page ? group.dataset.mediaGroup !== page : !query);
+      if (!group.hidden) found = true;
+    });
+    $('media-no-results').hidden = found || !(page || query);
+  }
   function loadMedia() {
     if (!mediaBuilt) {
       if (!mediaStyleApi) {
@@ -4223,22 +4292,8 @@
         if (item) applyMediaMatch(item.getAttribute('data-match'));
       });
       $('media-match-undo').addEventListener('click', undoMediaMatch);
-      if ($('media-search')) $('media-search').addEventListener('input', function () {
-        var q = this.value.trim().toLowerCase();
-        // Strip punctuation on both sides so "hope" finds "H.O.P.E."
-        var qs = q.replace(/[^a-z0-9]/g, '');
-        Array.prototype.forEach.call(document.querySelectorAll('#media-bg .media-tile, #media-photo .media-tile'), function (card) {
-          var label = card.getAttribute('data-media-label') || '';
-          var match = !q || label.indexOf(q) >= 0 || (qs && label.replace(/[^a-z0-9]/g, '').indexOf(qs) >= 0);
-          card.hidden = !match;
-        });
-        Array.prototype.forEach.call(document.querySelectorAll('#media-bg .media-grid'), function (grid) {
-          var any = !!grid.querySelector('.media-tile:not([hidden])');
-          grid.hidden = !any;
-          var head = grid.previousElementSibling;
-          if (head && head.classList.contains('media-group-head')) head.hidden = !any;
-        });
-      });
+      $('media-search').addEventListener('input', filterMediaCards);
+      $('media-page-filter').addEventListener('change', filterMediaCards);
       $('media-text-fields').addEventListener('input', function (event) {
         if (!mediaEdit) return;
         var field = event.target.closest('[data-mtext]');
@@ -4422,10 +4477,16 @@
       groups.sort(function (a, b) {
         return (a.name === 'Home page' ? -1 : b.name === 'Home page' ? 1 : 0);
       });
+      var pageFilter = $('media-page-filter'), selected = pageFilter.value;
+      pageFilter.innerHTML = '<option value="">Choose a page</option>' + groups.map(function (g) {
+        return '<option value="' + esc(g.name) + '">' + esc(g.name) + '</option>';
+      }).join('');
+      pageFilter.value = selected;
       $('media-bg').className = 'media-groups';
       $('media-bg').innerHTML = groups.map(function (g) {
-        return '<div class="media-group-head">' + esc(g.name) + '</div><div class="media-grid">' + g.items.map(mediaTile).join('') + '</div>';
+        return '<section data-media-group="' + esc(g.name) + '" hidden><h2 class="media-group-head">' + esc(g.name) + '</h2><div class="media-grid">' + g.items.map(mediaTile).join('') + '</div></section>';
       }).join('');
+      filterMediaCards();
       $('media-photo').innerHTML = '';
       var photoHead = document.querySelector('[data-media-photo-head]');
       if (photoHead) photoHead.hidden = true;
@@ -4632,7 +4693,7 @@
     var field = $('mi-tz'), preview = $('mi-tz-preview'); if (!field || !preview) return;
     var zone = field.value.trim();
     preview.style.color = '';
-    if (!zone) { preview.textContent = 'Enter their city and country or place a map pin to fill this in automatically. You can also choose a time zone here.'; return; }
+    if (!zone) { preview.textContent = 'Fills in from the location or map pin.'; return; }
     if (!isValidTimeZone(zone)) {
       preview.style.color = '#ff9e9e';
       preview.textContent = 'That is not a recognized time zone. Choose one of the city-based options.';
@@ -4701,7 +4762,7 @@
   function miPhotoPrev(url) { var p = $('mi-photo-prev'); if (url) { p.style.backgroundImage = 'url("' + url + '")'; p.classList.add('has'); } else { p.style.backgroundImage = ''; p.classList.remove('has'); } }
   function setMiCoords(lat, lng) {
     miLat = lat; miLng = lng;
-    $('mi-coords').textContent = (lat == null) ? 'No location set yet. Click the map to drop a pin.' : ('Pin set at ' + lat.toFixed(3) + ', ' + lng.toFixed(3));
+    $('mi-coords').textContent = (lat == null) ? 'No pin yet.' : ('Pin set at ' + lat.toFixed(3) + ', ' + lng.toFixed(3));
     if (miMap && window.L) {
       if (lat == null) { if (miMarker) { miMap.removeLayer(miMarker); miMarker = null; } }
       else if (!miMarker) miMarker = L.marker([lat, lng]).addTo(miMap); else miMarker.setLatLng([lat, lng]);
@@ -4723,6 +4784,7 @@
     miEditSession += 1;
     if (miTimeZone) miTimeZone.reset();
     editingMi = m || null;
+    $('mi-edit').querySelectorAll('details[open]').forEach(function (part) { part.open = false; });
     $('mi-save').disabled = false; $('mi-save').textContent = 'Save';
     $('mi-edit-title').textContent = m ? 'Edit missionary' : 'New missionary';
     setV('mi-name', m && m.name); buildSelect('mi-region', miRegions, (m && m.region) || '', 'Choose a continent'); setV('mi-location', m && m.location);

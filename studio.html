@@ -11,6 +11,7 @@
   /* Studio is the dark admin surface. site.css now carries the light public
      palette, so re-scope the shared tokens to the dark sea family here. */
   :root{--paper:#0D2733;--paper2:#0A222B;--panel:#14424A;--tx:#FFF8EA;--mut:rgba(255,248,234,.72);--line:rgba(255,248,234,.16);--accent:#7FD1CB;}
+  h1,h2,h3{color:var(--tx);}
   /* Dark-theme form fields (site.css styles them for the light public pages) */
   .form input,.form textarea,.form select{color:#FFF8EA;background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.14);}
   .form input::placeholder,.form textarea::placeholder{color:rgba(255,248,234,.4);}
@@ -39,8 +40,12 @@
   .snav.active{background:rgba(23,126,121,.16);color:var(--accent);}
   .snav.soon{opacity:.5;cursor:default;} .snav.soon:hover{background:none;color:var(--mut);}
   .snav .soon-tag{margin-left:auto;font-family:"Source Sans 3";font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,255,255,.1);padding:3px 7px;border-radius:6px;}
+  .studio-more-tools{border-top:1px solid var(--line);margin-top:4px;padding-top:4px;}
+  .studio-more-tools summary,.dash-details>summary{cursor:pointer;padding:11px 13px;font-weight:600;}
+  .studio-more-tools summary{color:var(--mut);}
+  .studio-more-tools summary:focus-visible,.dash-details>summary:focus-visible,.snav:focus-visible{outline:2px solid var(--accent);outline-offset:-2px;}
   .studio-side-foot{margin-top:auto;border-top:1px solid rgba(255,255,255,.08);padding-top:12px;}
-  .studio-who{font-size:.82rem;color:var(--mut);padding:8px 13px 0;word-break:break-all;}
+  .studio-who{font-size:.82rem;color:var(--mut);padding:8px 2px 0;overflow-wrap:anywhere;}
 
   .studio-main{padding:36px 40px 80px;max-width:1000px;}
   .studio-note{background:rgba(255,155,147,.12);border:1px solid rgba(255,155,147,.35);color:#ffd2cd;border-radius:14px;padding:14px 18px;margin-bottom:24px;font-size:.95rem;}
@@ -48,35 +53,31 @@
   .studio-head h1{color:#FFF8EA;font-family:"Montserrat",sans-serif;font-weight:400;font-size:2.1rem;margin:0;}
   .studio-head .muted{color:var(--mut);margin:6px 0 0;font-size:1rem;}
   .studio-head-acts{display:flex;gap:10px;}
-  .studio-back{display:inline-block;color:var(--accent);font-weight:500;font-size:.92rem;cursor:pointer;margin-bottom:8px;}
+  .studio-back{display:inline-block;border:0;background:none;padding:4px 0;font-family:inherit;color:var(--accent);font-weight:500;font-size:.92rem;cursor:pointer;margin-bottom:8px;}
+
+  .video-notes>summary{cursor:pointer;font-weight:600;margin-bottom:14px;}
 
   /* Studio dashboard */
   .studio-dashboard{display:flex;flex-direction:column;gap:22px;}
-  .dash-hero{position:relative;overflow:hidden;display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:28px 30px;border:1px solid rgba(15,102,99,.28);border-radius:20px;background:linear-gradient(135deg,rgba(23,126,121,.17),rgba(20,66,74,.42) 48%,rgba(255,255,255,.025));box-shadow:0 18px 50px rgba(0,0,0,.13);}
-  .dash-hero:after{content:"";position:absolute;width:300px;height:300px;right:-115px;top:-188px;border:1px solid rgba(15,102,99,.24);border-radius:50%;box-shadow:0 0 0 42px rgba(23,126,121,.035),0 0 0 88px rgba(23,126,121,.025);pointer-events:none;}
-  .dash-hero-copy{position:relative;z-index:1;max-width:650px;}
-  .dash-eyebrow{display:flex;align-items:center;gap:9px;font-family:"Source Sans 3",sans-serif;font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin:0 0 8px;}
-  .dash-eyebrow:before{content:"";width:28px;height:3px;border-radius:999px;background:var(--brand);box-shadow:8px 0 0 rgba(15,102,99,.45);}
-  .dash-hero h1{font-family:"Montserrat",sans-serif;font-weight:400;font-size:2.25rem;line-height:1.05;margin:0 0 8px;letter-spacing:.01em;}
-  .dash-hero p:not(.dash-eyebrow){color:var(--mut);font-size:1rem;line-height:1.55;margin:0;}
-  .dash-refresh{position:relative;z-index:1;flex:none;display:inline-flex;align-items:center;gap:8px;min-height:46px;}
+  .dash-tasks{padding:24px;border-radius:16px;border:1px solid var(--line);background:var(--panel);}
+  .dash-tasks h1{font:700 clamp(1.5rem,3vw,2.1rem)/1.14 "Montserrat",sans-serif;color:var(--tx);margin:0 0 18px;}
+  .dash-refresh{flex:none;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:6px 10px;border:1px solid var(--line);border-radius:7px;background:transparent;color:var(--accent);font:600 .95rem "Source Sans 3",sans-serif;cursor:pointer;}
+  .dash-refresh:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
   .dash-refresh.loading svg{animation:dash-spin .8s linear infinite;}
   @keyframes dash-spin{to{transform:rotate(360deg);}}
-  .dash-sync{display:flex;align-items:center;gap:8px;color:var(--mut);font-size:.82rem;margin:-10px 4px 0;min-height:20px;}
-  .dash-sync:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 4px rgba(23,126,121,.1);}
-  .dash-sync.partial:before{background:#C0503A;box-shadow:0 0 0 4px rgba(255,155,147,.1);}
-  .dash-quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
-  .dash-quick-btn{display:flex;align-items:center;gap:11px;min-height:54px;padding:11px 14px;border:1px solid rgba(255,255,255,.11);border-radius:13px;background:rgba(255,255,255,.035);color:#fff;font-family:"Source Sans 3",sans-serif;font-size:.9rem;font-weight:600;text-align:left;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease;}
+  .dash-sync{display:flex;align-items:center;gap:8px;color:var(--mut);font-size:.82rem;margin:8px 2px 0;min-height:20px;}
+  .dash-quick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .dash-quick-btn{display:flex;align-items:center;gap:11px;min-height:54px;padding:11px 14px;border:1px solid rgba(255,255,255,.11);border-radius:9px;background:rgba(0,0,0,.15);color:#fff;font-family:"Source Sans 3",sans-serif;font-size:1.08rem;font-weight:600;text-align:left;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease;}
   .dash-quick-btn svg{flex:none;color:var(--accent);}
   .dash-quick-btn:hover{transform:translateY(-2px);border-color:rgba(15,102,99,.38);background:rgba(23,126,121,.09);}
   .dash-quick-btn:focus-visible,.dash-focus-card:focus-visible,.dash-metric:focus-visible,.dash-health-row:focus-visible,.dash-activity-row:focus-visible{outline:3px solid rgba(15,102,99,.48);outline-offset:3px;}
-  .dash-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:13px;}
+  .dash-section-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:13px;}
   .dash-section-head h2{font-family:"Montserrat",sans-serif;font-weight:400;font-size:1.35rem;letter-spacing:.01em;margin:0;}
   .dash-section-head p{color:var(--mut);font-size:.84rem;margin:3px 0 0;}
   .dash-section-link{border:0;background:none;color:var(--accent);font-family:"Source Sans 3",sans-serif;font-size:.84rem;font-weight:600;cursor:pointer;padding:5px 0;white-space:nowrap;}
   .dash-section-link:hover{color:#fff;}
-  .dash-focus-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
-  .dash-focus-card{appearance:none;min-width:0;min-height:154px;display:flex;flex-direction:column;align-items:flex-start;padding:18px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.048),rgba(255,255,255,.018));color:#fff;font-family:"Source Sans 3",sans-serif;text-align:left;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease;}
+  .dash-focus-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .dash-focus-card{appearance:none;min-width:0;min-height:118px;display:flex;flex-direction:column;align-items:flex-start;padding:18px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:linear-gradient(145deg,rgba(255,255,255,.048),rgba(255,255,255,.018));color:#fff;font-family:"Source Sans 3",sans-serif;text-align:left;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease;}
   .dash-focus-card:hover{transform:translateY(-3px);border-color:rgba(15,102,99,.38);background:linear-gradient(145deg,rgba(23,126,121,.11),rgba(255,255,255,.02));}
   .dash-focus-card.warn{border-color:rgba(255,155,147,.25);background:linear-gradient(145deg,rgba(255,155,147,.07),rgba(255,255,255,.018));}
   .dash-focus-card.good{border-color:rgba(15,102,99,.25);}
@@ -87,8 +88,11 @@
   .dash-focus-meta{color:var(--mut);font-size:.79rem;line-height:1.4;margin-top:auto;}
   .dash-focus-error{cursor:default;}
   .dash-focus-error:hover{transform:none;}
-  .dash-split{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:16px;align-items:start;}
+  .dash-split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start;}
   .dash-panel{border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.025);padding:21px;min-width:0;}
+  .dash-panel.dash-details{padding:0;}
+  .dash-details>summary{padding:16px 18px;}
+  .dash-details[open]>div{margin:0 12px 12px;}
   .dash-panel .dash-section-head{margin-bottom:17px;}
   .dash-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
   .dash-metric{appearance:none;padding:15px;border:1px solid rgba(255,255,255,.09);border-radius:13px;background:rgba(4,18,11,.26);color:#fff;font-family:"Source Sans 3",sans-serif;text-align:left;cursor:pointer;min-width:0;transition:background .18s ease,border-color .18s ease;}
@@ -126,10 +130,10 @@
 
   @media(max-width:980px){.dash-focus-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.dash-quick{grid-template-columns:repeat(2,minmax(0,1fr));}.dash-split{grid-template-columns:1fr;}}
   @media(max-width:620px){
-    .studio-dashboard{gap:18px;}.dash-hero{align-items:flex-start;flex-direction:column;padding:23px 20px;gap:18px;}.dash-hero h1{font-size:1.9rem;}.dash-refresh{width:100%;justify-content:center;}.dash-sync{margin-top:-7px;}
-    .dash-quick{grid-template-columns:1fr 1fr;gap:8px;}.dash-quick-btn{min-height:58px;padding:10px 12px;font-size:.84rem;}
+    .studio-dashboard{gap:18px;}.dash-tasks{padding:16px;}.dash-refresh{min-height:44px;}
+    .dash-quick{grid-template-columns:1fr 1fr;gap:8px;}.dash-quick-btn{min-height:56px;padding:10px;font-size:1rem;}
     .dash-focus-grid{grid-template-columns:1fr;gap:10px;}.dash-focus-card{min-height:0;display:grid;grid-template-columns:42px 1fr;column-gap:12px;padding:15px;}.dash-focus-icon{grid-row:1 / span 3;margin:0;align-self:start;}.dash-focus-label,.dash-focus-value,.dash-focus-meta{grid-column:2;}.dash-focus-meta{margin-top:2px;}
-    .dash-panel{padding:17px 14px;}.dash-metrics{grid-template-columns:1fr 1fr;}.dash-metric{padding:13px 11px;}.dash-metric strong{font-size:1.08rem;}.dash-section-head{align-items:flex-start;}.dash-section-head p{max-width:240px;}
+    .dash-panel{padding:17px 14px;}.dash-metrics{grid-template-columns:1fr 1fr;}.dash-metric{padding:13px 11px;}.dash-metric strong{font-size:1.08rem;}.dash-section-head p{max-width:240px;}
     .dash-activity-time{display:none;}.dash-activity-row{padding:13px 12px;}.dash-activity-main strong{white-space:normal;}
   }
   @media(max-width:380px){.dash-quick{grid-template-columns:1fr;}.dash-metrics{grid-template-columns:1fr;}}
@@ -148,6 +152,15 @@
   .spill.past{background:rgba(255,255,255,.06);color:var(--mut);}
   .sicon{flex:none;width:36px;height:36px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:none;color:var(--mut);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .18s,color .18s,border-color .18s;}
   .sicon:hover{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.3);}
+  #ev-back{border:0;background:none;padding:0;font-family:inherit;}
+  #ev-form .ev-options{border-top:1px solid var(--line);}
+  #ev-form .ev-options summary,#ev-rows summary{padding:12px 0;font-weight:600;color:var(--accent);cursor:pointer;}
+  #ev-rows summary{padding:14px 16px;}
+  #ev-form .studio-cover:not(.has),#ev-form .studio-upload button:disabled{display:none;}
+  #ev-form .studio-upload>div:not(.studio-cover){min-width:0;align-self:center;}
+  #ev-form .studio-upload button{justify-self:start;}
+  #ev-form .studio-upload [role=status]:empty{display:none;}
+  #ev-rows .ev-edit-link{background:none;border:0;color:var(--accent);padding:0;text-align:left;font:inherit;font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
   .studio-empty{padding:40px 24px;text-align:center;color:var(--mut);}
   .studio-import{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;background:rgba(23,126,121,.1);border:1px solid rgba(23,126,121,.28);border-radius:14px;padding:16px 20px;margin-bottom:18px;}
   .studio-import b{font-size:1.02rem;} .studio-import p{margin:4px 0 0;font-size:.92rem;} .studio-import .btn{flex:none;}
@@ -179,7 +192,7 @@
   .media-preview-badge{position:absolute;z-index:4;left:10px;top:10px;display:inline-flex;align-items:center;gap:5px;min-height:25px;padding:4px 9px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(8,28,18,.82);backdrop-filter:blur(8px);color:#fff;font-family:"Source Sans 3";font-size:.6rem;letter-spacing:.11em;text-transform:uppercase;}
   .media-preview-edit{position:absolute;z-index:4;right:10px;bottom:10px;display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:9px;background:#fff;color:#0D2733;font-size:.76rem;font-weight:700;box-shadow:0 8px 22px rgba(0,0,0,.24);}
   .media-prev.uploading::after{content:"Uploading...";position:absolute;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;background:rgba(10,38,46,.82);color:var(--accent);font-weight:600;font-size:.9rem;}
-  .media-tile-foot{display:flex;align-items:center;justify-content:space-between;padding:14px 15px;gap:12px;}
+  .media-tile-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:14px 15px;gap:12px;}
   .media-tile-copy{min-width:0;}
   .media-tile-copy strong{display:block;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   .media-tile-meta{display:flex;align-items:center;gap:7px;min-width:0;margin-top:3px;}
@@ -294,9 +307,18 @@
   .media-match-thumb .media-preview-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.5rem;color:rgba(255,255,255,.4);}
   .media-match-thumb .media-preview-empty svg{display:none;}
   #media-match-undo{margin-top:10px;}
-  .media-search{width:100%;max-width:430px;margin:2px 0 14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:10px;color:#fff;padding:11px 14px;font:inherit;font-size:.95rem;}
-  .media-search::placeholder{color:rgba(255,255,255,.4);}
-  .media-search:focus-visible{outline:2px solid rgba(127,209,203,.7);outline-offset:1px;}
+  .media-filters{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin:0 0 20px;}
+  .media-filters label{display:grid;gap:5px;flex:1 1 190px;max-width:350px;color:#FFF8EA;font-weight:600;}
+  .media-filters :is(input,select){width:100%;min-height:44px;background:#14424A;border:1px solid rgba(255,255,255,.3);border-radius:5px;color:#fff;padding:9px 12px;font:inherit;font-weight:400;}
+  .media-filters :is(input,select):focus-visible,.media-controls summary:focus-visible{outline:2px solid #7FD1CB;outline-offset:2px;}
+  .media-controls>details{margin:0;padding:0;border:0;border-bottom:1px solid rgba(255,255,255,.16);}
+  .media-controls>details>summary{padding:14px 0;cursor:pointer;color:#fff;font-weight:600;}
+  .media-controls>details[open]{padding-bottom:15px;}
+  .media-controls>details>summary small{font-weight:400;color:var(--mut);}
+  .media-modebar{flex-wrap:wrap;}
+  .media-modebar>.media-assets{margin:0;}
+  #media-source-options .media-assets{margin:12px 0;}
+  .media-controls .media-color-row+.media-control-title{margin-top:18px;}
   .media-groups{display:flex;flex-direction:column;gap:12px;}
   .media-groups .media-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
   .media-group-head{font-family:"Montserrat",sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);margin:8px 0 0;}
@@ -315,6 +337,7 @@
   .media-controls{padding:20px 22px 26px;overflow:auto;}
   .media-control-group{padding:0 0 19px;margin:0 0 19px;border-bottom:1px solid rgba(255,255,255,.1);}
   .media-control-group:last-child{border-bottom:0;margin-bottom:0;}
+  #media-bg [hidden],#media-editor [hidden]{display:none!important;}
   .media-control-title{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:11px;}
   .media-control-title strong,.media-control-title label{font-family:"Source Sans 3";font-size:.7rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);}
   .media-control-title small{color:var(--mut);font-size:.7rem;}
@@ -415,18 +438,25 @@
   .studio-fieldset .frow{margin-bottom:18px;}
   .studio-form .studio-fieldset+.studio-fieldset{margin-top:15px;}
   .field-help{display:block;color:var(--mut);font-size:.74rem;line-height:1.45;margin:7px 2px 0;}
-  .people-intro{align-items:center;}
-  .people-intro .btn{flex:none;}
-  .people-preview-links{display:flex;gap:8px;flex-wrap:wrap;}
   .people-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:18px;}
   .people-card{border:1px solid rgba(255,255,255,.1);border-radius:13px;background:rgba(255,255,255,.025);padding:17px 17px 2px;}
-  .people-card h4{font-size:1.08rem;margin:0 0 15px;color:#fff;}
+  .studio-topic>summary{cursor:pointer;padding:14px 0;font-size:1.08rem;font-weight:650;color:#fff;}
+  .studio-topic>summary::marker{color:#7FD1CB;}
+  .studio-topic>summary:focus-visible{outline:2px solid #7FD1CB;outline-offset:2px;}
+  .studio-topic[open]>summary{margin-bottom:12px;border-bottom:1px solid rgba(255,255,255,.12);}
+  .studio-fieldset.studio-topic,.people-card.studio-topic{padding-block:0;}
+  .people-card[open]{grid-column:1/-1;}
+  .people-section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+  .people-section-head h3{margin:0;}
+  .people-section-head a{font-size:.94rem;color:#7FD1CB;text-decoration:underline;}
+  #mi-back{background:transparent;border:0;padding:0;color:#7FD1CB;}
+  #set-msg:empty,#people-msg:empty{display:none;}
+  #people-form .people-save-foot{justify-content:flex-end;}
   .people-card .frow{margin-bottom:15px;}
   .people-card .frow.two{gap:12px;}
-  .people-card .studio-hint{margin:-7px 0 16px;}
   .people-save-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:18px;flex-wrap:wrap;}
   .people-save-foot .studio-msg{flex:1;min-width:240px;}
-  @media(max-width:760px){.people-grid{grid-template-columns:1fr;}.people-intro{align-items:flex-start;}.people-save-foot .btn{width:100%;}.people-save-foot .studio-msg{order:2;min-width:100%;}}
+  @media(max-width:760px){.people-grid{grid-template-columns:1fr;}.people-save-foot .btn{width:100%;}.people-save-foot .studio-msg{order:2;min-width:100%;}}
   .studio-upload{display:flex;gap:16px;align-items:flex-start;}
   .studio-cover{flex:none;width:232px;aspect-ratio:16/9;border-radius:12px;background:rgba(255,255,255,.06) center/cover no-repeat;border:1.5px dashed rgba(255,255,255,.2);position:relative;overflow:hidden;}
   .studio-cover.has{border-style:solid;}
@@ -443,11 +473,11 @@
   .studio-form .btn[disabled]{opacity:.6;cursor:default;}
   @media(max-width:820px){
     .studio-app{display:block;min-height:100vh;}
-    .studio-nav-toggle{display:flex;position:fixed;right:max(18px,env(safe-area-inset-right));bottom:calc(18px + env(safe-area-inset-bottom));z-index:98;width:60px;height:60px;border:0;border-radius:50%;background:var(--brand);color:#FCF8EE;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,.48),0 0 0 1px rgba(255,255,255,.12);transition:transform .22s ease,background .22s ease;}
+    .studio-nav-toggle{display:flex;position:fixed;right:max(18px,env(safe-area-inset-right));bottom:calc(18px + env(safe-area-inset-bottom));z-index:98;width:auto;min-height:48px;padding:0 15px;gap:9px;border:0;border-radius:12px;background:var(--brand);color:#fff;font:600 1rem "Source Sans 3",sans-serif;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,.48),0 0 0 1px rgba(255,255,255,.12);transition:transform .22s ease,background .22s ease;}
     .studio-nav-toggle:hover{background:var(--accent);transform:translateY(-2px);}
     .studio-nav-toggle:focus-visible{outline:3px solid rgba(15,102,99,.58);outline-offset:3px;}
     .studio-toggle-lines{width:24px;height:20px;display:flex;flex-direction:column;justify-content:space-between;}
-    .studio-toggle-lines i{display:block;width:24px;height:2.5px;border-radius:2px;background:#0D2733;transition:transform .22s ease,opacity .18s ease;transform-origin:center;}
+    .studio-toggle-lines i{display:block;width:24px;height:2.5px;border-radius:2px;background:currentColor;transition:transform .22s ease,opacity .18s ease;transform-origin:center;}
     .studio-nav-toggle.nav-open .studio-toggle-lines i:nth-child(1){transform:translateY(8.75px) rotate(45deg);}
     .studio-nav-toggle.nav-open .studio-toggle-lines i:nth-child(2){opacity:0;}
     .studio-nav-toggle.nav-open .studio-toggle-lines i:nth-child(3){transform:translateY(-8.75px) rotate(-45deg);}
@@ -672,8 +702,8 @@
     <h1>Studio</h1>
     <p class="muted">Sign in to manage your site.</p>
     <form id="login-form" class="form">
-      <div class="frow"><label>Your email</label><input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" required></div>
-      <div class="frow"><label>Password</label><input type="password" id="login-password" autocomplete="current-password" required></div>
+      <div class="frow"><label for="login-email">Your email</label><input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" required></div>
+      <div class="frow"><label for="login-password">Password</label><input type="password" id="login-password" autocomplete="current-password" required></div>
       <button class="btn btn-b" type="submit">Sign in</button>
       <p id="login-msg" class="studio-msg" role="status"></p>
       <p style="margin:14px 0 0;font-size:.9rem;"><a href="#" id="forgot-link" style="color:var(--accent);">Set or reset your password</a></p>
@@ -687,7 +717,7 @@
     <h1>Set your password</h1>
     <p class="muted">Choose a password you'll use to sign in from now on.</p>
     <form id="setpw-form" class="form">
-      <div class="frow"><label>New password</label><input type="password" id="setpw-password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required></div>
+      <div class="frow"><label for="setpw-password">New password</label><input type="password" id="setpw-password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required></div>
       <button class="btn btn-b" type="submit">Save password</button>
       <p id="setpw-msg" class="studio-msg" role="status"></p>
     </form>
@@ -697,74 +727,69 @@
 <div id="app" class="studio-app" hidden>
   <button class="studio-nav-scrim" id="studio-nav-scrim" type="button" aria-label="Close Studio menu" tabindex="-1"></button>
   <aside class="studio-side" id="studio-sidebar" aria-label="Studio navigation">
-    <div class="studio-brand"><span class="logo-plate" style="padding:5px 8px;"><span class="brand-disc"><img class="brand-mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></span></span><span class="studio-brand-copy"><span>Studio</span><small class="studio-view-name" id="studio-view-name">Dashboard</small></span></div>
-    <button class="snav active" data-view="dashboard" data-view-label="Dashboard" aria-current="page"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg> Dashboard <span class="snav-count" id="dashboard-badge" hidden></span></button>
+    <div class="studio-brand"><span class="logo-plate" style="padding:5px 8px;"><span class="brand-disc"><img class="brand-mark" src="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp" alt="" data-image-source="/assets/logo-fairview-2026.png" srcset="/assets/optimized/logo-fairview-2026-w256-1f556174a5ac.webp 256w, /assets/optimized/logo-fairview-2026-w512-e20799e1c8c5.webp 512w" width="256" height="256" decoding="async" sizes="64px"></span></span><span class="studio-brand-copy"><span>Studio</span><small class="studio-view-name" id="studio-view-name">Studio home</small></span></div>
+    <button class="snav active" data-view="dashboard" data-view-label="Studio home" aria-current="page"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg> Studio home <span class="snav-count" id="dashboard-badge" hidden></span></button>
     <button class="snav" data-view="events" data-view-label="Events"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Events</button>
-    <button class="snav" data-view="inbox" data-view-label="Inbox"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.5h13l3 6.5v6a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 2 18v-6z"/></svg> Inbox <span class="snav-count" id="inbox-badge" hidden></span></button>
-    <button class="snav" data-view="giving" style="display:none" data-view-label="Giving history"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5.5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Giving history</button>
-    <button class="snav" data-view="prayers" style="display:none" data-view-label="Prayer wall"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-1 2.5-3 4-5 4.5 0 5 2 8.5 5 10 3-1.5 5-5 5-10-2-.5-4-2-5-4.5Z"/></svg> Prayer wall <span class="snav-count" id="prayers-badge" hidden></span></button>
-    <button class="snav" data-view="bulletin" style="display:none" data-view-label="Bulletin"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg> Bulletin</button>
-    <button class="snav" data-view="blog" style="display:none" data-view-label="Blog"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg> Blog</button>
+    <button class="snav" data-view="page-editor" data-view-label="Edit a page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg>Edit a page</button>
+    <button class="snav" data-view="jubilee" data-view-label="Appalachian Jubilee"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18M8 15h3M8 18h7"/></svg> Appalachian Jubilee</button>
     <button class="snav" data-view="missions" data-view-label="Missions"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg> Missions</button>
     <button class="snav" data-view="people" data-view-label="People &amp; ministries"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v2"/><path d="M16 3.5a4 4 0 0 1 0 7M19 14a5 5 0 0 1 3 5v2"/></svg> People &amp; ministries</button>
-    <button class="snav" data-view="jubilee" data-view-label="Appalachian Jubilee"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18M8 15h3M8 18h7"/></svg> Appalachian Jubilee</button>
-    <button class="snav" data-view="page-editor" data-view-label="Page editor"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></svg>Page editor</button>
-    <button class="snav" data-view="pages" data-view-label="Pages &amp; menu"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg> Pages and menu</button>
-    <button class="snav" data-view="media" data-view-label="Pages &amp; media"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg> Pages &amp; media</button>
-    <button class="snav" data-view="sermons" data-view-label="Video hubs"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/></svg> Video hubs</button>
-    <button class="snav" data-view="settings" data-view-label="Settings"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.3 1a7 7 0 0 0-1.7-1l-.3-2.5h-4l-.3 2.5a7 7 0 0 0-1.7 1l-2.3-1-2 3.5 2 1.5a7 7 0 0 0 0 2l-2 1.5 2 3.5 2.3-1a7 7 0 0 0 1.7 1l.3 2.5h4l.3-2.5a7 7 0 0 0 1.7-1l2.3 1 2-3.5-2-1.5c.1-.3.1-.7.1-1z"/></svg> Settings</button>
+    <button class="snav" data-view="sermons" data-view-label="Videos"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m10 9 5 3-5 3z"/></svg> Videos</button>
+    <button class="snav" data-view="inbox" data-view-label="Inbox"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.5h13l3 6.5v6a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 2 18v-6z"/></svg> Inbox <span class="snav-count" id="inbox-badge" hidden></span></button>
+    <details class="studio-more-tools">
+      <summary>More tools</summary>
+      <button class="snav" data-view="media" data-view-label="Photos &amp; design"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg> Photos &amp; design</button>
+      <button class="snav" data-view="pages" data-view-label="Website menu"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg> Website menu</button>
+      <button class="snav" data-view="settings" data-view-label="Settings"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.3 1a7 7 0 0 0-1.7-1l-.3-2.5h-4l-.3 2.5a7 7 0 0 0-1.7 1l-2.3-1-2 3.5 2 1.5a7 7 0 0 0 0 2l-2 1.5 2 3.5 2.3-1a7 7 0 0 0 1.7 1l.3 2.5h4l.3-2.5a7 7 0 0 0 1.7-1l2.3 1 2-3.5-2-1.5c.1-.3.1-.7.1-1z"/></svg> Settings</button>
+      <button class="snav" data-view="giving" style="display:none" data-view-label="Giving history"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5.5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Giving history</button>
+      <button class="snav" data-view="prayers" style="display:none" data-view-label="Prayer wall"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-1 2.5-3 4-5 4.5 0 5 2 8.5 5 10 3-1.5 5-5 5-10-2-.5-4-2-5-4.5Z"/></svg> Prayer wall <span class="snav-count" id="prayers-badge" hidden></span></button>
+      <button class="snav" data-view="bulletin" style="display:none" data-view-label="Bulletin"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg> Bulletin</button>
+      <button class="snav" data-view="blog" style="display:none" data-view-label="Blog"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg> Blog</button>
+    </details>
     <div class="studio-side-foot">
       <a href="https://www.fairviewbaptisttemple.com/" target="_blank" rel="noopener" class="snav"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></svg> View site</a>
       <button class="snav as-btn" id="signout"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg> Sign out</button>
       <div class="studio-who" id="who"></div>
     </div>
   </aside>
-  <button class="studio-nav-toggle" id="studio-nav-toggle" type="button" aria-label="Open Studio menu" aria-expanded="false" aria-controls="studio-sidebar"><span class="studio-toggle-lines" aria-hidden="true"><i></i><i></i><i></i></span></button>
+  <button class="studio-nav-toggle" id="studio-nav-toggle" type="button" aria-label="Open Studio menu" aria-expanded="false" aria-controls="studio-sidebar"><span class="studio-toggle-lines" aria-hidden="true"><i></i><i></i><i></i></span>Menu</button>
 
   <main class="studio-main" id="studio-main" tabindex="-1">
     <div id="notowner" class="studio-note" hidden></div>
 
     <div id="view-dashboard" data-view-pane>
       <section class="studio-dashboard" aria-labelledby="dashboard-title">
-        <header class="dash-hero">
-          <div class="dash-hero-copy"><p class="dash-eyebrow">Studio overview</p><h1 id="dashboard-title">Welcome back</h1><p>See what needs attention, what is coming next, and what has happened across Fairview Baptist Temple.</p></div>
-          <button class="btn btn-o dash-refresh" id="dash-refresh" type="button"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg><span>Refresh dashboard</span></button>
-        </header>
-
-        <div class="dash-quick" aria-label="Quick actions">
-          <button class="dash-quick-btn" type="button" data-dash-action="site-text"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7V5h16v2M12 5v14M9 19h6"/></svg><span>Edit site text</span></button>
-          <button class="dash-quick-btn" type="button" data-dash-action="design"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18c1.2 0 2-.9 2-2 0-.6-.2-1-.5-1.4-.3-.4-.5-.8-.5-1.4 0-1.1.9-2 2-2h2.3A4.7 4.7 0 0 0 21 10.5C21 6.4 17 3 12 3Z"/><circle cx="7.5" cy="11.5" r="1"/><circle cx="10.5" cy="7.5" r="1"/><circle cx="15" cy="7.8" r="1"/></svg><span>Fonts &amp; colors</span></button>
-          <button class="dash-quick-btn" type="button" data-dash-view="media"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg><span>Edit pages &amp; photos</span></button>
-          <button class="dash-quick-btn" type="button" data-dash-action="new-event"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M16 2v4M8 2v4M3 10h18M12 13v5M9.5 15.5h5"/></svg><span>New event</span></button>
-          <button class="dash-quick-btn" type="button" data-dash-action="bulletin" style="display:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span>Upload bulletin</span></button>
-          <button class="dash-quick-btn" type="button" data-dash-action="new-post" style="display:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg><span>New blog post</span></button>
-          <button class="dash-quick-btn" type="button" data-dash-action="new-missionary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg><span>Add missionary</span></button>
-        </div>
-
-        <p class="dash-sync" id="dash-sync" role="status" aria-live="polite">Loading the latest Studio activity...</p>
-
-        <div>
-          <div class="dash-section-head"><div><h2>Needs your attention</h2><p>The most important items across Studio.</p></div></div>
-          <div class="dash-focus-grid" id="dash-focus-grid" aria-live="polite">
-            <div class="dash-focus-card dash-skeleton">Loading</div><div class="dash-focus-card dash-skeleton">Loading</div><div class="dash-focus-card dash-skeleton">Loading</div><div class="dash-focus-card dash-skeleton">Loading</div>
+        <div class="dash-tasks">
+          <h1 id="dashboard-title">Update the website</h1>
+          <div class="dash-quick" role="group" aria-labelledby="dashboard-title">
+            <button class="dash-quick-btn" type="button" data-dash-action="new-event"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M16 2v4M8 2v4M3 10h18M12 13v5M9.5 15.5h5"/></svg><span>Add an event</span></button>
+            <button class="dash-quick-btn" type="button" data-dash-view="page-editor"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg><span>Edit a page</span></button>
+            <button class="dash-quick-btn" type="button" data-dash-view="jubilee"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18M8 15h3M8 18h7"/></svg><span>Update Jubilee</span></button>
+            <button class="dash-quick-btn" type="button" data-dash-action="new-missionary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg><span>Add a missionary</span></button>
           </div>
         </div>
+        <section aria-labelledby="dash-overview">
+          <div class="dash-section-head"><h2 id="dash-overview">At a glance</h2><button class="dash-refresh" id="dash-refresh" type="button"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg><span>Refresh</span></button></div>
+          <div class="dash-focus-grid" id="dash-focus-grid" aria-live="polite">
+            <div class="dash-focus-card dash-skeleton">Loading inbox</div><div class="dash-focus-card dash-skeleton">Loading events</div>
+          </div>
+          <p class="dash-sync" id="dash-sync" role="status" aria-live="polite">Loading activity…</p>
+        </section>
 
         <div class="dash-split">
           <section class="dash-panel" aria-labelledby="dash-giving-title" style="display:none">
             <div class="dash-section-head"><div><h2 id="dash-giving-title">Giving snapshot</h2><p>This month, synced directly with Square.</p></div><button class="dash-section-link" type="button" data-dash-view="giving">View history</button></div>
             <div id="dash-giving"><div class="dash-empty dash-skeleton">Loading giving activity</div></div>
           </section>
-          <section class="dash-panel" aria-labelledby="dash-health-title">
-            <div class="dash-section-head"><div><h2 id="dash-health-title">Content check</h2><p>Details worth reviewing before visitors find them.</p></div></div>
-            <div id="dash-health"><div class="dash-empty dash-skeleton">Checking your content</div></div>
-          </section>
+          <details class="dash-panel dash-details">
+            <summary>Content checks</summary>
+            <div id="dash-health"><div class="dash-empty dash-skeleton">Checking content</div></div>
+          </details>
+          <details class="dash-panel dash-details">
+            <summary>Recent activity</summary>
+            <div id="dash-activity"><div class="dash-empty dash-skeleton">Loading activity</div></div>
+          </details>
         </div>
-
-        <section class="dash-panel" aria-labelledby="dash-activity-title">
-          <div class="dash-section-head"><div><h2 id="dash-activity-title">Recent activity</h2><p>New messages and content updates.</p></div></div>
-          <div id="dash-activity"><div class="dash-empty dash-skeleton">Loading recent activity</div></div>
-        </section>
       </section>
     </div>
 
@@ -775,7 +800,7 @@
         <div class="inbox-tabs"><button class="btn btn-o inbox-tab active" data-inbox="all" type="button">All</button><button class="btn btn-o inbox-tab" data-inbox="new" type="button">New</button></div>
       </div>
       <div id="inbox-rows" class="studio-rows"></div>
-      <p id="inbox-empty" class="muted" hidden style="text-align:center;padding:40px 0;">No messages yet. When someone plans a visit or sends a note, it lands here.</p>
+      <p id="inbox-empty" class="muted" hidden style="text-align:center;padding:40px 0;">No messages here yet.</p>
     </section>
     </div>
 
@@ -882,7 +907,7 @@
     <div id="view-events" data-view-pane hidden>
     <section id="ev-list">
       <div class="studio-head">
-        <div><h1>Events</h1><p class="muted">Create and manage everything on the events hub.</p></div>
+        <h1>Events</h1>
         <button class="btn btn-b" id="ev-new">+ New event</button>
       </div>
       <div id="ev-rows" class="studio-rows"></div>
@@ -890,39 +915,46 @@
 
     <section id="ev-edit" hidden>
       <div class="studio-head">
-        <div><span class="studio-back" id="ev-back">&larr; All events</span><h1 id="ev-edit-title">New event</h1></div>
-        <div class="studio-head-acts"><button class="btn btn-o" id="ev-cancel">Cancel</button><button class="btn btn-b" id="ev-save">Save event</button></div>
+        <div><button type="button" class="studio-back" id="ev-back">&larr; All events</button><h1 id="ev-edit-title">New event</h1></div>
       </div>
-      <form id="ev-form" class="form studio-form" onsubmit="return false">
-        <div class="frow two"><div><label>Title</label><input id="f-title" required></div><div><label>Web address (slug)</label><input id="f-slug" placeholder="auto from title"></div></div>
-        <div class="frow two"><div><label>Category</label><input id="f-category" placeholder="Community, Kids, Worship…"></div><div><label>Status</label><select id="f-status"><option value="published">Published: live on the site</option><option value="draft">Draft: hidden from visitors</option></select></div></div>
-        <div class="frow two"><div><label>Starts</label><input type="datetime-local" id="f-start"></div><div><label>Ends</label><input type="datetime-local" id="f-end"></div></div>
-        <div class="frow two"><div><label>Location name</label><input id="f-location" placeholder="Fairview Baptist Temple"></div><div><label>Recurring (optional)</label><input id="f-recurring" placeholder="First Friday, Nov–Mar"></div></div>
-        <div class="frow"><label>Address</label><input id="f-address" placeholder="2294 Main Street, Clay, WV 25043"></div>
-        <div class="frow"><label>Event picture (cover)</label>
+      <form id="ev-form" class="form studio-form">
+        <div class="frow"><label for="f-title">Event name</label><input id="f-title" required></div>
+        <div class="frow two"><div><label for="f-start">Starts</label><input type="datetime-local" id="f-start"></div><div><label for="f-end">Ends</label><input type="datetime-local" id="f-end"></div></div>
+        <div class="frow two"><div><label for="f-location">Location</label><input id="f-location" placeholder="Fairview Baptist Temple"></div><div><label for="f-address">Street address</label><input id="f-address" placeholder="2294 Main Street, Clay, WV"></div></div>
+        <div class="frow"><label for="f-summary">Short description</label><textarea id="f-summary" rows="2" placeholder="What should visitors know?"></textarea></div>
+        <div class="frow"><label for="f-cover-file">Event photo or flyer</label>
           <div class="studio-upload">
             <div class="studio-cover" id="f-cover-prev"></div>
-            <div><input type="file" id="f-cover-file" accept="image/*"><input id="f-cover" placeholder="…or paste an image URL"><button type="button" class="btn btn-o" id="f-cover-remove" disabled>Remove cover</button><span id="f-cover-msg" class="muted" style="font-size:.85rem;" role="status"></span></div>
+            <div><input type="file" id="f-cover-file" accept="image/*"><button type="button" class="btn btn-o" id="f-cover-remove" disabled>Remove cover</button><span id="f-cover-msg" class="muted" role="status"></span></div>
           </div>
-          <p class="studio-hint">This is the event's picture: your flyer or photo. It shows <b>in full</b> on the event page (nothing cropped) and as the thumbnail on the events list. Any shape works; a flyer is fine here.</p>
         </div>
-        <div class="frow"><label>Hero background <span class="muted" style="font-weight:400;">(optional)</span></label>
-          <div class="studio-upload">
-            <div class="studio-cover is-banner" id="f-hero-prev"></div>
-            <div><input type="file" id="f-hero-file" accept="image/*"><input id="f-hero" placeholder="…or paste an image URL"><button type="button" class="btn btn-o" id="f-hero-remove" disabled>Remove background</button><span id="f-hero-msg" class="muted" style="font-size:.85rem;" role="status"></span></div>
+        <details class="ev-options">
+          <summary>More event details</summary>
+          <div class="frow"><label for="f-body">Full description</label><textarea id="f-body" rows="5"></textarea></div>
+          <div class="frow two"><div><label for="f-category">Category</label><input id="f-category" placeholder="Community, Kids, Worship"></div><div><label for="f-recurring">Repeating schedule</label><input id="f-recurring" placeholder="First Friday of each month"></div></div>
+          <div class="frow"><label for="f-slug">Custom event web address</label><input id="f-slug" placeholder="Created from the event name"></div>
+          <div class="frow"><label class="studio-check"><input type="checkbox" id="f-featured"> Feature at the top of the events page</label></div>
+        </details>
+        <details class="ev-options">
+          <summary>Registration and links</summary>
+          <div class="frow"><label for="f-reg-mode">How can people sign up?</label><select id="f-reg-mode"><option value="">No sign-up needed</option><option value="form">On the event page</option><option value="link">On another website</option></select></div>
+          <div class="frow" id="f-reg-url-row" hidden><label for="f-reg-url">Sign-up link</label><input id="f-reg-url" placeholder="https://…"></div>
+          <div class="frow" id="f-reg-label-row" hidden><label for="f-reg-label">Sign-up button text</label><input id="f-reg-label" placeholder="Register"></div>
+          <div class="frow"><label for="f-links">Other links</label><textarea id="f-links" rows="2" placeholder="Get directions | https://…"></textarea><p class="studio-hint">Use one line per link, with the label and address separated by |.</p></div>
+        </details>
+        <details class="ev-options">
+          <summary>Banner, photo links, and videos</summary>
+          <div class="frow"><label for="f-hero-file">Banner behind the event title</label>
+            <div class="studio-upload">
+              <div class="studio-cover is-banner" id="f-hero-prev"></div>
+              <div><input type="file" id="f-hero-file" accept="image/*"><button type="button" class="btn btn-o" id="f-hero-remove" disabled>Remove background</button><span id="f-hero-msg" class="muted" role="status"></span></div>
+            </div>
           </div>
-          <p class="studio-hint">Optional wide photo shown <b>behind the title</b> at the top of the event page. Keep faces between the dashed guide lines; the top and bottom get cropped. <b>Leave this empty</b> to use the standard teal banner (recommended if your picture is a flyer).</p>
-        </div>
-        <div class="frow"><label>Short summary</label><textarea id="f-summary" rows="2" placeholder="One or two sentences shown on the cards."></textarea></div>
-        <div class="frow"><label>Full description</label><textarea id="f-body" rows="8" placeholder="The full event details. You can use basic HTML like <p>, <strong>, and <a href>."></textarea></div>
-        <div class="studio-fieldset">
-          <h3>Registration</h3>
-          <div class="frow two"><div><label>Sign-up</label><select id="f-reg-mode"><option value="">No registration</option><option value="form">In-page form (people sign up here)</option><option value="link">Link to a form or page</option></select></div><div><label>Button label</label><input id="f-reg-label" placeholder="Let us know you're coming"></div></div>
-          <div class="frow" id="f-reg-url-row" hidden><label>Link URL</label><input id="f-reg-url" placeholder="https://…"></div>
-        </div>
-        <div class="frow"><label>Helpful links, one per line as: Label | URL</label><textarea id="f-links" rows="3" placeholder="Get directions | https://maps.google.com/…"></textarea></div>
-        <div class="frow"><label>Highlight videos: one YouTube link or ID per line</label><textarea id="f-videos" rows="3" placeholder="https://youtu.be/DK--s6NM97g"></textarea></div>
-        <div class="frow"><label class="studio-check"><input type="checkbox" id="f-featured"> Feature this event at the top of the hub</label></div>
+          <div class="frow two"><div><label for="f-hero">Banner image URL</label><input id="f-hero" placeholder="Paste an image link"></div><div><label for="f-cover">Event photo or flyer URL</label><input id="f-cover" placeholder="Paste an image link"></div></div>
+          <div class="frow"><label for="f-videos">YouTube videos</label><textarea id="f-videos" rows="2" placeholder="One YouTube link per line"></textarea></div>
+        </details>
+        <div class="frow"><label for="f-status">Visibility</label><select id="f-status"><option value="published">Public on the website</option><option value="draft">Draft, only visible in Studio</option></select></div>
+        <div class="studio-head-acts"><button class="btn btn-b" id="ev-save" type="submit">Save event</button><button type="button" class="btn btn-o" id="ev-cancel">Cancel</button></div>
       </form>
     </section>
     </div>
@@ -941,7 +973,7 @@
     </section>
     <section id="bl-edit" hidden>
       <div class="studio-head">
-        <div><span class="studio-back" id="bl-back">&larr; All posts</span><h1 id="bl-edit-title">New post</h1></div>
+        <div><button type="button" class="studio-back" id="bl-back">&larr; All posts</button><h1 id="bl-edit-title">New post</h1></div>
         <div class="studio-head-acts"><button class="btn btn-o" id="bl-cancel">Cancel</button><button class="btn btn-b" id="bl-save">Save post</button></div>
       </div>
       <form id="bl-form" class="form studio-form" onsubmit="return false">
@@ -965,58 +997,56 @@
     <div id="view-missions" data-view-pane hidden>
     <section id="mi-list">
       <div class="studio-head">
-        <div><h1>Missions</h1><p class="muted">Add and edit the missionaries on your missions map.</p></div>
+        <div><h1>Missionaries</h1></div>
         <button class="btn btn-b" id="mi-new">+ New missionary</button>
       </div>
       <div id="mi-rows" class="studio-rows"></div>
     </section>
     <section id="mi-edit" hidden>
       <div class="studio-head">
-        <div><span class="studio-back" id="mi-back">&larr; All missionaries</span><h1 id="mi-edit-title">New missionary</h1></div>
+        <div><button type="button" class="studio-back" id="mi-back">&larr; All missionaries</button><h1 id="mi-edit-title">New missionary</h1></div>
         <div class="studio-head-acts"><button class="btn btn-o" id="mi-cancel">Cancel</button><button class="btn btn-b" id="mi-save">Save</button></div>
       </div>
       <form class="form studio-form" onsubmit="return false">
-        <div class="studio-fieldset"><h3>Basics &amp; map</h3>
-          <p class="studio-hint" style="margin:-7px 0 18px;">Name, location, ministry, status, and years serving become the quick facts on their card. The pin places them on the world map.</p>
-          <div class="frow two"><div><label>Name</label><input id="mi-name" required placeholder="The Bennett Family"></div><div><label>Region</label><select id="mi-region"></select></div></div>
-          <div class="frow two"><div><label>Location</label><input id="mi-location" placeholder="Nairobi, Kenya"></div><div><label>Visibility</label><select id="mi-status"><option value="published">Published: on the map</option><option value="draft">Draft: hidden</option></select></div></div>
-          <div class="frow"><label>Place their pin: click the map where they serve</label>
-            <div id="mi-map" class="mi-map"></div>
-            <div class="mi-latlng"><span id="mi-coords" class="muted">No location set yet. Click the map to drop a pin.</span><button type="button" class="mi-clear" id="mi-clear">Clear pin</button></div>
-          </div>
-          <div class="frow two"><div><label>Field / ministry</label><input id="mi-field" placeholder="Church planting & discipleship"></div><div><label>Sending org (optional)</label><input id="mi-org"></div></div>
-          <div class="frow two"><div><label>Ministry type (used for filter chips)</label><input id="mi-ministry" placeholder="Church planting, Translation, Medical…"></div><div><label>Field status badge</label><select id="mi-statuslabel"><option value="">None</option><option>On the field</option><option>Home on furlough</option><option>Sending soon</option></select></div></div>
-          <div class="frow two"><div><label>Country (shows a flag)</label><input id="mi-country" placeholder="Kenya"></div><div><label>On the field since (year)</label><input id="mi-year" type="number" placeholder="2019" min="1900" max="2100"></div></div>
-          <div class="frow"><label>Time zone (optional, shows their local time)</label><input id="mi-tz" list="mi-tz-list" placeholder="Start typing a city, such as Nairobi" autocomplete="off" spellcheck="false"><datalist id="mi-tz-list"></datalist><p class="studio-hint" id="mi-tz-preview" aria-live="polite">Enter their city and country or place a map pin to fill this in automatically. You can also choose a time zone here.</p></div>
-        </div>
-
-        <div class="studio-fieldset"><h3>Story &amp; prayer</h3>
-          <p class="studio-hint" style="margin:-7px 0 18px;">These sections fill the profile after someone opens the card. Optional sections stay hidden until you add them.</p>
-          <div class="frow"><label>Their story</label><textarea id="mi-bio" rows="5"></textarea></div>
-          <div class="frow"><label>Our connection to them (optional)</label><textarea id="mi-connection" rows="3" placeholder="How Fairview Baptist Temple knows, supports, or partners with them."></textarea></div>
-          <div class="frow"><label>Prayer requests</label><textarea id="mi-prayer" rows="3"></textarea></div>
-          <div class="frow"><label>Latest update (optional)</label><textarea id="mi-update" rows="3"></textarea></div>
-          <div class="frow"><label>Date of latest update (optional)</label><input id="mi-update-date" type="date"></div>
-        </div>
-
-        <div class="studio-fieldset"><h3>Media &amp; partnership</h3>
-          <p class="studio-hint" style="margin:-7px 0 18px;">The main photo leads the card. Gallery photos, videos, letters, and the giving link appear inside the full profile.</p>
-          <div class="frow"><label>Main photo</label>
+        <div class="studio-fieldset"><h3>Missionary profile</h3>
+          <div class="frow two"><div><label for="mi-name">Name</label><input id="mi-name" required placeholder="The Bennett Family"></div><div><label for="mi-region">Region</label><select id="mi-region"></select></div></div>
+          <div class="frow two"><div><label for="mi-location">Location</label><input id="mi-location" placeholder="Nairobi, Kenya"></div><div><label for="mi-status">Visibility</label><select id="mi-status"><option value="published">Published: on the map</option><option value="draft">Draft: hidden</option></select></div></div>
+          <div class="frow"><label for="mi-photo-file">Main photo</label>
             <div class="studio-upload"><div class="studio-cover" id="mi-photo-prev"></div>
-            <div><input type="file" id="mi-photo-file" accept="image/*"><input id="mi-photo" placeholder="…or paste an image URL"><span id="mi-photo-msg" class="muted" style="font-size:.85rem;"></span></div></div>
+            <div><input type="file" id="mi-photo-file" accept="image/*"><input id="mi-photo" aria-label="Main photo link" placeholder="…or paste an image URL"><span id="mi-photo-msg" class="muted" style="font-size:.85rem;"></span></div></div>
           </div>
-          <div class="frow"><label>More photos (gallery)</label>
+          <div class="frow"><label>Click the map to place a pin</label>
+            <div id="mi-map" class="mi-map"></div>
+            <div class="mi-latlng"><span id="mi-coords" class="muted">No pin yet.</span><button type="button" class="mi-clear" id="mi-clear">Clear pin</button></div>
+          </div>
+          <div class="frow"><label for="mi-tz">Local time zone</label><input id="mi-tz" list="mi-tz-list" placeholder="Start typing a city, such as Nairobi" autocomplete="off" spellcheck="false"><datalist id="mi-tz-list"></datalist><p class="studio-hint" id="mi-tz-preview" aria-live="polite">Fills in from the location or map pin.</p></div>
+        </div>
+
+        <details class="studio-fieldset studio-topic"><summary>Ministry details</summary>
+          <div class="frow two"><div><label for="mi-field">Field / ministry</label><input id="mi-field" placeholder="Church planting & discipleship"></div><div><label for="mi-org">Sending organization</label><input id="mi-org"></div></div>
+          <div class="frow two"><div><label for="mi-ministry">Ministry category</label><input id="mi-ministry" placeholder="Church planting, Translation, Medical…"></div><div><label for="mi-statuslabel">Ministry status</label><select id="mi-statuslabel"><option value="">None</option><option>On the field</option><option>Home on furlough</option><option>Sending soon</option></select></div></div>
+          <div class="frow two"><div><label for="mi-country">Country</label><input id="mi-country" placeholder="Kenya"></div><div><label for="mi-year">On the field since (year)</label><input id="mi-year" type="number" placeholder="2019" min="1900" max="2100"></div></div>
+        </details>
+        <details class="studio-fieldset studio-topic"><summary>Story, prayer requests &amp; updates</summary>
+          <div class="frow"><label for="mi-bio">Their story</label><textarea id="mi-bio" rows="5"></textarea></div>
+          <div class="frow"><label for="mi-connection">Connection to Fairview</label><textarea id="mi-connection" rows="3" placeholder="How Fairview Baptist Temple knows, supports, or partners with them."></textarea></div>
+          <div class="frow"><label for="mi-prayer">Prayer requests</label><textarea id="mi-prayer" rows="3"></textarea></div>
+          <div class="frow"><label for="mi-update">Latest update</label><textarea id="mi-update" rows="3"></textarea></div>
+          <div class="frow"><label for="mi-update-date">Update date</label><input id="mi-update-date" type="date"></div>
+        </details>
+        <details class="studio-fieldset studio-topic"><summary>Photos, videos, letters &amp; links</summary>
+          <div class="frow"><label>Gallery photos</label>
             <div id="mi-photos" class="mi-gallery-edit"></div>
             <div class="mi-letter-add"><label class="btn btn-o mi-addpdf">+ Add a photo<input type="file" id="mi-photo-more" accept="image/*" hidden></label><span id="mi-photos-msg" class="muted" style="font-size:.85rem;"></span></div>
           </div>
-          <div class="frow two"><div><label>Main video (optional, YouTube link or ID)</label><input id="mi-video" placeholder="https://youtu.be/…"></div><div><label>Support / giving link (optional)</label><input id="mi-support" placeholder="https://…"></div></div>
-          <div class="frow"><label>More videos (one YouTube link per line)</label><textarea id="mi-videos" rows="2" placeholder="https://youtu.be/…"></textarea></div>
-          <div class="frow"><label>Internal contact email (optional, Studio only)</label><input id="mi-contact" type="email" placeholder="missionary@example.com"><p class="studio-hint">Visitors never receive this address. Messages come to the church so you can pass them along.</p></div>
+          <div class="frow two"><div><label for="mi-video">Main YouTube video</label><input id="mi-video" placeholder="https://youtu.be/…"></div><div><label for="mi-support">Giving link</label><input id="mi-support" placeholder="https://…"></div></div>
+          <div class="frow"><label for="mi-videos">More videos (one YouTube link per line)</label><textarea id="mi-videos" rows="2" placeholder="https://youtu.be/…"></textarea></div>
+          <div class="frow"><label for="mi-contact">Private contact email</label><input id="mi-contact" type="email" placeholder="missionary@example.com"><p class="studio-hint">Visible only in Studio.</p></div>
           <div class="frow"><label>Prayer letters &amp; updates (PDFs)</label>
             <div id="mi-letters" class="mi-letters-edit"></div>
             <div class="mi-letter-add"><label class="btn btn-o mi-addpdf">+ Add a PDF<input type="file" id="mi-letter-file" accept="application/pdf" hidden></label><span id="mi-letter-msg" class="muted" style="font-size:.85rem;"></span></div>
           </div>
-        </div>
+        </details>
         <p id="mi-msg" class="studio-msg"></p>
       </form>
     </section>
@@ -1025,155 +1055,151 @@
     <div id="view-people" data-view-pane hidden>
     <section>
       <div class="studio-head">
-        <div><h1>People &amp; ministries</h1><p class="muted">Update the Get Involved cards and every profile on Our Staff.</p></div>
-        <div class="studio-head-acts"><button class="btn btn-o" id="people-media" type="button">Manage photos</button><button class="btn btn-b" id="people-save" type="button">Save changes</button></div>
+        <div><h1>People &amp; ministries</h1></div>
+        <div class="studio-head-acts"><button class="btn btn-o" id="people-media" type="button">Manage photos</button><button class="btn btn-b" id="people-save" type="button" disabled>Save changes</button></div>
       </div>
-      <div class="studio-import people-intro">
-        <div><b>These words are connected to the public site</b><p class="muted">Saving here updates Get Involved and Our Staff. Photos stay under Media &amp; videos so nothing is duplicated.</p></div>
-        <div class="people-preview-links"><a class="btn btn-o" href="/ministries" target="_blank" rel="noopener">View Get Involved</a><a class="btn btn-o" href="/staff" target="_blank" rel="noopener">View Staff</a></div>
-      </div>
+      <p id="people-msg" class="studio-msg" role="status" aria-live="polite"></p>
+      <button type="button" id="people-retry" class="btn btn-o" hidden>Try again</button>
       <form id="people-form" class="form studio-form" onsubmit="return false">
-        <div class="studio-fieldset"><h3>Get Involved</h3>
-          <p class="studio-hint" style="margin:-7px 0 18px;">Only publish schedules, ages, and leaders you know are current. Optional lines stay hidden until you fill them in.</p>
+        <div class="studio-fieldset"><div class="people-section-head"><h3>Ministries</h3><a href="/ministries" target="_blank" rel="noopener">View ministries page</a></div>
           <div class="people-grid">
-            <div class="people-card">
-              <h4>Sunday School</h4>
-              <div class="frow two"><div><label>Show this card</label><select data-key="gi_sundayschool_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_sundayschool_title" value="Sunday School" required></div></div>
-              <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_sundayschool_for" value="Classes for all ages"></div>
-              <div class="frow"><label>Description</label><textarea data-key="gi_sundayschool" rows="4" required>Bible classes for every age, from the youngest children to the oldest saints. Each class digs into the Scriptures together before the morning worship service.</textarea></div>
-              <div class="frow"><label>When it meets</label><input data-key="gi_sundayschool_meets" value="Sundays at 10:00am" required></div>
-              <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_sundayschool_leader" placeholder="Led by …"></div>
-              <div class="frow"><label>Button text</label><input data-key="gi_sundayschool_cta" value="Ask about a class →" required></div>
-            </div>
-            <div class="people-card">
-              <h4>Youth Ministry</h4>
-              <div class="frow two"><div><label>Show this card</label><select data-key="gi_youth_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_youth_title" value="Youth Ministry" required></div></div>
-              <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_youth_for" placeholder="Grades or ages"></div>
-              <div class="frow"><label>Description</label><textarea data-key="gi_youth" rows="4" required>An active youth group where young people hear the Bible taught straight, build real friendships, and learn to live for the Lord.</textarea></div>
-              <div class="frow"><label>When it meets</label><input data-key="gi_youth_meets" value="Sunday School at 10:00am" required></div>
-              <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_youth_leader" placeholder="Led by …"></div>
-              <div class="frow"><label>Button text</label><input data-key="gi_youth_cta" value="Contact youth ministry →" required></div>
-            </div>
-            <div class="people-card">
-              <h4>H.O.P.E. Recovery</h4>
-              <div class="frow two"><div><label>Show this card</label><select data-key="gi_hope_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_hope_title" value="H.O.P.E. Recovery" required></div></div>
-              <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_hope_for" value="Anyone fighting addiction"></div>
-              <div class="frow"><label>Description</label><textarea data-key="gi_hope" rows="4" required>H.O.P.E. is our Christ-centered addictions recovery ministry. If you or someone you love is fighting addiction, you will find no judgment here, just the gospel, honest help, and people who care.</textarea></div>
-              <div class="frow"><label>When it meets</label><input data-key="gi_hope_meets" value="Friday evenings" required></div>
-              <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_hope_leader" placeholder="Led by …"></div>
-              <div class="frow"><label>Button text</label><input data-key="gi_hope_cta" value="Reach out about H.O.P.E. →" required></div>
-            </div>
-            <div class="people-card">
-              <h4>Van Ministry</h4>
-              <div class="frow two"><div><label>Show this card</label><select data-key="gi_van_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_van_title" value="Van Ministry" required></div></div>
-              <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_van_for" value="A free ride to any service"></div>
-              <div class="frow"><label>Description</label><textarea data-key="gi_van" rows="4" required>Our van offers a free ride to any service, and the van team goes out visiting on Saturdays. Call 304-587-4709 to arrange a ride.</textarea></div>
-              <div class="frow"><label>When it meets</label><input data-key="gi_van_meets" value="Every service &middot; Van visitation Saturdays" required></div>
-              <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_van_leader" placeholder="Led by …"></div>
-              <div class="frow"><label>Button text</label><input data-key="gi_van_cta" value="Call 304-587-4709 →" required></div>
-            </div>
-            <div class="people-card">
-              <h4>Soul-Winning Visitation</h4>
-              <div class="frow two"><div><label>Show this card</label><select data-key="gi_visitation_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_visitation_title" value="Soul-Winning Visitation" required></div></div>
-              <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_visitation_for" placeholder="Audience or age range"></div>
-              <div class="frow"><label>Description</label><textarea data-key="gi_visitation" rows="4" required>We go out on Saturdays to knock on doors, share the gospel, and invite our neighbors across Clay County to church. Never been before? Come along, you can watch and pray your first time out.</textarea></div>
-              <div class="frow"><label>When it meets</label><input data-key="gi_visitation_meets" value="Saturdays" required></div>
-              <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_visitation_leader" placeholder="Led by …"></div>
-              <div class="frow"><label>Button text</label><input data-key="gi_visitation_cta" value="Come along on a Saturday →" required></div>
-            </div>
-            <div class="people-card">
-              <h4>Missions</h4>
-              <div class="frow two"><div><label>Show this card</label><select data-key="gi_missions_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_missions_title" value="Missions" required></div></div>
-              <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_missions_for" placeholder="Audience or age range"></div>
-              <div class="frow"><label>Description</label><textarea data-key="gi_missions" rows="4" required>Fairview keeps a strong missions program, praying for, giving to, and supporting missionaries carrying the gospel far beyond Clay County. See where they serve and how to pray.</textarea></div>
-              <div class="frow"><label>When it meets</label><input data-key="gi_missions_meets" value="Around the world, year round" required></div>
-              <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_missions_leader" placeholder="Led by …"></div>
-              <div class="frow"><label>Button text</label><input data-key="gi_missions_cta" value="Explore our missions map →" required></div>
-            </div>
-            <div class="people-card">
-              <h4>Music &amp; Choir</h4>
-              <div class="frow two"><div><label>Show this card</label><select data-key="gi_music_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label>Card title</label><input data-key="gi_music_title" value="Music &amp; Choir" required></div></div>
-              <div class="frow"><label>Who it is for <span class="muted">(optional)</span></label><input data-key="gi_music_for" placeholder="Audience or age range"></div>
-              <div class="frow"><label>Description</label><textarea data-key="gi_music" rows="4" required>Old fashioned congregational singing and special music from our church family are part of every service at Fairview. If you love to sing, there is a place for you.</textarea></div>
-              <div class="frow"><label>When it meets</label><input data-key="gi_music_meets" value="Every service" required></div>
-              <div class="frow"><label>Leader or contact line <span class="muted">(optional)</span></label><input data-key="gi_music_leader" placeholder="Led by …"></div>
-              <div class="frow"><label>Button text</label><input data-key="gi_music_cta" value="Ask about the music →" required></div>
-            </div>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Sunday School</summary>
+              <div class="frow two"><div><label for="people-gi_sundayschool_visible">Show this card</label><select id="people-gi_sundayschool_visible" data-key="gi_sundayschool_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label for="people-gi_sundayschool_title">Card title</label><input id="people-gi_sundayschool_title" data-key="gi_sundayschool_title" value="Sunday School" required></div></div>
+              <div class="frow"><label for="people-gi_sundayschool_for">Who it is for <span class="muted">(optional)</span></label><input id="people-gi_sundayschool_for" data-key="gi_sundayschool_for" value="Classes for all ages"></div>
+              <div class="frow"><label for="people-gi_sundayschool">Description</label><textarea id="people-gi_sundayschool" data-key="gi_sundayschool" rows="4" required>Bible classes for every age, from the youngest children to the oldest saints. Each class digs into the Scriptures together before the morning worship service.</textarea></div>
+              <div class="frow"><label for="people-gi_sundayschool_meets">When it meets</label><input id="people-gi_sundayschool_meets" data-key="gi_sundayschool_meets" value="Sundays at 10:00am" required></div>
+              <div class="frow"><label for="people-gi_sundayschool_leader">Leader or contact line <span class="muted">(optional)</span></label><input id="people-gi_sundayschool_leader" data-key="gi_sundayschool_leader" placeholder="Led by …"></div>
+              <div class="frow"><label for="people-gi_sundayschool_cta">Button text</label><input id="people-gi_sundayschool_cta" data-key="gi_sundayschool_cta" value="Ask about a class →" required></div>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Youth Ministry</summary>
+              <div class="frow two"><div><label for="people-gi_youth_visible">Show this card</label><select id="people-gi_youth_visible" data-key="gi_youth_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label for="people-gi_youth_title">Card title</label><input id="people-gi_youth_title" data-key="gi_youth_title" value="Youth Ministry" required></div></div>
+              <div class="frow"><label for="people-gi_youth_for">Who it is for <span class="muted">(optional)</span></label><input id="people-gi_youth_for" data-key="gi_youth_for" placeholder="Grades or ages"></div>
+              <div class="frow"><label for="people-gi_youth">Description</label><textarea id="people-gi_youth" data-key="gi_youth" rows="4" required>An active youth group where young people hear the Bible taught straight, build real friendships, and learn to live for the Lord.</textarea></div>
+              <div class="frow"><label for="people-gi_youth_meets">When it meets</label><input id="people-gi_youth_meets" data-key="gi_youth_meets" value="Sunday School at 10:00am" required></div>
+              <div class="frow"><label for="people-gi_youth_leader">Leader or contact line <span class="muted">(optional)</span></label><input id="people-gi_youth_leader" data-key="gi_youth_leader" placeholder="Led by …"></div>
+              <div class="frow"><label for="people-gi_youth_cta">Button text</label><input id="people-gi_youth_cta" data-key="gi_youth_cta" value="Contact youth ministry →" required></div>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>H.O.P.E. Recovery</summary>
+              <div class="frow two"><div><label for="people-gi_hope_visible">Show this card</label><select id="people-gi_hope_visible" data-key="gi_hope_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label for="people-gi_hope_title">Card title</label><input id="people-gi_hope_title" data-key="gi_hope_title" value="H.O.P.E. Recovery" required></div></div>
+              <div class="frow"><label for="people-gi_hope_for">Who it is for <span class="muted">(optional)</span></label><input id="people-gi_hope_for" data-key="gi_hope_for" value="Anyone fighting addiction"></div>
+              <div class="frow"><label for="people-gi_hope">Description</label><textarea id="people-gi_hope" data-key="gi_hope" rows="4" required>H.O.P.E. is our Christ-centered addictions recovery ministry. If you or someone you love is fighting addiction, you will find no judgment here, just the gospel, honest help, and people who care.</textarea></div>
+              <div class="frow"><label for="people-gi_hope_meets">When it meets</label><input id="people-gi_hope_meets" data-key="gi_hope_meets" value="Friday evenings" required></div>
+              <div class="frow"><label for="people-gi_hope_leader">Leader or contact line <span class="muted">(optional)</span></label><input id="people-gi_hope_leader" data-key="gi_hope_leader" placeholder="Led by …"></div>
+              <div class="frow"><label for="people-gi_hope_cta">Button text</label><input id="people-gi_hope_cta" data-key="gi_hope_cta" value="Reach out about H.O.P.E. →" required></div>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Van Ministry</summary>
+              <div class="frow two"><div><label for="people-gi_van_visible">Show this card</label><select id="people-gi_van_visible" data-key="gi_van_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label for="people-gi_van_title">Card title</label><input id="people-gi_van_title" data-key="gi_van_title" value="Van Ministry" required></div></div>
+              <div class="frow"><label for="people-gi_van_for">Who it is for <span class="muted">(optional)</span></label><input id="people-gi_van_for" data-key="gi_van_for" value="A free ride to any service"></div>
+              <div class="frow"><label for="people-gi_van">Description</label><textarea id="people-gi_van" data-key="gi_van" rows="4" required>Our van offers a free ride to any service, and the van team goes out visiting on Saturdays. Call 304-587-4709 to arrange a ride.</textarea></div>
+              <div class="frow"><label for="people-gi_van_meets">When it meets</label><input id="people-gi_van_meets" data-key="gi_van_meets" value="Every service &middot; Van visitation Saturdays" required></div>
+              <div class="frow"><label for="people-gi_van_leader">Leader or contact line <span class="muted">(optional)</span></label><input id="people-gi_van_leader" data-key="gi_van_leader" placeholder="Led by …"></div>
+              <div class="frow"><label for="people-gi_van_cta">Button text</label><input id="people-gi_van_cta" data-key="gi_van_cta" value="Call 304-587-4709 →" required></div>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Soul-Winning Visitation</summary>
+              <div class="frow two"><div><label for="people-gi_visitation_visible">Show this card</label><select id="people-gi_visitation_visible" data-key="gi_visitation_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label for="people-gi_visitation_title">Card title</label><input id="people-gi_visitation_title" data-key="gi_visitation_title" value="Soul-Winning Visitation" required></div></div>
+              <div class="frow"><label for="people-gi_visitation_for">Who it is for <span class="muted">(optional)</span></label><input id="people-gi_visitation_for" data-key="gi_visitation_for" placeholder="Audience or age range"></div>
+              <div class="frow"><label for="people-gi_visitation">Description</label><textarea id="people-gi_visitation" data-key="gi_visitation" rows="4" required>We go out on Saturdays to knock on doors, share the gospel, and invite our neighbors across Clay County to church. Never been before? Come along, you can watch and pray your first time out.</textarea></div>
+              <div class="frow"><label for="people-gi_visitation_meets">When it meets</label><input id="people-gi_visitation_meets" data-key="gi_visitation_meets" value="Saturdays" required></div>
+              <div class="frow"><label for="people-gi_visitation_leader">Leader or contact line <span class="muted">(optional)</span></label><input id="people-gi_visitation_leader" data-key="gi_visitation_leader" placeholder="Led by …"></div>
+              <div class="frow"><label for="people-gi_visitation_cta">Button text</label><input id="people-gi_visitation_cta" data-key="gi_visitation_cta" value="Come along on a Saturday →" required></div>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Missions</summary>
+              <div class="frow two"><div><label for="people-gi_missions_visible">Show this card</label><select id="people-gi_missions_visible" data-key="gi_missions_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label for="people-gi_missions_title">Card title</label><input id="people-gi_missions_title" data-key="gi_missions_title" value="Missions" required></div></div>
+              <div class="frow"><label for="people-gi_missions_for">Who it is for <span class="muted">(optional)</span></label><input id="people-gi_missions_for" data-key="gi_missions_for" placeholder="Audience or age range"></div>
+              <div class="frow"><label for="people-gi_missions">Description</label><textarea id="people-gi_missions" data-key="gi_missions" rows="4" required>Fairview keeps a strong missions program, praying for, giving to, and supporting missionaries carrying the gospel far beyond Clay County. See where they serve and how to pray.</textarea></div>
+              <div class="frow"><label for="people-gi_missions_meets">When it meets</label><input id="people-gi_missions_meets" data-key="gi_missions_meets" value="Around the world, year round" required></div>
+              <div class="frow"><label for="people-gi_missions_leader">Leader or contact line <span class="muted">(optional)</span></label><input id="people-gi_missions_leader" data-key="gi_missions_leader" placeholder="Led by …"></div>
+              <div class="frow"><label for="people-gi_missions_cta">Button text</label><input id="people-gi_missions_cta" data-key="gi_missions_cta" value="Explore our missions map →" required></div>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Music &amp; Choir</summary>
+              <div class="frow two"><div><label for="people-gi_music_visible">Show this card</label><select id="people-gi_music_visible" data-key="gi_music_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div><div><label for="people-gi_music_title">Card title</label><input id="people-gi_music_title" data-key="gi_music_title" value="Music &amp; Choir" required></div></div>
+              <div class="frow"><label for="people-gi_music_for">Who it is for <span class="muted">(optional)</span></label><input id="people-gi_music_for" data-key="gi_music_for" placeholder="Audience or age range"></div>
+              <div class="frow"><label for="people-gi_music">Description</label><textarea id="people-gi_music" data-key="gi_music" rows="4" required>Old fashioned congregational singing and special music from our church family are part of every service at Fairview. If you love to sing, there is a place for you.</textarea></div>
+              <div class="frow"><label for="people-gi_music_meets">When it meets</label><input id="people-gi_music_meets" data-key="gi_music_meets" value="Every service" required></div>
+              <div class="frow"><label for="people-gi_music_leader">Leader or contact line <span class="muted">(optional)</span></label><input id="people-gi_music_leader" data-key="gi_music_leader" placeholder="Led by …"></div>
+              <div class="frow"><label for="people-gi_music_cta">Button text</label><input id="people-gi_music_cta" data-key="gi_music_cta" value="Ask about the music →" required></div>
+            </details>
           </div>
         </div>
 
-        <div class="studio-fieldset"><h3>Our Staff</h3>
-          <p class="studio-hint" style="margin:-7px 0 18px;">Profiles follow the order on Our Staff. Add or replace portraits in Pages &amp; media. A profile without a portrait still shows its name and role.</p>
+        <div class="studio-fieldset"><div class="people-section-head"><h3>Staff</h3><a href="/staff" target="_blank" rel="noopener">View staff page</a></div>
           <div class="people-grid">
-            <div class="people-card">
-              <h4>Pastor Michael Spurlock</h4>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Pastor Michael Spurlock</summary>
               <div class="frow"><label for="people-pastor_visible">Show this person</label><select id="people-pastor_visible" data-key="pastor_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
               <div class="frow two"><div><label for="people-pastor_name">Name</label><input id="people-pastor_name" data-key="pastor_name" value="Pastor Michael Spurlock" required></div><div><label for="people-pastor_role">Role</label><input id="people-pastor_role" data-key="pastor_role" value="Pastor" required></div></div>
               <div class="frow"><label for="people-pastor_bio">Bio (optional)</label><textarea id="people-pastor_bio" data-key="pastor_bio" rows="4">Pastor Michael Spurlock began serving as pastor of Fairview Baptist Temple in the summer of 2024. With over eight years of full time ministry, his calling has been marked by a passion for souls, Bible centered preaching, and a heart to reach Clay County with the gospel of Jesus Christ. Before coming to Fairview he served at Mt. Pleasant Baptist Church in Elkview, WV and Hanes Baptist Church in Winston-Salem, NC. He holds a Bachelor&#x27;s degree in Theology and a Master&#x27;s in Biblical Exposition from Andersonville Theological Seminary.</textarea></div>
-            </div>
-            <div class="people-card">
-              <h4>Kaylee Spurlock</h4>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Kaylee Spurlock</summary>
               <div class="frow"><label for="people-staff11_visible">Show this person</label><select id="people-staff11_visible" data-key="staff11_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
               <div class="frow two"><div><label for="people-staff11_name">Name</label><input id="people-staff11_name" data-key="staff11_name" value="Kaylee Spurlock" required></div><div><label for="people-staff11_role">Role</label><input id="people-staff11_role" data-key="staff11_role" value="Pastor's Wife" required></div></div>
               <div class="frow"><label for="people-staff11_bio">Bio (optional)</label><textarea id="people-staff11_bio" data-key="staff11_bio" rows="4"></textarea></div>
-            </div>
-            <div class="people-card">
-              <h4>Curtis Moore</h4>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Curtis Moore</summary>
               <div class="frow"><label for="people-staff4_visible">Show this person</label><select id="people-staff4_visible" data-key="staff4_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
               <div class="frow two"><div><label for="people-staff4_name">Name</label><input id="people-staff4_name" data-key="staff4_name" value="Curtis Moore" required></div><div><label for="people-staff4_role">Role</label><input id="people-staff4_role" data-key="staff4_role" value="Head Deacon / H.O.P.E. Director" required></div></div>
               <div class="frow"><label for="people-staff4_bio">Bio (optional)</label><textarea id="people-staff4_bio" data-key="staff4_bio" rows="4"></textarea></div>
-            </div>
-            <div class="people-card">
-              <h4>Jake Pierson</h4>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Jake Pierson</summary>
               <div class="frow"><label for="people-staff7_visible">Show this person</label><select id="people-staff7_visible" data-key="staff7_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
               <div class="frow two"><div><label for="people-staff7_name">Name</label><input id="people-staff7_name" data-key="staff7_name" value="Jake Pierson" required></div><div><label for="people-staff7_role">Role</label><input id="people-staff7_role" data-key="staff7_role" value="Deacon / Assistant H.O.P.E. Director" required></div></div>
               <div class="frow"><label for="people-staff7_bio">Bio (optional)</label><textarea id="people-staff7_bio" data-key="staff7_bio" rows="4"></textarea></div>
-            </div>
-            <div class="people-card">
-              <h4>Barry Payton</h4>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Barry Payton</summary>
               <div class="frow"><label for="people-staff8_visible">Show this person</label><select id="people-staff8_visible" data-key="staff8_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
               <div class="frow two"><div><label for="people-staff8_name">Name</label><input id="people-staff8_name" data-key="staff8_name" value="Barry Payton" required></div><div><label for="people-staff8_role">Role</label><input id="people-staff8_role" data-key="staff8_role" value="Deacon / Missions Director" required></div></div>
               <div class="frow"><label for="people-staff8_bio">Bio (optional)</label><textarea id="people-staff8_bio" data-key="staff8_bio" rows="4"></textarea></div>
-            </div>
-            <div class="people-card">
-              <h4>Jamie Taylor</h4>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Jamie Taylor</summary>
               <div class="frow"><label for="people-staff1_visible">Show this person</label><select id="people-staff1_visible" data-key="staff1_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
               <div class="frow two"><div><label for="people-staff1_name">Name</label><input id="people-staff1_name" data-key="staff1_name" value="Jamie Taylor" required></div><div><label for="people-staff1_role">Role</label><input id="people-staff1_role" data-key="staff1_role" value="Trustee / Audio Visual Director" required></div></div>
               <div class="frow"><label for="people-staff1_bio">Bio (optional)</label><textarea id="people-staff1_bio" data-key="staff1_bio" rows="4"></textarea></div>
-            </div>
-            <div class="people-card">
-              <h4>Robbie King</h4>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Robbie King</summary>
               <div class="frow"><label for="people-staff2_visible">Show this person</label><select id="people-staff2_visible" data-key="staff2_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
               <div class="frow two"><div><label for="people-staff2_name">Name</label><input id="people-staff2_name" data-key="staff2_name" value="Robbie King" required></div><div><label for="people-staff2_role">Role</label><input id="people-staff2_role" data-key="staff2_role" value="Trustee / Custodian" required></div></div>
               <div class="frow"><label for="people-staff2_bio">Bio (optional)</label><textarea id="people-staff2_bio" data-key="staff2_bio" rows="4"></textarea></div>
-            </div>
-            <div class="people-card">
-              <h4>Joyce Legg</h4>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Joyce Legg</summary>
               <div class="frow"><label for="people-staff5_visible">Show this person</label><select id="people-staff5_visible" data-key="staff5_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
               <div class="frow two"><div><label for="people-staff5_name">Name</label><input id="people-staff5_name" data-key="staff5_name" value="Joyce Legg" required></div><div><label for="people-staff5_role">Role</label><input id="people-staff5_role" data-key="staff5_role" value="Financial Secretary" required></div></div>
               <div class="frow"><label for="people-staff5_bio">Bio (optional)</label><textarea id="people-staff5_bio" data-key="staff5_bio" rows="4"></textarea></div>
-            </div>
-            <div class="people-card">
-              <h4>Kris Moore</h4>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Kris Moore</summary>
               <div class="frow"><label for="people-staff6_visible">Show this person</label><select id="people-staff6_visible" data-key="staff6_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
               <div class="frow two"><div><label for="people-staff6_name">Name</label><input id="people-staff6_name" data-key="staff6_name" value="Kris Moore" required></div><div><label for="people-staff6_role">Role</label><input id="people-staff6_role" data-key="staff6_role" value="Church Secretary / SWORD Club Children&#x27;s Ministry Director" required></div></div>
               <div class="frow"><label for="people-staff6_bio">Bio (optional)</label><textarea id="people-staff6_bio" data-key="staff6_bio" rows="4"></textarea></div>
-            </div>
-            <div class="people-card">
-              <h4>Edna King</h4>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Edna King</summary>
               <div class="frow"><label for="people-staff9_visible">Show this person</label><select id="people-staff9_visible" data-key="staff9_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
               <div class="frow two"><div><label for="people-staff9_name">Name</label><input id="people-staff9_name" data-key="staff9_name" value="Edna King" required></div><div><label for="people-staff9_role">Role</label><input id="people-staff9_role" data-key="staff9_role" value="Custodian" required></div></div>
               <div class="frow"><label for="people-staff9_bio">Bio (optional)</label><textarea id="people-staff9_bio" data-key="staff9_bio" rows="4"></textarea></div>
-            </div>
-            <div class="people-card">
-              <h4>Jennings &amp; Nellie Elliott</h4>
+            </details>
+            <details class="people-card studio-topic" name="people-profile">
+              <summary>Jennings &amp; Nellie Elliott</summary>
               <div class="frow"><label for="people-staff10_visible">Show this person</label><select id="people-staff10_visible" data-key="staff10_visible"><option value="show">Show</option><option value="hide">Hide</option></select></div>
               <div class="frow two"><div><label for="people-staff10_name">Name</label><input id="people-staff10_name" data-key="staff10_name" value="Jennings &amp; Nellie Elliott" required></div><div><label for="people-staff10_role">Role</label><input id="people-staff10_role" data-key="staff10_role" value="Teen Leaders" required></div></div>
               <div class="frow"><label for="people-staff10_bio">Bio (optional)</label><textarea id="people-staff10_bio" data-key="staff10_bio" rows="4"></textarea></div>
-            </div>
+            </details>
           </div>
         </div>
-        <div class="people-save-foot"><p id="people-msg" class="studio-msg" role="status" aria-live="polite"></p><button class="btn btn-b" id="people-save-bottom" type="button">Save changes</button></div>
+        <div class="people-save-foot"><button class="btn btn-b" id="people-save-bottom" type="button" disabled>Save changes</button></div>
       </form>
     </section>
     </div>
@@ -1183,83 +1209,86 @@
     </div>
 
     <div id="view-page-editor" data-view-pane hidden>
-      <div class="studio-head"><div><h1>Edit your website</h1><p class="muted">Click the page to change its words, photos, and design. Save when it is ready.</p></div></div>
+      <div class="studio-head"><h1>Edit a page</h1></div>
       <div id="page-editor-root"></div>
     </div>
 
     <div id="view-settings" data-view-pane hidden>
     <section>
       <div class="studio-head">
-        <div><h1>Settings</h1><p class="muted">Your church info and links. Saved changes go live across the whole site.</p></div>
-        <button class="btn btn-b" id="set-save">Save settings</button>
+        <div><h1>Settings</h1></div>
+        <button class="btn btn-b" id="set-save" disabled>Save settings</button>
       </div>
+      <p id="set-msg" class="studio-msg" role="status" aria-live="polite"></p>
+      <button type="button" id="set-retry" class="btn btn-o" hidden>Try again</button>
       <form class="form studio-form" onsubmit="return false">
-        <div class="studio-fieldset"><h3>Headlines &amp; copy</h3>
-          <div class="frow"><label>Home hero headline: wrap words in *asterisks* for the teal accent line</label><input data-key="home_hero_heading" value="Fairview *Baptist Temple*"></div>
-          <div class="frow"><label>Home hero subtext</label><textarea data-key="home_hero_sub" rows="3">An independent Baptist church on Main Street in Clay, West Virginia. Old fashioned singing, preaching from the King James Bible, and a seat saved for you this Sunday.</textarea></div>
-          <div class="frow two"><div><label>Home welcome heading</label><input data-key="home_welcome_heading" value="A church family in the hills"></div></div>
-          <div class="frow"><label>Home welcome paragraph</label><textarea data-key="home_welcome_body" rows="4">We are a church family in the hills of Clay County that believes the Bible, loves people, and preaches Christ crucified, buried, and risen again.</textarea></div>
-          <div class="frow"><label>Home missions script line</label><input data-key="home_missions_kick" value="Beyond the hills"></div>
-          <div class="frow"><label>Home missions heading: wrap words in *asterisks* for the teal accent</label><input data-key="home_missions_heading" value="Our reach around the *world*"></div>
-          <div class="frow"><label>Home missions paragraph</label><textarea data-key="home_missions_sub" rows="3">Fairview keeps a strong missions program, sending and supporting missionaries carrying the gospel far beyond Clay County. Explore where they serve and pray with them.</textarea></div>
-          <div class="frow"><label>Beliefs: Our Faith</label><textarea data-key="beliefs_faith" rows="3">We are an independent, fundamental Baptist church that stands on the King James Bible as the preserved Word of God, cherishing its unchanging truths without compromise.</textarea></div>
-          <div class="frow"><label>Beliefs: Our Purpose</label><textarea data-key="beliefs_purpose" rows="3">Sharing the message of salvation through Jesus Christ, we nurture faith, build strong families, and reach our community and the world with the gospel.</textarea></div>
-          <div class="frow"><label>Beliefs: Our Calling</label><textarea data-key="beliefs_calling" rows="3">Called to worship and serve in spirit and truth, we are a refuge for the hurting, a help for the struggling, and a beacon of God's Word in Clay County.</textarea></div>
-          <div class="frow"><label>Beliefs: Our Hope</label><textarea data-key="beliefs_hope" rows="3">The Bible teaches that all have sinned and are in need of salvation. Jesus loves you and has made a way for you to be saved. Accept His gift of grace today.</textarea></div>
-        </div>
-        <div class="studio-fieldset" id="fs-design"><h3>Design: fonts &amp; colors</h3>
-          <p class="muted" style="margin:0 0 12px;">Changes apply to the whole site the moment you save. Leave a field blank (or on the first choice) to keep the standard look.</p>
-          <div class="frow two">
-            <div><label>Heading font</label><select data-key="style_heading_font"><option value="">Montserrat (standard)</option><option value="oswald">Oswald: tall condensed caps</option><option value="archivo">Archivo Black: wide and heavy</option><option value="bebas">Bebas Neue: classic poster caps</option></select></div>
-            <div><label>Script accent font (the handwritten lines)</label><select data-key="style_script_font"><option value="">Mrs Saint Delafield (standard)</option><option value="greatvibes">Great Vibes</option><option value="dancing">Dancing Script</option><option value="allura">Allura</option></select></div>
-          </div>
-          <div class="frow two">
-            <div><label>Accent color: buttons, bands, links (hex code)</label><input data-key="style_accent_color" placeholder="#1A9088"></div>
-            <div><label>Heading color (hex code)</label><input data-key="style_heading_color" placeholder="#223A5E"></div>
-          </div>
-        </div>
-        <div class="studio-fieldset"><h3>Homepage tiles</h3>
-          <p class="muted" style="margin:0 0 12px;">The three photo tiles under the hero. Their photos and text are also editable in Pages &amp; media.</p>
-          <div class="frow two"><div><label>Tile 1 title</label><input data-key="tile_new_title" value="I'm New"></div><div><label>Tile 1 subtitle</label><input data-key="tile_new_sub" value="Plan your first visit"></div></div>
-          <div class="frow two"><div><label>Tile 2 title</label><input data-key="tile_overlook_title" value="The Overlook"></div><div><label>Tile 2 subtitle</label><input data-key="tile_overlook_sub" value="Watch live and past messages"></div></div>
-          <div class="frow two"><div><label>Tile 3 title</label><input data-key="tile_ministries_title" value="Ministries"></div><div><label>Tile 3 subtitle</label><input data-key="tile_ministries_sub" value="H.O.P.E. · Van · Youth · Missions"></div></div>
-        </div>
-        <div class="studio-fieldset"><h3>Contact</h3>
-          <div class="frow two"><div><label>Street address</label><input data-key="contact_address" placeholder="2294 Main Street"></div><div><label>City, state ZIP</label><input data-key="contact_city" placeholder="Clay, WV 25043"></div></div>
-          <div class="frow two"><div><label>Phone</label><input data-key="contact_phone" placeholder="304-587-4709"></div><div><label>Email</label><input data-key="contact_email" placeholder="Church email (optional)"></div></div>
-        </div>
-        <div class="studio-fieldset"><h3>Map &amp; directions</h3>
-          <p class="studio-hint">The map uses the church address above. You can use a specific Google Maps location by pasting its embed URL and directions link here. Leave these blank to use the address map.</p>
+        <details class="studio-fieldset studio-topic" name="settings-topic" id="fs-times"><summary>Service times</summary>
+          <div class="frow two"><div><label for="set-time_sunday_school">Sunday school</label><input id="set-time_sunday_school" data-key="time_sunday_school" placeholder="10:00am"></div><div><label for="set-time_worship">Worship</label><input id="set-time_worship" data-key="time_worship" placeholder="11:00am"></div></div>
+          <div class="frow two"><div><label for="set-time_evening">Sunday evening time</label><input id="set-time_evening" data-key="time_evening" placeholder="6:00pm"></div><div><label for="set-time_midweek">Midweek time</label><input id="set-time_midweek" data-key="time_midweek" placeholder="7:00pm"></div></div>
+        </details>
+        <details class="studio-fieldset studio-topic" name="settings-topic" id="fs-contact"><summary>Address &amp; contact information</summary>
+          <div class="frow two"><div><label for="set-contact_address">Street address</label><input id="set-contact_address" data-key="contact_address" placeholder="2294 Main Street"></div><div><label for="set-contact_city">City, state ZIP</label><input id="set-contact_city" data-key="contact_city" placeholder="Clay, WV 25043"></div></div>
+          <div class="frow two"><div><label for="set-contact_phone">Phone</label><input id="set-contact_phone" data-key="contact_phone" placeholder="304-587-4709"></div><div><label for="set-contact_email">Email</label><input id="set-contact_email" data-key="contact_email" placeholder="Church email (optional)"></div></div>
+        </details>
+        <details class="studio-fieldset studio-topic" name="settings-topic"><summary>Social media links</summary>
+          <div class="frow two"><div><label for="set-facebook_url">Facebook</label><input id="set-facebook_url" data-key="facebook_url" value="https://www.facebook.com/FairviewBaptistTemple" placeholder="https://facebook.com/…"></div><div><label for="set-instagram_url">Instagram</label><input id="set-instagram_url" data-key="instagram_url" value="https://www.instagram.com/fairviewbaptisttemple" placeholder="https://instagram.com/…"></div></div>
+          <div class="frow two"><div><label for="set-tiktok_url">TikTok</label><input id="set-tiktok_url" data-key="tiktok_url" value="https://www.tiktok.com/@fairviewbaptisttemple" placeholder="https://tiktok.com/@…"></div><div><label for="set-youtube_url">YouTube</label><input id="set-youtube_url" data-key="youtube_url" value="https://www.youtube.com/@FairviewBaptistTemple" placeholder="https://youtube.com/@…"></div></div>
+        </details>
+        <details class="studio-fieldset studio-topic" name="settings-topic"><summary>Giving</summary>
+          <div class="frow"><label for="set-venmo_handle">Venmo username (without @)</label><input id="set-venmo_handle" data-key="venmo_handle" placeholder="FairviewBaptistTemple"></div>
+          <div class="frow two"><div><label for="set-square_app_id">Square application ID</label><input id="set-square_app_id" data-key="square_app_id" placeholder="sq0idp-…"></div><div><label for="set-square_location_id">Square Location ID</label><input id="set-square_location_id" data-key="square_location_id" placeholder="L…"></div></div>
+          <div class="frow two"><div><label for="set-square_env">Square mode</label><select id="set-square_env" data-key="square_env"><option value="production">Production: real gifts</option><option value="sandbox">Sandbox: testing</option></select></div><div><label for="set-give_link">Giving page link (Anedot)</label><input id="set-give_link" data-key="give_link" value="https://secure.anedot.com/fairview-baptist-temple/give"></div></div>
+          <div class="frow"><label for="set-give_text">Text-to-give instructions</label><input id="set-give_text" data-key="give_text" placeholder="Text GIVE to 84321"></div>
+          <div class="frow"><label for="set-give_funds">Giving funds (one per line)</label><textarea id="set-give_funds" data-key="give_funds" rows="4" placeholder="Where needed most&#10;Missions&#10;Building fund&#10;Benevolence &amp; care"></textarea></div>
+          <div class="frow"><label for="set-square_plan_id">Square monthly plan ID (optional)</label><input id="set-square_plan_id" data-key="square_plan_id" placeholder="Plan variation ID"></div>
+        </details>
+        <details class="studio-fieldset studio-topic" name="settings-topic"><summary>Livestream</summary>
+          <div class="frow"><label for="set-live_channel_id">YouTube channel ID (starts with UC)</label><input id="set-live_channel_id" data-key="live_channel_id" placeholder="UC…"></div>
+        </details>
+        <details class="studio-fieldset studio-topic" name="settings-topic"><summary>Missionary regions &amp; statuses</summary>
+          <div class="frow"><label for="set-missionary_regions">Regions (one per line)</label><textarea id="set-missionary_regions" data-key="missionary_regions" rows="4" placeholder="Africa&#10;Asia&#10;Europe&#10;Middle East&#10;North America&#10;South America&#10;Oceania"></textarea></div>
+          <div class="frow"><label for="set-missionary_statuses">Statuses (one per line)</label><textarea id="set-missionary_statuses" data-key="missionary_statuses" rows="4" placeholder="On the field&#10;Home on furlough&#10;Sending soon"></textarea></div>
+        </details>
+        <details class="studio-fieldset studio-topic" name="settings-topic"><summary>Map &amp; directions</summary>
+          <p class="studio-hint">Leave these blank to use the church address.</p>
           <div class="frow"><label for="set-maps-url">Google Maps directions link</label><input id="set-maps-url" data-key="maps_url" type="url" placeholder="https://www.google.com/maps/dir/..."></div>
           <div class="frow"><label for="set-maps-embed">Google Maps embed URL</label><input id="set-maps-embed" data-key="maps_embed_url" type="url" placeholder="https://www.google.com/maps/embed?pb=..."></div>
-        </div>
-        <div class="studio-fieldset"><h3>Service times</h3>
-          <div class="frow two"><div><label>Sunday school</label><input data-key="time_sunday_school" placeholder="10:00am"></div><div><label>Worship</label><input data-key="time_worship" placeholder="11:00am"></div></div>
-          <div class="frow two"><div><label>Sunday evening time</label><input data-key="time_evening" placeholder="6:00pm"></div><div><label>Midweek time</label><input data-key="time_midweek" placeholder="7:00pm"></div></div>
-        </div>
-        <div class="studio-fieldset"><h3>Social links</h3>
-          <div class="frow two"><div><label>Facebook</label><input data-key="facebook_url" value="https://www.facebook.com/FairviewBaptistTemple" placeholder="https://facebook.com/…"></div><div><label>Instagram</label><input data-key="instagram_url" value="https://www.instagram.com/fairviewbaptisttemple" placeholder="https://instagram.com/…"></div></div>
-          <div class="frow two"><div><label>TikTok</label><input data-key="tiktok_url" value="https://www.tiktok.com/@fairviewbaptisttemple" placeholder="https://tiktok.com/@…"></div><div><label>YouTube</label><input data-key="youtube_url" value="https://www.youtube.com/@FairviewBaptistTemple" placeholder="https://youtube.com/@…"></div></div>
-        </div>
-        <div class="studio-fieldset"><h3>Livestream</h3>
-          <div class="frow"><label>YouTube channel ID: powers the automatic live player (starts with UC)</label><input data-key="live_channel_id" placeholder="UC…"></div>
-        </div>
-        <div class="studio-fieldset"><h3>Giving</h3>
-          <div class="frow"><label>Venmo username: powers the Venmo button on the Give page (no @)</label><input data-key="venmo_handle" placeholder="FairviewBaptistTemple"></div>
-          <div class="frow two"><div><label>Square Application ID: for in-browser card giving</label><input data-key="square_app_id" placeholder="sq0idp-…"></div><div><label>Square Location ID</label><input data-key="square_location_id" placeholder="L…"></div></div>
-          <div class="frow two"><div><label>Square mode</label><select data-key="square_env"><option value="production">Production: real gifts</option><option value="sandbox">Sandbox: testing</option></select></div><div><label>Giving page link (Anedot)</label><input data-key="give_link" value="https://secure.anedot.com/fairview-baptist-temple/give"></div></div>
-          <div class="frow"><label>Text-to-give: instructions shown on the Give page (optional)</label><input data-key="give_text" placeholder="Text GIVE to 84321"></div>
-          <div class="frow"><label>Give-toward funds, one per line; these fill the "Give toward" dropdown on the Give page (leave blank for the defaults)</label><textarea data-key="give_funds" rows="4" placeholder="Where needed most&#10;Missions&#10;Building fund&#10;Benevolence &amp; care"></textarea></div>
-          <div class="frow"><label>Square subscription plan ID (optional override; leave blank to use the church's automatic monthly plan)</label><input data-key="square_plan_id" placeholder="Plan variation ID"></div>
-        </div>
-        <div class="studio-fieldset"><h3>Forms</h3>
-          <div class="frow"><label>Form endpoint: where the missionary contact form (and sign-ups) send. Free at formspree.io</label><input data-key="form_endpoint" placeholder="https://formspree.io/f/abcdwxyz"></div>
-        </div>
-        <div class="studio-fieldset"><h3>Missions</h3>
-          <div class="frow"><label>Region options, one per line (the choices in each missionary's Region dropdown)</label><textarea data-key="missionary_regions" rows="4" placeholder="Africa&#10;Asia&#10;Europe&#10;Middle East&#10;North America&#10;South America&#10;Oceania"></textarea></div>
-          <div class="frow"><label>Status options, one per line (the choices in each missionary's Status dropdown)</label><textarea data-key="missionary_statuses" rows="4" placeholder="On the field&#10;Home on furlough&#10;Sending soon"></textarea></div>
-        </div>
-        <p id="set-msg" class="studio-msg"></p>
+        </details>
+        <details class="studio-fieldset studio-topic" name="settings-topic" id="fs-site-text"><summary>Homepage &amp; beliefs text</summary>
+          <p class="studio-hint">For a teal accent in a heading, put *asterisks* around those words.</p>
+          <div class="frow"><label for="set-home_hero_heading">Homepage headline</label><input id="set-home_hero_heading" data-key="home_hero_heading" value="Fairview *Baptist Temple*"></div>
+          <div class="frow"><label for="set-home_hero_sub">Text below the headline</label><textarea id="set-home_hero_sub" data-key="home_hero_sub" rows="3">An independent Baptist church on Main Street in Clay, West Virginia. Old fashioned singing, preaching from the King James Bible, and a seat saved for you this Sunday.</textarea></div>
+          <div class="frow two"><div><label for="set-home_welcome_heading">Home welcome heading</label><input id="set-home_welcome_heading" data-key="home_welcome_heading" value="A church family in the hills"></div></div>
+          <div class="frow"><label for="set-home_welcome_body">Home welcome paragraph</label><textarea id="set-home_welcome_body" data-key="home_welcome_body" rows="4">We are a church family in the hills of Clay County that believes the Bible, loves people, and preaches Christ crucified, buried, and risen again.</textarea></div>
+          <div class="frow"><label for="set-home_missions_kick">Small heading above Missions</label><input id="set-home_missions_kick" data-key="home_missions_kick" value="Beyond the hills"></div>
+          <div class="frow"><label for="set-home_missions_heading">Home missions heading</label><input id="set-home_missions_heading" data-key="home_missions_heading" value="Our reach around the *world*"></div>
+          <div class="frow"><label for="set-home_missions_sub">Home missions paragraph</label><textarea id="set-home_missions_sub" data-key="home_missions_sub" rows="3">Fairview keeps a strong missions program, sending and supporting missionaries carrying the gospel far beyond Clay County. Explore where they serve and pray with them.</textarea></div>
+          <div class="frow"><label for="set-beliefs_faith">Beliefs: Our Faith</label><textarea id="set-beliefs_faith" data-key="beliefs_faith" rows="3">We are an independent, fundamental Baptist church that stands on the King James Bible as the preserved Word of God, cherishing its unchanging truths without compromise.</textarea></div>
+          <div class="frow"><label for="set-beliefs_purpose">Beliefs: Our Purpose</label><textarea id="set-beliefs_purpose" data-key="beliefs_purpose" rows="3">Sharing the message of salvation through Jesus Christ, we nurture faith, build strong families, and reach our community and the world with the gospel.</textarea></div>
+          <div class="frow"><label for="set-beliefs_calling">Beliefs: Our Calling</label><textarea id="set-beliefs_calling" data-key="beliefs_calling" rows="3">Called to worship and serve in spirit and truth, we are a refuge for the hurting, a help for the struggling, and a beacon of God's Word in Clay County.</textarea></div>
+          <div class="frow"><label for="set-beliefs_hope">Beliefs: Our Hope</label><textarea id="set-beliefs_hope" data-key="beliefs_hope" rows="3">The Bible teaches that all have sinned and are in need of salvation. Jesus loves you and has made a way for you to be saved. Accept His gift of grace today.</textarea></div>
+        </details>
+        <details class="studio-fieldset studio-topic" name="settings-topic"><summary>Homepage tiles</summary>
+          <p class="muted" style="margin:0 0 12px;">The three photo links below the main homepage photo.</p>
+          <div class="frow two"><div><label for="set-tile_new_title">Tile 1 title</label><input id="set-tile_new_title" data-key="tile_new_title" value="I'm New"></div><div><label for="set-tile_new_sub">Tile 1 subtitle</label><input id="set-tile_new_sub" data-key="tile_new_sub" value="Plan your first visit"></div></div>
+          <div class="frow two"><div><label for="set-tile_overlook_title">Tile 2 title</label><input id="set-tile_overlook_title" data-key="tile_overlook_title" value="The Overlook"></div><div><label for="set-tile_overlook_sub">Tile 2 subtitle</label><input id="set-tile_overlook_sub" data-key="tile_overlook_sub" value="Watch live and past messages"></div></div>
+          <div class="frow two"><div><label for="set-tile_ministries_title">Tile 3 title</label><input id="set-tile_ministries_title" data-key="tile_ministries_title" value="Ministries"></div><div><label for="set-tile_ministries_sub">Tile 3 subtitle</label><input id="set-tile_ministries_sub" data-key="tile_ministries_sub" value="H.O.P.E. · Van · Youth · Missions"></div></div>
+        </details>
+        <details class="studio-fieldset studio-topic" name="settings-topic" id="fs-design"><summary>Site fonts &amp; colors</summary>
+          <p class="muted" style="margin:0 0 12px;">Leave a color blank to use the standard color.</p>
+          <div class="frow two">
+            <div><label for="set-style_heading_font">Heading font</label><select id="set-style_heading_font" data-key="style_heading_font"><option value="">Montserrat (standard)</option><option value="oswald">Oswald: tall condensed caps</option><option value="archivo">Archivo Black: wide and heavy</option><option value="bebas">Bebas Neue: classic poster caps</option></select></div>
+            <div><label for="set-style_script_font">Handwritten font</label><select id="set-style_script_font" data-key="style_script_font"><option value="">Mrs Saint Delafield (standard)</option><option value="greatvibes">Great Vibes</option><option value="dancing">Dancing Script</option><option value="allura">Allura</option></select></div>
+          </div>
+          <div class="frow two">
+            <div><label for="set-style_accent_color">Accent color: buttons, bands, links (hex code)</label><input id="set-style_accent_color" data-key="style_accent_color" placeholder="#1A9088"></div>
+            <div><label for="set-style_heading_color">Heading color (hex code)</label><input id="set-style_heading_color" data-key="style_heading_color" placeholder="#223A5E"></div>
+          </div>
+        </details>
+        <details class="studio-fieldset studio-topic" name="settings-topic"><summary>Form delivery</summary>
+          <div class="frow"><label for="set-form_endpoint">Formspree URL for missionary messages and sign-ups</label><input id="set-form_endpoint" data-key="form_endpoint" placeholder="https://formspree.io/f/abcdwxyz"></div>
+        </details>
+
       </form>
     </section>
     </div>
@@ -1267,7 +1296,7 @@
     <div id="view-sermons" data-view-pane hidden>
     <section id="sm-list">
       <div class="studio-head">
-        <div><h1>Video hubs</h1><p class="muted">Choose what shows in your Messages, Music, and Watch hubs, and fix any video's speaker or scripture.</p></div>
+        <div><h1>Videos</h1><p class="muted">Edit a video or choose where it appears on the website.</p></div>
       </div>
       <div class="hub-chips" id="hub-chips">
         <button class="hub-chip active" data-hub="">All</button>
@@ -1276,12 +1305,12 @@
         <button class="hub-chip" data-hub="service">Watch / livestream</button>
         <button class="hub-chip" data-hub="clip">Hidden</button>
       </div>
-      <input id="sm-search" class="studio-search" placeholder="Search videos by title…">
+      <input id="sm-search" class="studio-search" type="search" aria-label="Search videos by title" placeholder="Search videos by title…">
       <div id="sm-rows" class="studio-rows"></div>
     </section>
     <section id="sm-edit" hidden>
       <div class="studio-head">
-        <div><span class="studio-back" id="sm-back">&larr; All videos</span><h1 id="sm-edit-title">Edit video</h1></div>
+        <div><button type="button" class="studio-back" id="sm-back">&larr; All videos</button><h1 id="sm-edit-title">Edit video</h1></div>
         <div class="studio-head-acts"><button class="btn btn-o" id="sm-reset">Reset to auto</button><button class="btn btn-b" id="sm-save">Save</button></div>
       </div>
       <div class="sm-vid"><div class="sm-vid-thumb" id="sm-vid-thumb"></div><div class="sm-vid-meta" id="sm-vid-meta"></div></div>
@@ -1296,10 +1325,10 @@
           <div class="frow"><label for="s-topics">Topics: comma separated</label><input id="s-topics" placeholder="Faith, Mission"></div>
           <div class="frow"><label for="s-summary">Message summary</label><textarea id="s-summary" rows="4" placeholder="A clear two or three sentence overview for visitors deciding what to watch."></textarea></div>
         </div>
-        <div class="studio-fieldset"><h3>Notes and transcript</h3>
-          <div class="frow"><label for="s-notes">Message notes (optional)</label><textarea id="s-notes" rows="7" placeholder="Main points, Scripture references, application questions, or an outline."></textarea><small class="field-help">Paragraphs and line breaks will be preserved on the message page.</small></div>
-          <div class="frow"><label for="s-transcript">Transcript (optional)</label><textarea id="s-transcript" rows="12" placeholder="Paste a cleaned transcript here when one is available."></textarea><small class="field-help">Long transcripts stay collapsed until a visitor chooses to read them.</small></div>
-        </div>
+        <details class="studio-fieldset video-notes"><summary>Notes and transcript</summary>
+          <div class="frow"><label for="s-notes">Message notes (optional)</label><textarea id="s-notes" rows="7" placeholder="Main points, Scripture references, application questions, or an outline."></textarea></div>
+          <div class="frow"><label for="s-transcript">Transcript (optional)</label><textarea id="s-transcript" rows="12" placeholder="Paste a cleaned transcript here when one is available."></textarea></div>
+        </details>
         <p id="sm-msg" class="studio-msg"></p>
       </form>
     </section>
@@ -1308,7 +1337,7 @@
     <div id="view-pages" data-view-pane hidden>
     <section>
       <div class="studio-head">
-        <div><h1>Page labels and menu</h1><p class="muted">Rename links, show or hide them, and use the arrows to put pages in the order you want. The sections match your desktop and mobile menus.</p></div>
+        <div><h1>Website menu</h1><p class="muted">Rename, reorder, or hide links in the website menu.</p></div>
         <button class="btn btn-b" id="pg-save">Save menu</button>
       </div>
       <div id="pg-list" class="pg-list"></div>
@@ -1318,10 +1347,13 @@
 
     <div id="view-media" data-view-pane hidden>
     <section>
-      <div class="studio-head"><div><h1>Pages &amp; media</h1><p class="muted">Every page and section of the site, in one place: photo, framing, overlay, text, and colors.</p></div></div>
+      <div class="studio-head"><h1>Photos &amp; design</h1></div>
       <p id="media-msg" class="studio-msg" role="status" aria-live="polite"></p>
-      <p class="media-hint">Everything is organized by page: each card is a section of the site. Open Design to set its photo, framing, overlay, text, and colors together.</p>
-      <input id="media-search" class="media-search" type="search" placeholder="Find a page or section, like &quot;hope&quot; or &quot;visit&quot;..." aria-label="Find a page or section">
+      <div class="media-filters">
+        <label>Page<select id="media-page-filter"><option value="">Choose a page</option></select></label>
+        <label>Search photos and sections<input id="media-search" type="search" placeholder="e.g. H.O.P.E."></label>
+      </div>
+      <p id="media-no-results" class="muted" role="status" hidden>No matching sections.</p>
       <div class="media-grid" id="media-bg"></div>
       <div class="media-grid" id="media-photo" hidden></div>
     </section>
@@ -1331,7 +1363,6 @@
       <div class="media-editor-card" role="dialog" aria-modal="true" aria-labelledby="media-editor-title">
         <div class="media-editor-head">
           <div>
-            <p class="media-editor-eyebrow">Media designer</p>
             <h2 id="media-editor-title">Edit media</h2>
             <p id="media-editor-subtitle">Preview and position this media before saving.</p>
           </div>
@@ -1340,54 +1371,57 @@
         <div class="media-editor-body">
           <div class="media-stage-panel">
             <div class="media-modebar">
+              <div class="media-assets">
+                <button id="media-editor-image-pick" class="media-up" type="button">Upload photo</button>
+                <input id="media-editor-image-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" data-editor-upload="image" hidden>
+                <button id="media-remove-image" class="media-edit-btn media-danger" type="button">Remove photo</button>
+              </div>
               <div class="media-mode-tabs" role="group" aria-label="Preview size">
                 <button type="button" class="active" data-media-viewport="desktop">Desktop</button>
                 <button type="button" data-media-viewport="mobile">Phone</button>
               </div>
-              <span class="media-mode-note">Preview the actual page at each screen width.</span>
             </div>
             <div id="media-page-preview"></div>
             <details id="media-framing-detail" class="media-framing-detail">
               <summary>Adjust photo framing</summary>
-              <p class="media-framing-note">Use this crop guide to place the focal point. Review the finished result in the page preview above.</p>
               <div class="media-stage-wrap">
                 <div id="media-stage" class="media-stage" tabindex="0" role="group" aria-label="Photo framing guide" aria-describedby="media-stage-help media-focal-status"></div>
               </div>
-              <p class="media-stage-help" id="media-stage-help"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="7"/></svg><span>Click or drag to place the focal point. The framing sliders also give precise control.</span></p>
+              <p class="media-stage-help" id="media-stage-help"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="7"/></svg><span>Drag or use the arrow keys to center the photo.</span></p>
               <p id="media-focal-status" class="media-source-note" role="status" aria-live="polite">Focal point: 50% across, 50% down.</p>
             </details>
-            <div class="media-assets">
-              <button id="media-editor-image-pick" class="media-up" type="button">Replace image</button>
-              <input id="media-editor-image-file" type="file" accept="image/jpeg,image/png,image/webp,image/avif" data-editor-upload="image" hidden>
-              <button id="media-editor-video-pick" class="media-up" type="button">Replace video</button>
-              <input id="media-editor-video-file" type="file" accept="video/mp4" data-editor-upload="video" hidden>
-              <button id="media-remove-image" class="media-edit-btn media-danger" type="button">Remove image from page</button>
-              <button id="media-remove-video" class="media-edit-btn media-danger" type="button">Remove video from page</button>
-            </div>
-            <div class="media-text-field media-image-url-field">
-              <label for="media-image-url">Image URL</label>
-              <input id="media-image-url" type="text" placeholder="https://… or /assets/photos/…" autocomplete="off" spellcheck="false">
-              <button id="media-image-url-apply" class="media-edit-btn" type="button">Use this image</button>
-            </div>
-            <details id="media-library" class="media-library"><summary>Choose a church photo</summary><div id="media-library-grid" class="media-library-grid"></div></details>
           </div>
           <div class="media-controls">
-            <div class="media-control-group" id="media-text-group" hidden>
-              <div class="media-control-title"><strong>Text on this page</strong><small>Saved with the design</small></div>
+            <details id="media-library" class="media-library"><summary>Choose a church photo</summary><div id="media-library-grid" class="media-library-grid"></div></details>
+            <details class="media-control-group" id="media-text-group" hidden>
+              <summary>Edit section text</summary>
               <div id="media-text-fields" class="media-text-fields"></div>
-            </div>
-            <div class="media-control-group" id="media-framing-controls">
-              <div class="media-control-title"><label for="media-source">What appears</label><small>Files stay saved</small></div>
-              <select id="media-source">
-                <option value="auto">Automatic: video first, then image</option>
-                <option value="video">Background video</option>
-                <option value="image">Image</option>
-                <option value="background">Color background only</option>
-              </select>
-              <small id="media-source-note" class="media-source-note"></small>
-            </div>
-            <div class="media-control-group">
-              <div class="media-control-title"><strong>Image framing</strong><small id="media-frame-label">Desktop</small></div>
+            </details>
+            <details class="media-control-group" id="media-source-options">
+              <summary>Photo link, video &amp; display</summary>
+              <div class="media-text-field media-image-url-field">
+                <label for="media-image-url">Photo link</label>
+                <input id="media-image-url" type="text" placeholder="https://…" autocomplete="off" spellcheck="false">
+                <button id="media-image-url-apply" class="media-edit-btn" type="button">Use this photo</button>
+              </div>
+              <div class="media-assets">
+                <button id="media-editor-video-pick" class="media-up" type="button">Upload video</button>
+                <input id="media-editor-video-file" type="file" accept="video/mp4" data-editor-upload="video" hidden>
+                <button id="media-remove-video" class="media-edit-btn media-danger" type="button">Remove video</button>
+              </div>
+              <div id="media-framing-controls">
+                <div class="media-control-title"><label for="media-source">Show on the page</label></div>
+                <select id="media-source">
+                  <option value="auto">Automatic: video first, then image</option>
+                  <option value="video">Background video</option>
+                  <option value="image">Image</option>
+                  <option value="background">Color background only</option>
+                </select>
+                <small id="media-source-note" class="media-source-note"></small>
+              </div>
+            </details>
+            <details class="media-control-group">
+              <summary>Photo size &amp; position <small id="media-frame-label">Desktop</small></summary>
               <div class="media-segments" role="group" aria-label="Image fit">
                 <button type="button" class="active" data-media-fit="cover">Fill frame</button>
                 <button type="button" data-media-fit="contain">Show full image</button>
@@ -1408,8 +1442,9 @@
                 <div class="media-range-head"><label for="media-image-opacity">Media visibility</label><output id="media-image-opacity-out">100%</output></div>
                 <input id="media-image-opacity" type="range" min="0" max="100" step="1" value="100">
               </div>
-            </div>
-            <div class="media-control-group">
+            </details>
+            <details class="media-control-group">
+              <summary>Background &amp; overlay</summary>
               <div class="media-control-title"><strong>Background</strong><small>Visible behind media</small></div>
               <div class="media-swatches" id="media-background-swatches">
                 <button type="button" class="media-swatch" data-media-background="theme" style="--swatch:linear-gradient(145deg,#20706B,#0A252C)"><span>Page default</span></button>
@@ -1423,8 +1458,6 @@
                 <input id="media-background-color" class="media-color-input" value="#123B42" maxlength="7" aria-label="Custom background color">
                 <input id="media-background-picker" class="media-color-picker" type="color" value="#123B42" aria-label="Choose custom background color">
               </div>
-            </div>
-            <div class="media-control-group">
               <div class="media-control-title"><strong>Overlay</strong><small>Color above the image</small></div>
               <div class="media-overlay-swatches" role="group" aria-label="Overlay style">
                 <button type="button" class="media-oswatch" data-media-overlay="brand"><span class="os-prev os-brand"></span><span>Wash</span></button>
@@ -1445,17 +1478,17 @@
                 </div>
               </div>
               <p id="media-contrast-warning" class="media-warning" hidden>With little or no overlay, white page text may be hard to read on a bright image.</p>
-            </div>
-            <div class="media-control-group" id="media-match-group" hidden>
-              <div class="media-control-title"><strong>Match another design</strong><small>Copy a look you like</small></div>
+            </details>
+            <details class="media-control-group" id="media-match-group" hidden>
+              <summary>Copy another section’s design</summary>
               <div class="media-match-scope" role="group" aria-label="What to copy">
                 <label><input type="checkbox" id="media-match-look" checked> Overlay, wash &amp; background</label>
                 <label id="media-match-text-wrap"><input type="checkbox" id="media-match-text" checked> Text colors &amp; shadow</label>
               </div>
               <div id="media-match-grid" class="media-match-grid"></div>
               <button id="media-match-undo" class="media-edit-btn" type="button" hidden>Undo match</button>
-              <p class="media-color-note">Tap a design to copy its look onto this one. Your photo and its framing stay. Use it to make side-by-side cards or whole pages match.</p>
-            </div>
+              <p class="media-color-note">Choose the section to copy.</p>
+            </details>
           </div>
         </div>
         <div class="media-editor-foot">
@@ -1485,12 +1518,12 @@
 <script src="/assets/page-catalog.js?v=9"></script>
 <script src="/assets/page-editor.js?v=2"></script>
 <script src="/assets/image-upload.js?v=1"></script>
-<script src="/assets/studio-page-editor.js?v=5"></script>
+<script src="/assets/studio-page-editor.js?v=6"></script>
 <script src="/assets/media-page-preview.js?v=2"></script>
 <script src="/assets/missionary-timezone.js?v=1"></script>
 <script src="/assets/mission-map.js?v=1"></script>
 <script src="/assets/event-time.js?v=1"></script>
 <script src="/assets/jubilee-years.js?v=1"></script>
 <script src="/assets/studio-jubilee-years.js?v=1"></script>
-<script src="assets/studio.js?v=53"></script>
+<script src="assets/studio.js?v=54"></script>
 </body></html>
